@@ -1,0 +1,121 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Phoenix ERP - Authentication</title>
+    <meta name="description" content="Latest updates and statistic charts">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+    <environment>
+        <link href="~/fonts/font.poppins.css" rel="stylesheet" />
+        <link href="~/fonts/font.roboto.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/vendors/base/vendors.bundle.css" />
+        <link rel="stylesheet" href="~/demo/demo11/base/style.bundle.css" />
+
+        <link rel="shortcut icon" href="~/demo/demo11/media/img/logo/favicon.ico" />
+    </environment>
+</head>
+<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark
+      m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+
+    <!-- begin:: Page -->
+    <div class="m-grid m-grid--hor m-grid--root m-page">
+        <div class="m-login m-login--signin  m-login--5" id="m_login" style="background-image: @Url.Content("~/app/media/img//bg/bg-3.jpg");">
+            <div class="m-login__wrapper-1 m-portlet-full-height">
+                <div class="m-login__wrapper-1-1">
+                    <div class="m-login__contanier">
+                        <div class="m-login__content">
+                            <div class="m-login__logo">
+                                <a href="#">
+                                    <img src="@Url.Content("~/app/media/img/logos/microsoft_PNG10_grey.png")" width="130px">
+                                </a>
+                            </div>
+                            <div class="m-login__title">
+                                <h3>ERP Phoenix System</h3>
+                            </div>
+                            <div class="m-login__desc">
+                                NAVA+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-login__border">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="m-login__wrapper-2 m-portlet-full-height">
+                <div class="m-login__contanier">
+                    <div class="m-login__signin">
+                        <div class="m-login__head">
+                            <h3 class="m-login__title">Login</h3>
+                        </div>
+                        <form class="m-login__form m-form" method="post" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group m-form__group">
+                                <input class="form-control m-input" type="text" placeholder="Username" name="username" autocomplete="off">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <input class="form-control m-input m-login__form-input--last" type="Password" placeholder="Password" name="password">
+                            </div>
+                            <div class="row m-login__form-sub">
+                                <div class="col m--align-left">
+                                    <label class="m-checkbox m-checkbox--focus">
+                                        <input type="checkbox" name="remember"> Remember me
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="col m--align-right">
+                                    <a href="javascript:;" id="m_login_forget_password" class="m-link">Forget Password ?</a>
+                                </div>
+                            </div>
+                            <div class="m-login__form-action">
+                                <button id="m_login_signin_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">Sign In</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="m-login__forget-password">
+                        <div class="m-login__head">
+                            <h3 class="m-login__title">Forgot Password ?</h3>
+                            <div class="m-login__desc">Enter your email to reset your password:</div>
+                        </div>
+                        <form class="m-login__form m-form" action="">
+                            <div class="form-group m-form__group">
+                                <input class="form-control m-input" type="text" placeholder="Email" name="email" id="m_email" autocomplete="off">
+                            </div>
+                            <div class="m-login__form-action">
+                                <button id="m_login_forget_password_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">Request</button>
+                                <button id="m_login_forget_password_cancel" class="btn btn-outline-focus m-btn m-btn--pill m-btn--custom ">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end:: Page -->
+
+    <environment>
+        <script src="~/vendors/base/vendors.bundle.js"></script>
+        <script src="~/demo/demo11/base/scripts.bundle.js"></script>
+
+        <script src="~/scripts/Core.js" asp-append-version="true"></script>
+        <script src="~/scripts/codemarvel.helper.plugins.js"></script>
+        <!--begin::Page Scripts -->
+        <script src="~/Areas/Core/Scripts/Authentication/login.js"></script>
+        <script>
+        jQuery(document).ready(function () {
+            $.helper.setBasePath("@Url.Content("~")");
+
+        });
+        </script>
+
+    </environment>
+</body>
+</html>

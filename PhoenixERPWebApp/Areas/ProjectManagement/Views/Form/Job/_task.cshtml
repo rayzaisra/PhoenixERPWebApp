@@ -1,0 +1,85 @@
+
+@{
+    ViewBag.ModalTitle = "Manage Task";
+    ViewBag.ModalId = "CreateTask";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="TaskForm" method="post">
+
+    <div class="row ">
+        <div class="col-lg-12 nopadding">
+            <input value="" type="hidden" name="job_id" />
+
+            <div class="form-group taskfield">
+                <label><span class="translate" data-args="Task Name">Task Name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="task_name" id="task_name" required maxlength="50" type="text">
+                <input name="job_number" id="job_number" required type="hidden">
+            </div>
+
+            <div class="form-group taskfield">
+
+                <div class="m-radio-inline">
+                    <label>
+                        Priority :
+
+                    </label>
+                    <label class="m-radio">
+                        <input type="radio" id="taskhigh" name="task_priority_id" value="high"> High
+                        <span></span>
+                    </label>
+                    <label class="m-radio">
+                        <input type="radio" id="taskmedium" name="task_priority_id" value="medium"> Medium
+                        <span></span>
+                    </label>
+                    <label class="m-radio">
+                        <input type="radio" checked id="tasklow" name="task_priority_id" value="low"> Low
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12  taskfieldnp">
+
+            <div class="form-group ">
+                <label><span class="translate" data-args="Description">Description</span> <span class="req">*</span>:</label>
+                <textarea class="form-control form-control-sm m-input m-input--square" name="description" rows="4" id="description"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6  taskfieldnp">
+            <div class="form-group ">
+                <label><span class="translate" data-args="Start Date">Start Date</span> <span class="req">*</span>:</label>
+
+                <div class="input-group ">
+                    <input type="text" class="datepicker form-control form-control-sm m-input m-input--square" data-date-format="yyyy-mm-dd"  placeholder="Select date & time" id="start_task" name="start_task" />
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+            <div class="col-lg-6  taskfieldnp">
+                <div class="form-group ">
+                    <label><span class="translate" data-args="Deadline Date">Deadline Date</span> <span class="req">*</span>:</label>
+                    <div class="input-group ">
+                        <input type="text" class="datepicker form-control form-control-sm m-input m-input--square" data-date-format="yyyy-mm-dd"  placeholder="Select date & time" id="deadline_task" name="deadline_task" />
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <button type="button" id="taskclose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</form>
+ 

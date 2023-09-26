@@ -1,0 +1,37 @@
+@{
+    ViewBag.ModalTitle = "InstitutionLevel";
+    ViewBag.ModalId = "InstitutionLevelModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="InstitutionLevelFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="competence_id">competence_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_competence_id" id="search_competence_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="level_position_id">level_position_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_level_position_id" id="search_level_position_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="level_req">level_req</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_level_req" id="search_level_req"  maxlength="50" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnInstitutionLevel.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnInstitutionLevel.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

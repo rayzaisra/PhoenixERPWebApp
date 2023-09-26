@@ -1,0 +1,502 @@
+@{
+    ViewData["Title"] = "EmployeeBasic";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+
+<style>
+    .modal.large {
+        width: 80%; /* respsonsive width */
+        margin-left: -40%; /* width/2) */
+    }
+</style>
+
+@section Panelbody{
+    <form id="EmployeeBasicInfoFormCreate" name="EmployeeBasicInfoFormCreate" method="post">
+        <span id="tmpfamilyinfo"></span>
+        <span id="tmpemergencycontact"></span>
+        <span id="tmpeducationinfo"></span>
+        <span id="tmpemploymenthistory"></span>
+        <span id="tmpcourseseminar"></span>
+        <fieldset>
+            <legend>Detail Employee Information</legend>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="first_name">First Name *</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Nick Name *</label>
+                        <input type="text" class="form-control" id="nick_name" name="nick_name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="birth_place">Birth Place *</label>
+                        <input type="text" class="form-control" id="birth_place" name="birth_place" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="text" class="form-control" id="phone_number" name="phone_number" />
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile_number">Mobile Number *</label>
+                        <input type="text" class="form-control" id="mobile_number" name="mobile_number" required />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="last_name">Last Name *</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" required />
+                    </div><br />
+                    <div class="form-group">
+                        <label for="gender">Gender *</label><br>
+                        <input type="radio" class="radioBtnClass" value="Male" name="gender" required/> Male
+                        <input type="radio" class="radioBtnClass" value="Female" name="gender" required/> Female
+                    </div>
+                    <div class="form-group">
+                        <label for="date_birth">Date of Birth *</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" data-date-format="mm-dd-yyyy" id="date_birth" name="date_birth" required>
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" class="form-control" id="email" name="email" required />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <hr />
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" href="#PersonalInfo" role="tab" data-toggle="tab">Personal Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#FamilyInfo" role="tab" data-toggle="tab">Family Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#EmergencyContacts" role="tab" data-toggle="tab">Emergency Contacts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#EducationInfo" role="tab" data-toggle="tab">Education Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#EmployementHistory" role="tab" data-toggle="tab">Employement History</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Course" role="tab" data-toggle="tab">Course / Seminar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#JobInfo" role="tab" data-toggle="tab">Job Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Payroll" role="tab" data-toggle="tab">Payroll</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="PersonalInfo">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nationality_id">Nationality *</label>
+                            <select id="nationality_id" name="nationality_id" class="form-control" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="kitas_number">KITAS Number</label>
+                            <input id="kitas_number" name="kitas_number" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="kitas_number">KITAS Expired Date</label>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="kitas_expiry" name="kitas_expiry">
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="religion_id">Religion *</label>
+                            <select id="religion_id" name="religion_id" class="form-control" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="married_status_id">Maritial Status *</label>
+                            <select id="married_status_id" name="married_status_id" class="form-control" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="blood">Blood *</label>
+                            <select id="blood" name="blood" class="form-control" required>
+                                <option value="A">A</option>
+                                <option value="AB">AB</option>
+                                <option value="B">B</option>
+                                <option value="O">O</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="post_code">Post Code *</label>
+                            <input id="post_code" name="post_code" class="form-control" maxlength="5" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="address_identity_card">Identity Address *</label>
+                            <textarea id="address_identity_card" name="address_identity_card" class="form-control" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="home_address">Home Address *</label>
+                            <textarea id="home_address" name="home_address" class="form-control" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="last_education">Last Education *</label>
+                            <select id="last_education" name="last_education" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="passport_number">Passport Number </label>
+                            <input id="passport_number" name="passport_number" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="passport_expiry">Passport Expired Date </label>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="passport_expiry" data-date-format="mm-dd-yyyy" name="passport_expiry">
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                           
+                        </div>
+                        <div class="form-group">
+                            <label for="npwp_number">NPWP Number *</label>
+                            <input id="npwp_number" name="npwp_number" class="form-control" maxlength="15" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="passport_expiry">NPWP Expired Date *</label>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="npwp_expiry" data-date-format="mm-dd-yyyy" name="npwp_expiry" required>
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="identity_card">ID Card Number *</label>
+                            <input id="identity_card" name="identity_card" class="form-control" maxlength="16" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="kk_no">KK Number </label>
+                            <input id="kk_no" name="kk_no" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="photo">Employee Photo </label>
+                            <input id="photo" type="text" name="photo" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="FamilyInfo">
+                <div class="row">
+                    <div class="col-sm-11">&nbsp;</div>
+                    <div class="col-sm-1">
+                        <a data-toggle="modal" onclick="clearModal('EmployeeBasicFormfamilyModal')" data-target="#EmployeeBasicfamilyModal" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped" id="FamilyList">
+                            <thead>
+                                <tr>
+
+                                    <th>Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Family Status</th>
+                                    <th>Gender</th>
+                                    <th>Address</th>
+                                    <th><center>Action</center></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="no_data">
+                                    <td colspan="6">No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="EmergencyContacts">
+                <div class="row">
+                    <div class="col-sm-11">&nbsp;</div>
+                    <div class="col-sm-1">
+                        <a data-toggle="modal" onclick="clearModal('EmployeeBasicFormEmergencyContact')" data-target="#EmployeeBasicEmergencyContactModal" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped" id="EmergencyContactList">
+                            <thead>
+                                <tr>
+
+                                    <th>Family Status</th>
+                                    <th>Phone No</th>
+                                    <th>Address</th>
+                                    <th>Names</th>
+                                    <th>Others No</th>
+                                    <th><center>Action</center></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="no_data">
+                                    <td colspan="6">No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="EducationInfo">
+                <div class="row">
+                    <div class="col-sm-11">&nbsp;</div>
+                    <div class="col-sm-1">
+                        <a data-toggle="modal" onclick="clearModal('EmployeeBasicFormEducationInfo')" data-target="#EmployeeBasicEducationInfoModal" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped" id="EducationList">
+                            <thead>
+                                <tr>
+                                    <th>Education</th>
+                                    <th>Institusion Name</th>
+                                    <th>Major</th>
+                                    <th>Location</th>
+                                    <th>Year</th>
+                                    <th><center>Action</center></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="no_data">
+                                    <td colspan="6">No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="EmployementHistory">
+                <div class="row">
+                    <div class="col-sm-11">&nbsp;</div>
+                    <div class="col-sm-1">
+                        <a data-toggle="modal"  onclick="clearModal('EmployeeBasicFormEmploymentHistory')" data-target="#EmployeeBasicEmploymentHistoryModal" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped" id="EmployementHistoryList">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Company Phone</th>
+                                    <th>Year</th>
+                                    <th>Address</th>
+                                    <th>Position</th>
+                                    <th><center>Action</center></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="no_data">
+                                    <td colspan="6">No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="Course">
+                <div class="row">
+                    <div class="col-sm-11">&nbsp;</div>
+                    <div class="col-sm-1">
+                        <a data-toggle="modal" onclick="clearModal('EmployeeBasicFormCourseSeminar')"  data-target="#EmployeeBasicCourseSeminarModal" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped" id="CourseList">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Institution Name</th>
+                                    <th>Year</th>
+                                    <th>Address</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="no_data">
+                                    <td colspan="5">No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="JobInfo">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            <label for="date_birth">Join Date *</label>
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" data-date-format="mm-dd-yyyy" id="join_date" name="join_date" required>
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="job_title_id">Job Title*</label>
+                            <select id="business_unit_job_level_id" name="business_unit_job_level_id" class="form-control"></select>
+                            <input id="job_title_id" name="job_title_id" type="hidden">
+                        </div>
+                        <div class="form-group">
+                            <label for="parent_id">Reports to</label>
+                            <select id="parent_id" name="parent_id" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="job_grade_id">Job Grade*</label>
+                            <select id="job_grade_id" name="job_grade_id" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="legal_entity_id">Legal Entity*</label>
+                            <select id="legal_entity_id" name="legal_entity_id" class="form-control"></select>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="employement_status_id">Employement Status*</label>
+                            <select id="employement_status_id" name="employement_status_id" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="business_unit_division_id">Division*</label>
+                            <select id="business_unit_division_id" name="business_unit_division_id" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="business_unit_departement_id">Departement*</label>
+                            <select id="business_unit_departement_id" name="business_unit_departement_id" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="location_id">Location*</label>
+                            <select id="location_id" name="location_id" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="Payroll">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="ptkp_setting_id">PTKP / Untax*</label>
+                            <select id="ptkp_setting_id" name="ptkp_setting_id" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bpjs_tk">BPJS TK Number</label>
+                            <input id="bpjs_tk" name="bpjs_tk" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="bank_address">Bank Address</label>
+                            <input id="bank_address" name="bank_address" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="bank_city">Bank City</label>
+                            <input id="bank_city" name="bank_city" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="account_name">Account Name</label>
+                            <input id="account_name" name="account_name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="account_no">Account No</label>
+                            <input id="account_no" name="account_no" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="bpjs_healthy">BPJS Kesehatan Number</label>
+                            <input id="bpjs_healthy" name="bpjs_healthy" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="type_tax">Payroll Method*</label>
+							<select id="payroll_methods" name="payroll_methods" class="form-control">
+								<option value="Nett">Nett</option>
+								<option value="Gross">Gross</option>
+								<option value="GrossUp">Gross Up</option>
+							</select>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="bank_id">Bank</label>
+                            <select id="bank_id" name="bank_id" class="form-control">
+                                <option value="mandiri">Mandiri</option>
+                                <option value="bca">BCA</option>
+                                <option value="bni">BNI</option>
+                                <option value="cimb">CIMB</option>
+                                <option value="ocbsnisp">OCBC NISP</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bank_branch">Branch</label>
+                            <input id="bank_branch" name="bank_branch" class="form-control" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/Hris/EmployeeBasic" class="fakelink btn btn-warning">Cancel</a>
+            </div>
+        </div>
+    </form>
+    @Html.Partial("EmployeeBasic/EmergencyContactModal")
+    @Html.Partial("EmployeeBasic/CourseSeminarModal")
+    @Html.Partial("EmployeeBasic/familyModal")
+    @Html.Partial("EmployeeBasic/EducationInfoModal")
+    @Html.Partial("EmployeeBasic/EmploymentHistoryModal")
+}
+
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/EmployeeBasic.create.js"></script>
+}

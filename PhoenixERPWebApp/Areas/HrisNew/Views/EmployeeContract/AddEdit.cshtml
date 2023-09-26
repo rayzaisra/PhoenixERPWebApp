@@ -1,0 +1,253 @@
+@model PhoenixERPWebApp.Models.Termination
+@{
+    ViewData["Title"] = "Employee Termination Form";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    DateTime? LastDayDate = DateTime.Now;
+    DateTime? TerminationDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        if (LastDayDate >= Model.LastDayDate)
+        {
+            LastDayDate = Model.LastDayDate;
+        }
+
+        if (TerminationDate >= Model.TerminationDate)
+        {
+            TerminationDate = Model.TerminationDate;
+        }
+    }
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="employeecontract" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Termination</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="employeecontract" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="employeecontract" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Employee Termination Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formTermination" class="form-horizontal form-bordered" role="form">
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="Requestor" />
+                                                                                                
+                        <partial name="_RequestEmploye" />
+                        <br/>
+
+                        <div class="row" id="data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Request Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                            <div class="m-accordion__item-content">
+                                                        
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="LastDayDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.LastDayDate)
+                                                                .Format("dd MMM yyyy")
+                                                                .Min($"{LastDayDate}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.LastDayDate)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="TerminationType"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(x => x.TerminationType)
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.TerminationType)}")
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                .Filter(FilterType.Contains)
+                                                                .DataSource(source => source
+                                                                    .Custom()
+                                                                    .Transport(transport => transport
+                                                                    .Read(read =>
+                                                                    {
+                                                                        read.Action("GetDDLTerminationType", "Dropdown", new { area = "HrisNew" });
+                                                                    }))
+                                                                    .ServerFiltering(false)
+                                                                )
+                                                                .Events(evt=>evt.Select("terminationTypeSelectEvent"))
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="TerminationDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.TerminationDate)
+                                                                .Format("dd MMM yyyy")
+                                                                .Min($"{TerminationDate}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.TerminationDate)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Reason"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().EditorFor(x => x.Reason)
+                                                                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                                .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                                .Placeholder($"Type your {Html.DisplayNameFor(m => m.Reason)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>                                                
+                        <partial name="_AssignEmploye" />
+                          
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor==true)
+                                    {
+                                        <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        <button type="button" id="btnSubmitToHC" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit to HC</button>
+                                    }
+                                    <a asp-action="index" asp-controller="employeecontract" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>    
+     $(document).ready(function () {
+        if ('@ViewBag.isRequestor' == 'False') {
+            @*if ('@Model.IsApprove' == "True" || !('@Model.Status' == '@PhoenixERPWebApp.Models.TerminationStatus.Draft' || '@Model.Status' == '@PhoenixERPWebApp.Models.TerminationStatus.Rejected')) {*@
+                $('.k-editor-toolbar').hide();
+                $($("#Reason").data().kendoEditor.body).attr("contentEditable", false);
+                $($("#Reason").data().kendoEditor.body).css("background-color", "#F8F9FA");
+
+                $("#LastDayDate").data("kendoDatePicker").readonly();
+                $("#TerminationType").data("kendoDropDownList").readonly();
+                $("#TerminationDate").data("kendoDatePicker").readonly();
+                $("#search").remove();
+            //}
+        }
+    });
+
+
+    $('#btnSubmitToHC').click(function () {
+        callAction({ formId:"formTermination", title: "submit", type:"POST", url: '@Url.Action("submitToHC", "employeecontract")'});
+    });
+
+    $('#btnSave').click(function () {
+        callActionFile({ formId:"formTermination", title: "save", type:"POST", url: '@Url.Action("save", "employeecontract")'});
+    });
+
+    function terminationTypeSelectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $("#SearchEmployee").val("");
+            ClearAsignEmployee();
+        }
+    }
+</script>

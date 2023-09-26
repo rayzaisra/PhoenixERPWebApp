@@ -1,0 +1,48 @@
+@{
+    ViewBag.ModalTitle = "TrainingRegistration";
+    ViewBag.ModalId = "TrainingRegistrationModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="TrainingRegistrationFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+            <input name="Search_status" id="Search_status" type="hidden" value="1"/>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="Search_end_date" id="search_end_date" type="number">
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="preferlocation">preferlocation</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="Search_preferlocation" id="search_preferlocation" maxlength="2147483647" type="text">
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="Search_start_date" id="search_start_date" type="number">
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="trainingname">trainingname</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="Search_trainingname" id="search_trainingname" maxlength="150" type="text">
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="training_description">training_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="Search_training_description" id="search_training_description" maxlength="2147483647" type="text">
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnTrainingRequisition.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnTrainingRequisition.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

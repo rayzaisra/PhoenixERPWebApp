@@ -1,0 +1,272 @@
+﻿<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+</style>
+
+<div class="modal fade" id="modal-choice-pce" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Invoice</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"  id="modalPCEList">
+                <form id="formVendor" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data"> 
+                    <div class="m-form__group">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label> Client Name</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownList().Name("_ClientId")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .OptionLabel("Choose a Client Name")
+                                            .Popup(x => x.AppendTo("#modalPCEList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLClient", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Legal Entity</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownList().Name("_LegalId")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .OptionLabel("Choose a Legal Entity")
+                                            .Popup(x => x.AppendTo("#modalPCEList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 m-form__group-sub">
+                                <div class="form-group row">                                   
+                                    <div class="col-lg-4">
+                                        <label>Currency</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownList().Name("_CurrencyId")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .OptionLabel($"Choose a Currency")
+                                            .Popup(x => x.AppendTo("#modalPCEList"))
+                                            .HtmlAttributes(new { style = "width:100%;"})
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Main Service Category</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownList().Name("_MainServiceCategory")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .OptionLabel($"Choose a Main Service Category")
+                                            .Popup(x => x.AppendTo("#modalPCEList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLMainServiceCategory", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Pce Type Cross Billing</label>
+                                    </div>
+                                    <div class="col-lg-8"> 
+                                         @(Html.Kendo().DropDownList().Name("_PceTypeCrossBilling")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .OptionLabel("Choose a Pce Type Cross Billing")
+                                            .Popup(x => x.AppendTo("#modalPCEList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetPCETypeCrossBilling", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Business Unit</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownList().Name("_BusinessUnitId")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .OptionLabel("Choose a Business Unit")
+                                            .Popup(x => x.AppendTo("#modalPCEList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>      
+                         <div class="row" style="display:none;">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                     <div class="col-lg-4">
+                                        <label>Client Brand</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownList().Name("_BrandId")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .OptionLabel("Choose a Client Brand")
+                                            .Popup(x => x.AppendTo("#modalPCEList"))
+                                            .HtmlAttributes(new { style = "width:100%;",@readonly="readonly" })
+                                            .Filter(FilterType.Contains) 
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLBrand", "Dropdown");
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row"> 
+                                </div>
+                            </div>
+                        </div>      
+                        
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <button class="btn btn-primary" type="button" onclick="bindPCEList()">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group m-form__group row m-row--no-padding">
+                                    <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.InvoiceClient>()
+                                            .Name("grid-choice-pce")
+                                            .Columns(columns =>
+                                            {
+                                                columns.Select().ClientHeaderTemplate(" ").Width(40).HtmlAttributes(new { style = "text-align:center;" });
+                                                columns.Bound(p => p.JobId).ClientTemplate("#=JobId#-#=JobName#").Width(200).Title("Job ID-Name");
+                                                columns.Bound(p => p.PceId).Width(150);
+                                                columns.Bound(p => p.CurrencyName).Width(150);
+                                                columns.Bound(p => p.TotalAmount).ClientTemplate("#if(CurrencySymbol!=null && TotalAmount!=null){# #=CurrencySymbol# #}# #if(TotalAmount!=null){# #=kendo.format('{0:n2}', TotalAmount)# #}#").Width(150);
+                                                columns.Bound(p => p.AsfAmount).ClientTemplate("#if(CurrencySymbol!=null && AsfAmount!=null){# #=CurrencySymbol# #}# #if(AsfAmount!=null){# #=kendo.format('{0:n2}', AsfAmount)# #}#").Width(150);
+                                                columns.Bound(p => p.GrandTotal).ClientTemplate("#if(CurrencySymbol!=null && GrandTotal!=null){# #=CurrencySymbol# #}# #if(GrandTotal!=null){# #=kendo.format('{0:n2}', GrandTotal)# #}#").Width(150);
+                                                columns.Bound(p => p.ClientName).Width(150);
+                                                columns.Bound(p => p.ClientBrandName).Width(150);
+                                                columns.Bound(p => p.DivisionName).Width(150);
+                                                columns.Bound(p => p.LegalEntityName).Width(150);
+                                                columns.Bound(p => p.MainServiceCategoryName).Width(150); 
+                                                columns.Bound(p => p.PceTypeCrossBilling).ClientTemplate("#if(PceTypeCrossBilling==true){#Yes#}else{#No#}#").Width(150);
+                                            })
+                                            .Scrollable(
+                                                scr => scr.Height(250)
+                                            )
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .Events(events => events.Error("errorHandler"))
+                                                .Model(model => { model.Id(p => p.PceId); })
+                                                .Read(read => read.Action("GetPceChoiceList", "InvoiceClientMultiPce").Data("gridChoicePce_params"))
+                                            )
+                                            .NoRecords()
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="SaveSelectedPce()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div> 

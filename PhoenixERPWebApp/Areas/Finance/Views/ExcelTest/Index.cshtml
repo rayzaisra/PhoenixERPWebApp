@@ -1,0 +1,159 @@
+﻿<link href="~/vendors/custom/jexcel/css/bossanova.jexcel.css" rel="stylesheet" />
+<link href="~/vendors/custom/jexcel/css/jquery.jexcel.css" rel="stylesheet" />
+<div class="row" style="padding-top:30px">
+    <div class="col-lg-12">
+        <div id="my"></div>
+    </div>
+    <button class="btn btn-primary" type="button" id="btn-get_data">GET DATA</button>
+</div>
+
+
+<script src="~/vendors/custom/jexcel/js/jquery.jexcel.js"></script>
+<script src="~/vendors/custom/jexcel/js/jquery.jcalendar.js"></script>
+
+<script src="~/vendors/custom/jexcel/js/run_prettyfy.js"></script>
+
+
+<script>
+    dataSource = [
+        [3, 'Cheese'],
+        [1, 'Apples'],
+        [2, 'Carrots'],
+        [1, 'Oranges'],
+    ];
+
+    var dropdown = function (instance, cell, c, r, source) {
+        var value = $('#my').jexcel('getValue', c - 1 + '-' + r);
+
+        if (value == 1) {
+            return ['Apples', 'Bananas', 'Oranges'];
+        } else if (value == 2) {
+            return ['Carrots'];
+        } else {
+            return source;
+        }
+    }
+
+        (function ($) {
+            'use strict';
+
+
+
+            var pageFunction = function () {
+                
+                //$.get($.helper.resolveApi("~/core/BusinessUnitType/lookup?length=300"), function (data) {
+                //    var accountDataLookup = data;
+                //    console.log(accountDataLookup);
+
+
+
+                //})
+
+                $('#btn-get_data').click(function () {
+                    var data = $('#my').jexcel('getData');
+                    console.log($('#my').jexcel('getData', false));
+
+                    data.map(function (d, i) {
+                        d.map(function (n, w) {
+                            console.log(n);
+                        });
+
+                    });
+
+                    //console.log(data);
+                });
+
+                var customDropDown1 = {
+                    // Methods
+                    closeEditor: function (cell, save) {
+                        // Get value
+                        var val = $(cell).find('.editor').val();
+                        var txt = $(cell).find('.editor').text();
+                        // Set visual value
+                        $(cell).attr('data-value-id',val);
+                        // Close edition
+                        $(cell).removeClass('edition');
+                        // Save history
+                        return txt;
+                    },
+                    openEditor: function (cell) {
+                        // Get current content
+                        var currentValue = $(cell).val();
+                        var currentText = $(cell).text();
+                        console.log(currentValue);
+                        // Create the editor
+                        var editor = document.createElement('select');
+                        $(cell).html(editor);
+                        $(editor).prop('class', 'editor');
+                        $(editor).cmSelect2({
+                            url: $.helper.resolveApi("~/core/BusinessUnitType/lookup/"),
+                            filters: ' r.business_unit_type_name LIKE @@0 ',
+                            //paramaters: [],
+                            result: {
+                                id: 'id',
+                                text: 'business_unit_type_name',
+                            }
+                        }).on('change', function () {
+                            //var selected = $(editor).select2("val");
+                            //var selectedText = $(editor).text();
+                            //console.log(selected);
+                            //console.log(selectedText);
+
+                            $('#' + $.fn.jexcel.current).jexcel('closeEditor', $(cell), true);
+                        });
+                        //$(editor).val(currentValue);
+                        $(editor).cmSetLookup(currentValue, currentText);
+
+                    },
+                    getValue: function (cell) {
+                        return $(cell).attr('data-value-id');
+                    },
+                    setValue: function (cell, value) {
+                        console.log("SET value");
+                        console.log(value);
+                        $(cell).html(value);
+                        return true;
+                    }
+                }
+
+                $('#my').jexcel({
+                    //data: data,
+                    colHeaders: ['Model', 'Color', 'Buy'],
+                    colWidths: [300, 80, 100],
+                    columns: [
+                        {
+                            editor: customDropDown1,
+                            type: 'dropdown'
+                        },
+                        {
+                            type: 'dropdown',
+                            source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese'],
+                            filter: dropdown
+                        },
+                        { type: 'checkbox' },
+                    ]
+                });
+                //BEGIN::EVENT BUTTON
+
+
+                //END::EVENT BUTTON
+
+
+                return {
+                    init: function () {
+                        //initialize
+
+                    }
+                };
+            }();
+
+
+
+            $(document).ready(function () {
+                pageFunction.init();
+            });
+        }(jQuery));
+
+
+
+</script>

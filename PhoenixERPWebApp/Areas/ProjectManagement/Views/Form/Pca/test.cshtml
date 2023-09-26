@@ -1,0 +1,96 @@
+@{
+    ViewData["Title"] = "Client Brief";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+
+    var userSession = CodeMarvel.Infrastructure.Sessions.SessionManager.UserSession;
+    var userid= userSession.AppUserId;
+}
+
+@section Panelhead{
+    @userid
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    group: <input type="text" id="groups" value="testgroup" />
+    <input type="button" id="joingroup" value="join" />
+    <div class="row">
+        <div class="col-6">&nbsp;</div>
+        <div class="col-6">
+            User..........<input type="text" id="userInput" />
+            <br />
+            Message...<input type="text" id="messageInput" />
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">&nbsp;</div>
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+}
+@section Panelscript{
+    <script src="~/assets/plugins/signalr/signalr.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var xtoken = $('meta[name=JWT_TOKEN]').attr("content");
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl("http://localhost:19699/Hubs/Notification",
+                    { accessTokenFactory: () => xtoken })
+                .configureLogging({
+                    /*
+                    log: function (logLevel, message) {
+                        console.log(new Date().toISOString() + ": " + message);
+                    }*/
+                })
+                .build();
+            var groups = $("#groups").val();
+
+            connection.start().then(() => {
+                  connection.invoke("JoinRoom", "ntfks_@userid").catch(function (err) {
+                    return console.error(err.toString());
+                })
+                }).catch(function (err) {
+                    //failed to connect
+                    return console.error(err.toString());
+                });
+ 
+
+            document.getElementById("joingroup").addEventListener("click", function (event) {
+                groups = $("#groups").val();
+                connection.invoke("JoinRoom", groups).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            });
+                connection.on("ReceiveMessage", function (message) {
+                    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    var encodedMsg =  " says " + msg;
+                    console.log(encodedMsg);
+                    var li = document.createElement("li");
+                    li.textContent = encodedMsg;
+                    document.getElementById("messagesList").appendChild(li);
+                });
+
+            document.getElementById("sendButton").addEventListener("click", function (event) {
+                alert('s')
+                var user = document.getElementById("userInput").value;
+                var message = document.getElementById("messageInput").value;
+                connection.invoke("SendMessage", user, message).catch(function (err) {
+                    return console.error(err.toString());
+                });
+                event.preventDefault();
+            });
+
+        });
+    </script>
+
+}
+

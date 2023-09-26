@@ -1,0 +1,149 @@
+﻿@{
+    ViewData["Title"] = "My Drive";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+@section Panelhead{
+    <h3>My Drive</h3>
+}
+@section Panelbody{
+    <div class="m-content">
+        <div style="clear:both"></div>
+        <div class="row">
+            <input type="hidden" id="nameEmployee" value="@ViewBag.NameEmployee" />
+            <input type="hidden" id="EmployeeId" value="@ViewBag.EmployeeId" />
+            <div class="col-md-12">
+                <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <div class="div-breadcump">
+                                    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline ul-bredchild">
+                                        <li class="m-nav__item">
+                                            <a href="javascript:linkBreadCrump('ROOT')" class="m-nav__link">
+                                                <i class="m-nav__link-icon la la-gear"></i>&nbsp;
+                                                <span class="m-nav__link-text"  style="font-size:80%">ROOT</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <div class="btn-group" role="group">
+                                <div class="col-lg-12">
+                                    @*<button class="btn btn-sm btn-primary btnLookupEmp"><i class="fa fa-share"></i> Share</button>*@
+                                    <button class="btn btn-sm btn-info btn-form-upload"><i class="fa fa-upload"></i> Upload</button>
+                                    <button class="btn btn-sm btn-warning btn-form-folder"><i class="fa fa-folder"></i> Create Folder</button>
+                                </div>
+                            </div>
+                            <ul class="m-portlet__nav">
+                                <li class="m-portlet__nav-item">
+                                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                    <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">
+                                        <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body" id="m_blockui_list" style="max-height:400px;overflow-x:auto">
+                        <!--begin: Datatable -->
+                        <table class="table table-striped- table-bordered table-hover table-checkable" id="dt_basic">
+                            <thead>
+                                <tr>
+                                    <th><b>#Nama</b></th>
+                                    <th><b>#JobId</b></th>
+                                    <th><b>#Type</b></th>
+                                    <th><b>#Modified</b></th>
+                                    <th><b>#Modified By</b></th>
+                                    <th><b>#File Size</b></th>
+                                    <th><b>#Check</b></th>
+                                    <th><b>#Action</b></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-lg-12">
+                    <center>
+                        <button type="button" id="btn-save" class="btn btn-success">Save</button>
+                        <a asp-action="Index" asp-controller="TimeSheet" asp-area="pm" class="fakelink btn btn-secondary">Close</a>
+                    </center>
+                </div>
+            </div>*@
+    </div>
+
+    @Html.Partial("_FormUpload")
+    <div id="modalCreateFolder" class="modal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-sm" style="max-width:40%">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <h4 class="modal-title title-modal-tempApp">CREATE FOLDER</h4>
+                        <div class="form-group">
+                            <label class="label-block">Folder Name :</label>
+                            <input type="text" class="form-control tb-folder-name" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <button type="button" class="btn btn-sm btn-default pull-right" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-sm btn-primary  pull-right btncreate-folder" style="display:block">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--<div id="modalEmployee" class="modal fade" role="dialog">
+       <div class="modal-dialog modal-lg">
+        
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">LIST OF EMPLOYEE BASIC INFORMATION</h4>
+        </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control textemployee" placeholder="search employee by name" aria-label="search employee by name" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn md-btn-small btn-sm btn-info findEmp" type="button"><i class="la la-search"></i>Find Employee</button>
+                </div>
+            </div>
+            <div style="overflow-x:auto; max-height:370px">
+                <table class="table table-striped- table-bordered table-hover table-checkable" id="tblEmp">
+                    <thead>
+                        <tr>
+                            <th>EMP.ID</th>
+                            <th>EMPLOYEE NAME</th>
+                            <th>EMAIL</th>
+                            <th>GENDER</th>
+                            <th><i class="fa fa-cogs"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" onclick="ShareFile()">Share</button>
+            <button type="button" class="btn btn-sm btn-default" onclick="ModalClose()">Close</button>
+        </div>
+    </div>
+
+    </div>
+    </div>-->
+
+}
+
+@section Panelscript{
+    <script src="~/Areas/Um/Scripts/MyDrive.js" asp-append-version="true"></script>
+}
+
+

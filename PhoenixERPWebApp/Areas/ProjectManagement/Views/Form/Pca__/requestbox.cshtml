@@ -1,0 +1,50 @@
+
+@{
+    ViewBag.ModalTitle = "Request";
+    ViewBag.ModalId = "requestbox";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<style>
+    .option .description,
+    .option .title {
+        display: block;
+        white-space: nowrap;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .btn-sx {
+        font-size: 0.45rem !important;
+    }
+
+    .contenttitle {
+        font-weight: bold;
+        font-size: 16px;
+        border: none !important;
+    }
+
+    .option .title {
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .option .description {
+        color: #808080;
+        font-size: 10px;
+    }
+</style>
+
+ 
+<form id="requestboxform">
+    <div id="tbltaskdetilrequest">
+
+    </div>
+    
+
+    <div class="modal-footer">
+        <button type="button" id="closeaddtask" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="saverequest()" class="btn btn-primary">Save</button>
+    </div>
+</form>
+ 

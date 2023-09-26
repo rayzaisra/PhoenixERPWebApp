@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\HumanResource\**" />
+    <EmbeddedResource Remove="Models\HumanResource\**" />
+    <None Remove="Models\HumanResource\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Finance\MasterData\PaymentMethod.cs" />
+    <Compile Remove="Models\Finance\Transaction\Budgeting\Budget.cs" />
+    <Compile Remove="Services\Finance\MasterData\PaymentMethodService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\HrisNew\MasterData\Attendance\" />
+    <Folder Include="Models\HrisNew\MasterData\Leave\" />
+    <Folder Include="Models\HrisNew\MasterData\Legal\" />
+    <Folder Include="Models\HrisNew\Transaction\Demotion\" />
+    <Folder Include="Models\HrisNew\Transaction\Overtime\" />
+    <Folder Include="Models\HrisNew\Transaction\Promotion\" />
+    <Folder Include="Models\HrisNew\Transaction\Rotation\" />
+    <Folder Include="RestApi\Responses\" />
+    <Folder Include="RestApi\Requests\" />
+    <Folder Include="Services\HrisNew\MasterData\Legal\" />
+    <Folder Include="Services\HrisNew\MasterData\Attendance\" />
+    <Folder Include="Services\HrisNew\MasterData\Institution\" />
+    <Folder Include="Services\HrisNew\MasterData\PDR\" />
+    <Folder Include="Services\HrisNew\Transaction\Attendance\" />
+    <Folder Include="Services\HrisNew\MasterData\Leave\" />
+    <Folder Include="Services\HrisNew\Transaction\Demotion\" />
+    <Folder Include="Services\HrisNew\Transaction\Overtime\" />
+    <Folder Include="Services\HrisNew\Transaction\Promotion\" />
+    <Folder Include="Services\HrisNew\Transaction\Rotation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EFCore.BulkExtensions" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
+    <PackageReference Include="Microsoft.Graph" Version="1.17.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.21.1" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2019.1.115" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Phoenix.Extension\Phoenix.ApiExtension.csproj" />
+    <ProjectReference Include="..\plugins\Phoenix.Shared.Core\Phoenix.Shared.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Messages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

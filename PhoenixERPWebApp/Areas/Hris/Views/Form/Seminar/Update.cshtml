@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Seminar";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="SeminarFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="competence_id">competence_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="competence_id" id="competence_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="contact_no">contact_no</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="contact_no" id="contact_no" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="cover_seminar">cover_seminar</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="cover_seminar" id="cover_seminar" required maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_date" id="end_date" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="person_in_charge">person_in_charge</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="person_in_charge" id="person_in_charge" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="seminar_address">seminar_address</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="seminar_address" id="seminar_address" required maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="start_date" id="start_date" required  type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Seminar" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Seminar.update.js"></script>
+}

@@ -1,0 +1,210 @@
+﻿<div id="modalDetailTempApproval" class="modal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" style="max-width:95%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title title-modal-tempApp">EDIT TEMPLATE APPROVAL</h4>
+            </div>
+            <div class="modal-body">
+                <div class="m-portlet m-portlet--full-height ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    CONFIGURE APPROVAL
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <h3 class="m-portlet__head-text">
+                                <button data-toggle="collapse" class="btn btn-sm" data-target="#divSetinganApp"><i class="fa fa-chevron-down"></i></button>
+                            </h3>
+                        </div>  
+                    </div>
+                    <div class="m-portlet__body row collapse show" id="divSetinganApp">
+                        <div class="col-md-12" style="margin-bottom:15px">
+                            <label class="label-block"><b>#TEMPLATE NAME</b></label>
+                            <input type="text" class="form-control" id="tbTemplateName" placeholder="template name" />
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <table class="table table-striped- table-bordered table-hover table-checkable">
+                                <thead><tr><th colspan="2"><b>NOTIFICATION</b></th></tr></thead>
+                                <tr>
+                                    <td>WEB</td>
+                                    <td>
+                                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
+                                            <input type="checkbox" value="" class="m-group-checkable" name="cbWeb" id="cbWeb">
+                                            <span></span>
+                                        </label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>EMAIL</td>
+                                    <td>
+                                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
+                                            <input type="checkbox" value="" class="m-group-checkable" name="cbEmail" id="cbEmail">
+                                            <span></span>
+                                        </label>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <table class="table table-striped- table-bordered table-hover table-checkable">
+                                <thead><tr><th colspan="2"><b>REMINDER</b></th></tr></thead>
+                                <tr>
+                                    <td>DUE DATE TIME</td>
+                                    <td width="105px">
+                                        <input type="number" class="form-control" id="tbduedatetime" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REMINDER TIME</td>
+                                    <td width="105px">
+                                        <input type="number" class="form-control" id="tbReminderTIme" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <table class="table table-striped- table-bordered table-hover table-checkable">
+                                <thead><tr><th><b>TYPE APPROVAL</b></th></tr></thead>
+                                <tr>
+                                    <td>
+                                        <select id="ddlType" name="ddlType" class="form-control form-control-sm" style="width:100%">
+                                            <option value="0">SQUANCE</option>
+                                            <option value="1">PARALEL</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="m-portlet m-portlet--full-height ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    SETTING USER APPROVAL
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <h3 class="m-portlet__head-text">
+                                <button data-toggle="collapse" class="btn btn-sm" data-target="#divUserApp"><i class="fa fa-chevron-down"></i></button>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body collapse show" id="divUserApp">
+                        <div class="col-lg-12 col-md-12">
+                            <table class="table table-striped- table-bordered table-hover table-checkable" id="tableListUser">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3">
+                                            <b>CHOOSE APPROVAL</b>
+                                            <button class="btn btn-sm btn-info openUserAppForm pull-right" style="display:block">SELECT USER</button>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>CONCURRENT USER</th>
+                                        <th>CONDITIONAL</th>
+                                        <th><i class="fa fa-cogs pull-right"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary btnsaveConfigureApproval" style="display:block">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<input type="hidden" id="HidTempApprovalId" value="0" />
+<input type="hidden" id="HidId" value="0" />
+<input type="hidden" id="HidTypeUserApp" value="CURRENT" />
+<input type="hidden" id="HidCurrentEmpId" value="0" />
+
+<div id="modalConditional" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="max-width: 95%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:dodgerblue">
+                <h4 class="modal-title"  style="color:#fff">ADD/EDIT CONDITIONAL APPROVAL</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <table class="table table-striped- table-bordered table-hover table-checkable" id="tblTempGroup">
+                        <thead>
+                            <tr>
+                                <th>#SELECT USER GROUP APPROVAL</th>
+                                <th>#CONDITION GROUP APPROVAL</th>
+                                <th><i class="fa fa-cogs pull-right"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="clearfix"></div>
+                <div id="divListUserApproval" style="background:#f4f4f4;padding:5px;margin:2px"></div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn md-btn-danger btn-sm btn-close-conditional">Close</button>
+                <button type="button" class="btn btn-sm btn-primary btnSaveGroupApproval">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalEmployee" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:dodgerblue">
+                <h4 class="modal-title" style="color:#fff">LIST OF EMPLOYEE BASIC INFORMATION</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control textemployee" placeholder="search employee by name" aria-label="search employee by name" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn md-btn-small btn-sm btn-info findEmp" type="button"><i class="la la-search"></i>Find Employee</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto; max-height:370px">
+                    <table class="table table-striped- table-bordered table-hover table-checkable" id="tblEmp">
+                        <thead>
+                            <tr>
+                                <th>EMP.ID</th>
+                                <th>EMPLOYEE NAME</th>
+                                <th>EMAIL</th>
+                                <th>GENDER</th>
+                                <th><i class="fa fa-cogs"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn md-btn-danger close-modal-emp">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

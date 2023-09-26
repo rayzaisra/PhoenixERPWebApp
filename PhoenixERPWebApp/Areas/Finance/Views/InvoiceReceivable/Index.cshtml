@@ -1,0 +1,235 @@
+﻿@model PhoenixERPWebApp.Models.InvoiceReceivable
+@{
+    ViewData["Title"] = "Invoice Received";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Invoice Received</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="InvoiceReceivable" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text">Invoice Received</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div class="input-group input-group-sm">     
+                                @if (ViewBag.FrontDesk)
+                                {
+                                    <a asp-action="Detail" asp-controller="InvoiceReceivable" asp-area="Finance" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">                        
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                @(Html.Kendo().DropDownListFor(x=>x.InvoiceStatusId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Events(e => e.Change("onFilterMode"))
+                                    //.OptionLabel("All Status")
+                                    .DataSource(source => source
+                                        .Custom()
+                                        .Transport(transport => transport
+                                        .Read(read =>
+                                        {
+                                            read.Action("GetStatusInvoiceReceived", "Dropdown", new { area = "Finance" });
+                                        }))
+                                        .ServerFiltering(false)
+                                    )
+                                )
+                            </li>
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="InvoiceNumber"></label>
+                                @Html.Kendo().TextBoxFor(x=>x.InvoiceNumber).HtmlAttributes(new { style = "width:100%;" })
+                            </div>                           
+                        </div>
+                         <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="InvoiceVendor"></label>
+                                @Html.Kendo().TextBoxFor(x=>x.InvoiceVendor).HtmlAttributes(new { style = "width:100%;" })
+                            </div>                           
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                 <label asp-for="LegalEntityId"></label>
+                                @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="BusinessUnitId"></label>
+                                @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BusinessUnitId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <br />
+                                <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="alert m-alert--default" role="alert"> 
+                                    <span style="font-weight:500">List Data</span>
+                                </div>
+
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.InvoiceReceivable>()
+                                    .Name("grid")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.InvoiceNumber).ClientTemplateId("code-template").Width(150);
+                                        columns.Bound(p => p.InvoiceVendor).Width(150);
+                                        columns.Bound(p => p.InvoiceDate).Width(100);
+                                        columns.Bound(p => p.ClientName).Width(200);
+                                        columns.Bound(p => p.BusinessUnitName).Width(200);
+                                        columns.Bound(p => p.LegalEntityName).Width(200);
+                                        columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButton(data) #").Width(150);
+
+                                    })
+                                    .Pageable(pageable => pageable
+                                        .Refresh(true)
+                                        .PageSizes(true)
+                                        .ButtonCount(5))
+                                    .NoRecords()
+                                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                    .Resizable(rsz => rsz.Columns(true))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(10)
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(model => { model.Id(p => p.Id); })
+                                        .Read(read => read.Action("Read", "InvoiceReceivable").Data("grid_params"))
+                                    )
+                                )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+</div>
+
+<script id="code-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='View(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'> #=InvoiceNumber# </span></a>
+</script>
+<script>    
+    function View(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "InvoiceReceivable")?name=inv&id=' + item.Id;
+    }
+
+    function grid_params() {
+        return {
+            status: $("#InvoiceStatusId").val(),
+            businessUnit: $("#BusinessUnitId").val(),
+            legalEntity: $("#LegalEntityId").val(),
+            invoiceNumber: $("#InvoiceNumber").val(),
+            invoiceVendor: $("#InvoiceVendor").val()
+        }
+    }
+
+    function onFilterMode() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        var grid = $("#grid").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+        mApp.unblock("#m_blockui_list");
+    };
+
+    function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.InvoiceStatusId == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Open") buttonType = "m-badge--info";
+        else if (data.InvoiceStatusId == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAP") buttonType = " m-badge--warning";
+        else if (data.InvoiceStatusId == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAXTAP") buttonType = " m-badge--danger";
+        else if (data.InvoiceStatusId == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.OpenAP") buttonType = " m-badge--dark";
+        else if (data.InvoiceStatusId == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Posted") buttonType = " m-badge--success";
+        else if (data.InvoiceStatusId == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Cancelled") buttonType = " m-badge--success";
+        else if (data.InvoiceStatusId == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Revised") buttonType = " m-badge--warning";
+        else if (data.StatInvoiceStatusIdus == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Rejected") buttonType = " m-badge--danger";
+        return "<center><a href='javascript: void(0);' onclick='View(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+    
+    $('#btnSearch').click(function () {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        $('#grid').data('kendoGrid').dataSource.read();
+        $('#grid').data('kendoGrid').refresh();
+
+        mApp.unblock("#m_blockui_list");
+    });
+</script>

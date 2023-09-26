@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">User Management</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("/Um/ManageUser/Profile")" class="m-nav__link">
+                        <span class="m-nav__link-text">Profile</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Update Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <a href="@Url.Content("/Um/ManageUser/Profile")" class="btn btn-sm btn-warning"><i class="fa fa-undo"></i></a>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="form-group">
+                                <label>Choose Image For Icon Profile</label>
+                                <br />
+                                <input type="file" id="fu" class="form-control" />
+                                <br />
+                                <button type="button" class="btn btn-sm btn-primary float-right btn-saveImage">Upload Photo</button>
+                                <br />
+                                <b>NOTE :</b>
+                                <br />
+                                <i>Generally, one drive requires more than 1 minute sync time to display changes to your uploaded files, just wait or refresh page after upload photo</i>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Areas/Um/Scripts/manage-profile.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            $('.btn-saveImage').on('click', function () {
+                saveImageProfile();
+            });
+        });
+    </script>
+}
+
+

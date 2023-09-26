@@ -1,0 +1,93 @@
+@model PhoenixERPWebApp.Models.EmployeeExperience
+<!-- BEGIN: Subheader -->
+<!-- MODAL REMOTE -->
+<style>
+	.k-animation-container, .k-widget, .k-widget *, .k-animation-container *, .k-widget *:before, .k-animation-container *:after {
+		box-sizing: border-box !important;
+	}
+
+	/*k-popup-edit-form k-window-content k-content*/
+	.k-window-titlebar k-header, div.k-edit-form-container{
+		width: 820px;
+		/*padding:0px !important;*/
+	}
+
+	table {
+		border: none;
+		padding: 5px 20px;
+		width: 100%;
+		position:center;
+	}
+
+		table tr > td {
+			width: 50%;
+			padding: 0px 20px;
+		}
+</style>
+<div class="k-content">	
+	<div class="row">
+		<div class="col-sm-12">
+			<table>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="CompanyName"></label> <span class="req">*</span> :
+							@(Html.Kendo().TextBoxFor(x => x.CompanyName).HtmlAttributes(new { style = "width:100%", required = "required", @maxlength = 100 }))
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="EmplyeeExperiencePhone"></label> :
+							@(Html.Kendo().TextBoxFor(x => x.EmplyeeExperiencePhone).HtmlAttributes(new { style = "width:100%", @maxlength = 100 }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>Year</label><span class="req">*</span> :<br />
+						<div style="display:inline-block">
+						@(Html.Kendo().DatePickerFor(m => m.EmplyeeExperienceStartDate).Start(CalendarView.Decade).Depth(CalendarView.Decade).Format("yyyy")
+							.HtmlAttributes(new
+							{
+								style = "width:100%;margin-right:10px",
+								required = "required",
+								@class = "form-control form-control-sm m-input"
+							}))
+						</div>
+						<div style="display:inline-block">
+						@(Html.Kendo().DatePickerFor(m => m.EmplyeeExperienceEndDate).Start(CalendarView.Decade).Depth(CalendarView.Decade).Format("yyyy")
+							.HtmlAttributes(new
+							{
+								style = "width:100%",
+								required = "required",
+								@class = "form-control form-control-sm m-input",
+							}))
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="Position"></label> <span class="req">*</span> :
+							@(Html.Kendo().TextBoxFor(x => x.Position).HtmlAttributes(new { style = "width:100%", required = "required", @maxlength = 100 }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="Remark"></label> :
+							@Html.TextAreaFor(x => x.Remark, new { @class = "k-textbox", @maxlength = 100, style = "width: 100%;padding:0.5em" })
+						</div>					
+					</td>
+					<td rowspan="2">
+						<div class="form-group">
+							<div class="form-group">
+								<label asp-for="EmplyeeExperienceAddress"></label> :
+								@Html.TextAreaFor(x => x.EmplyeeExperienceAddress, new { @class = "k-textbox", @maxlength = 100, style = "width: 100%;padding:0.5em" })
+							</div>
+						</div>
+					</td>
+				</tr>		
+			</table>
+		</div>
+	</div>
+</div>

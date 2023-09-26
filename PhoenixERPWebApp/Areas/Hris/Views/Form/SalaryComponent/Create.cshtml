@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "SalaryComponent";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="SalaryComponentFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="code">code</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="code" id="code" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="salary_component">Salary Component</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="salary_component" id="salary_component" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="description">Description</span></label> 
+                <input class="form-control form-control-sm m-input m-input--square" name="description" id="description" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/SalaryComponent" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/SalaryComponent.create.js"></script>
+}

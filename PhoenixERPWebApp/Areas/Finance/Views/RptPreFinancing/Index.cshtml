@@ -1,0 +1,412 @@
+﻿@model PhoenixERPWebApp.Models.RptPreFinancingFilter
+@{ 
+    ViewData["Title"] = "Pre-Financing";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Pre-Financing</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Report</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="RptPreFinancing" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Pre-Financing</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">
+                                Pre-Financing
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">      
+                    <form id="formSearch" >
+                        <div class="row"> 
+                            <div class="col-lg-6">                                 
+                                <div class="form-group">
+                                    <label asp-for="LegalEntityId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.LegalEntityId)} is required"
+                                        })
+                                    )
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="BusinessUnitId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;"
+                                        })
+                                    )
+                                </div> 
+                                 <div class="form-group"> 
+                                    <label asp-for="CompanyId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CompanyId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLClient", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.CompanyId)} is required"
+                                        })
+                                    )
+                                </div> 
+                            </div> 
+                            <div class="col-lg-6"> 
+                                <div class="form-group"> 
+                                    <label asp-for="CurrencyId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CurrencyId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            @readonly = "readonly",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.CurrencyId)} is required"
+                                        })
+                                    )
+                                </div> 
+                                <div class="form-group">
+                                    <label asp-for="EndingDate"></label> : 
+                                    @(Html.Kendo().DatePickerFor(m => m.EndingDate)
+                                        .Format("yyyy")
+                                        .Start(CalendarView.Decade)
+                                        .Depth(CalendarView.Decade)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @placeholder = $" ",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.EndingDate)} is required"
+                                        })
+                                    )                                 
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.RptPreFinancing>()
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.job_name).Width(200).ClientFooterTemplate("TOTAL");//.Locked(true);
+                                    columns.Group(g => g.Title("PCE")
+                                        .Columns(location =>
+                                        {
+                                            location.Bound(p => p.pce_sub_total).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.pce_asf).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.pce_vat).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.pce_grand_total).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                        })
+                                    );
+                                    columns.Group(g => g.Title("Purcase Order")
+                                       .Columns(location =>
+                                       {
+                                           location.Bound(p => p.po_no).Width(130);
+                                           location.Bound(p => p.po_date).Width(150);
+                                           location.Bound(p => p.po_amount).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                       })
+                                    );
+                                    columns.Group(g => g.Title("Vendor Invoice")
+                                       .Columns(location =>
+                                       {
+                                           location.Bound(p => p.ap_no).Width(130);
+                                           location.Bound(p => p.ap_date).Width(150);
+                                           location.Bound(p => p.ap_amount).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                       })
+                                    );
+                                    columns.Group(g => g.Title("Vendor Payment")
+                                       .Columns(location =>
+                                       {
+                                           location.Bound(p => p.bp_no).Width(150);
+                                           location.Bound(p => p.bp_date).Width(150);
+                                           location.Bound(p => p.bp_amount).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                       })
+                                    );
+                                    columns.Bound(p => p.pce_minus_po).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                    columns.Group(g => g.Title("Invoice to Client")
+                                       .Columns(location =>
+                                       {
+                                           location.Bound(p => p.ar_no).Width(130);
+                                           location.Bound(p => p.ar_date).Width(150);
+                                           location.Bound(p => p.ar_amount).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                       })
+                                    );
+                                    columns.Group(g => g.Title("Received Payment")
+                                      .Columns(location =>
+                                      {
+                                          location.Bound(p => p.br_no).Width(150);
+                                          location.Bound(p => p.br_date).Width(150);
+                                          location.Bound(p => p.br_amount).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                      })
+                                   );
+                                    columns.Bound(p => p.pre_finance).Width(150);
+                                })
+                                .ToolBar(toolBar =>
+                                {
+                                    toolBar.Excel();
+                                    toolBar.Pdf();
+                                })
+                                .Excel(excel => excel.AllPages(true)
+                                    .FileName("Pre-Financing.xlsx")
+                                    .Filterable(true)
+                                ) 
+                                .Pdf(pdf => pdf
+                                    .AllPages()
+                                    .AvoidLinks()
+                                    .PaperSize("A0")
+                                    .Margin("4.5cm", "1cm", "1cm", "1cm")
+                                    .Landscape()
+                                    .RepeatHeaders()
+                                    .TemplateId("page-template")
+                                    .FileName("Pre-Financing.pdf")
+                                )
+                                //.Pageable(pageable => pageable
+                                //    .Refresh(true)
+                                //    .PageSizes(true)
+                                //    .ButtonCount(5))
+                                //.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                //.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                //    .Extra(false)
+                                //    .Operators(operators => operators
+                                //    .ForString(str => str.Clear()
+                                //        .Contains("Contains")
+                                //        .StartsWith("Start sWith")
+                                //        .EndsWith("End sWith")
+                                //    )))
+                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                .Resizable(rsz => rsz.Columns(true))
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    //.PageSize(20)
+                                    .Events(events => events.Error("errorHandler"))
+                                    .Model(model => { model.Id(p => p.job_id); })
+                                    .Sort(sort => sort.Add(p => p.job_id).Ascending())
+                                    .Aggregates(aggregates =>
+                                    {
+                                        aggregates.Add(p => p.pce_sub_total).Sum();
+                                        aggregates.Add(p => p.pce_asf).Sum();
+                                        aggregates.Add(p => p.pce_vat).Sum();
+                                        aggregates.Add(p => p.pce_grand_total).Sum();
+                                        aggregates.Add(p => p.po_amount).Sum();
+                                        aggregates.Add(p => p.ap_amount).Sum();
+                                        aggregates.Add(p => p.bp_amount).Sum();
+                                        aggregates.Add(p => p.pce_minus_po).Sum();
+                                        aggregates.Add(p => p.ar_amount).Sum();
+                                        aggregates.Add(p => p.br_amount).Sum();
+                                    })
+                                    .Read(read => read.Action("Read", "RptPreFinancing").Data("gridParams"))
+                                )
+                            //.AutoBind(false)
+                            .Events(e => e.ExcelExport("customeExcelExportEvent"))
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<script type="x/kendo-template" id="page-template">
+    <div class="page-template">
+        <div class="header">
+            <div class="page">Page #: pageNum # of #: totalPages #</div> 
+            @*#if(pageNum==1){#*@
+                #=LoadPDF()#            
+            @*#}#*@
+        </div>
+        @*<div class="watermark">KENDO UI</div>
+        <div class="footer">
+            Page #: pageNum # of #: totalPages #
+        </div>*@
+    </div>
+</script>
+
+<script>   
+    function gridParams() { 
+        return {
+            Filter: {
+                LegalEntityId: $("#LegalEntityId").data("kendoDropDownList").value(),
+                BusinessUnitId: $("#BusinessUnitId").data("kendoDropDownList").value(),
+                CompanyId: $("#CompanyId").data("kendoDropDownList").value(), 
+                EndingDate: $("#EndingDate").data("kendoDatePicker").value(),
+                CurrencyId: $("#CurrencyId").data("kendoDropDownList").value(),
+            }
+        }
+    }
+
+    $('#btnSearch').click(function () {
+        var valid = $("#formSearch").validate().form();
+        if (valid) {
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $('#grid').data('kendoGrid').dataSource.read();
+            $('#grid').data('kendoGrid').refresh();
+
+            mApp.unblock("#m_blockui_list");
+        }
+    });
+
+    function customeExcelExportEvent(e) {
+        var sheet = GetBodyExportExcel(e)
+        sheet.frozenRows = 7;
+        //sheet.mergedCells = ["A1:B1", "A2:B2", "A3:B3", "A4:B4", "A5:B5"];
+        //sheet.name = "Header"; 
+
+        var date = $("#EndingDate").val();
+        var currency = $("#CurrencyId").data("kendoDropDownList").text();
+        var company = $("#CompanyId").data("kendoDropDownList").text();
+        var bu = $("#BusinessUnitId").data("kendoDropDownList").text();
+        var legal = $("#LegalEntityId").data("kendoDropDownList").text();
+
+        sheet.rows.splice(0, 0, { cells: [{ value: "Year", bold: true }, { value: date, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Currency", bold: true }, { value: currency, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Client", bold: true }, { value: company, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Business Unit", bold: true }, { value: bu, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Legal Entity", bold: true }, { value: legal, bold: true }], type: "header", height: 20 });
+    }
+    
+    function LoadPDF() {
+        var date = $("#EndingDate").val();
+        var currency = $("#CurrencyId").data("kendoDropDownList").text();
+        var company = $("#CompanyId").data("kendoDropDownList").text();
+        var bu = $("#BusinessUnitId").data("kendoDropDownList").text();
+        var legal = $("#LegalEntityId").data("kendoDropDownList").text();
+
+        return "<table style='width:100%;'>" +
+                "<tr>" +
+                    "<td style='width:50%; vertical-align:top;'>"+
+                        "<table>"+
+                            "<tr>"+
+                                "<td style='width:200px;'>Legal Entity</td>"+
+                                "<td>:</td>"+
+                                "<td>"+legal+"</td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<td>Business Unit</td>"+
+                                "<td>:</td>"+
+                                "<td>"+bu+"</td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<td>Client</td>"+
+                                "<td>:</td>"+
+                                "<td>"+company+"</td>"+
+                            "</tr>"+ 
+                        "</table>"+
+                    "</td>"+
+                    "<td style='width:50%; vertical-align:top;'>"+
+                        "<table>" +                            
+                            "<tr>"+
+                                "<td style='width:200px;'>Currency</td>"+
+                                "<td>:</td>"+
+                                "<td>"+currency+"</td>"+
+                            "</tr>"+ 
+                            "<tr>"+
+                                "<td>Year</td>"+
+                                "<td>:</td>"+
+                                "<td>"+date+"</td>"+
+                            "</tr>"+ 
+                        "</table>"+
+                    "</td>"+
+                "</tr>" +                
+            "</table>";
+    }
+</script>

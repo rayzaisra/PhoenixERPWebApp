@@ -1,0 +1,68 @@
+@{
+    ViewBag.ModalTitle = "QuotationVendor";
+    ViewBag.ModalId = "QuotationVendorModalCreate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="QuotationVendorFormCreate" method="post">
+    
+
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="delivery_place">Delivery Place</span> </label>
+                <input class="md-input" name="delivery_place" id="delivery_place"  maxlength="50" type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="delivery_time"><span class="translate"  data-args="delivery_time">Delivery Time</span></label>
+                                        <input class="md-input" type="text" name="delivery_time" id="delivery_time" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="downpayment">Downpayment</span> </label>
+                <input class="md-input" name="downpayment" id="downpayment"   type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="expiry_date"><span class="translate"  data-args="expiry_date">Expiry Date</span></label>
+                                        <input class="md-input" type="text" name="expiry_date" id="expiry_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="external_id">External Id</span> </label>
+                <input class="md-input" name="external_id" id="external_id"  maxlength="50" type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="lead_time"><span class="translate"  data-args="lead_time">Lead Time</span></label>
+                                        <input class="md-input" type="text" name="lead_time" id="lead_time" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="noted">Noted</span> </label>
+                <input class="md-input" name="noted" id="noted"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="payment_id">Payment Id</span> </label>
+                <input class="md-input" name="payment_id" id="payment_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="pe_bidding_id">Pe Bidding Id</span> </label>
+                <input class="md-input" name="pe_bidding_id" id="pe_bidding_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="price">Price</span> </label>
+                <input class="md-input" name="price" id="price"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="qty">Qty</span> </label>
+                <input class="md-input" name="qty" id="qty"   type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="quotation_date"><span class="translate"  data-args="quotation_date">Quotation Date</span></label>
+                                        <input class="md-input" type="text" name="quotation_date" id="quotation_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="rfq_number">Rfq Number</span> </label>
+                <input class="md-input" name="rfq_number" id="rfq_number"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_id">Task Id</span> </label>
+                <input class="md-input" name="task_id" id="task_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="transaction_type_id">Transaction Type Id</span> </label>
+                <input class="md-input" name="transaction_type_id" id="transaction_type_id"  maxlength="50" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

@@ -1,0 +1,32 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+}
+
+<!-- begin:: Page -->
+<div class="m-grid m-grid--hor m-grid--root m-page">
+    <div class="m-grid__item m-grid__item--fluid m-grid  m-error-5" style="background-image: @Url.Content("~/app/media/img/error/bg5.jpg");">
+        <div class="m-error_container">
+            <span class="m-error_title">
+                <h1>500</h1>
+            </span>
+            <p class="m-error_subtitle">
+                Ooops Something went wrong here.
+            </p>
+            <p class="m-error_description">
+                @Model.Exception.Message
+                @Model.Exception.StackTrace
+                <a href="@Url.Content("/")" id="m_login_signup" class="btn btn-outline-focus m-btn--pill">Return Home</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- end:: Page -->
+
+@section scripts{
+
+}
+
+
+

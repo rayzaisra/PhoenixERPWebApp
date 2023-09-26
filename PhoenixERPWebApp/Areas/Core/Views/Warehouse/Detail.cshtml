@@ -1,0 +1,113 @@
+﻿<input hidden id="detail-id" value="@ViewBag.RecordID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Warehouse Detail</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Core/Warehouse")" class="m-nav__link">
+                        <span class="m-nav__link-text">Warehouse</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <form id="form-Warehouse" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                    <input hidden name="id" value="@ViewBag.RecordID" />
+                    <div class="m-portlet__body">
+                        <div class="m-form__group">
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Warehouse Name :</label>
+                                        <input id="warehouse-name"name="warehouse_name" type="text" class="form-control form-control-sm m-input" placeholder="Enter warehouse name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Address :</label>
+                                        <input id="warehouse-address" name="address" type="text" class="form-control form-control-sm m-input" placeholder="Enter address">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Country :</label>
+                                        <select id="warehouse-country_id" name="country_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>City :</label>
+                                        <select id="warehouse-city_id" name="city_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Zip Code :</label>
+                                        <input id="warehouse-zip_code" name="zip_code" type="text" class="form-control form-control-sm m-input m--margin-bottom-30" placeholder="Enter zip code">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Phone :</label>
+                                        <input id="warehouse-phone" name="phone" type="text" class="form-control form-control-sm m-input m--margin-bottom-30" placeholder="Enter phone number">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Fax :</label>
+                                        <input id="warehouse-fax" name="fax" type="text" class="form-control form-control-sm m-input m--margin-bottom-30" placeholder="Enter fax number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                        <div class="m-form__actions m-form__actions--solid">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button type="button" id="btn-save" class="btn btn-sm btn-primary">Save</button>
+                                    <a href="@Url.Content("~/Core/Warehouse")" class="btn btn-sm btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Areas/Core/Scripts/Warehouse.Detail.js"></script>
+}

@@ -1,0 +1,223 @@
+@model PhoenixERPWebApp.Models.ChartofAccount
+@{
+    ViewData["Title"] = "Master Chart Of Account Level 1 (Group)";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Master Chart Of Account Level 1 (Group)</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                       <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="chartofaccount" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Master Chart Of Account Level 1 (Group)</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="chartofaccount" asp-area="finance"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="chartofaccount" asp-area="finance"  asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">@ViewBag.Header Master Chart Of Account Level 1 (Group)</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formchartofaccount" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="chartofaccount" asp-area="Finance">
+                         <div class="row ">
+                             <div class="col-lg-12">
+                                 <input type="hidden" asp-for="Id" />
+                                 <input type="hidden" asp-for="CreatedBy" />
+                                 <input type="hidden" asp-for="CreatedOn" />
+                                 <input type="hidden" asp-for="ModifiedBy" />
+                                 <input type="hidden" asp-for="ModifiedOn" />
+                                 <input type="hidden" asp-for="ApprovedBy" />
+                                 <input type="hidden" asp-for="ApprovedOn" />
+                                 <input type="hidden" asp-for="DeletedBy" />
+                                 <input type="hidden" asp-for="DeletedOn" />
+                                 <input type="hidden" asp-for="IsActive" />
+                                 <input type="hidden" asp-for="IsLocked" />
+                                 <input type="hidden" asp-for="IsDefault" />
+                                 <input type="hidden" asp-for="IsDeleted" />
+                                 <input type="hidden" asp-for="OwnerId" />
+                                 <div class="row ">
+                                     <div class="col-lg-6">
+                                         <div class="form-group">
+                                             <div class="col-lg-12" style="padding:0px">
+                                                 <label>ID COA Level 1</label>  :
+                                             </div>
+                                             @(Html.Kendo().MaskedTextBoxFor(m => m.CodeRec).Mask("0.0.00.00.00")
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:80%",
+                                                    maxlength = 20,
+                                                    placeholder = $"0.0.00.00.00",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.CodeRec)} is required",
+                                                    @readonly="readonly"
+                                                }
+                                             ))
+
+                                             @(Html.Kendo().NumericTextBox().Name("code")
+                                                .Spinners(false)
+                                                .Min(1)
+                                                .Max(9)
+                                                .Format("n0")
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:19%",
+                                                    maxlength = 1,
+                                                    required = "required",
+                                                }
+                                             ))
+                                         </div>
+                                     </div>
+                                     <div class="col-lg-6">
+                                         <div class="form-group">
+                                              <label asp-for="Name1"></label> <span class="req">*</span>  :
+                                             @(Html.Kendo().TextBoxFor(m => m.Name1)
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    maxlength = 20,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.Name1)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.Name1)} is required"
+                                                }
+                                            ))
+                                         </div>
+                                    </div>
+                                 </div> 
+
+                                 <div class="row ">
+                                     <div class="col-lg-6">
+                                         <div class="form-group">
+                                             <label asp-for="ChartofaccountReportId"></label> <span class="req">*</span>  :
+                                             @(Html.Kendo().DropDownListFor(x => x.ChartofaccountReportId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.ChartofaccountReportId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",                                              
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.ChartofaccountReportId)} is required" 
+                                                })
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLChartofaccountReport", "Dropdown",new {area="finance"});
+                                                     }))
+                                                    .ServerFiltering(false)
+                                                )
+                                            )
+                                         </div>
+                                     </div>
+                                     <div class="col-lg-6">
+                                         <div class="form-group">
+                                             <label asp-for="Condition"></label> <span class="req">*</span>  :
+                                             @(Html.Kendo().DropDownListFor(x => x.Condition)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.Condition)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",                                              
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.Condition)} is required" 
+                                                })
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLAccouningCondition", "Dropdown",new {area="finance"});
+                                                     }))
+                                                    .ServerFiltering(false)
+                                                )
+                                            )
+                                         </div>
+                                    </div>
+                                 </div> 
+                             </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a asp-action="index" asp-controller="chartofaccount" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var code = "@Model.CodeRec";
+        if (code != "") {
+            var array = code.split(".");
+            $("#code").data("kendoNumericTextBox").value(array[0]);
+        }
+    });
+    $("#code").keyup(function () {
+        $("#CodeRec").data("kendoMaskedTextBox").value(this.value + ".0.00.00.00");
+    });
+
+    $('#btn-save').click(function () {
+        callAction({ formId:"formchartofaccount", title: "save", type:"POST"});
+    });
+</script>

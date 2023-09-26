@@ -1,0 +1,35 @@
+@{
+    ViewBag.ModalTitle = "TaskComment";
+    ViewBag.ModalId = "TaskCommentModalCreate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="TaskCommentFormCreate" method="post">
+    
+
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="comment">Comment</span> </label>
+                <input class="md-input" name="comment" id="comment"  maxlength="250" type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="comment_date"><span class="translate"  data-args="comment_date">Comment Date</span></label>
+                                        <input class="md-input" type="text" name="comment_date" id="comment_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_id">File Id</span> </label>
+                <input class="md-input" name="file_id" id="file_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_id">Task Id</span> </label>
+                <input class="md-input" name="task_id" id="task_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="user_id">User Id</span> </label>
+                <input class="md-input" name="user_id" id="user_id"  maxlength="1" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

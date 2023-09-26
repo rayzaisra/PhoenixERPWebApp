@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "ApprovalDetail";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="ApprovalDetailFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="approval_id">approval_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval_id" id="approval_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approval_level">approval_level</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval_level" id="approval_level"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approval_status_id">approval_status_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval_status_id" id="approval_status_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approver_id">approver_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approver_id" id="approver_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="expiry_datetime">expiry_datetime</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="expiry_datetime" id="expiry_datetime"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="is_auto_approved">is_auto_approved</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="is_auto_approved" id="is_auto_approved"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="previous_approval">previous_approval</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="previous_approval" id="previous_approval"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/ApprovalDetail" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/ApprovalDetail.create.js"></script>
+}

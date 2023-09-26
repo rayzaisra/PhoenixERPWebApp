@@ -1,0 +1,249 @@
+@model PhoenixERPWebApp.Models.EmployeeServiceRequest
+@{
+    ViewData["Title"] = "Employee Termination";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    var listStatus = new List<SelectListItem>();
+    if (Model.Status == PhoenixERPWebApp.Models.EmployeeServiceRequestStatus.Fullfillment)
+    {
+        listStatus.Add(new SelectListItem() { Text = "Fullfillment", Value = "4" });
+    }
+    else if (Model.Status == PhoenixERPWebApp.Models.EmployeeServiceRequestStatus.Closed)
+    {
+        listStatus.Add(new SelectListItem() { Text = "Closed", Value = "5" });
+    }
+    else
+    {
+        listStatus.AddRange(new List<SelectListItem>(){
+                                new SelectListItem() { Text = "On Progress", Value = "1" },
+                                new SelectListItem() { Text = "On Procurement", Value = "2" },
+                                new SelectListItem() { Text = "Fullfillment",  Value = "3" }
+                            });
+    }
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="fullfillment" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Fullfillment</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="fullfillment" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="fullfillment" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Service Fullfillment</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formFullfillment" class="form-horizontal form-bordered" role="form">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                        <input type="hidden" asp-for="MasterMappingRequestId" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="RequestBy" />
+
+                        <partial name="_RequestEmploye" />
+                        <br/>
+
+                        
+                        <div class="row" id="data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Request Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                            <div class="m-accordion__item-content">                            
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="DueDate"></label> <span class="req"></span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.DueDate)
+                                                            .Format("dd MMM yyyy")
+                                                            .HtmlAttributes(new
+                                                            {
+                                                            style = "width:100%",
+                                                            @readonly = "readonly",
+                                                            @class = "form-control form-control-sm m-input",
+                                                            required = "required",
+                                                            placeholder = $"Choose or type an {Html.DisplayNameFor(m => m.DueDate)}"
+                                                            })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Remarks"></label> <span class="req"></span> :
+                                                            @(Html.Kendo().EditorFor(x => x.Remarks)
+                                                            .HtmlAttributes(new { style = "width:100%", aria_label = "editor"})
+                                                            .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                            .Placeholder($"Type your {Html.DisplayNameFor(m => m.Remarks)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Fullfilment"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().EditorFor(x => x.Fullfilment)
+                                                            .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                            .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                            .Placeholder($"Type your {Html.DisplayNameFor(m => m.Fullfilment)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        
+                        <div class="row" id="followUp_data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="followUp_Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="followUp_Detail_head" data-toggle="collapse" href="#followUp_Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Follow Up</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="followUp_Detail_body" role="tabpanel" aria-labelledby="followUp_Detail_head" data-parent="#followUp_Detail">
+                                            <div class="m-accordion__item-content">                            
+                                                <div class="row">
+                                                    <div class="col-lg-12 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="FollowUpRemarks"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().EditorFor(x => x.FollowUpRemarks)
+                                                            .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                            .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                            .Placeholder($"Type your {Html.DisplayNameFor(m => m.FollowUpRemarks)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Status"></label> <span class="req">*</span> :     
+                                                            @(Html.Kendo().DropDownListFor(x => x.Status)
+                                                            .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required", placeholder = "Select Status" })
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .BindTo(listStatus))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+
+                                    @if (Model.Status == @PhoenixERPWebApp.Models.EmployeeServiceRequestStatus.Requested || Model.Status == @PhoenixERPWebApp.Models.EmployeeServiceRequestStatus.Prosess ||
+                                         Model.Status == @PhoenixERPWebApp.Models.EmployeeServiceRequestStatus.Procurement ) {
+                                        <button type="button" id="btnSubmit" class="btn btn-primary"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+                                    <a asp-action="index" asp-controller="fullfillment" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        //$('.k-editor-toolbar').hide();
+        $($('#Remarks').data().kendoEditor.body).attr('contenteditable', false);
+        $($("#Remarks").data().kendoEditor.body).css("background-color", "#F8F9FA");
+    })
+    $('#btnSubmit').click(function () {
+        callAction({ formId:"formFullfillment", title: "submit", type:"POST", url: '@Url.Action("submit", "fullfillment")'});
+    });
+
+    @*$('#btnSave').click(function () {
+        callActionFile({ formId:"formServiceRequest", title: "save", type:"POST", url: '@Url.Action("save", "servicerequest")'});
+    });*@
+</script>

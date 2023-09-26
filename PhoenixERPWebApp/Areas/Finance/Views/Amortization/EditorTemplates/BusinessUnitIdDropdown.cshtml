@@ -1,0 +1,17 @@
+﻿@model object
+@(Html.Kendo().DropDownListFor(m => m)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .OptionLabel("Select..")
+    .HtmlAttributes(new { style = "width:100%;", @required = "required"})
+    .Height(250)
+    .Filter(FilterType.Contains)
+    .DataSource(source => source
+        .Custom()
+        .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+        }))
+        .ServerFiltering(false))
+)

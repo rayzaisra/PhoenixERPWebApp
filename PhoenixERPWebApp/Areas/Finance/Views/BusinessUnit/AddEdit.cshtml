@@ -1,0 +1,293 @@
+@model PhoenixERPWebApp.Models.BusinessUnit
+@{
+    ViewData["Title"] = "Master Business Unit";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Master Business Unit</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                       <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="businessunit" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Master Business Unit</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="businessunit" asp-area="finance"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="businessunit" asp-area="finance"  asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">@ViewBag.Header Master Business Unit</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formBusinessUnit" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="businessunit" asp-area="Finance">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" /> 
+                                <input type="hidden" asp-for="OrganizationId" />
+                                <input type="hidden" asp-for="UnitAddress" />
+                                <input type="hidden" asp-for="UnitPhone" />
+                                <input type="hidden" asp-for="UnitFax" />
+                                <input type="hidden" asp-for="UnitEmail" />
+                                <input type="hidden" asp-for="DefaultTeam" />
+                                <input type="hidden" asp-for="Latitude" />
+                                <input type="hidden" asp-for="Longitude" />
+                                <input type="hidden" asp-for="ParentUnit" />                                
+                                <input type="hidden" asp-for="UnitCode" />
+                                <input type="hidden" asp-for="UnitDescription" />
+                                <input type="hidden" asp-for="BusinessUnitTypeId" />
+                                <input type="hidden" asp-for="Isfinance" />
+                                <input type="hidden" asp-for="Ishris" />
+                                <input type="hidden" asp-for="AffiliationName" />
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="AffiliationId"></label> <span class="req">*</span>  :
+                                     @(Html.Kendo().DropDownListFor(x => x.AffiliationId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.AffiliationId)}")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",                                              
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.AffiliationId)} is required" 
+                                        })
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetAffiliation", "Dropdown",new {area="finance"});
+                                             }))
+                                            .ServerFiltering(false)
+                                        )
+                                    )
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="UnitName"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.UnitName)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 350,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.UnitName)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.UnitName)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                @*<div class="form-group m-form__group-sub">
+                                    <label asp-for="UnitAddress"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.UnitAddress)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 150,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.UnitAddress)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.UnitAddress)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="UnitPhone"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.UnitPhone)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.UnitPhone)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.UnitPhone)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="UnitFax"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.UnitFax)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.UnitFax)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.UnitFax)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="UnitEmail"></label> <span class="req">*</span>  :
+                                    <input type="email" asp-for="UnitEmail" class="k-textbox" placeholder="Input type a @Html.DisplayNameFor(m => m.UnitEmail)" required validationmessage="@Html.DisplayNameFor(m => m.UnitEmail)" data-email-msg="Email format is not valid" style="width: 100%" />
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="DefaultTeam"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.DefaultTeam)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.DefaultTeam)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.DefaultTeam)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="Latitude"></label> <span class="req">*</span>  :
+  
+                                     @(Html.Kendo().NumericTextBoxFor(m => m.Latitude)
+                                        .Spinners(false)
+                                        .Format("n")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 15,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Latitude)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Latitude)} is required"
+                
+                                        }))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="Longitude"></label> <span class="req">*</span>  :
+  
+                                     @(Html.Kendo().NumericTextBoxFor(m => m.Longitude)
+                                        .Spinners(false)
+                                        .Format("n")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 15,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Longitude)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Longitude)} is required"
+                
+                                        }))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="ParentUnit"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.ParentUnit)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.ParentUnit)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.ParentUnit)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="UnitCode"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.UnitCode)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.UnitCode)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.UnitCode)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="UnitDescription"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.UnitDescription)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 255,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.UnitDescription)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.UnitDescription)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="BusinessUnitTypeId"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.BusinessUnitTypeId)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.BusinessUnitTypeId)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.BusinessUnitTypeId)} is required" 
+                                        }
+                                     ))
+                                </div>   *@
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">                                
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a asp-action="index" asp-controller="businessunit" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-save').click(function () {
+        var AffiliationName = $('#AffiliationId').data("kendoDropDownList").text();
+        $('#AffiliationName').val(AffiliationName);
+        callAction({ formId:"formBusinessUnit", title: "save", type:"POST"});
+    });
+</script>

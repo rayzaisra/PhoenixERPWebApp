@@ -1,0 +1,162 @@
+<style>
+    .subtaskclass .m-portlet__head .m-portlet__head-caption {
+        max-height: 20px !important;
+    }
+
+    .m-portlet__head-label--accent {
+        cursor: pointer;
+    }
+
+    .commenttext {
+        padding-right: 0px;
+    }
+
+    .commentbutton {
+        padding-left: 0px;
+    }
+
+        .commentbutton btn {
+            height: 80px;
+        }
+
+    .textbreak {
+        word-wrap: break-word;
+        text-align: justify;
+    }
+
+    input[type=checkbox][disabled] {
+        outline: 1px solid red;
+    }
+</style>
+<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon m--hide">
+                    <i class="flaticon-statistics"></i>
+                </span>
+
+                <h2 class="m-portlet__head-label m-portlet__head-label--info" id="priorityTask" style="padding: 1rem 2rem;
+        height: 3.5rem;
+        width: 14rem;">
+
+                </h2>
+            </div>
+        </div>
+
+    </div>
+    <div class="m-portlet__body">
+
+        <div id="taskdesc"></div>
+        <div id="taskmember">
+            <div class="row">
+                <div class="col-md-12">
+                    <span>List User Task :</span>
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col-md-12" id="table-listtaskmember">
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="progress progress-striped active">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            </div>
+        </div>
+        <div id="tasklist"></div>
+        <div id="buttonarea"></div>
+    </div>
+</div>
+
+
+<ul id="damtabs" class="nav nav-tabs nav-fill" data-tabs="tabs">
+    <li class="nav-item "><a class="nav-link " href="#dam" data-toggle="tab">Files</a></li>
+    <li class="nav-item"><a class="nav-link active" href="#comment" data-toggle="tab">Comment</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane" id="dam">
+
+        <div class="row">
+            <div class="col-md-3" style="text-align:center ;">
+                <a href="#" style="text-decoration : none"
+                   data-toggle="modal"
+                   data-target="#m_modal_1">
+                    <i class="fa fa-folder" style="font-size: 50px;"></i>
+                    <span>Proposal</span>
+                </a>
+            </div>
+            <div class="col-md-3" style="text-align:center ;">
+                <a href="#" style="text-decoration : none"
+                   data-toggle="modal"
+                   data-target="#m_modal_1">
+                    <i class="fa fa-folder" style="font-size: 50px;"></i>
+                    <span>Brief</span>
+                </a>
+            </div>
+            <div class="col-md-3" style="text-align:center ;">
+                <a href="#" style="text-decoration : none"
+                   data-toggle="modal"
+                   data-target="#m_modal_1">
+                    <i class="fa fa-folder" style="font-size: 50px;"></i>
+                    <span>Working File</span>
+                </a>
+            </div>
+            <div class="col-md-3" style="text-align:center ;">
+                <a href="#" style="text-decoration : none"
+                   data-toggle="modal"
+                   data-target="#m_modal_1">
+                    <i class="fa fa-folder" style="font-size: 50px;"></i>
+                    <span>Revison</span>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-3" style="text-align:center ;">
+                <a href="#" style="text-decoration : none"
+                   data-toggle="modal"
+                   data-target="#m_modal_1">
+                    <i class="fa fa-folder" style="font-size: 50px;"></i>
+                    <span>Deliverables</span>
+                </a>
+            </div>
+            <div class="col-md-3" style="text-align:center ;">
+                <a href="#" style="text-decoration : none"
+                   data-toggle="modal"
+                   data-target="#m_modal_1">
+                    <i class="fa fa-folder" style="font-size: 50px;"></i>
+                    <span>Confidential</span>
+                </a>
+            </div>
+            <div class="col-md-3" style="text-align:center ;">
+                <a href="#" style="text-decoration : none"
+                   data-toggle="modal"
+                   data-target="#m_modal_1">
+                    <i class="fa fa-folder" style="font-size: 50px;"></i>
+                    <span>Others</span>
+                </a>
+            </div>
+            <div class="col-md-3" style="text-align:center ;">
+
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane active" id="comment">
+        <div id="commentarea" style="overflow-y:scroll; overflow-x: hidden; height:200px;"></div>
+        <div class="row">
+            <div class="col-lg-12"><textarea id="commenttext" placeholder="Please type comment here.." style="resize:none;" rows="4" class="form-control"></textarea></div>
+        </div>
+        <div class="row" style="margin:0px; margin-top:10px;">
+            <div class="col-lg-4" style="padding-left:0px !important;"><button onclick="sendcomment()" type="button" class="btn btn-secondary btn-block btn-block"><i class="fa fa-comment" aria-hidden="true"></i>&nbsp;Post comment</button></div>
+            <div class="col-lg-4" style="padding-left:0px !important;">
+                <input id="fileInput" type="file" hidden="hidden" class="filestyle" onchange="setFileUpload()" data-buttonText="Select a File">
+                <button type="button" onclick="document.getElementById('fileInput').click();" class="btn btn-secondary btn-block btn-block"><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;Upload Files</button>
+            </div>
+        </div>
+    </div>
+</div>

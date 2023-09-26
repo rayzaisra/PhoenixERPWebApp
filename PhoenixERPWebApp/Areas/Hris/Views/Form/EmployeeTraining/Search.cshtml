@@ -1,0 +1,72 @@
+@{
+    ViewBag.ModalTitle = "EmployeeTraining";
+    ViewBag.ModalId = "EmployeeTrainingModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="EmployeeTrainingFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="address">address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_address" id="search_address"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="description">description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_description" id="search_description"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_training">end_training</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_end_training" id="search_end_training"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="expired_certificate">expired_certificate</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_expired_certificate" id="search_expired_certificate"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="file_upload">file_upload</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_file_upload" id="search_file_upload"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="institusion_id">institusion_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_institusion_id" id="search_institusion_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="name_training">name_training</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_name_training" id="search_name_training"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="no_certification">no_certification</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_no_certification" id="search_no_certification"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_training">start_training</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_start_training" id="search_start_training"  maxlength="100" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnEmployeeTraining.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnEmployeeTraining.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

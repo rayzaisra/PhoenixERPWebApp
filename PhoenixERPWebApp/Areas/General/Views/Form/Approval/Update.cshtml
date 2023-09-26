@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Approval";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="ApprovalFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="application_entity_id">application_entity_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="application_entity_id" id="application_entity_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approval_group_id">approval_group_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval_group_id" id="approval_group_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="record_id">record_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="record_id" id="record_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="status">status</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="status" id="status"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/Approval" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/Approval.update.js"></script>
+}

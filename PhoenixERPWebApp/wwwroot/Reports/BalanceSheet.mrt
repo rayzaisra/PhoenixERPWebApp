@@ -1,0 +1,983 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="1">
+      <MS_x0020_SQL Ref="2" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>MS SQL</Alias>
+        <ConnectionStringEncrypted>9NLR69dU08jpR6HJ5ezhF9E+3YhNSrtJaUslmPkYYXvUEvXLTEzCHWthvYRODW0nxFJpAsZWMd1sTeisYWxlF9FsywnvWQGBaRON7OnsNS/WbvfBVktj8e1E/WxpTOQPxFj1y918ypXvW+UIwwWkZ8Js2QlGBXLN4UzN7OcA4CrIaGVIxkyrzW8TnL3p</ConnectionStringEncrypted>
+        <Name>MS SQL</Name>
+      </MS_x0020_SQL>
+    </Databases>
+    <DataSources isList="true" count="2">
+      <BalanceSheet Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>BalanceSheet</Alias>
+        <Columns isList="true" count="13">
+          <value>lv1_number,System.String</value>
+          <value>lv1_name,System.String</value>
+          <value>lv2_number,System.String</value>
+          <value>lv2_name,System.String</value>
+          <value>lv3_number,System.String</value>
+          <value>lv3_name,System.String</value>
+          <value>lv4_number,System.String</value>
+          <value>lv4_name,System.String</value>
+          <value>account_id,System.String</value>
+          <value>account_number,System.String</value>
+          <value>account_name,System.String</value>
+          <value>debit,System.Decimal</value>
+          <value>credit,System.Decimal</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>BalanceSheet</Name>
+        <NameInSource>MS SQL</NameInSource>
+        <Parameters isList="true" count="1">
+          <value>p_legal_entity_id,legal_entity_id,12,50</value>
+        </Parameters>
+        <SqlCommand>DECLARE 
+@startDate Datetime2(7),
+@endDate Datetime2(7);
+
+SELECT TOP(1) 
+@startDate = r.start_date, 
+@endDate = r.end_date 
+FROM [fn].[financial_year] r WHERE r.legal_entity_id='9b3e97e5-dd0a-4cd6-bbcd-ab9e8c9c8035' 
+AND r.is_active=1 AND COALESCE(r.is_deleted,0)=0;
+
+
+WITH ASSETS AS (
+SELECT 
+	lv1.account_number AS lv1_number,
+	lv1.account_name AS lv1_name,
+	lv2.account_number AS lv2_number,
+	lv2.account_name AS lv2_name,
+	lv3.account_number AS lv3_number,
+	lv3.account_name AS lv3_name,
+	lv4.account_number AS lv4_number,
+	lv4.account_name AS lv4_name,
+	a.id AS account_id,
+	a.account_number,a.account_name,
+
+	SUM(COALESCE(r.debit,0)) AS debit,
+	SUM(COALESCE(r.credit,0)) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+
+LEFT OUTER JOIN fn.account lv1 ON lv1.id=[fn].[get_parent_account](a.id,1)
+LEFT OUTER JOIN fn.account lv2 ON lv2.id=[fn].[get_parent_account](a.id,2)
+LEFT OUTER JOIN fn.account lv3 ON lv3.id=[fn].[get_parent_account](a.id,3)
+LEFT OUTER JOIN fn.account lv4 ON lv4.account_level=4 AND (lv4.id = [fn].[get_parent_account](a.id,4) OR lv4.id = [fn].[get_parent_account](a.id,5))
+
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND a.account_level=5
+AND SUBSTRING(a.account_number,0,2)='1' 
+AND r.legal_entity_id=@p_legal_entity_id
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+GROUP BY 
+lv1.account_number,
+	lv1.account_name,
+	lv2.account_number,
+	lv2.account_name,
+	lv3.account_number,
+	lv3.account_name,
+	lv4.account_number,
+	lv4.account_name,
+	a.id,
+	a.account_number,
+	a.account_name
+),
+LIABILITIES AS (
+SELECT 
+	lv1.account_number AS lv1_number,
+	lv1.account_name AS lv1_name,
+	lv2.account_number AS lv2_number,
+	lv2.account_name AS lv2_name,
+	lv3.account_number AS lv3_number,
+	lv3.account_name AS lv3_name,
+	lv4.account_number AS lv4_number,
+	lv4.account_name AS lv4_name,
+	a.id AS account_id,
+	a.account_number,a.account_name,
+
+	SUM(COALESCE(r.debit,0)) AS debit,
+	SUM(COALESCE(r.credit,0)) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+
+LEFT OUTER JOIN fn.account lv1 ON lv1.id=[fn].[get_parent_account](a.id,1)
+LEFT OUTER JOIN fn.account lv2 ON lv2.id=[fn].[get_parent_account](a.id,2)
+LEFT OUTER JOIN fn.account lv3 ON lv3.id=[fn].[get_parent_account](a.id,3)
+LEFT OUTER JOIN fn.account lv4 ON lv4.account_level=4 AND (lv4.id = [fn].[get_parent_account](a.id,4) OR lv4.id = [fn].[get_parent_account](a.id,5))
+
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND a.account_level=5
+AND SUBSTRING(a.account_number,0,2)='2'
+AND r.legal_entity_id=@p_legal_entity_id
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+GROUP BY 
+lv1.account_number,
+	lv1.account_name,
+	lv2.account_number,
+	lv2.account_name,
+	lv3.account_number,
+	lv3.account_name,
+	lv4.account_number,
+	lv4.account_name,
+	a.id,
+	a.account_number,
+	a.account_name
+),
+CAPITAL AS (
+SELECT 
+	
+	lv1.account_number AS lv1_number,
+	lv1.account_name AS lv1_name,
+	lv2.account_number AS lv2_number,
+	lv2.account_name AS lv2_name,
+	lv3.account_number AS lv3_number,
+	lv3.account_name AS lv3_name,
+	lv4.account_number AS lv4_number,
+	lv4.account_name AS lv4_name,
+	a.id AS account_id,
+	a.account_number,a.account_name,
+
+	SUM(COALESCE(r.debit,0)) AS debit,
+	SUM(COALESCE(r.credit,0)) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+
+LEFT OUTER JOIN fn.account lv1 ON lv1.id=[fn].[get_parent_account](a.id,1)
+LEFT OUTER JOIN fn.account lv2 ON lv2.id=[fn].[get_parent_account](a.id,2)
+LEFT OUTER JOIN fn.account lv3 ON lv3.id=[fn].[get_parent_account](a.id,3)
+LEFT OUTER JOIN fn.account lv4 ON lv4.account_level=4 AND (lv4.id = [fn].[get_parent_account](a.id,4) OR lv4.id = [fn].[get_parent_account](a.id,5))
+
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND a.account_level=5
+AND SUBSTRING(a.account_number,0,2)='3'
+AND r.legal_entity_id=@p_legal_entity_id
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+GROUP BY 
+lv1.account_number,
+	lv1.account_name,
+	lv2.account_number,
+	lv2.account_name,
+	lv3.account_number,
+	lv3.account_name,
+	lv4.account_number,
+	lv4.account_name,
+	a.id,
+	a.account_number,
+	a.account_name
+),
+REVENUE AS (
+SELECT 
+	
+	lv1.account_number AS lv1_number,
+	lv1.account_name AS lv1_name,
+	lv2.account_number AS lv2_number,
+	lv2.account_name AS lv2_name,
+	lv3.account_number AS lv3_number,
+	lv3.account_name AS lv3_name,
+	lv4.account_number AS lv4_number,
+	lv4.account_name AS lv4_name,
+	a.id AS account_id,
+	a.account_number,a.account_name,
+
+	SUM(COALESCE(r.debit,0)) AS debit,
+	SUM(COALESCE(r.credit,0)) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+
+LEFT OUTER JOIN fn.account lv1 ON lv1.id=[fn].[get_parent_account](a.id,1)
+LEFT OUTER JOIN fn.account lv2 ON lv2.id=[fn].[get_parent_account](a.id,2)
+LEFT OUTER JOIN fn.account lv3 ON lv3.id=[fn].[get_parent_account](a.id,3)
+LEFT OUTER JOIN fn.account lv4 ON lv4.account_level=4 AND (lv4.id = [fn].[get_parent_account](a.id,4) OR lv4.id = [fn].[get_parent_account](a.id,5))
+
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND a.account_level=5
+AND SUBSTRING(a.account_number,0,2)='4'
+AND r.legal_entity_id=@p_legal_entity_id
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+GROUP BY 
+lv1.account_number,
+	lv1.account_name,
+	lv2.account_number,
+	lv2.account_name,
+	lv3.account_number,
+	lv3.account_name,
+	lv4.account_number,
+	lv4.account_name,
+	a.id,
+	a.account_number,
+	a.account_name
+),
+COB AS (
+SELECT 
+	
+	lv1.account_number AS lv1_number,
+	lv1.account_name AS lv1_name,
+	lv2.account_number AS lv2_number,
+	lv2.account_name AS lv2_name,
+	lv3.account_number AS lv3_number,
+	lv3.account_name AS lv3_name,
+	lv4.account_number AS lv4_number,
+	lv4.account_name AS lv4_name,
+	a.id AS account_id,
+	a.account_number,a.account_name,
+
+	SUM(COALESCE(r.debit,0)) AS debit,
+	SUM(COALESCE(r.credit,0)) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+
+LEFT OUTER JOIN fn.account lv1 ON lv1.id=[fn].[get_parent_account](a.id,1)
+LEFT OUTER JOIN fn.account lv2 ON lv2.id=[fn].[get_parent_account](a.id,2)
+LEFT OUTER JOIN fn.account lv3 ON lv3.id=[fn].[get_parent_account](a.id,3)
+LEFT OUTER JOIN fn.account lv4 ON lv4.account_level=4 AND (lv4.id = [fn].[get_parent_account](a.id,4) OR lv4.id = [fn].[get_parent_account](a.id,5))
+
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND a.account_level=5
+AND SUBSTRING(a.account_number,0,2)='5'
+AND r.legal_entity_id=@p_legal_entity_id
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+GROUP BY 
+lv1.account_number,
+	lv1.account_name,
+	lv2.account_number,
+	lv2.account_name,
+	lv3.account_number,
+	lv3.account_name,
+	lv4.account_number,
+	lv4.account_name,
+	a.id,
+	a.account_number,
+	a.account_name
+),
+EXPENSES AS (
+SELECT 
+	
+	lv1.account_number AS lv1_number,
+	lv1.account_name AS lv1_name,
+	lv2.account_number AS lv2_number,
+	lv2.account_name AS lv2_name,
+	lv3.account_number AS lv3_number,
+	lv3.account_name AS lv3_name,
+	lv4.account_number AS lv4_number,
+	lv4.account_name AS lv4_name,
+	a.id AS account_id,
+	a.account_number,a.account_name,
+
+	SUM(COALESCE(r.debit,0)) AS debit,
+	SUM(COALESCE(r.credit,0)) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+
+LEFT OUTER JOIN fn.account lv1 ON lv1.id=[fn].[get_parent_account](a.id,1)
+LEFT OUTER JOIN fn.account lv2 ON lv2.id=[fn].[get_parent_account](a.id,2)
+LEFT OUTER JOIN fn.account lv3 ON lv3.id=[fn].[get_parent_account](a.id,3)
+LEFT OUTER JOIN fn.account lv4 ON lv4.account_level=4 AND (lv4.id = [fn].[get_parent_account](a.id,4) OR lv4.id = [fn].[get_parent_account](a.id,5))
+
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND a.account_level=5
+AND SUBSTRING(a.account_number,0,2)='6'
+AND r.legal_entity_id=@p_legal_entity_id
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+GROUP BY 
+lv1.account_number,
+	lv1.account_name,
+	lv2.account_number,
+	lv2.account_name,
+	lv3.account_number,
+	lv3.account_name,
+	lv4.account_number,
+	lv4.account_name,
+	a.id,
+	a.account_number,
+	a.account_name
+)
+
+SELECT * FROM ASSETS r
+UNION ALL 
+SELECT * FROM LIABILITIES r
+UNION ALL 
+SELECT * FROM CAPITAL r
+UNION ALL 
+SELECT * FROM REVENUE r
+UNION ALL 
+SELECT * FROM COB r
+UNION ALL 
+SELECT * FROM EXPENSES r
+ORDER BY 
+	r.lv1_number,
+	r.lv2_number,
+	r.lv3_number,
+	r.lv4_number,
+	r.account_number
+
+	ASC
+</SqlCommand>
+      </BalanceSheet>
+      <Account Ref="4" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Account</Alias>
+        <Columns isList="true" count="23">
+          <value>id,System.String</value>
+          <value>created_by,System.String</value>
+          <value>created_on,System.DateTime</value>
+          <value>modified_by,System.String</value>
+          <value>modified_on,System.DateTime</value>
+          <value>approved_by,System.String</value>
+          <value>approved_on,System.DateTime</value>
+          <value>deleted_by,System.String</value>
+          <value>deleted_on,System.DateTime</value>
+          <value>is_active,System.Boolean</value>
+          <value>is_locked,System.Boolean</value>
+          <value>is_default,System.Boolean</value>
+          <value>is_deleted,System.Boolean</value>
+          <value>owner_id,System.String</value>
+          <value>organization_id,System.String</value>
+          <value>account_group_id,System.String</value>
+          <value>account_parent_id,System.String</value>
+          <value>account_number,System.String</value>
+          <value>cost_sharing_allocation_id,System.String</value>
+          <value>account_name,System.String</value>
+          <value>account_level,System.Int32</value>
+          <value>currency_id,System.String</value>
+          <value>legal_entity_id,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Account</Name>
+        <NameInSource>MS SQL</NameInSource>
+        <Parameters isList="true" count="1">
+          <value>legal_entity_id,legal_entity_id,12,50</value>
+        </Parameters>
+        <SqlCommand>SELECT * FROM fn.account 
+WHERE 
+is_active=1 AND COALESCE(is_deleted,0)=0 AND 
+legal_entity_id=@legal_entity_id </SqlCommand>
+      </Account>
+    </DataSources>
+    <Relations isList="true" count="2">
+      <Name Ref="5" type="DataRelation" isKey="true">
+        <Alias>Name</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>account_parent_id</value>
+        </ChildColumns>
+        <ChildSource isRef="4" />
+        <Dictionary isRef="1" />
+        <Name>Name</Name>
+        <NameInSource>Relation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>id</value>
+        </ParentColumns>
+        <ParentSource isRef="4" />
+      </Name>
+      <RBalanceSheet Ref="6" type="DataRelation" isKey="true">
+        <Alias>RBalanceSheet</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>id</value>
+        </ChildColumns>
+        <ChildSource isRef="4" />
+        <Dictionary isRef="1" />
+        <Name>RBalanceSheet</Name>
+        <NameInSource>Relation2</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>account_id</value>
+        </ParentColumns>
+        <ParentSource isRef="3" />
+      </RBalanceSheet>
+    </Relations>
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="3">
+      <value>,ReportGlobalDescription,ReportGlobalDescription,,System.String,PT._x0020_Nava_x0020_Group,True,False,False,False</value>
+      <value>,legal_entity_id,legal_entity_id,,System.String,_x0039_b3e97e5-dd0a-4cd6-bbcd-ab9e8c9c8035,False,False,False,False</value>
+      <value>,account_id,account_id,,System.String,,False,False,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Key>4078e373540743db90f0c8f71e3c61e9</Key>
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="7" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="4">
+        <ReportTitleBand1 Ref="8" type="ReportTitleBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.2,7.72,0.4</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text20 Ref="9" type="Text" isKey="true">
+              <Border>Bottom;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,0,3.8,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,19</Font>
+              <Guid>0db6ba1ea4044082bdd44f94a2ceafb1</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text20</Name>
+              <Page isRef="7" />
+              <Parent isRef="8" />
+              <Text>PT.NAVA</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text20>
+            <Text23 Ref="10" type="Text" isKey="true">
+              <Border>Bottom;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,3.7,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,19</Font>
+              <Guid>0f1df045c3e24c658e7da27b42e08e45</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text23</Name>
+              <Page isRef="7" />
+              <Parent isRef="8" />
+              <Text>Balance Sheet</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text23>
+            <Text18 Ref="11" type="Text" isKey="true">
+              <Border>None;[102:77:38];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>5.8,0.3,1.7,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <Guid>708677132a02452089f938af83554d39</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text18</Name>
+              <Page isRef="7" />
+              <Parent isRef="8" />
+              <Text>Date: {Today.ToString("Y")}</Text>
+              <TextBrush>[102:77:38]</TextBrush>
+              <TextFormat Ref="12" type="DateFormat" isKey="true">
+                <StringFormat>yyyy, MMMM</StringFormat>
+              </TextFormat>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+            </Text18>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>ReportTitleBand1</Name>
+          <Page isRef="7" />
+          <Parent isRef="7" />
+        </ReportTitleBand1>
+        <HeaderBand1 Ref="13" type="HeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,1,7.72,0.04</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text10 Ref="14" type="Text" isKey="true">
+              <Border>All;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,4.74,0.24</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>74c52595037041889b49d729475fa368</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="7" />
+              <Parent isRef="13" />
+              <Text>Account</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text10>
+            <Text12 Ref="15" type="Text" isKey="true">
+              <Border>All;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>4.74,0,1.73,0.24</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>d599668304e7434283b8564c28f44e51</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text12</Name>
+              <Page isRef="7" />
+              <Parent isRef="13" />
+              <ShiftMode>DecreasingSize, OnlyInWidthOfComponent</ShiftMode>
+              <Text>Debit</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text12>
+            <Text13 Ref="16" type="Text" isKey="true">
+              <Border>All;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>6.47,0,1.26,0.24</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>bcc8e04da762497b8d7f9fc7a0106b94</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text13</Name>
+              <Page isRef="7" />
+              <Parent isRef="13" />
+              <Text>Credit</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text13>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Guid>615afec37c2742358d4093807009a2fa</Guid>
+          <Name>HeaderBand1</Name>
+          <Page isRef="7" />
+          <Parent isRef="7" />
+          <PrintIfEmpty>True</PrintIfEmpty>
+        </HeaderBand1>
+        <HierarchicalBand1 Ref="17" type="Stimulsoft.Report.Components.StiHierarchicalBand" isKey="true">
+          <Border>None;Black;1;Dash;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <CanGrow>False</CanGrow>
+          <ClientRectangle>0,1.44,7.72,0.3</ClientRectangle>
+          <Components isList="true" count="4">
+            <Text2 Ref="18" type="Text" isKey="true">
+              <Border>Bottom;Black;1;Dot;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.1,0.06,1.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="7" />
+              <Parent isRef="17" />
+              <Text>{IIF(Account.account_level==5,
+Account.RBalanceSheet.debit,"")}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text2>
+            <Text3 Ref="19" type="Text" isKey="true">
+              <Border>Bottom;Black;1;Dot;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.7,0.06,1.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="7" />
+              <Parent isRef="17" />
+              <Text>{IIF(Account.account_level==5,
+Account.RBalanceSheet.credit,"")}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text3>
+            <Text1 Ref="20" type="Text" isKey="true">
+              <Border>Bottom;Black;1;Dot;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.4,0.06,3.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="7" />
+              <Parent isRef="17" />
+              <Text>{Account.account_name}</Text>
+              <TextBrush>Black</TextBrush>
+            </Text1>
+            <Text6 Ref="21" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.06,0.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="7" />
+              <Parent isRef="17" />
+              <Text>{Line}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>SystemVariables</Type>
+            </Text6>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>Account</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Footers>Footer1</Footers>
+          <KeyDataColumn>id</KeyDataColumn>
+          <MasterKeyDataColumn>account_parent_id</MasterKeyDataColumn>
+          <Name>HierarchicalBand1</Name>
+          <Page isRef="7" />
+          <Parent isRef="7" />
+          <Sort isList="true" count="2">
+            <value>ASC</value>
+            <value>account_number</value>
+          </Sort>
+        </HierarchicalBand1>
+        <Footer1 Ref="22" type="FooterBand" isKey="true">
+          <Border>None;Black;2;Solid;False;4;Black</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,2.14,7.72,0.2</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text4 Ref="23" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.2,0.06,1.5,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold,Point,False,0</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="7" />
+              <Parent isRef="22" />
+              <Text>{IIF(Totals.First(HierarchicalBand1,Account.account_level).ToString()=="5",
+Totals.Sum(HierarchicalBand1,Account.RBalanceSheet.debit)
+,"")}
+
+
+</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text4>
+            <Text5 Ref="24" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.7,0.06,1.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold,Point,False,0</Font>
+              <Guid>1f21060a7830459ea7f03701fa2557e1</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="7" />
+              <Parent isRef="22" />
+              <Text>{IIF(Totals.First(HierarchicalBand1,Account.account_level).ToString()=="5",
+Totals.Sum(HierarchicalBand1,Account.RBalanceSheet.credit)
+,"")}
+
+
+</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text5>
+            <Text7 Ref="25" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.5,0.06,0.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold,Point,False,0</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="7" />
+              <Parent isRef="22" />
+              <Text>{IIF(Totals.First(HierarchicalBand1,Account.account_level).ToString()=="5",
+"TOTAL : ","")}
+
+
+</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text7>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>Footer1</Name>
+          <Page isRef="7" />
+          <Parent isRef="7" />
+        </Footer1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>de6a9ccb7a174bd0a2e2845b9766eb03</Guid>
+      <Margins>0.39,0.39,0.39,0.39</Margins>
+      <Name>Page1</Name>
+      <PageHeight>11</PageHeight>
+      <PageWidth>8.5</PageWidth>
+      <PaperSize>Letter</PaperSize>
+      <Report isRef="0" />
+      <Watermark Ref="26" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PreviewSettings>268435455</PreviewSettings>
+  <PrinterSettings Ref="27" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>1/7/2019 8:00:36 PM</ReportChanged>
+  <ReportCreated>12/15/2018 1:10:31 PM</ReportCreated>
+  <ReportFile>C:\Users\Mr.dotnet\Documents\Visual Studio 2017\Projects\PhoenixERP\PhoenixERPWebApp\wwwroot\Reports\BalanceSheet.mrt</ReportFile>
+  <ReportGuid>767744c0296442cdb4e335b0d605f728</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Inches</ReportUnit>
+  <ReportVersion>2018.3.5.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="13">
+    <Style24_Report_Title1 Ref="28" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item25 Ref="29" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <Placement>ReportTitle</Placement>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item25>
+      </Conditions>
+      <Font>Arial,14,Bold</Font>
+      <Name>Style24_Report_Title1</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Report_Title1>
+    <Style24_Report_Title2 Ref="30" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item27 Ref="31" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <OperationPlacementNestedLevel>GreaterThanOrEqualTo</OperationPlacementNestedLevel>
+          <Placement>ReportTitle</Placement>
+          <PlacementNestedLevel>2</PlacementNestedLevel>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item27>
+      </Conditions>
+      <Font>Arial,10,Bold</Font>
+      <Name>Style24_Report_Title2</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Report_Title2>
+    <Style24_Report_Summary1 Ref="32" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item29 Ref="33" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <Placement>ReportSummary</Placement>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item29>
+      </Conditions>
+      <Font>Arial,12,Bold</Font>
+      <Name>Style24_Report_Summary1</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Report_Summary1>
+    <Style24_Report_Summary2 Ref="34" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item31 Ref="35" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <OperationPlacementNestedLevel>GreaterThanOrEqualTo</OperationPlacementNestedLevel>
+          <Placement>ReportSummary</Placement>
+          <PlacementNestedLevel>2</PlacementNestedLevel>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item31>
+      </Conditions>
+      <Font>Arial,10,Bold</Font>
+      <Name>Style24_Report_Summary2</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Report_Summary2>
+    <Style24_Page_Header Ref="36" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item33 Ref="37" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <Placement>PageHeader</Placement>
+          <Type>ComponentType, Placement</Type>
+        </Item33>
+      </Conditions>
+      <Font>Arial,10</Font>
+      <Name>Style24_Page_Header</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Page_Header>
+    <Style24_Page_Footer Ref="38" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item35 Ref="39" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <Placement>PageFooter</Placement>
+          <Type>ComponentType, Placement</Type>
+        </Item35>
+      </Conditions>
+      <Font>Arial,10</Font>
+      <Name>Style24_Page_Footer</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Page_Footer>
+    <Style24_Group_Header1 Ref="40" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseBorderSidesFromLocation>True</AllowUseBorderSidesFromLocation>
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item37 Ref="41" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <OperationPlacementNestedLevel>GreaterThanOrEqualTo</OperationPlacementNestedLevel>
+          <Placement>GroupHeader</Placement>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item37>
+      </Conditions>
+      <Font>Arial,13,Bold</Font>
+      <Name>Style24_Group_Header1</Name>
+      <TextBrush>[31:11:71]</TextBrush>
+    </Style24_Group_Header1>
+    <Style24_Group_Footer1 Ref="42" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseBorderSidesFromLocation>True</AllowUseBorderSidesFromLocation>
+      <Border>None;[81:61:121];1;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item39 Ref="43" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <Placement>GroupFooter</Placement>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item39>
+      </Conditions>
+      <Font>Arial,13,Bold</Font>
+      <Name>Style24_Group_Footer1</Name>
+      <TextBrush>[31:11:71]</TextBrush>
+    </Style24_Group_Footer1>
+    <Style24_Header1 Ref="44" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseBorderSidesFromLocation>True</AllowUseBorderSidesFromLocation>
+      <Border>None;[81:61:121];1;Solid;False;4;Black;True</Border>
+      <Brush>[181:161:221]</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item41 Ref="45" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <OperationPlacementNestedLevel>GreaterThanOrEqualTo</OperationPlacementNestedLevel>
+          <Placement>Header</Placement>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item41>
+      </Conditions>
+      <Font>Arial,8,Bold</Font>
+      <Name>Style24_Header1</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Header1>
+    <Style24_Data1 Ref="46" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseBorderSidesFromLocation>True</AllowUseBorderSidesFromLocation>
+      <Border>None;[81:61:121];1;Solid;False;4;Black;True</Border>
+      <Brush>Transparent</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item43 Ref="47" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <OperationPlacementNestedLevel>GreaterThanOrEqualTo</OperationPlacementNestedLevel>
+          <Placement>Data</Placement>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item43>
+      </Conditions>
+      <Font>Arial,8</Font>
+      <Name>Style24_Data1</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Data1>
+    <Style24_Data1_Odd_x0020_Style Ref="48" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseBorderSidesFromLocation>True</AllowUseBorderSidesFromLocation>
+      <Border>None;[81:61:121];1;Solid;False;4;Black;True</Border>
+      <Brush>[255:255:255]</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item45 Ref="49" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <OperationPlacementNestedLevel>GreaterThanOrEqualTo</OperationPlacementNestedLevel>
+          <Placement>DataOddStyle</Placement>
+          <Type>Placement, PlacementNestedLevel</Type>
+        </Item45>
+      </Conditions>
+      <Font>Arial,8</Font>
+      <Name>Style24_Data1_Odd Style</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Data1_Odd_x0020_Style>
+    <Style24_Data1_Even_x0020_Style Ref="50" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseBorderSidesFromLocation>True</AllowUseBorderSidesFromLocation>
+      <Border>None;[81:61:121];1;Solid;False;4;Black;True</Border>
+      <Brush>[255:236:255]</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item47 Ref="51" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <OperationPlacementNestedLevel>GreaterThanOrEqualTo</OperationPlacementNestedLevel>
+          <Placement>DataEvenStyle</Placement>
+          <Type>Placement, PlacementNestedLevel</Type>
+        </Item47>
+      </Conditions>
+      <Font>Arial,8</Font>
+      <Name>Style24_Data1_Even Style</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Data1_Even_x0020_Style>
+    <Style24_Footer1 Ref="52" type="Stimulsoft.Report.StiStyle" isKey="true">
+      <AllowUseBorderSidesFromLocation>True</AllowUseBorderSidesFromLocation>
+      <Border>None;[81:61:121];1;Solid;False;4;Black;True</Border>
+      <Brush>[201:181:241]</Brush>
+      <CollectionName>Style24</CollectionName>
+      <Conditions isList="true" count="1">
+        <Item49 Ref="53" type="Stimulsoft.Report.StiStyleCondition" isKey="true">
+          <ComponentType>Text, Primitive, Image, CheckBox</ComponentType>
+          <Placement>Footer</Placement>
+          <Type>ComponentType, Placement, PlacementNestedLevel</Type>
+        </Item49>
+      </Conditions>
+      <Font>Arial,8</Font>
+      <Name>Style24_Footer1</Name>
+      <TextBrush>[0:0:21]</TextBrush>
+    </Style24_Footer1>
+  </Styles>
+</StiSerializer>

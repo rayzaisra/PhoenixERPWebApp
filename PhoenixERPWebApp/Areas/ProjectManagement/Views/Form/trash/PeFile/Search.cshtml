@@ -1,0 +1,37 @@
+@{
+    ViewBag.ModalTitle = "PeFile";
+    ViewBag.ModalId = "PeFileModalSearch";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="PeFileFormSearch" method="post">
+    
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_name">File Name</span></label>
+                <input class="md-input" name="search_file_name" id="search_file_name"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_path">File Path</span></label>
+                <input class="md-input" name="search_file_path" id="search_file_path"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_size">File Size</span></label>
+                <input class="md-input" name="search_file_size" id="search_file_size"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_type">File Type</span></label>
+                <input class="md-input" name="search_file_type" id="search_file_type"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="flag">Flag</span></label>
+                <input class="md-input" name="search_flag" id="search_flag"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="upload_date">Upload Date</span></label>
+                <input class="md-input" name="search_upload_date" id="search_upload_date"   type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" onclick="fnPeFile.initsearch()" class="md-btn md-btn-primary"><i class="uk-icon-search"></i> Search</button>
+        <button type="button" onclick="fnPeFile.initsearch('reset')" class="md-btn md-btn-success"><i class="uk-icon-times-circle"></i> Reset</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

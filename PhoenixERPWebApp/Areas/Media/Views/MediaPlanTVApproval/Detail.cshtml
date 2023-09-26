@@ -1,0 +1,383 @@
+﻿@model PhoenixERPWebApp.Models.Media.MediaPlanTVApproval.MediaPlanTVApprovalDetail
+@{
+    ViewData["Title"] = "Media Plan TV Approval Detail";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">@ViewData["Title"]</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="MediaPlanTVApproval" asp-area="Media" class="m-nav__link"><span class="m-nav__link-text">@ViewData["Title"]</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="Detail" asp-controller="MediaPlanTVApproval" asp-area="Media" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="Detail" asp-controller="MediaPlanTVApproval" asp-area="Media" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- END: Subheader -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <form id="form" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input type="hidden" asp-for="Id" />
+                            <input hidden name="id" value="@ViewBag.RecordID" />
+                            <div class="row">
+                                <div class="col-lg-12 m-row--no-padding">
+                                    <div class="m-section__content">
+                                        <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                            <div class="m-demo__preview">
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="RequestCode"></label> :
+                                                            @Html.Kendo().TextBoxFor(m => m.RequestCode).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="RequestDate"></label> :
+                                                            @Html.Kendo().DatePickerFor(m => m.RequestDate).HtmlAttributes(new { @class = "m-input marvel-datepicker", @readonly = true, style = "width:100%" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="RequestStatus"></label> :
+                                                            @(Html.Kendo().DropDownListFor(m => m.RequestStatus)
+                                                                                                    .DataTextField("Text")
+                                                                                                    .DataValueField("Value")
+                                                                                                    .Filter(FilterType.Contains)
+                                                                                                    .DataSource(source =>
+                                                                                                    {
+                                                                                                        source.Read(read =>
+                                                                                                        {
+                                                                                                            read.Action("GetDDLMediaPlanStatus", "DropDown", new { area = "Media" });
+                                                                                                        });
+                                                                                                    })
+                                                                                                    .OptionLabel(new
+                                                                                                    {
+                                                                                                        Text = "Select Status...",
+                                                                                                        Value = 0
+                                                                                                    })
+                                                                                                    .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="RequestBy"></label> :
+                                                            @Html.Kendo().TextBoxFor(m => m.RequestBy).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="JobTitle"></label> :
+                                                            @Html.Kendo().TextBoxFor(m => m.JobTitleName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 m-row--no-padding">
+                                    <div class="m-section__content">
+                                        <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                            <div class="m-demo__preview">
+                                                <input type="hidden" asp-for="Id" />
+                                                <div class="row ">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <label>Client :</label>
+                                                        @(Html.Kendo().DropDownListFor(m => m.ClientId)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .Filter(FilterType.Contains)
+                                                            .DataSource(source =>
+                                                            {
+                                                                source.Read(read =>
+                                                                {
+                                                                    read.Action("GetDDLClient", "DropDown", new { area = "Media" });
+                                                                });
+                                                            })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                                        )
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <label>Media :</label>
+                                                        @(Html.Kendo().DropDownListFor(m => m.MediaTypeId)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .Filter(FilterType.Contains)
+                                                            .DataSource(source =>
+                                                            {
+                                                                source.Read(read =>
+                                                                {
+                                                                    read.Action("GetDDLMediaType", "DropDown", new { area = "Media" });
+                                                                });
+                                                            })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                                        )
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <label class="form-control-label">Target Audience :</label>
+                                                        <div class="input-group input-group-sm">
+                                                            @Html.Kendo().TextBoxFor(m => m.TargetAudience).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row ">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <label>Brand :</label>
+                                                        @(Html.Kendo().DropDownListFor(m => m.BrandId)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .Filter(FilterType.Contains)
+                                                            .DataSource(source =>
+                                                            {
+                                                                source.Read(read =>
+                                                                {
+                                                                    read.Action("GetDDLBrand", "DropDown", new { area = "Media" });
+                                                                });
+                                                            })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                                        )
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <label class="form-control-label">No Media Plan :</label>
+                                                        <div class="input-group input-group-sm">
+                                                            @Html.Kendo().TextBoxFor(m => m.MediaPlanNo).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <label class="form-control-label">Revision :</label>
+                                                        <div class="input-group input-group-sm">
+                                                            @Html.Kendo().TextBoxFor(m => m.RevisionNo).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Media.MediaPlanTV.MediaPlanTVDetail>()
+                                        .Name("grid")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(p => p.CreatedOn).Title("Order Date").Width(200).Format("{0:dd/MMM/yyyy}");
+                                            columns.Bound(p => p.BroadcastTypeName).Title("Broadcast Type").Width(200);
+                                            columns.Bound(p => p.PositionName).Title("Position").Width(200);
+                                            columns.Bound(p => p.ProgramName).Title("Program").Width(200);
+                                            columns.Bound(p => p.TypeProgramName).Title("Type Program").Width(200);
+                                            columns.Bound(p => p.DayStart).Title("Start").Width(200);
+                                            columns.Bound(p => p.DayEnd).Title("End").Width(200);
+                                            columns.Bound(p => p.TimeStart).Width(200).Format("{0:HH:mm}");
+                                            columns.Bound(p => p.TimeEnd).Width(200).Format("{0:HH:mm}");
+                                        })
+                                        .NoRecords()
+                                        .Pageable(pageable => pageable
+                                            .Refresh(true)
+                                            .PageSizes(true)
+                                            .ButtonCount(5))
+                                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                            .Extra(false)
+                                            .Operators(operators => operators
+                                            .ForString(str => str.Clear()
+                                                .Contains("Contains")
+                                                .StartsWith("Start sWith")
+                                                .EndsWith("End sWith")
+                                            )))
+                                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                                        .Resizable(rsz => rsz.Columns(true))
+                                        .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(10)
+                                            .Events(events => events.Error("errorHandler"))
+                                            .Model(model => { model.Id(p => p.Id); })
+                                            .Read(read => read.Action("ReadDetail", "MediaPlanTVApproval", new
+                                            {
+                                                headerId = Model.Id
+                                            }))
+                                        )
+                                    )
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label>Approval</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-lg-12 m-row--no-padding">
+                                            <div class="m-section__content">
+                                                <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                                    <div class="m-demo__preview">
+                                                        <div class="row">
+                                                            <div class="col-lg-4 m-row--no-padding">
+                                                                <div class="form-group">
+                                                                    <label>Manager</label>
+                                                                    @Html.Kendo().TextBox().Name("ApproverI").HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 m-row--no-padding">
+                                                                <div class="form-group">
+                                                                    <label>Finance Manager</label>
+                                                                    @Html.Kendo().TextBox().Name("ApproverII").HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 m-row--no-padding">
+                                                                <div class="form-group">
+                                                                    <label>Client</label>
+                                                                    @Html.Kendo().TextBox().Name("ApproverIII").HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label asp-for="TotalNetCost"></label> :
+                                            @Html.Kendo().NumericTextBoxFor(m => m.TotalNetCost).HtmlAttributes(new { @class = "m-input", @readonly = "readonly", @style = "width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label asp-for="AgencyServiceFee"></label> :
+                                            @Html.Kendo().NumericTextBoxFor(m => m.AgencyServiceFee).HtmlAttributes(new { @class = "m-input", @readonly = "readonly", @style = "width:100%" })
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>&nbsp;</label>
+                                            @Html.Kendo().NumericTextBoxFor(m => m.AgencyServiceFeePercent).HtmlAttributes(new { @class = "m-input", @readonly = "readonly", @style = "width:100%" })
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <label>&nbsp;</label>
+                                            %
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label asp-for="TaxBased"></label>  :
+                                            @Html.Kendo().NumericTextBoxFor(m => m.TaxBased).HtmlAttributes(new { @class = "m-input", @readonly = "readonly", @style = "width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label asp-for="Vat"></label>  :
+                                            @Html.Kendo().NumericTextBoxFor(m => m.Vat).HtmlAttributes(new { @class = "m-input", @readonly = "readonly", @style = "width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label asp-for="GrandTotal"></label>  :
+                                            @Html.Kendo().NumericTextBoxFor(m => m.GrandTotal).HtmlAttributes(new { @class = "m-input", @readonly = "readonly", @style = "width:100%" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="button" id="btn-reject" class="btn btn-sm btn-success">Reject</button>
+                                    <button type="button" id="btn-approve" class="btn btn-sm btn-success">Approve</button>
+                                    <a asp-action="Index" asp-controller="MediaPlanTVApproval" asp-area="Media" class="fakelink btn btn-sm btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="scheduleModal" class="modal fade" role="dialog"></div>
+<script>
+    var counter = 1;
+
+    function onDataBound(e) {
+        counter = 1;
+    }
+
+    function renderNumber(data) {
+        return counter++;
+    }
+    var param = (function (param) {
+        param.saveUrl = "@Url.Action("Save", "MediaPlanTVApproval")";
+        param.indexScheduleUrl = '@Url.Action("IndexSchedule")';
+        return param;
+    })(param || {});
+
+    function runningNumber(data, grid) {
+        var grid = $('#' + grid).data('kendoGrid');
+        return grid.dataSource.indexOf(data) + 1;
+    };
+</script>
+<script src="~/Areas/Media/Scripts/MediaPlanTV/MediaPlanTVApproval.Detail.js" asp-append-version="true"></script>

@@ -1,0 +1,43 @@
+@{
+    ViewBag.ModalTitle = "Employee Basic Emergency Contact Modal";
+    ViewBag.ModalId = "EmployeeBasicEmergencyContactModal";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<form id="EmployeeBasicFormEmergencyContact" method="post">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="emergency_family_status_id">Relation</label>
+                <select id="emergency_family_status_id" name="emergency_family_status_id" class="form-control form-control-sm m-input m-input--square"></select>
+            </div>
+            <div class="form-group">
+                <label for="emergency_phone_no">Phone No.</label>
+                <input id="emergency_phone_no" name="emergency_phone_no" class="form-control form-control-sm m-input m-input--square" />
+            </div>
+            <div class="form-group">
+                <label for="emergency_address">Address</label>
+                <textarea id="emergency_address" name="emergency_address" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="emergency_name">Full Name</label>
+                <input id="emergency_name" name="emergency_name" class="form-control form-control-sm m-input m-input--square" />
+            </div>
+            <div class="form-group">
+                <label for="emergency_other_no">Other No.</label>
+                <input id="emergency_other_no" name="emergency_other_no" class="form-control form-control-sm m-input m-input--square" />
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" id="btn-save" class="btn btn-primary" onclick="CheckAndAddRowEmergencyContact()">Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+        </div>
+
+    </div>
+
+</form>
+<script src="~/assets/js/Areas/Hris/Form/EmployeeBasic.emergencycontanct.js"></script>

@@ -1,0 +1,522 @@
+@model PhoenixERPWebApp.Models.Termination
+@{
+    ViewData["Title"] = "Employee Termination Form";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    DateTime? TerminationDate = DateTime.Now;
+    //DateTime? DateOfSick = DateTime.Now;
+    DateTime? InterviewWarningDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        if (TerminationDate >= Model.TerminationDate)
+        {
+            TerminationDate = Model.TerminationDate;
+        }
+
+        //if (DateOfSick >= Model.DateOfSick)
+        //{
+        //    DateOfSick = Model.DateOfSick;
+        //}
+
+        if (InterviewWarningDate >= Model.InterviewWarningDate)
+        {
+            InterviewWarningDate = Model.InterviewWarningDate;
+        }
+    }
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="employeedeath" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Termination</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="employeedeath" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="employeedeath" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Employee Termination Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formTermination" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="Requestor" />
+
+                        <partial name="_RequestEmploye" />
+                        <br />
+                        <div class="row" id="data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Request Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                            <div class="m-accordion__item-content">                                                
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="TerminationType"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(x => x.TerminationType)
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.TerminationType)}")
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                .Filter(FilterType.Contains)
+                                                                .DataSource(source => source
+                                                                    .Custom()
+                                                                    .Transport(transport => transport
+                                                                    .Read(read =>
+                                                                    {
+                                                                        read.Action("GetEmployeeDeathType", "Dropdown", new { area = "HrisNew" });
+                                                                    }))
+                                                                    .ServerFiltering(false)
+                                                                )
+                                                            .Events(x => x.Select("terminationTypeSelectEvent"))
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub deathProlongedAndRetired">
+                                                        <div class="form-group">
+                                                            <label asp-for="TerminationDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.TerminationDate)
+                                                                .Format("dd MMM yyyy")
+                                                                .Min($"{TerminationDate}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.TerminationDate)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub deathAndProlonged">
+                                                        <div class="form-group">
+                                                            <label asp-for="MedicalCertificate"></label> <span class="req">*</span> :
+                                                            <div id="divFile"></div>
+                                                            <div id="divDownloadFile" style="width:100%">
+                                                                <input type="hidden" asp-for="MedicalCertificate" />
+                                                                <a href='javascript: void(0);' id="linkDownloadFile" onclick='downloadFile()'></a> &nbsp;
+                                                                <a href='javascript: void(0);' id="linkRemoveFile" onclick='removeFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                            </div>
+                                                            @*<label class="small" style="font-style:italic">Mandatory for Death or Prolonged lllness</label>*@
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-lg-4 m-form__group-sub retired">
+                                                        <div class="form-group">
+                                                           <label asp-for="ReplacementStatus"></label> <span class="req">*</span> :
+                                                           @(Html.Kendo().DropDownListFor(x=>x.ReplacementStatus)
+                                                              .DataTextField("Text")
+                                                              .DataValueField("Value")
+                                                              .BindTo(new List<SelectListItem>() {
+                                                                  new SelectListItem() { Text = "Rehiring", Value = "1" },
+                                                                  new SelectListItem() { Text = "New Hire",Value = "2" }
+                                                              })
+                                                              .HtmlAttributes(
+                                                                new {
+                                                                    style = "width: 100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose an {Html.DisplayNameFor(m => m.ReplacementStatus)}"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub sanction">
+                                                        <div class="form-group">
+                                                            <label asp-for="FaulsNoticeDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.FaulsNoticeDate)
+                                                                .Format("dd MMM yyyy")
+                                                                //.Min($"{FaulsNoticeDate}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.FaulsNoticeDate)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub sanction">
+                                                        <div class="form-group">
+                                                            <label asp-for="InterviewWarningDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.InterviewWarningDate)
+                                                                .Format("dd MMM yyyy")
+                                                                .Min($"{InterviewWarningDate}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose an {Html.DisplayNameFor(m => m.InterviewWarningDate)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">                                                
+                                                    <div class="col-lg-4 m-form__group-sub prolonged">
+                                                        <div class="form-group">
+                                                            <label asp-for="DateOfSick"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.DateOfSick)
+                                                                .Format("dd MMM yyyy")
+                                                                //.Min($"{DateOfSick}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.DateOfSick)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>                                                                                                
+                                                    <div class="col-lg-4 m-form__group-sub sanction">
+                                                        <div class="form-group">
+                                                            <label asp-for="FaultCategoryId"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(x => x.FaultCategoryId)
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.FaultCategoryId)}")
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                .Filter(FilterType.Contains)
+                                                                .DataSource(source => source
+                                                                    .Custom()
+                                                                    .Transport(transport => transport
+                                                                    .Read(read =>
+                                                                    {
+                                                                        read.Action("GetDDLFaultCategory", "Dropdown", new { area = "HrisNew" });
+                                                                    }))
+                                                                    .ServerFiltering(false)
+                                                                )
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub sanction">
+                                                        <div class="form-group">
+                                                            <label asp-for="InterviewWarningFile"></label> <span class="req">*</span> :
+                                                             <div id="divInterviewFile"></div>
+                                                             <div style="width:100%">
+                                                                 <input type="hidden" asp-for="InterviewWarningFile" />
+                                                                 <a href='javascript: void(0);' id="linkInterviewDownloadFile" onclick='downloadInterviewFile()'></a> &nbsp;
+                                                                 <a href='javascript: void(0);' id="linkInterviewRemoveFile" onclick='removeInterviewFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub sanction">
+                                                        <div class="form-group">
+                                                            <label asp-for="StatementOfPoliceReport"></label> <span class="req">*</span> :
+                                                             <div id="divPoliceFile"></div>
+                                                             <div style="width:100%">
+                                                                 <input type="hidden" asp-for="StatementOfPoliceReport" />
+                                                                 <a href='javascript: void(0);' id="linkPoliceDownloadFile" onclick='downloadPoliceFile()'></a> &nbsp;
+                                                                 <a href='javascript: void(0);' id="linkPoliceRemoveFile" onclick='removePoliceFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                             </div>
+                                                        </div>
+                                                    </div>                                                
+                                                    <div class="col-lg-4 m-form__group-sub deathAndProlonged">
+                                                        <div class="form-group">
+                                                            <label>Benefit Calculation</label> :
+                                                            @(Html.Kendo().NumericTextBox()
+                                                                .Name("SalaryCalculation")
+                                                                .Spinners(false)
+                                                                .Round(true)
+                                                                .Value(0)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    @readonly = "readonly",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Reason"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().EditorFor(x => x.Reason)
+                                                                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                                .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                                .Placeholder($"Type your {Html.DisplayNameFor(m => m.Reason)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <partial name="_AssignEmploye" />
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                    {
+                                        <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        <button type="button" id="btnSubmitToHC" class="btn btn-primary edit"><span class="fa fa-save"></span> Submit to HC</button>
+                                    }
+                                    <a asp-action="index" asp-controller="employeedeath" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var isEdit = false;
+        if ('@Model.Id' != '') { isEdit = true; } 
+        terminationType('@Model.TerminationType', isEdit);
+    });
+
+    function removeFile() {
+        MedicalCertificate();
+    }
+
+    function MedicalCertificate() {
+        $("#divDownloadFile").remove();
+        $("#divFile").empty().append("<input name='file' id='file' type='file' required/>");
+
+        $("#file").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+         
+    function downloadFile() {
+        downloadAction({url: '@Url.RouteUrl(new { action = "download", controller = "Download" })',data: { id: '@Model.MedicalCertificate' }});
+    }
+           
+    function removeInterviewFile() {
+        InterviewFile();
+    }
+
+    function downloadInterviewFile() {
+       downloadAction({url: '@Url.RouteUrl(new { action = "download", controller = "Download" })',data: { id: $("#InterviewWarningFile").val() }});
+    }
+
+    function InterviewFile() {
+        $("#linkInterviewDownloadFile").empty();
+        $("#linkInterviewRemoveFile").empty();
+        $("#divInterviewFile").empty().append("<input name='fileInterview' id='fileInterview' type='file' required/>");
+
+        $("#fileInterview").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+    
+    function removePoliceFile() {
+        PoliceFile();
+    }
+
+    function downloadPoliceFile() {
+        downloadAction({url: '@Url.RouteUrl(new { action = "download", controller = "Download" })',data: { id: $("#StatementOfPoliceReport").val() }});
+    }
+
+    function PoliceFile() {
+        $("#linkPoliceDownloadFile").empty();
+        $("#linkPoliceRemoveFile").empty();
+        $("#divPoliceFile").empty().append("<input name='filePolice' id='filePolice' type='file' required/>");
+
+        $("#filePolice").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+       
+    $('#btnSubmitToHC').click(function () {
+        callActionFile({ formId:"formTermination", title: "submit", type:"POST", url: '@Url.Action("SubmitToHC", "employeedeath")'});
+    });
+
+    $('#btnSave').click(function () {
+        callActionFile({ formId:"formTermination", title: "save", type:"POST", url: '@Url.Action("Save", "employeedeath")'});
+    });
+
+    function terminationTypeSelectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            terminationType(dataItem.Value, false);
+
+            $("#SearchEmployee").val("");
+            ClearAsignEmployee();
+        }
+    }
+    
+    function terminationType(value, isEdit) {
+        $(".deathProlongedAndRetired").css("display", "none");
+        $(".deathAndProlonged").css("display", "none");
+        $(".prolonged").css("display", "none");
+        $(".retired").css("display", "none");
+        $(".sanction").css("display", "none");
+
+        if (value == '@PhoenixERPWebApp.Models.TerminationType.Death' || value == '@PhoenixERPWebApp.Models.TerminationType.ProlongedIllness' || value == '@PhoenixERPWebApp.Models.TerminationType.Retired') {
+            $(".deathProlongedAndRetired").css("display", "block");
+            $("#TerminationDate").attr("required", "required");
+        } else {
+            $("#TerminationDate").removeAttr("required");
+            $("#TerminationDate").data('kendoDatePicker').value("");
+        }
+
+        if (value == '@PhoenixERPWebApp.Models.TerminationType.Death' || value == '@PhoenixERPWebApp.Models.TerminationType.ProlongedIllness') {
+            $(".deathAndProlonged").css("display", "block");
+            if (isEdit == true) {
+                $("#linkDownloadFile").text('@Model.MedicalCertificateName');
+            } else {
+                MedicalCertificate();
+            }
+        } else {
+            $("#divDownloadFile").remove();
+            $("#divFile").empty();
+            $("#MedicalCertificate").val("");
+            $("#SalaryCalculation").data("kendoNumericTextBox").value(0);
+        }
+
+        if (value == '@PhoenixERPWebApp.Models.TerminationType.ProlongedIllness') {
+            $(".prolonged").css("display", "block");
+            $("#DateOfSick").attr("required", "required");
+        } else {
+            $("#DateOfSick").removeAttr("required");
+            $("#DateOfSick").data('kendoDatePicker').value("");
+        }
+
+        if (value == '@PhoenixERPWebApp.Models.TerminationType.Retired') {
+            $(".retired").css("display", "block");
+            $("#ReplacementStatus").attr("required", "required");
+
+        } else {
+            $("#ReplacementStatus").removeAttr("required");
+            $("#ReplacementStatus").data('kendoDropDownList').value("");
+        }
+
+         if (value == '@PhoenixERPWebApp.Models.TerminationType.Sanction') {
+             $(".sanction").css("display", "block");
+             $("#FaulsNoticeDate").attr("required", "required");
+             $("#InterviewWarningDate").attr("required", "required");
+             $("#FaultCategoryId").attr("required", "required");
+             if (isEdit == true) {
+                 $("#linkInterviewDownloadFile").text('@Model.InterviewWarningFileName');
+                 $("#linkPoliceDownloadFile").text('@Model.StatementOfPoliceReportName');
+             } else {
+                 InterviewFile();
+                 PoliceFile();
+             }
+         } else {
+             $("#FaulsNoticeDate").removeAttr("required");
+             $("#FaulsNoticeDate").data('kendoDatePicker').value("");
+
+             $("#InterviewWarningDate").removeAttr("required");
+             $("#InterviewWarningDate").data('kendoDatePicker').value("");
+
+             $("#FaultCategoryId").removeAttr("required");
+             $("#FaultCategoryId").data('kendoDropDownList').value("");
+             
+             $("#linkInterviewDownloadFile").empty();
+             $("#linkInterviewRemoveFile").empty();
+             $("#divInterviewFile").empty();
+             $("#InterviewWarningFile").val("");
+
+             $("#linkPoliceDownloadFile").empty();
+             $("#linkPoliceRemoveFile").empty();
+             $("#divPoliceFile").empty();
+             $("#StatementOfPoliceReport").val("");
+        }
+    }
+</script>

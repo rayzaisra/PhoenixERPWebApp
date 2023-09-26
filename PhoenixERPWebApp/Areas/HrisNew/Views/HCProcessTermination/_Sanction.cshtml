@@ -1,0 +1,155 @@
+﻿@model PhoenixERPWebApp.Models.Termination
+@{
+    DateTime? WarningLetterDate = DateTime.Now;
+    DateTime? TerminationInterviewDate = DateTime.Now;
+    DateTime? TerminationDate = DateTime.Now;
+    DateTime? EffectiveResignDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        if (WarningLetterDate >= Model.WarningLetterDate)
+        {
+            WarningLetterDate = Model.WarningLetterDate;
+        }
+
+        if (TerminationInterviewDate >= Model.TerminationInterviewDate)
+        {
+            TerminationInterviewDate = Model.TerminationInterviewDate;
+        }
+
+        if (TerminationDate >= Model.TerminationDate)
+        {
+            TerminationDate = Model.TerminationDate;
+        }
+
+        if (EffectiveResignDate >= Model.EffectiveResignDate)
+        {
+            EffectiveResignDate = Model.EffectiveResignDate;
+        }
+    }
+}
+
+<input type="hidden" asp-for="LastDayDate" />
+
+<hr/>
+<div class="row">
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="WarningLetter"></label> <span class="req">*</span> :
+            @(Html.Kendo().DropDownListFor(x=>x.WarningLetter)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.WarningLetter)}")
+                .BindTo(new List<SelectListItem>() {
+                    new SelectListItem() { Text = "SP1", Value = "SP1" },
+                    new SelectListItem() { Text = "SP2",Value = "SP2" },
+                    new SelectListItem() { Text = "SP3",Value = "SP3" }
+                })
+                .HtmlAttributes(
+                new {
+                    style = "width: 100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                })
+            )
+        </div>
+    </div>
+
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="WarningLetterDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.WarningLetterDate)
+                .Format("dd MMM yyyy")
+                .Min($"{WarningLetterDate}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.WarningLetterDate)}",
+                    onkeydown = "javascript:return false;"
+                })
+            )
+        </div>
+    </div>
+
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="TerminationInterviewDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.TerminationInterviewDate)
+                .Format("dd MMM yyyy")
+                .Min($"{TerminationInterviewDate}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.TerminationInterviewDate)}",
+                    onkeydown = "javascript:return false;"
+                })
+            )
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="TerminationDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.TerminationDate)
+                .Format("dd MMM yyyy")
+                .Min($"{TerminationDate}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.TerminationDate)}",
+                    onkeydown = "javascript:return false;"
+                })
+            )
+        </div>
+    </div>
+
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="EffectiveResignDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.EffectiveResignDate)
+                .Format("dd MMM yyyy")
+                .Min($"{EffectiveResignDate}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.EffectiveResignDate)}",
+                    onkeydown = "javascript:return false;"
+                })
+            )
+        </div>
+    </div>
+
+    <div class="col-lg-3 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="ExitInterviewFiles"></label>  :
+            <div id="divFile"></div>
+            <div id="divDownloadFile" style="width:100%">
+                <input type="hidden" asp-for="ExitInterviewFiles" />
+                <a href='javascript: void(0);' id="linkDownloadFile" onclick='downloadFile()'></a> &nbsp;
+                <a href='javascript: void(0);' id="linkRemoveFile" onclick='removeFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="Notes"></label> <span class="req">*</span> :
+            @(Html.Kendo().EditorFor(x => x.Notes)
+                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                .Placeholder($"Type your {Html.DisplayNameFor(m => m.Notes)} here")
+            )
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+@{
+    ViewBag.ModalTitle = "Family";
+    ViewBag.ModalId = "FamilyModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="FamilyFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="address">address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_address" id="search_address"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="birthday">birthday</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_birthday" id="search_birthday"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="description">description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_description" id="search_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="education_id">education_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_education_id" id="search_education_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="family_status_id">family_status_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_family_status_id" id="search_family_status_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="gender">gender</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_gender" id="search_gender"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="institution_id">institution_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_institution_id" id="search_institution_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="married_status_id">married_status_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_married_status_id" id="search_married_status_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="name">name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_name" id="search_name"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="other_no">other_no</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_other_no" id="search_other_no"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="phone_no">phone_no</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_phone_no" id="search_phone_no"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="place_birth">place_birth</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_place_birth" id="search_place_birth"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="religion_id">religion_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_religion_id" id="search_religion_id"  maxlength="50" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnFamily.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnFamily.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

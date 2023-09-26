@@ -1,0 +1,77 @@
+@{
+    ViewBag.ModalTitle = "JobInterview";
+    ViewBag.ModalId = "JobInterviewModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="JobInterviewFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="from_email">from_email</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_from_email" id="search_from_email"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="interviewer">interviewer</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_interviewer" id="search_interviewer"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="interview_date">interview_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_interview_date" id="search_interview_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="interview_time">interview_time</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_interview_time" id="search_interview_time"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_interview_description">job_interview_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_job_interview_description" id="search_job_interview_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_posting_requisition_id">job_posting_requisition_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_job_posting_requisition_id" id="search_job_posting_requisition_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="latitude">latitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_latitude" id="search_latitude"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="longitude">longitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_longitude" id="search_longitude"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_notes" id="search_notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="place_of_interview">place_of_interview</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_place_of_interview" id="search_place_of_interview"  maxlength="200" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="to_email">to_email</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_to_email" id="search_to_email"  maxlength="50" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnJobInterview.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnJobInterview.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

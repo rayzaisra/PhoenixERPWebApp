@@ -1,0 +1,312 @@
+@model PhoenixERPWebApp.Models.LegalDocument
+@{
+    ViewData["Title"] = "Legal Document";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="documentmanagement" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Document Management</span></a>
+                </li>
+                @if (string.IsNullOrEmpty(Model.Id))
+                {
+                    <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                    <li class="m-nav__item">
+                        <a asp-action="addedit" asp-controller="legaldocument" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> File Upload</span></a>
+                    </li>
+                }
+                else
+                {
+                    <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                    <li class="m-nav__item">
+                        <a asp-action="index" asp-controller="legaldocument" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> Document</span></a>
+                    </li>
+                    <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                    <li class="m-nav__item">
+                        <a asp-action="addedit" asp-controller="legaldocument" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> File Upload</span></a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <h3 class="m-portlet__head-text m--font-success">File Upload</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formLegalDocument" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="legaldocument" asp-area="HrisNew" enctype="multipart/form-data">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                                
+                                 <div class="row">
+                                    <div class="col-lg-12 m-form__group-sub">
+                                        <div class="form-group">
+                                            @*<label asp-for="Category"></label> :<br />*@
+                                            @(Html.Kendo().RadioButton().Name("Category1").Value(PhoenixERPWebApp.Models.CategoryLegalDoc.Employee).Checked(Model.Category == PhoenixERPWebApp.Models.CategoryLegalDoc.Employee).HtmlAttributes(new { @name = "Category" }).Label(PhoenixERPWebApp.Models.CategoryLegalDoc.Employee))&nbsp;&nbsp;
+                                            @(Html.Kendo().RadioButton().Name("Category2").Value(PhoenixERPWebApp.Models.CategoryLegalDoc.Client).Checked(Model.Category == PhoenixERPWebApp.Models.CategoryLegalDoc.Client).HtmlAttributes(new { @name = "Category" }).Label(PhoenixERPWebApp.Models.CategoryLegalDoc.Client))&nbsp;&nbsp;
+                                            @(Html.Kendo().RadioButton().Name("Category3").Value(PhoenixERPWebApp.Models.CategoryLegalDoc.Vendor).Checked(Model.Category == PhoenixERPWebApp.Models.CategoryLegalDoc.Vendor).HtmlAttributes(new { @name = "Category" }).Label("3rd Party"))
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="row">                                   
+                                    <div class="col-lg-12 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="LegalCategoryId"></label> <span class="req">*</span>  :
+                                             @(Html.Kendo().DropDownListFor(x => x.LegalCategoryId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalCategoryId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",                                              
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.LegalCategoryId)} is required" 
+                                                                                            })
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLLegalCategory", "Dropdown",new {area="hrisnew"});
+                                                     }))
+                                                    .ServerFiltering(false)
+                                                )
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                               <div class="row">
+                                    <div class="col-lg-4 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="LegalDocumentCounterpart.CounterpartId"></label> :
+                                           @(Html.Kendo().DropDownListFor(x => x.LegalDocumentCounterpart.CounterpartId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalDocumentCounterpart.CounterpartId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",                                              
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.LegalDocumentCounterpart.CounterpartId)} is required" 
+                                                })
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLEmployeeLegalDoc", "Dropdown",new {area="hrisnew"}).Data("employee_params");
+                                                     }))
+                                                    .ServerFiltering(true)
+                                                ).CascadeFrom("LegalCategoryId")
+                                            )
+                                         </div>
+                                    </div>
+                                    <div class="col-lg-4 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="DocumentDate"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DatePickerFor(m=>m.DocumentDate)
+                                                  .Format("dd MMMM yyyy")
+                                                  .HtmlAttributes(new {
+                                                      style = "width: 100%",
+                                                      onkeydown = "javascript:return false;",
+                                                      placeholder = $"Input type a {Html.DisplayNameFor(m => m.DocumentDate)}",
+                                                      required = "required",
+                                                      validationmessage = $"{Html.DisplayNameFor(m => m.DocumentDate)} is required"
+  
+                                                  })
+                                            )
+                                        </div>
+                                    </div>
+                                   <div class="col-lg-4 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="ExpiredDate"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DatePickerFor(m=>m.ExpiredDate)
+                                                  .Format("dd MMMM yyyy")
+                                                  .HtmlAttributes(new {
+                                                      style = "width: 100%",
+                                                      onkeydown = "javascript:return false;",
+                                                      placeholder = $"Input type a {Html.DisplayNameFor(m => m.ExpiredDate)}",
+                                                      required = "required",
+                                                      validationmessage = $"{Html.DisplayNameFor(m => m.ExpiredDate)} is required"
+  
+                                                  })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                     <div class="col-lg-4 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="FileUpload"></label> <span class="req">*</span> :
+                                                <div id="divFileUpload"></div>
+                                                <div style="width:100%">
+                                                    <input type="hidden" asp-for="FileUpload" />
+                                                    <a href='javascript: void(0);' id="linkInterviewDownloadFile" onclick='downloadFileUpload()'></a> &nbsp;
+                                                    <a href='javascript: void(0);' id="linkInterviewRemoveFile" onclick='removeFileUpload()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="Label"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.Label)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 100,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.Label)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.Label)} is required" 
+                                                }
+                                             ))
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="Remarks"></label>@*<span class="req">*</span>*@  :
+                                            @Html.TextAreaFor(m => m.Remarks, new
+                                                {
+                                                    @class = "k-textbox",
+                                                    style = "width:100%; height:150px",
+                                                    maxlength = 2147483647,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.Remarks)}",
+                                                    //required = "required",
+                                                    //validationmessage = $"{Html.DisplayNameFor(m => m.Remarks)} is required"
+                                                }
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                @if (string.IsNullOrEmpty(Model.Id))
+                                {
+                                    <a asp-action="index" asp-controller="documentmanagement" asp-area="hrisnew" class="fakelink btn btn-secondary">Close</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="index" asp-controller="legaldocument" asp-area="hrisnew" class="fakelink btn btn-secondary">Close</a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function employee_params() {
+        return {
+            category: $("input[name='Category']:checked").val(),
+            legalCategoryId: $("#LegalCategoryId").val(),
+            text: $("#LegalDocumentCounterpart_CounterpartId").data("kendoDropDownList").filterInput.val()
+        };
+    }
+
+    $(document).on("change", "input[type='radio']", function () {
+        $("#LegalDocumentCounterpart_CounterpartId").data("kendoDropDownList").dataSource.read();
+    });
+
+    $('#btn-save').click(function () {
+        callActionFile({ formId:"formLegalDocument", title: "save", type:"POST"});
+    });
+
+    $(document).ready(function () {
+        var FileUploadName = '@Model.FileUploadName';
+        if (FileUploadName == '') {
+            FileUpload();
+        } else {
+            $("#linkInterviewDownloadFile").text(FileUploadName);
+        }
+    });
+
+
+    function removeFileUpload() {
+        FileUpload();
+    }
+
+    function downloadFileUpload() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#FileUpload").val() }});
+    }
+
+    function FileUpload() {
+        $("#linkInterviewDownloadFile").empty();
+        $("#linkInterviewRemoveFile").empty();
+        $("#divFileUpload").empty().append("<input name='file' id='file' type='file' required/>");
+
+        $("#file").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+</script>

@@ -1,0 +1,101 @@
+@{
+    ViewData["Title"] = "Family";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="FamilyFormCreate" method="post">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="address">address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="address" id="address"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="birthday">birthday</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="birthday" id="birthday"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="description">description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="description" id="description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="education_id">education_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="education_id" id="education_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="family_status_id">family_status_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="family_status_id" id="family_status_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="gender">gender</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="gender" id="gender"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="institution_id">institution_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="institution_id" id="institution_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="married_status_id">married_status_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="married_status_id" id="married_status_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="name">name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="name" id="name" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="other_no">other_no</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="other_no" id="other_no"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="phone_no">phone_no</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="phone_no" id="phone_no"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="place_birth">place_birth</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="place_birth" id="place_birth"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="religion_id">religion_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="religion_id" id="religion_id"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Family" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Family.create.js"></script>
+}

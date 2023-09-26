@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Petty Cash";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}  
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Petty Cash List</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Petty Cash</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="pettycash" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text">Petty Cash</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div> 
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+							<div>
+								@if(ViewBag.IsHolder){
+									<a asp-action="Detail" asp-controller="pettycash" asp-area="finance" class="m-btn btn btn-primary btn-sm m-btn--sm" title="Add New Record"><i class="la la-plus"></i></a>
+								}
+							</div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                         <ul class="m-portlet__nav"> 
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list"> 
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.PettyCash>()
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.Id).Title("Petty Cash No").ClientTemplateId("link-template").Width(120); 
+                                    columns.Bound(p => p.BankAccountNumber).Width(250);
+                                    //columns.Bound(p => p.MasterPettyCashAmount).Width(120);
+                                    columns.Bound(p => p.HolderName).Width(150);
+                                    columns.Bound(p => p.HolderName2).Width(150);
+                                    columns.Bound(p => p.LegalEntityName).Width(170);
+                                    columns.Bound(p => p.SettlementDate).Title("Date").Width(100);
+                                    columns.Bound(p => p.StatusName).ClientTemplate("#= GetStatusButton(data) #").Width(140);
+                                })
+                                .Pageable(pageable => pageable
+                                .Refresh(true)
+                                .PageSizes(true)
+                                .ButtonCount(5))
+                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                .Extra(false)
+                                .Operators(operators => operators
+                                    .ForString(str => str.Clear()
+                                    .Contains("Contains")
+                                    .StartsWith("Start sWith")
+                                    .EndsWith("End sWith")
+                                )))
+                                .NoRecords()
+                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                .Resizable(rsz => rsz.Columns(true))
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(10)
+                                    .Events(events => events.Error("errorHandler"))
+                                    .Model(model => { model.Id(p => p.Id); })
+                                    .Read(read => read.Action("Read", "PettyCash"))
+                                ) 
+                            )
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="link-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='detailRow(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'>#=Id#</span></a>
+</script>
+
+<script> 
+    function GetStatusButton(data) {
+        var buttonType = "";  
+        if (data.Status == "@PhoenixERPWebApp.Models.PettyCashStatus.Open") buttonType = "m-badge--info";
+        else if (data.Status == "@PhoenixERPWebApp.Models.PettyCashStatus.WAITING_APPROVAL") buttonType = " m-badge--warning"; 
+        else if (data.Status == "@PhoenixERPWebApp.Models.PettyCashStatus.REVISE") buttonType = " m-badge--danger"; 
+        else if (data.Status == "@PhoenixERPWebApp.Models.PettyCashStatus.Approved") buttonType = " m-badge--success";
+        return "<center><a href='javascript: void(0);' onclick='detailRow(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.StatusName + "</a></center>";
+    }
+
+    function detailRow(e) {
+        var item = dataItem(e); 
+        window.location.href = '@Url.Action("Detail", "PettyCash")?Id=' + item.Id;
+    } 
+</script> 

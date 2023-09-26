@@ -1,0 +1,275 @@
+﻿@model PhoenixERPWebApp.Models.Finance.Transaction.PaymentRequest.PaymentRequestList
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+</style>
+
+<div class="modal fade" id="modal-choice-pce" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create Request Payment From AP</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalAPList">  
+                <div class="m-form__group">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+                                    <label>Vendor</label>
+                                </div>
+                                <div class="col-lg-8">
+                                    @(Html.Kendo().DropDownListFor(i => i.pop_ClientId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        //.Events(e => e.Change("bindAPList"))
+                                        .Filter(FilterType.Contains)
+                                        .OptionLabel("Choose a Vendor")
+                                        .Popup(x => x.AppendTo("#modalAPList"))
+                                        .HtmlAttributes(new { style = "width:100%;"})
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLVendorInv", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        ))
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+                                    <label>Currency</label>
+                                </div>
+                                <div class="col-lg-8">
+                                    @(Html.Kendo().DropDownListFor(i => i.pop_CurrencyId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        //.Events(e => e.Change("bindAPList"))
+                                        .OptionLabel("Choose a Currency")
+                                        .Popup(x => x.AppendTo("#modalAPList"))
+                                        .HtmlAttributes(new { style = "width:100%;"})
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        ))
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+                                    <label>Legal Entity</label>
+                                </div>
+                                <div class="col-lg-8">
+                                    @(Html.Kendo().DropDownListFor(i => i.pop_legalEntityId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .OptionLabel("Choose a Legal Entity")
+                                        .Popup(x => x.AppendTo("#modalAPList"))
+                                        //.Events(e => e.Change("bindAPList"))
+                                        .HtmlAttributes(new { style = "width:100%;"})
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        ))
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+                                    <label>Bussiness Unit</label>
+                                </div>
+                                <div class="col-lg-8">
+                                    @(Html.Kendo().DropDownListFor(i => i.pop_BussinessUnitId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        //.Events(e => e.Change("bindAPList"))
+                                        .OptionLabel("Choose a Bussiness Unit")
+                                        .Popup(x => x.AppendTo("#modalAPList"))
+                                        .HtmlAttributes(new { style = "width:100%;"})
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        ))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+                                    <label>AP Number</label>
+                                </div>
+                                <div class="col-lg-8"> 
+                                    @(Html.Kendo().DropDownListFor(i => i.pop_ApNumber)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        //.Events(e => e.Change("bindAPList"))
+                                        .OptionLabel("Choose an AP Number")
+                                        .Popup(x => x.AppendTo("#modalAPList"))
+                                        .HtmlAttributes(new { style = "width:100%;"})
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetApNumber", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        )
+                                        .AutoBind(false))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+                                    <label>Main Service Category</label>
+                                </div>
+                                <div class="col-lg-8">
+                                    @(Html.Kendo().DropDownListFor(i => i.pop_MainServiceCategoryId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        //.Events(e => e.Change("bindAPList"))
+                                        .OptionLabel("Choose a Main Service Category")
+                                        .Popup(x => x.AppendTo("#modalAPList"))
+                                        .HtmlAttributes(new { style = "width:100%;"})
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetMainServiceCategory", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        ))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+
+                                </div>
+                                <div class="col-lg-8">
+                                    <button class="btn btn-primary" type="button" onclick="bindAPList()">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group m-form__group row m-row--no-padding">
+                                <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.AccountPayable>()
+                                        .Name("grid-choice-ap")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Select().ClientHeaderTemplate(" ").Width(40).HtmlAttributes(new { style = "text-align:center;" });
+                                            columns.Bound(p => p.AccountPayableNumber).Width(200);
+                                            columns.Bound(p => p.TransactionDate).Format("{0:dd  MMM  yyyy}").Width(200);
+                                            columns.Bound(p => p.BusinessUnitName).Width(150);
+                                            columns.Bound(p => p.VendorName).Width(150);
+                                            columns.Bound(p => p.LegalEntityName).Width(150);
+                                            columns.Bound(p => p.MainServiceCategoryName).Width(150);
+                                            columns.Bound(p => p.AmountOriginal).ClientTemplate("#if(CurrencySymbol!=null && AmountOriginal!=null){# #=CurrencySymbol# #}# #if(AmountOriginal!=null){# #=kendo.format('{0:n2}', AmountOriginal)# #}#").Width(150).HtmlAttributes(new { @style = "text-align:right" }); 
+                                            columns.Bound(p => p.Amount).Title("Amount Exchange").ClientTemplate("#if(CurrencySymbolDefault!=null && Amount!=null){# #=CurrencySymbolDefault# #}# #if(Amount!=null){# #=kendo.format('{0:n2}', Amount)# #}#").Width(150).HtmlAttributes(new { @style = "text-align:right" });
+                                            //columns.Bound(p => p.JobId).Hidden();
+                                            columns.Bound(p => p.JobName).Width(200);
+                                            //columns.Bound(p => p.Vat).ClientTemplate("#if(CurrencySymbol!=null && Vat!=null){# #=CurrencySymbol# #}# #if(Vat!=null){# #=kendo.format('{0:n2}', Vat)# #}#").HtmlAttributes(new { @style = "text-align:right" }).Hidden();
+                                            columns.Bound(p => p.TaxPayableOriginal).ClientTemplate("#if(CurrencySymbol!=null && TaxPayableOriginal!=null){# #=CurrencySymbol# #}# #if(TaxPayableOriginal!=null){# #=kendo.format('{0:n2}', TaxPayableOriginal)# #}#").Width(170).HtmlAttributes(new { @style = "text-align:right" }); 
+                                            columns.Bound(p => p.TaxPayable).Title("Tax Payable Exchange").ClientTemplate("#if(CurrencySymbolDefault!=null && TaxPayable!=null){# #=CurrencySymbolDefault# #}# #if(TaxPayable!=null){# #=kendo.format('{0:n2}', TaxPayable)# #}#").Width(150).HtmlAttributes(new { @style = "text-align:right" });
+                                            columns.Bound(p => p.TaxPayableCoaName).Title("Tax Payable COA").Width(150);
+                                            columns.Bound(p => p.InvoiceReceivedDate).Title("Due date").Width(100);
+                                            //columns.Bound(p => p.InvoiceReceivableId).Hidden();
+                                            //columns.Bound(p => p.BankAccountDestination).Hidden();
+                                            //columns.Bound(p => p.TaxPayableCoaId).Hidden();
+                                            //columns.Bound(p => p.SwiftCode).Hidden();
+                                        })
+                                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                        .Resizable(rsz => rsz.Columns(true))
+                                        .AutoBind(false)
+                                        .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .Events(events => events.Error("errorHandler"))
+                                            .Model(model => { model.Id(p => p.Id); })
+                                            .Read(read => read.Action("ReadAPPosted", "PaymentRequest").Data("gridChoicePce_params"))
+                                        )
+                                        .NoRecords()
+                                        .AutoBind(false)
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="SaveSelectedAP()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function gridChoicePce_params() {
+        return {
+            Filter: {
+                PaymentRequestId: $("#Id").val(),
+                FilterLegalEntity: $("#pop_legalEntityId").data("kendoDropDownList").value(),
+                FilterBusinessUnitId: $("#pop_BussinessUnitId").data("kendoDropDownList").value(),
+                MainServiceCategory: $("#pop_MainServiceCategoryId").data("kendoDropDownList").value(),
+                VendorId: $("#pop_ClientId").data("kendoDropDownList").value(),
+                CurrencyId: $("#pop_CurrencyId").data("kendoDropDownList").value(),
+                FilterApNum: $('#pop_ApNumber').data("kendoDropDownList").value()
+            }
+        }
+    }
+</script>

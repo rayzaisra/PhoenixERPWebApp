@@ -1,0 +1,30 @@
+@{
+    ViewBag.ModalTitle = "User List";
+    ViewBag.ModalId = "modaluserlist";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<form id="teamusersearch">
+    <div class="row">
+        <div class="col-lg-8">
+
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                 
+                <input type="text" id="search" name="search"  class="form-control" placeholder="Search">
+
+                <span class="input-group-btn">
+
+                    <button type="button" onclick="fnUserList.initsearch()" class="btn btn-default">Search</button>
+
+                </span>
+
+            </div>
+           
+        </div>
+    </div>
+</form>
+<table class="table table-striped table-bordered table-hover table-checkable" id="UserList"></table>
+
+<script src="~/assets/js/Areas/ProjectManagement/Form/Team/userList.js"></script>
+

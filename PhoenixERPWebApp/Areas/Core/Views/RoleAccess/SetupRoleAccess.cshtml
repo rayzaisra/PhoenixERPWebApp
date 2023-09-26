@@ -1,0 +1,111 @@
+﻿@{
+    Layout = null;
+}
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<input hidden id="application_role_id" value="@ViewBag.AppRoleID" />
+
+<div class="col-xl-12 demo-section" id="m_blockui_list">
+    @*<button type="button" class="btn btn-sm btn-primary">Re-Syncronize Entity</button>*@
+    @*<div class="m-portlet__head">
+
+            <div class="col-lg-6 row">
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="m-btn btn btn-secondary"><i class="la la-file-text-o"></i>DELETET</button>
+                    <button type="button" class="m-btn btn btn-secondary"><i class="la la-floppy-o"></i></button>
+                    <button type="button" class="m-btn btn btn-secondary"><i class="la la-header"></i></button>
+                    <button type="button" class="m-btn btn btn-secondary"><i class="la la-italic"></i></button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 pull-right">
+                <form id="form-search-dt_basic_role_access">
+                    <div class="input-group pull-right">
+                        <input autocomplete="off" type="text" name="q" class="form-control form-control-sm m-input searchbox" placeholder="Search">
+                        <div class="input-group-prepend"><span class="input-group-text input-group-sm"><i class="la la-search"></i></span></div>
+                    </div>
+                </form>
+
+            </div>
+            <label class="m-checkbox">
+                <input type="checkbox" name="is_locked_column" class="m-checkbox"> Lock Entity Column
+                <span></span>
+            </label>
+        </div>*@
+    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+        <div class="m-form__actions m-form__actions--solid">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-sm btn-secondary m-btn m-btn--icon">
+                            <span>
+                                @*<i data-value="0" class="entity-pie form-control form-control-sm m-input"></i>*@
+                                <span>Set No Access</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-sm btn-secondary m-btn m-btn--icon">
+                            <span>
+                                @*<i data-value="1" class="entity-pie form-control form-control-sm m-input"></i>*@
+                                <span>Set Owner Record</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-sm btn-secondary m-btn m-btn--icon">
+                            <span>
+                                @*<i data-value="1" class="entity-pie form-control form-control-sm m-input"></i>*@
+                                <span>Set Business Unit</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-sm btn-secondary m-btn m-btn--icon">
+                            <span>
+                                @*<i data-value="1" class="entity-pie form-control form-control-sm m-input"></i>*@
+                                <span>Set Parent Child</span>
+                            </span>
+                        </button>
+                        <button class="btn btn-sm btn-secondary m-btn m-btn--icon">
+                            <span>
+                                @*<i data-value="1" class="entity-pie form-control form-control-sm m-input"></i>*@
+                                <span>Set Organization</span>
+                            </span>
+                        </button>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 pull-right">
+                    <form id="form-search-dt_basic_role_access">
+                        <div class="input-group pull-right">
+                            <input autocomplete="off" type="text" name="q" class="form-control form-control-sm m-input searchbox" placeholder="Search">
+                            <div class="input-group-prepend"><span class="input-group-text input-group-sm"><i class="la la-search"></i></span></div>
+                        </div>
+                    </form>
+                    
+                    <label class="m-checkbox">
+                        <input type="checkbox" name="is_locked_column" class="m-checkbox"> Lock Entity Column
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-portlet__body row">
+        <div class="row">
+            <div id="gridRoleAccess"></div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script src="~/Areas/Core/Scripts/RoleAccess.SetupRoleAccess.js?@DateTime.Now" asp-append-version="true"></script>

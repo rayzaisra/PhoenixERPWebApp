@@ -1,0 +1,93 @@
+﻿<input hidden id="detail-id" value="@ViewBag.RecordID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-item-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Item Stock</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Company/Item Stock")" class="m-nav__link">
+                        <span class="m-nav__link-text">Item Stock</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <form id="form-itemstock" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                    <input hidden name="id" value="@ViewBag.RecordID" />
+                    <div class="m-portlet__body">
+                        <div class="m-form__group">
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Item :</label>
+                                        <select id="item_id" name="item_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Warehouse :</label>
+                                        <select id="warehouse_id" name="warehouse_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Unit :</label>
+                                        <select id="uom_id" name="uom_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Quantity :</label>
+                                        <input name="qty" type="text" class="form-control form-control-sm m-input" placeholder="Enter Quantity">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                        <div class="m-form__actions m-form__actions--solid">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a href="@Url.Content("~/Company/ItemStock")" class="btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Areas/Company/Scripts/ItemStock.Detail.js"></script>
+}

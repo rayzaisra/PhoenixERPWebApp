@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "EmployeeCampaign";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="EmployeeCampaignFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label><span class="translate" data-args="client_brief_id">client_brief_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="client_brief_id" id="client_brief_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_date" id="end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="file_upload">file_upload</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="file_upload" id="file_upload"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="notes" id="notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="start_date" id="start_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="subcampaign_id">subcampaign_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="subcampaign_id" id="subcampaign_id"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/EmployeeCampaign" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/EmployeeCampaign.create.js"></script>
+}

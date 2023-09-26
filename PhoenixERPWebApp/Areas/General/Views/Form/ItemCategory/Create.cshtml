@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "ItemCategory";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="ItemCategoryFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="category_name">category_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="category_name" id="category_name"  maxlength="400" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="organization_id">organization_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="organization_id" id="organization_id"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/ItemCategory" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/ItemCategory.create.js"></script>
+}

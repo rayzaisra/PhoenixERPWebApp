@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "TravelDestination";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="TravelDestinationFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="arrangement_type">arrangement_type</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="arrangement_type" id="arrangement_type"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="place_of_visit">place_of_visit</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="place_of_visit" id="place_of_visit"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_id">travel_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="travel_id" id="travel_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_mode">travel_mode</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="travel_mode" id="travel_mode"  maxlength="60" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/TravelDestination" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/TravelDestination.update.js"></script>
+}

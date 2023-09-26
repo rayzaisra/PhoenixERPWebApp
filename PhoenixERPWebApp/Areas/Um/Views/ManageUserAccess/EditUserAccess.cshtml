@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Manage User Access</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Settings</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Um/MappingGroupUser")" class="m-nav__link">
+                        <span class="m-nav__link-text">Mapping Group & User</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Edit User Access</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h5>EDIT USER ACCESS</h5>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @*<div class="m-portlet__body" id="m_blockui_list" style="max-height:400px;overflow-x:auto">*@
+                    <!--begin: Datatable -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="label-block">GROUP</label><br />
+                                <input id="tbGroup" class="form-control form-control-sm" style="text-transform:uppercase" disabled />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="label-block">USER</label><br />
+                                <input id="tbUser" class="form-control form-control-sm" style="text-transform:uppercase" disabled />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-lg-12" id="dvLgm">
+
+                            </div>
+
+                            <div class="clearfix"></div>
+                            &nbsp;&nbsp;<button class="btn btn-primary btn-sm pull-right btn-save-data">
+                                <i class="fa fa-back"></i> SAVE
+                            </button>&nbsp;&nbsp;
+                            <button class="btn btn-default btn-sm pull-right btn-back">
+                                <i class="fa fa-back"></i> BACK
+                            </button>&nbsp;&nbsp;
+                            <div class="clearfix"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Areas/Um/Scripts/TmUserAccess-editedperuser.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            var dt = sessionStorage.getItem('uniquePage');
+            dt = JSON.parse(dt);
+            if (dt !== null) {
+                if (dt.isAdd === false) {
+                    $('.btn-save-data').hide();
+                }
+            }
+
+        });
+    </script>
+
+}
+
+

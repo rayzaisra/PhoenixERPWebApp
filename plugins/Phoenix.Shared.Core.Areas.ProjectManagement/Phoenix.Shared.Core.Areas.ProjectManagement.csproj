@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>%24/phoenix/PhoenixERPWebApp/plugins/Phoenix.Shared.Core.Areas.ProjectManagement</SccProjectName>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccAuxPath>https://dev.azure.com/arganthajkt</SccAuxPath>
+    <SccLocalPath>.</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ApiControllers\PettyCashsController.cs" />
+    <Compile Remove="Dtos\PettyCashsDto.cs" />
+    <Compile Remove="Services\PettyCashServices.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Selects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.14" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2019.1.115" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Phoenix.Shared.Core.Areas.General\Phoenix.Shared.Core.Areas.General.csproj" />
+    <ProjectReference Include="..\Phoenix.Shared.Core.Areas.Hris\Phoenix.Shared.Core.Areas.Hris.csproj" />
+    <ProjectReference Include="..\Phoenix.Shared.Core\Phoenix.Shared.Core.csproj" />
+    <ProjectReference Include="..\Phoenix.Shared\Phoenix.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+  </ItemGroup>
+</Project>

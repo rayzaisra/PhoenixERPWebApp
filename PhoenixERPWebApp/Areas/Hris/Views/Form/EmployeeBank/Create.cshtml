@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = "EmployeeBank";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="EmployeeBankFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="account_name">account_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="account_name" id="account_name"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="account_no">account_no</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="account_no" id="account_no"  maxlength="60" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bank_address">bank_address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bank_address" id="bank_address"  maxlength="10" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bank_city">bank_city</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bank_city" id="bank_city"  maxlength="10" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bank_id">bank_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bank_id" id="bank_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="branch">branch</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="branch" id="branch"  maxlength="10" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="currency_id">currency_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="currency_id" id="currency_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_date" id="end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="start_date" id="start_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="sub_bank_id">sub_bank_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="sub_bank_id" id="sub_bank_id"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/EmployeeBank" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/EmployeeBank.create.js"></script>
+}

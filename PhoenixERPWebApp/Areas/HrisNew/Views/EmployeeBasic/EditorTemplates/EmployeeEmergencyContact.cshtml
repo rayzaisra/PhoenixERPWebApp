@@ -1,0 +1,95 @@
+@model PhoenixERPWebApp.Models.EmployeeEmergencyContact
+<!-- BEGIN: Subheader -->
+<!-- MODAL REMOTE -->
+<style>
+	.k-animation-container, .k-widget, .k-widget *, .k-animation-container *, .k-widget *:before, .k-animation-container *:after {
+		box-sizing: border-box !important;
+	}
+
+	/*k-popup-edit-form k-window-content k-content*/
+	.k-window-titlebar k-header, div.k-edit-form-container{
+		width: 820px;
+		/*padding:0px !important;*/
+	}
+
+	table {
+		border: none;
+		padding: 5px 20px;
+		width: 100%;
+		position:center;
+	}
+
+		table tr > td {
+			width: 50%;
+			padding: 0px 20px;
+		}
+</style>
+<div class="k-content">
+	<div class="row">
+		<div class="col-sm-12">
+			<table>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="EmergencyFamilyStatusId"></label><span class="req">*</span> :
+							@(Html.Kendo().DropDownListFor(m => m.EmergencyFamilyStatusId)
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.OptionLabel($"choose a {Html.DisplayNameFor(m => m.EmergencyFamilyStatusId)}")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;",
+									required = "required",
+									validationmessage = $"{Html.DisplayNameFor(m => m.EmergencyFamilyStatusId)} is required"
+								})
+								.Height(400)
+								.Filter(FilterType.Contains)
+								.DataSource(source => source
+									.Custom()
+									.Transport(transport => transport
+										.Read(read =>
+										{
+											read.Action("GetDDLFamilyStatus", "Dropdown", new { area = "hrisnew" });
+										}))
+								.ServerFiltering(false))
+							)
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="EmergencyPhoneNo"></label> <span class="req">*</span> :
+							@(Html.Kendo().TextBoxFor(x => x.EmergencyPhoneNo).HtmlAttributes(new { style = "width:100%", @maxlength = 50, required = "required" }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="EmergencyFullName"></label> :
+							@(Html.Kendo().TextBoxFor(x => x.EmergencyFullName).HtmlAttributes(new { style = "width:100%", @maxlength = 100 }))
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="EmergencyOtherNo"></label> :
+							@(Html.Kendo().TextBoxFor(x => x.EmergencyOtherNo).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="EmergencyAddress"></label> :
+							@Html.TextAreaFor(x => x.EmergencyAddress, new { @class = "k-textbox", @maxlength = 2000, style = "width: 100%;padding:0.5em" })
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							
+						</div>
+					</td>
+				</tr>				
+			</table>
+		</div>
+	</div>
+</div>

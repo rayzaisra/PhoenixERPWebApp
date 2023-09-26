@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "EmployeeExperience";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="EmployeeExperienceFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="address">address</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="address" id="address" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_date" id="end_date" required maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="legal_entity_id">legal_entity_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="legal_entity_id" id="legal_entity_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="phone">phone</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="phone" id="phone" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="position_id">position_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="position_id" id="position_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="start_date" id="start_date" required maxlength="100" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/EmployeeExperience" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/EmployeeExperience.update.js"></script>
+}

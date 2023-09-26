@@ -1,0 +1,52 @@
+@{
+    ViewBag.ModalTitle = "CostCenter";
+    ViewBag.ModalId = "CostCenterModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="CostCenterFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="activity_id">activity_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_activity_id" id="search_activity_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="cost_id">cost_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_cost_id" id="search_cost_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_periode">end_periode</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_end_periode" id="search_end_periode"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="percentage">percentage</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_percentage" id="search_percentage"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="periode">periode</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_periode" id="search_periode"   type="number">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnCostCenter.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnCostCenter.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

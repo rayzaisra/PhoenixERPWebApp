@@ -1,0 +1,128 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .modal .modal-content .modal-header{
+        padding:15px;
+    }
+</style>
+<div class="modal-dialog modal-lg modallargewidth">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">List Budget - <label id="hdDivisionName"></label></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="m-form__group">
+                <form id="form-vendor-detail">
+                    @*<div class="row ">
+                        <div class="col-lg-8"><div class="pull-right">Filter</div></div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("filertHrisDivisionId")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .Events(evt=>evt.Change("filterCoaLv5_select"))
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetDivisionHris", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel(new
+                                    {
+                                        Text = "Select Division...",
+                                        Value = ""
+                                    })
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                            </div>
+                        </div>
+                    </div>*@
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group m-form__group row m-row--no-padding">
+                                <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+
+                                    <div class="alert m-alert--default" role="alert">
+                                        List Item Data  If you want update inventory request, Please go to Previouslly Step
+                                    </div>
+                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.BudgetMaster>()
+                                        .Name("grid-budget")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(p => p.CodeRec).Width(150).Title("Account Code");
+                                            columns.Bound(p => p.AccountCOALv5).Title("Account Name").Width(250);
+                                            columns.Bound(p => p.TotalBudget).Width(200).Format("{0:n2}").HtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.TotalAcrBudget).Width(200).Format("{0:n2}").HtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.TotalBudgetBalanceAcr).Width(250).Format("{0:n2}").HtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.TotalRealBudgetAcr).Width(200).Format("{0:n2}").HtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.TotalBudgetBalanceReal).Width(250).Format("{0:n2}").HtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.TotalBudgetUsed).Width(200).Format("{0:n2}").HtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.TotalBudgetBalance).Width(250).Format("{0:n2}").HtmlAttributes(new { style = "text-align:right;" });
+
+                                        })
+                                       .Pageable(pageable => pageable
+                                        .Refresh(true)
+                                        .PageSizes(true)
+                                        .ButtonCount(5))
+                                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                            .Extra(false)
+                                            .Operators(operators => operators
+                                            .ForString(str => str.Clear()
+                                            .Contains("Contains")
+                                            .StartsWith("Start sWith")
+                                            .EndsWith("End sWith")
+                                        )))
+                                        .NoRecords()
+                                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                        .Resizable(rsz => rsz.Columns(true))
+                                        .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(10)
+                                            .Events(events => events.Error("errorHandler"))
+                                            .Model(model => { model.Id(p => p.Id); })
+                                            .Read(read => read.Action("ReadBudget", "PurchaseRequest").Data("grid_budget_params"))
+                                            //.Create(create => create.Action("CreateBudget", "PurchaseRequest"))
+                                            //.Update(update => update.Action("UpdateBudget", "PurchaseRequest"))
+                                            //.Destroy(destroy => destroy.Action("DestroyBudget", "PurchaseRequest"))
+                                        )
+                                        //.Events(e => e.Save("saveRquestForQuotationDetailList"))
+                                        .NoRecords()
+                                    )
+                                    <script type="text/x-kendo-template" id="template">
+                                        <div class="col-lg-3">
+                                            <div class="k-upload-init-progress">
+                                                <h6>Loading...</h6>
+                                            </div>
+                                        </div>
+                                        <input name="files" class="file-upload" id="files_#=id #" type="file" style="display:none" />
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+        </div>
+    </div>
+</div>
+
+

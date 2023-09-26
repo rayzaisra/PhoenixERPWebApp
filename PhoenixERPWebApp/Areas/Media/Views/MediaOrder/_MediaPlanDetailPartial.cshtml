@@ -1,0 +1,255 @@
+﻿@model PhoenixERPWebApp.Models.Media.MediaOrder.MediaOrderHeader
+
+<div class="row" id="request_data_detail" style="display:block">
+    <div class="col-lg-12 m-row--no-padding">
+        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="request_detail" role="tablist">
+            <!--begin::Item-->
+            <div class="m-accordion__item">
+                <div class="m-accordion__item-head" role="tab" id="request_detail_head" data-toggle="collapse" href="#request_detail_body" aria-expanded="true">
+                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                    <span class="m-accordion__item-title">Job Detail</span>
+                    <span class="m-accordion__item-mode"></span>
+                </div>
+                <div class="m-accordion__item-body show" id="request_detail_body" role="tabpanel" aria-labelledby="request_detail_head" data-parent="#request_detail" style="">
+                    <div class="m-accordion__item-content">
+                        <form id="form-detail_plan" class="form-horizontal form-bordered" method="post" role="form" enctype="multipart/form-data">
+                            @(Html.Kendo().TextBoxFor(m=>m.PlanHeaders.Id).HtmlAttributes(new { @style = "display:none"}))
+                            <div class="row">
+
+                                <div class="col-lg-6 col-sm-6 col-xs-12 m-form__group-sub">
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Media Plan Number</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @Html.Kendo().TextBoxFor(m => m.PlanHeaders.PlanNo).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Job-ID Name</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.JobID)
+                                                           .DataTextField("Text")
+                                                           .DataValueField("Value")
+                                                           .DataSource(source =>
+                                                           {
+                                                               source.Read(read =>
+                                                               {
+                                                                   read.Action("GetDDLJobId", "DropDown", new { area = "Finance" });
+                                                               });
+                                                           })
+                                                           .HtmlAttributes(new { style = "width:100%;" , @readonly="readonly"})
+                                            )
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">MainService Category</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.MainServiceCategoryID)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .DataSource(source =>
+                                                            {
+                                                                source.Read(read =>
+                                                                {
+                                                                    read.Action("GetDDLMainServiceCategory", "DropDown", new { area = "Finance" });
+                                                                });
+                                                            })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Division</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.DivisionId)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .DataSource(source =>
+                                                            {
+                                                                source.Read(read =>
+                                                                {
+                                                                    read.Action("GetDivision", "DropDown", new { area = "Finance" });
+                                                                });
+                                                            })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Legal Entity</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.LegalEntityID)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .DataSource(source =>
+                                                            {
+                                                                source.Read(read =>
+                                                                {
+                                                                    read.Action("GetLegalEntity", "DropDown", new { area = "Finance" });
+                                                                });
+                                                            })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Affiliation</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.AffiliationID)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .DataSource(source =>
+                                                            {
+                                                                source.Read(read =>
+                                                                {
+                                                                    read.Action("GetAffiliation", "DropDown", new { area = "Finance" });
+                                                                });
+                                                            })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-6 col-sm-6 col-xs-12 m-form__group-sub">
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Client Name</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.ClientID)
+                                                          .DataTextField("Text")
+                                                          .DataValueField("Value")
+                                                          .DataSource(source =>
+                                                          {
+                                                              source.Read(read =>
+                                                              {
+                                                                  read.Action("GetDDLClient", "DropDown", new { area = "Media" });
+                                                              });
+                                                          })
+                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Client Brand</label>
+                                        <div class="input-group input-group-sm col-sm-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.BrandID)
+                                                    .DataTextField("Text")
+                                                    .DataValueField("Value")
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetDDLBrand", "DropDown", new { area = "Media" });
+                                                        });
+                                                    })
+                                                    .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Media Type</label>
+                                        <div class="input-group input-group-sm col-sm-3">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.TypeID)
+                                                    .DataTextField("Text")
+                                                    .DataValueField("Value")
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetDDLMediaType", "DropDown", new { area = "Media" });
+                                                        });
+                                                    })
+                                                    .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+                                        </div>
+
+                                        <div class="input-group input-group-sm col-sm-3">
+                                            <label></label> :<br />
+                                            @(Html.Kendo().RadioButton().Name("Campaign1").Value("1").Checked(Model.PlanHeaders.Campaign == true).HtmlAttributes(new { @name = "Campaign", @disabled = true }).Label("Yes"))
+
+                                            @(Html.Kendo().RadioButton().Name("Campaign2").Value("0").Checked(Model.PlanHeaders.Campaign == false).HtmlAttributes(new { @name = "Campaign", @disabled = true }).Label("No"))
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-sm-3">Currency</label>
+                                        <div class="input-group input-group-sm col-sm-3">
+                                            @(Html.Kendo().DropDownListFor(m => m.PlanHeaders.CurrencyID)
+                                                     .DataTextField("Text")
+                                                     .DataValueField("Value")
+                                                     .DataSource(source =>
+                                                     {
+                                                         source.Read(read =>
+                                                         {
+                                                             read.Action("GetDDLCurrency", "DropDown", new { area = "Finance" });
+                                                         });
+                                                     })
+                                                     .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            )
+                                        </div>
+
+                                        <label class="col-form-label col-sm-3">Exchange</label>
+                                        <div class="input-group input-group-sm col-sm-3">
+                                            @Html.Kendo().TextBoxFor(m => m.PlanHeaders.Exchange).HtmlAttributes(new { required = "required", @class = "form-control form-control-sm k-textbox", @readOnly = true })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="m-portlet__body" id="m_blockui_list">
+                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Media.MediaPlanEstimates.MediaPlanDetail>()
+                                             .Name("grid-media-plan-detail")
+                                             //.ToolBar(x =>
+                                             //{
+                                             //    x.ClientTemplateId("grid-toolbar-template");
+                                             //})
+                                             .Columns(columns =>
+                                             {
+                                                 columns.Select().ClientHeaderTemplate(" ").Width(100);
+                                                 columns.Bound(p => p.Id).Title("Task ID").Width(200).Hidden();
+                                                 columns.Bound("").ClientTemplate("#= LinkToViewDetailPlan(data) #").Title("Task ID").Width(200);
+                                                 columns.Bound(p => p.Revision).Title("Revision").Width(200);
+                                                 columns.Bound("").ClientTemplate("#= LinktoDownload(data) #").Title("File Upload").Width(200);
+                                                 columns.Bound(p => p.FileName).Title("File Upload").Width(150).Hidden();
+                                                 columns.Bound(p => p.GrossAmount).Title("Sub Total Gross").Format("{0:N}").Width(150);
+                                                 columns.Bound(p => p.NettPaid).Title("Net Paid").Format("{0:N}").Width(150);
+                                                 columns.Bound(p => p.ASFValue).Title("ASF").Format("{0:N}").Width(150);
+                                                 columns.Bound(p => p.NettAmount).Title("Total").Format("{0:N}");
+                                                 columns.Bound(p => p.VatValue).Title("VAT").Format("{0:N}");
+                                                 columns.Bound(p => p.TotalNettAmount).Title("Grand Total").Format("{0:N}");
+                                                 columns.Bound(p => p.StartPeriode).Title("Start Date").Format("{0:MM dd, yyyy}");
+                                                 columns.Bound(p => p.EndPeriode).Title("End Date").Format("{0:MM dd, yyyy}");
+                                                 columns.Bound(p => p.ASFPercent).Title("").Hidden();
+                                                 columns.Bound(p => p.FileMasterId).Title("file id").Hidden();
+
+                                             })
+
+                                            .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(10)
+                                            //.Events(events => events.Error("errorHandler"))
+                                            .Model(model => { model.Id(p => p.Id); })
+                                            .Read(read => read.Action("ReadDetailMediaPlan", "mediaorder", new { headerId = Model.PlanHeaders.Id }))
+                                            )
+                                            .NoRecords()
+                                    )
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

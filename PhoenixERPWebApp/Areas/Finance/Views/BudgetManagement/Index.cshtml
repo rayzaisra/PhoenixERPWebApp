@@ -1,0 +1,1017 @@
+﻿@{
+    ViewData["Title"] = "Budget Management";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<input hidden id="detail-id" value="@ViewBag.RecordID" />
+<style>
+    tr:nth-child(even) {
+        background: #ebebe0
+    }
+
+    tr:nth-child(odd) {
+        background: #FFF
+    }
+
+    td {
+        white-space: nowrap;
+    }
+
+    .account {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .percent_width {
+        width: 90px;
+    }
+
+    td {
+        padding: 4px !important;
+    }
+
+    input {
+        height: 30px !important;
+    }
+
+    .file {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tombol {
+        position: absolute;
+        font-size: 50px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Budget Management</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/BudgetManagement")" class="m-nav__link">
+                        <span class="m-nav__link-text">Budget Management</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <!--NEW -->
+        <div class="col-xl-12 col-lg-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--last m-portlet--head-sm m-portlet--responsive-mobile" id="main_portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    Budget Management &nbsp;
+                                    <span id="status"></span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <button class="go-back btn btn-sm m-btn--sm btn-secondary m-btn m-btn--icon m-btn--wide m--margin-right-10">
+                                <span>
+                                    <i class="la la-arrow-left"></i>
+                                    <span>Back</span>
+                                </span>
+                            </button>
+                            <a href="@Url.Content("~/Finance/PurchaseOrder")" class="go-back btn btn-sm m-btn--sm btn-secondary m-btn m-btn--icon m-btn--wide m--margin-right-10">
+                                <span>
+                                    <i class="la la-arrow-left"></i>
+                                    <span>Close</span>
+                                </span>
+                            </a>
+                            <button type="button" id="btn-save" class="btn btn-sm m-btn--sm btn-info m-btn m-btn--icon m-btn--wide m--margin-right-10">
+                                <span>
+                                    <i class="la la-save"></i>
+                                    <span>Save to Draft</span>
+                                </span>
+                            </button>
+                            <button style="display:none" type="button" id="btn-submit" class="btn btn-sm m-btn--sm btn-primary m-btn m-btn--icon m-btn--wide m--margin-right-10">
+                                <span>
+                                    <i class="la la-save"></i>
+                                    <span>Submit</span>
+                                </span>
+                            </button>
+                            <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <input hidden name="approval_id" />
+                      <div class="m-portlet__body">
+                        <!--begin::Form-->
+                          <form id="form" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="budgetmanagement" asp-area="finance">
+                              <input hidden name="id" value="@ViewBag.RecordID" />
+
+                              <div class="form-group row">
+                                  <label for="staticEmail" class="col-sm-2 col-form-label">Business Unit</label>
+                                  <div class="col-sm-3">
+                                      <select class="form-control selectpicker" data-live-search="true">
+                                          <option value="Annual">All</option>
+
+
+                                      </select>
+                                  </div>
+                                  <div class="col-sm-2">
+                                  </div>
+
+                                  <label for="staticEmail" class="col-sm-2 col-form-label">Date Created</label>
+                                  <div class="col-sm-3">
+                                      <input type="text" class="form-control date-picker">
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <label for="staticEmail" class="col-sm-2 col-form-label">Division</label>
+                                  <div class="col-sm-3">
+                                      <select class="form-control selectpicker" data-live-search="true">
+                                          <option value="Annual">All</option>
+
+
+                                      </select>
+                                  </div>
+                                  <div class="col-sm-2">
+                                  </div>
+
+                                  <label for="staticEmail" class="col-sm-2 col-form-label">Budget Period</label>
+                                  <div class="col-sm-3">
+                                      <select class="form-control selectpicker" data-live-search="true">
+                                          <option value="Annual">2019</option>
+                                          <option value="Annual">2018</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <label for="staticEmail" class="col-sm-2 col-form-label">Budget Revision</label>
+                                  <div class="col-sm-3">
+                                      <select class="form-control selectpicker" data-live-search="true">
+                                          <option value="Annual">1 ( 3 + 9 )</option>
+                                          <option value="Annual">2 ( 6 + 6 )</option>
+                                          <option value="Annual">3 ( 9 + 3 )</option>
+
+
+                                      </select>
+                                  </div>
+                                  <div class="col-sm-2">
+                                  </div>
+                                  <label for="staticEmail" class="col-sm-2 col-form-label">Rollback Plan</label>
+                                  <div class="col-sm-3">
+                                      <select class="form-control selectpicker" data-live-search="true">
+                                          <option value="Annual">1</option>
+                                          <option value="Annual">2</option>
+                                          <option value="Annual">3</option>
+
+
+                                      </select>
+                                  </div>
+                              </div>
+                              <!-- End: Header -->
+                              <!-- Begin: Table Budget -->
+                              <div class="row">
+                                  <div class="col-lg-12 m-row--no-padding">
+                                      <label><h5>Profit And Loss</h5></label>
+                                      <div class="m-section__content">
+                                          <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                              <div class="m-demo__preview">
+                                                  <!-- #region Table Code -->
+                                                  <table style="display:inline-block;" class="table table-responsive table-bordered m-table m-table--head-bg-success display" id="tabelDouble">
+                                                      <thead>
+                                                          <tr>
+                                                              <th style="text-align: center;"> </th>
+                                                              <th style="text-align: center;">ACCOUNT </th>
+                                                              <th style="text-align: center;" nowrap>BRAND COM A</th>
+                                                              <th style="text-align: center; ">%</th>
+                                                              <th style="text-align: center;" nowrap>BRAND COM B</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;" nowrap>RELATIONSHIP MARKETING</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;">SAMPLING</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;">PATHFINDER</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;" nowrap>TOTAL IRIS GROUP</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;" nowrap>TRADE MARKETING</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;">INTERFACE</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;" nowrap>TOTAL INTERFACE</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;">SKOR</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;" nowrap>TOTAL SKOR</th>
+                                                              <th style="text-align: center;">%</th>
+                                                              <th style="text-align: center;">CENTRAL</th>
+                                                              <th style="text-align: center;" nowrap>NAVAPLUS GROUP</th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                          <tr class="odd">
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class="navigate"><i class="fa fa-plus-square"></i></td>
+                                                              <td class="account">REVENUE</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class="navigate_b"><i class="fa fa-plus-square"></i></td>
+                                                              <td nowrap class="account">DIRECT STAFF COST</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control percent_width"></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+
+                                                              <td nowrap class="account">Navaplus Charges (*) Staff Cost</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Navaplus Charges (*) Non Staff Cost</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Stationary / Office Supply</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Communication</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Misc Operation Exp</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Marketing And Promotion</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Traveling and transportation</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Depreciation and Amortization</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Rental and Building Maintenance</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Water and Electricity</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+                                                              <td nowrap class="account">Profesional and Legal Fees</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+
+                                                              <td class="account">Finance Expenses - Net</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td class="account">Other Income</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <!-- <tr>
+                                        <td style="background: #b3b3b3;" colspan=26></td>
+                                </tr> -->
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td class="account">TOTAL EXPENSES</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="odd">
+                                                              <td class=""></td>
+                                                              <td></td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                          <tr class="even">
+                                                              <td class=""></td>
+                                                              <td class="account">PROFIT AND LOSS BEFORE TAX</td>
+                                                              <td><input type="text" class="form-control numeric" style=""></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control percent_width" placeholder="%"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                              <td><input type="text" class="form-control numeric"></td>
+                                                          </tr>
+                                                      </tbody>
+                                                  </table>
+                                                  <!-- #endregion -->
+
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- End: Table Budget -->
+                              <div class="row">
+                                  <hr>
+                                  <div class="col-lg-6">
+                                      <div class="form-group" style="text-align: left;">
+                                          @Html.Kendo().Upload().Name("file").Multiple(false)
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                      &nbsp;
+                                  </div>
+                              </div>
+                              <!-- #endregion -->
+                         
+                            <!-- #region tombol -->
+                            <div class="row">
+                                <hr>
+                                <br><hr>
+                                <div class="col-lg-6">
+                                    <div class="form-group" style="text-align: left;">
+                                        <div class="file btn btn-primary">
+                                            <i class="fa fa-folder"></i> Upload
+                                            <input type="file" class="tombol" name="file22" />
+                                        </div>
+                                        <button type="button" class="btn btn-info" id="btn-save1"><i class="fa fa-save"></i> Save</button>
+                                        <button type="button" class="btn btn-success"><i class="fa fa-location-arrow"></i>  Submit</button>
+                                        <button type="button" class="btn btn-warning"><i class="fa fa-check"></i>  Activate</button>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group" style="text-align: right;">
+                                        <button type="button" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+                                        <button type="button" class="btn btn-success"><i class="fa fa-location-arrow"></i>  Export</button>
+                                        <button type="button" class="btn btn-danger"><i class="fa fa-times-circle "></i>  Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- #endregion -->
+                        </form>
+
+
+                    </div>
+            </div>
+
+            <!--end::Portlet-->
+        </div>
+        <!--END::NEW-->
+
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div class="modal-container"></div>
+<script>
+    var param = (function (param) {
+        param.processUrl = "@Url.Action("Process", "BudgetManagement")";
+        param.saveUrl = "@Url.Action("Save", "BudgetManagement")";
+        param.submitUrl = "@Url.Action("Submit", "BudgetManagement")";
+        return param;
+    })(param || {});
+    (function ($) {
+        'use strict';
+        var pageFunction = (function (pageFunction) {
+            pageFunction.init = function () {
+                //initialize
+            };
+            pageFunction.process = function () {
+                callActionFile({ formId: "form", title: "process", type: "POST", url: param.processUrl });
+            };
+            pageFunction.save = function () {
+                callActionFile({ formId: "form", title: "save", type: "POST", url: param.saveUrl });
+            };
+            pageFunction.submit = function () {
+                callActionFile({ formId: "form", title: "submit", type: "POST", url: param.submitUrl });
+            };
+            return pageFunction;
+        })(pageFunction || {});
+
+        $(document).ready(function () {
+            pageFunction.init();
+            //$('#btn-process').click(pageFunction.process);
+            $('#btn-save1').click(pageFunction.process);
+            //$('#btn-submit').click(pageFunction.submit);
+        });
+
+    }(jQuery));
+</script>

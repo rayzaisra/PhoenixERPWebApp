@@ -1,0 +1,282 @@
+@model PhoenixERPWebApp.Models.EmployeeBasicInfo
+@{
+	ViewData["Title"] = "Employee Attendance";
+	Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+	<div class="d-flex align-items-center">
+		<div class="mr-auto">
+			<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+				<li class="m-nav__item m-nav__item--home">
+					<a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+						<i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+					</a>
+				</li>
+				<li class="m-nav__item">
+					<a href="javascript:return;" class="m-nav__link">
+						<span class="m-nav__link-text">HRIS</span>
+					</a>
+				</li>
+				<li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+				<li class="m-nav__item">
+					<a asp-action="index" asp-controller="attendance" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Attendance</span></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="m-portlet m-portlet--head-sm" m-portlet="true">
+				<div class="m-portlet__head">
+					<div class="m-portlet__head-caption">
+						<div class="m-portlet__head-title">
+							<div>
+								<h3 class="m-portlet__head-text m--font-success">Employee Attendance</h3>
+							</div>
+						</div>
+					</div>
+					<div class="m-portlet__head-tools">
+						<div class="btn-group" role="group">
+							<div class="col-lg-12">
+								<form id="form-search-dt_basic_eui">
+									<div class="input-group input-group-sm">
+
+									</div>
+								</form>
+							</div>
+						</div>
+						<ul class="m-portlet__nav">
+							<li class="m-portlet__nav-item">
+								<a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+								<div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="m-portlet__body" id="m_blockui_list">
+					@*<div class="row">
+						<div class="col-lg-4 m-form__group-sub">
+							<div class="form-group">
+								<label>Employee ID</label> :
+								@(Html.Kendo().TextBoxFor(m => m.Id)
+									.HtmlAttributes(new
+									{
+										style = "width:100%",
+										@readonly = "readonly",
+										@class = "form-control form-control-sm m-input",
+									}))
+							</div>
+						</div>
+						<div class="col-lg-4 m-form__group-sub">
+							<div class="form-group">
+								<label asp-for="NameEmployee"></label> :
+								@(Html.Kendo().TextBoxFor(m => m.NameEmployee)
+									.HtmlAttributes(new
+									{
+										style = "width:100%",
+										@readonly = "readonly",
+										@class = "form-control form-control-sm m-input",
+									}))
+							</div>
+						</div>
+						<div class="col-lg-4 m-form__group-sub">
+							<div class="form-group">
+								<label asp-for="JobTitle"></label> :
+								@(Html.Kendo().TextBoxFor(m => m.JobTitle)
+								.HtmlAttributes(new
+								{
+									style = "width:100%",
+									@readonly = "readonly",
+									@class = "form-control form-control-sm m-input",
+								}))
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4 m-form__group-sub">
+							<div class="form-group">
+								<label asp-for="JobGrade"></label> :
+								@(Html.Kendo().TextBoxFor(m => m.JobGrade)
+									.HtmlAttributes(new
+									{
+										style = "width:100%",
+										@readonly = "readonly",
+										@class = "form-control form-control-sm m-input",
+									}))
+							</div>
+						</div>
+						<div class="col-lg-4 m-form__group-sub">
+							<div class="form-group">
+								<label asp-for="Email"></label> :
+								@(Html.Kendo().TextBoxFor(m => m.Email)
+									.HtmlAttributes(new
+									{
+										style = "width:100%",
+										@readonly = "readonly",
+										@class = "form-control form-control-sm m-input",
+									}))
+							</div>
+						</div>
+					</div>
+					<hr />*@
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<b><label>ClockIn From</label> </b>:
+								@*@(Html.Kendo().DatePicker().Name("FilterMonth").Start(CalendarView.Year).Depth(CalendarView.Year).Format("MMM").Value(DateTime.Today)*@
+								@(Html.Kendo().DatePicker().Name("FilterMonth").Format("dd MMM yyyy").Value(DateTime.Today.AddDays(-3))
+								.HtmlAttributes(new
+								{
+									style = "width:100%",
+									@class = "form-control form-control-sm m-input",
+								}))
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<b><label>To</label> </b>:
+								@*@(Html.Kendo().DatePicker().Name("FilterYear").Start(CalendarView.Decade).Depth(CalendarView.Decade).Format("yyyy").Value(DateTime.Today)*@
+								@(Html.Kendo().DatePicker().Name("FilterYear").Format("dd MMM yyyy").Value(DateTime.Today)
+								.HtmlAttributes(new
+								{
+									style = "width:100%",
+									@class = "form-control form-control-sm m-input",
+								}))
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<b><label for="isNotClockOut">Not Check Out</label> </b>:
+								@Html.CheckBox("isNotClockOut", false, new { @style = "height:20px;width:20px"})@*new { @class = "form-control form-control-sm" }*@
+							</div>
+						</div>
+						<div class="col-md-6"></div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<button type="button" id="btnSearch" class="btn btn-sm btn-success" style="width:80px">Filter</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							@*@(Html.Kendo().Grid<PhoenixERPWebApp.Models.Attendance>()
+								.Name("grid")
+								.Columns(columns =>
+								{
+									columns.Bound("").Title("#").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+									columns.Bound(p => p.ClockIn).Width(180);
+									columns.Bound(p => p.LocationIn).Width(200);
+									columns.Bound(p => p.Clockout).Width(180);
+									columns.Bound(p => p.LocationOut).Width(200);
+									columns.Bound(p => p.LateTime).Width(100).HtmlAttributes(new { style = "text-align:center;" });
+									columns.Bound(p => p.TotalHour).Width(130).HtmlAttributes(new { style = "text-align:center;" });
+								})
+								.NoRecords()
+								.Pageable(pageable => pageable
+									.Refresh(true)
+									.PageSizes(true)
+									.ButtonCount(5))
+								.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+								.Filterable(flt => flt.Enabled(false))
+								//.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+								//	.Extra(false)
+								//	.Operators(operators => operators
+								//	.ForString(str => str.Clear()
+								//		.Contains("Contains")
+								//		.StartsWith("Start sWith")
+								//		.EndsWith("End sWith")
+								//	)))
+								.Scrollable(s => s.Enabled(true).Height("auto"))
+								.Resizable(rsz => rsz.Columns(true))
+								.DataSource(dataSource => dataSource
+									.Ajax()
+									.PageSize(10)
+									.Events(events => events.Error("errorHandler"))
+									.Model(model => { model.Id(p => p.Id); })
+									.Read(read => read.Action("Read", "Attendance").Data("grid_params"))
+								)
+								.Events(e => e.DataBound("dataBoundEvent"))
+							)*@
+							@(Html.Kendo().Grid<PhoenixERPWebApp.Models.AttendanceReport>()
+								.Name("grid")
+								.Columns(columns =>
+								{
+									columns.Bound(p => p.EmployeeName).Width(200);
+									columns.Bound(p => p.DayIn).Width(80).Filterable(false);
+									columns.Bound(p => p.DateIn).Width(100).Filterable(false);
+									columns.Bound(p => p.DayOut).Width(100).Filterable(false);
+									columns.Bound(p => p.DateOut).Width(100).Filterable(false);
+									columns.Bound(p => p.WorkingHour).Width(150).Filterable(false);
+									columns.Bound(p => p.EarlyIn).Width(100).Filterable(false);
+									columns.Bound(p => p.EarlyOut).Width(100).Filterable(false);
+									columns.Bound(p => p.LateIn).Width(100).Filterable(false);
+									columns.Bound(p => p.LateOut).Width(100).Filterable(false);
+									columns.Bound(p => p.TotalHour).Width(120).Filterable(false);
+								})
+								.NoRecords()
+								.Pageable(pageable => pageable
+									.Refresh(true)
+									.PageSizes(true)
+									.ButtonCount(5))
+								.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+								.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+									.Extra(false)
+									.Operators(operators => operators
+									.ForString(str => str.Clear()
+										.Contains("Contains")
+										.StartsWith("Start sWith")
+										.EndsWith("End sWith")
+									)))
+								.Scrollable(s => s.Enabled(true).Height("auto"))
+								.Resizable(rsz => rsz.Columns(true))
+								.DataSource(dataSource => dataSource
+									.Ajax()
+									.PageSize(10)
+									.Events(events => events.Error("errorHandler"))
+									.Model(model => { model.Id(p => p.Id); })
+									.Read(read => read.Action("Read", "Attendance").Data("grid_params"))
+								)
+							)
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function grid_params() {
+		var dtStart = $("#FilterMonth").data("kendoDatePicker").value();
+		var dtEnd = $("#FilterYear").data("kendoDatePicker").value();
+		var isNotClockOut = $("#isNotClockOut").is(":checked");
+		var valClockOutFlag = (isNotClockOut == true) ? 1 : 0;
+        return {
+        	dtStart: kendo.toString(dtStart, "yyyyMMdd"),
+        	dtEnd: kendo.toString(dtEnd, "yyyyMMdd"),
+        	isNotClockOut: valClockOutFlag
+        };
+	}
+
+	$('#btnSearch').click(function () {
+		mApp.block("#m_blockui_list", {
+			overlayColor: "#000000",
+			type: "loader",
+			state: "primary",
+			message: "Processing..."
+		});
+
+		$('#grid').data('kendoGrid').dataSource.read();
+
+		mApp.unblock("#m_blockui_list");
+	});
+</script>

@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "One Drive Office 365";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+<style>
+    .inbox .inbox-body, .inbox .inbox-sidebar {
+        padding: 20px;
+        border: 1px solid #e7ecf1;
+        border-radius: 4px;
+    }
+    .inbox .inbox-nav {
+        margin: 30px 0;
+        padding: 0;
+        list-style: none;
+    }
+        .inbox .inbox-nav > li {
+            padding: 0;
+            margin: 0;
+        }
+            .inbox .inbox-nav > li.active > a {
+                border-left: 4px solid #ed6b75;
+            }
+
+            .inbox .inbox-nav > li > a {
+                text-decoration: none !important;
+                display: block;
+                padding: 8px 16px;
+                border-left: 4px solid transparent;
+            }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Otlook Email</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">System</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Um/OneDriveOffice/listemail")" class="m-nav__link">
+                        <span class="m-nav__link-text">Outlook Email</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div class="div-breadcump">
+                                <h1 class="pull-left h-info-box">Inbox</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">
+                                    <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="inbox">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="inbox-sidebar">
+                                    <a href="javascript:openFormComposeEmail();" data-title="Compose" class="btn btn-danger btn-block btn-compose-email">
+                                        <i class="fa fa-edit"></i> Compose
+                                    </a>
+                                    <ul class="inbox-nav">
+                                        <li class="active li-inbox">
+                                            <a href="javascript:displayInbox();" data-type="inbox" data-title="Inbox">
+                                                Inbox
+                                                <span class="badge badge-success badge-inbox"></span>
+                                            </a>
+                                        </li>
+                                        <li class="li-sent">
+                                            <a href="javascript:displaySent();" data-type="sent" data-title="Sent"> Sent </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="inbox-body">
+
+                                    <div class="inbox-content" style="max-height:650px;overflow-x:auto">
+                                        <div class="div-content-inbox">
+                                            <partial name="_InboxList" />
+                                        </div>
+                                        <div class="div-content-sent" style="display:none">
+                                            <partial name="_SentList" />
+                                        </div>
+                                        <div class="div-content-message-email" style="display:none">
+                                            <partial name="_ContentMessageEmail" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_FormUpload" />
+@section Scripts{
+    <script src="~/Areas/Um/Scripts/olmail.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            var dt = sessionStorage.getItem('uniquePage');
+            dt = JSON.parse(dt);
+            if (dt !== null) {
+                if (dt.isRead) getInboxData();
+                if (dt.isAdd === false) {
+                    $('.btn-compose-email').hide();
+                }
+            }
+        });
+    </script>
+
+}
+
+

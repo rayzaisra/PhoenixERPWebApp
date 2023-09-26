@@ -1,0 +1,130 @@
+@{
+    ViewData["Title"] = "Leave Request Type";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Leave Request Type</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="leaverequesttype" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Leave Request Type</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <a asp-action="addedit" asp-controller="leaverequesttype" asp-area="hrisnew" class="m-btn btn btn-primary btn-sm m-btn--sm" title="Add New Record"><i class="la la-plus"></i></a>
+                                @*<button id="btn-delete" type="button" class="m-btn btn btn-danger btn-sm m-btn--sm" title="Delete Selection"><i class="la la-trash"></i></button>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.LeaveRequestType>()
+                        .Name("grid")
+                        .Columns(columns =>
+                        {
+                            columns.Command(command =>
+                            {
+                                command.Custom("").TemplateId("btnAction-template");
+                            }).Title("Action").HtmlAttributes(new { style = "text-align:center;" })
+                            .HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                            columns.Bound("").Title("#").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+
+                            columns.Bound(p => p.Name).Width(200);
+                            columns.Bound(p => p.MinimumWork).ClientTemplate("#=MinimumWork# month(s)").Width(200);
+                            columns.Bound(p => p.LeaveDurationInAYear).ClientTemplate("#=LeaveDurationInAYear# day(s)").Width(200);
+                            columns.Bound(p => p.GradeLevelEmployeeName).Width(200);
+                            columns.Bound(p => p.MaximumDaysInAMonth).ClientTemplate("#=MaximumDaysInAMonth# day(s)").Width(200);
+                            //columns.Bound(p => p.MinimumDurationLeave).ClientTemplate("#=MinimumDurationLeave# day(s)").Width(200);
+                            //columns.Bound(p => p.MaximumDurationLeave).ClientTemplate("#=MaximumDurationLeave# day(s)").Width(200);
+                            columns.Bound(p => p.IsCarryOver).ClientTemplate("#if(IsCarryOver){# Yes#}else{#No#}#").Width(200);
+                            columns.Bound(p => p.IsReduceBalance).ClientTemplate("#if(IsReduceBalance){# Yes#}else{#No#}#").Width(200);
+                            columns.Bound(p => p.IsPaidLeave).ClientTemplate("#if(IsPaidLeave){# Yes#}else{#No#}#").Width(200);
+                        })
+                        .NoRecords()
+                        .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                            .Extra(false)
+                            .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                                .Contains("Contains")
+                                .StartsWith("Start sWith")
+                                .EndsWith("End sWith")
+                            )))
+                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model => { model.Id(p => p.Id); })
+                            .Read(read => read.Action("Read", "LeaveRequestType"))
+                        )
+                        .Events(e => e.DataBound("dataBoundEvent"))
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:green'><i class='fa fa-edit'></i></span></a>
+    <a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+</script>
+<script>
+    function editGridRow(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("AddEdit", "LeaveRequestType")?Id=' + item.Id;
+    }
+
+    function deleteGridRow(e) {
+        deleteRow(e, '@Url.Action("Delete", "LeaveRequestType")');
+    }
+</script>

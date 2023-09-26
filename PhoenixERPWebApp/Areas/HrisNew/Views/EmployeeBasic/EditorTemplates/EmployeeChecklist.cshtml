@@ -1,0 +1,89 @@
+@model PhoenixERPWebApp.Models.EmployeeChecklist
+<!-- BEGIN: Subheader -->
+<!-- MODAL REMOTE -->
+<style>
+	.k-animation-container, .k-widget, .k-widget *, .k-animation-container *, .k-widget *:before, .k-animation-container *:after {
+		box-sizing: border-box !important;
+	}
+
+	/*k-popup-edit-form k-window-content k-content*/
+	.k-window-titlebar k-header, div.k-edit-form-container{
+		width: 820px;
+		/*padding:0px !important;*/
+	}
+
+	table {
+		border: none;
+		padding: 5px 20px;
+		width: 100%;
+		position:center;
+	}
+
+		table tr > td {
+			width: 50%;
+			padding: 0px 20px;
+		}
+</style>
+<div class="k-content">
+	<div class="row">
+		<div class="col-sm-12">
+			<table>
+				<tr>
+					<td>
+                        <div class="form-group">
+                            <label asp-for="EchkEmployeeChecklistCategoryId"></label><span class="req">*</span> :
+                            @(Html.Kendo().MultiSelectFor(m => m.EchkEmployeeChecklistCategoryArrayId)
+            .DataTextField("Text")
+            .DataValueField("Value")
+            //.OptionLabel($"choose a {Html.DisplayNameFor(m => m.EchkEmployeeChecklistCategoryId)}")
+            .HtmlAttributes(new
+            {
+                style = "width:100%;",
+                required = "required",
+                validationmessage = $"{Html.DisplayNameFor(m => m.EchkEmployeeChecklistCategoryArrayId)} is required"
+            })
+            .Height(400)
+            .Filter(FilterType.Contains)
+            .DataSource(source => source
+                .Custom()
+                .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLEmployeeChecklistCategory", "Dropdown", new { area = "hrisnew" });
+                    }))
+            .ServerFiltering(false))
+        )
+
+                        </div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="EchkChecklistitem"></label> :
+							@(Html.Kendo().TextBoxFor(x => x.EchkChecklistitem).HtmlAttributes(new { style = "width:100%", @maxlength = 255 }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="EchkDescription"></label> :
+							@Html.TextAreaFor(x => x.EchkDescription, new { @class = "k-textbox", @maxlength = 2000, style = "width: 100%;padding:0.5em" })
+						</div>						
+					</td>
+					<td>
+						@*<div class="form-group">
+							<label asp-for="EchkWhentoalert"></label><span class="req">*</span> :
+							@(Html.Kendo().DatePickerFor(m => m.EchkWhentoalert)
+								.Format("dd MMM yyyy")
+								.HtmlAttributes(new
+								{
+									style = "width:50%",
+									@class = "form-control form-control-sm m-input",
+							}))
+						</div>*@
+					</td>
+				</tr>				
+			</table>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Travel";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="TravelFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="actual_travel_budget">actual_travel_budget</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="actual_travel_budget" id="actual_travel_budget"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="expected_travel_budget">expected_travel_budget</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="expected_travel_budget" id="expected_travel_budget"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="purpose_of_visit">purpose_of_visit</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="purpose_of_visit" id="purpose_of_visit"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_description">travel_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="travel_description" id="travel_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_end_date">travel_end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="travel_end_date" id="travel_end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_start_date">travel_start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="travel_start_date" id="travel_start_date"   type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Travel" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Travel.update.js"></script>
+}

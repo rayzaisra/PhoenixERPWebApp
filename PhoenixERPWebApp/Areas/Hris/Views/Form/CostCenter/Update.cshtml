@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "CostCenter";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="CostCenterFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="activity_id">activity_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="activity_id" id="activity_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="cost_id">cost_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="cost_id" id="cost_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_periode">end_periode</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_periode" id="end_periode" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="percentage">percentage</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="percentage" id="percentage" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="periode">periode</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="periode" id="periode" required  type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/CostCenter" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/CostCenter.update.js"></script>
+}

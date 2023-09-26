@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Title"] = "Calendar of Event";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+
+@section Panelhead{
+    <link href="~/assets/plugins/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
+    @*<a href="~/projectmanagement/timesheet/entry" class="fakelink btn btn-success">Entry Timesheet</a>*@
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <style>
+        .break-word {
+            word-wrap: break-word;
+        }
+
+        .fc-day-grid-event > .fc-content {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .fc-event-main {
+            overflow: hidden;
+        }
+
+        .fc-event-title {
+            text-overflow: ellipsis;
+        }
+    </style>
+    <div id="m_calendar"></div>
+
+
+
+
+
+
+}
+@section Panelscript{
+    <script src="~/assets/plugins/fullcalendar/dist/fullcalendar.min.js"></script>
+
+    <script>
+        var ajaxUrl = API + "Hris/TrainingRequisition";
+        var ajaxUrlList = ajaxUrl + "/GetTrainingSchedule";
+        var CalendarBasic = {
+            init: function () {
+                var e = moment().startOf("day"),
+                    t = e.format("YYYY-MM"),
+                    i = e.clone().subtract(1,
+                        "day").format("YYYY-MM-DD"),
+                    n = e.format("YYYY-MM-DD"),
+                    r = e.clone().add(1, "day").format("YYYY-MM-DD"); $("#m_calendar").fullCalendar({
+                        isRTL: mUtil.isRTL(),
+                        header: {
+                            left: "prev,next today",
+                            center: "title",
+                            right: "month,agendaWeek,agendaDay,listWeek"
+                        },
+                        editable: !0,
+                        eventLimit: !0,
+                        navLinks: !0,
+                        events: function (start, end, timezone, callback) {
+                            $.ajax({
+                                url: $.helper.resolveApi("~odrive/GetTrainingSchedule"),
+                                type: "GET",
+                                dataType: "JSON",
+
+                                success: function (result) {
+                                    var events = [];
+
+                                    $.each(result, function (i, data) {
+                                        events.push(
+                                            {
+                                                title: data.title,
+                                                description: data.description,
+                                                start: data.start,
+                                                end: data.end,
+                                                //backgroundColor: "#9501fc",
+                                                //borderColor: "#fc0101",
+                                                className: data.className
+                                            });
+                                    });
+
+                                    callback(events);
+                                }
+                            });
+                        },
+                        eventRender: function (e,
+                            t) {
+                            if (e.description !== '') {
+                                var ValueArray = e.description.split("::");
+
+                                var nDesc = "Subject : " + ValueArray[0] + " \n\n" +
+                                    "Notes : " + ValueArray[1] + " \n\n" +
+                                    "Lokasi : " + ValueArray[2] + " \n\n" +
+                                    "Peserta : " + ValueArray[3] + " \n\n";
+
+                                var Subject = "Subject : " + ValueArray[0];
+                                var Notes = "Notes : " + ValueArray[1];
+                                var Lokasi = "Lokasi : " + ValueArray[2];
+                                var Peserta = "Peserta : " + ValueArray[3];
+
+                                t.hasClass("fc-day-grid-event") ? (t.data("content",
+                                    nDesc),
+                                    t.data("placement",
+                                        "top"),
+                                    mApp.initPopover(t)) : t.hasClass("fc-time-grid-event") ? t.find(".fc-title").append('<div class="fc-description"><p>' + Subject + '</p><p>' + Notes + '</p><p>' + Lokasi + '</p><p>' + Peserta + '</p></div>') : 0 !== t.find(".fc-list-item-title").lenght && t.find(".fc-list-item-title").append('<div class="fc-description"><p>' + Subject + "</p><p>" + Notes + "</p><p>" + Lokasi + "</p><p>" + Peserta + "</p></div>")
+                            } else {
+                                t.hasClass("fc-day-grid-event") ? (t.data("content",
+                                    e.description),
+                                    t.data("placement",
+                                        "top"),
+                                    mApp.initPopover(t)) : t.hasClass("fc-time-grid-event") ? t.find(".fc-title").append('<div class="fc-description"><p>' + e.description + '</p></div>') : 0 !== t.find(".fc-list-item-title").lenght && t.find(".fc-list-item-title").append('<div class="fc-description"><p>' + e.description + "</p></div>")
+                            }
+                          
+                        }
+                    })
+            }
+        };
+        $(document).ready(function () {
+            CalendarBasic.init()
+
+
+        });
+    </script>
+}
+

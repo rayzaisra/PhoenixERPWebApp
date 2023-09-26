@@ -1,0 +1,320 @@
+@model PhoenixERPWebApp.Models.LegalDocumentRequest
+@{
+    if (Model.IsApprove == true)
+    {
+        ViewData["Title"] = "Document Legal Request Approval";
+    }
+    else
+    {
+        ViewData["Title"] = "Document Legal Request";
+    }
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="indexapproval" asp-controller="legaldocumentrequestfullfilment" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Document Legal Request Approval</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="index" asp-controller="legaldocumentrequestfullfilment" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Document Legal Request</span></a>
+                    }
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="addedit" asp-controller="legaldocumentrequestfullfilment" asp-area="hrisnew" asp-route-Id="@Model.Id" asp-route-isApprove="true" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="legaldocumentrequestfullfilment" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="legaldocumentrequestfullfilment" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <h3 class="m-portlet__head-text m--font-success">Document Legal Request</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formlegaldocumentrequestfullfilment" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="legaldocumentrequestfullfilment" asp-area="HrisNew" enctype="multipart/form-data">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                                <input type="hidden" asp-for="SubmitUser" />
+  
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="LegalCategoryId"></label> <span class="req">*</span>  :
+                                     @(Html.Kendo().DropDownListFor(x => x.LegalCategoryId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalCategoryId)}")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",                                              
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.LegalCategoryId)} is required",
+                                            @readonly = "readonly"
+                                        })
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLLegalCategory", "Dropdown",new {area="hrisnew"});
+                                             }))
+                                            .ServerFiltering(false)
+                                        )
+                                    )
+                                </div>                                
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="EmployeeBasicInfoId"></label> <span class="req">*</span>  :
+                                     @(Html.Kendo().DropDownListFor(x => x.EmployeeBasicInfoId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.EmployeeBasicInfoId)}")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.EmployeeBasicInfoId)} is required",
+                                            @readonly = "readonly"
+                                        })
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLEmployeeBasicInfo", "Dropdown",new {area="hrisnew"});
+                                            }))
+                                            .ServerFiltering(false)
+                                        )
+                                    )
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="DueDate"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().DatePickerFor(m=>m.DueDate)
+                                          .Format("dd MMMM yyyy")
+                                          .HtmlAttributes(new {
+                                              style = "width: 100%",
+                                              onkeydown = "javascript:return false;",
+                                              placeholder = $"Input type a {Html.DisplayNameFor(m => m.DueDate)}",
+                                              required = "required",
+                                              validationmessage = $"{Html.DisplayNameFor(m => m.DueDate)} is required",
+                                              @readonly = "readonly"
+                                          })
+                                    )
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="LegalDocFile"></label> <span class="req">*</span> :
+                                    <div id="divLegalFile"></div>
+                                    <div style="width:100%">
+                                        <input type="hidden" asp-for="LegalDocFile" />
+                                        <a href='javascript: void(0);' id="linkLegalDownloadFile" onclick='downloadLegalFile()'></a> &nbsp;
+                                        <a href='javascript: void(0);' id="linkLegalRemoveFile" onclick='removeLegalFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="Remarks"></label> <span class="req">*</span>  :
+                                    @(Html.TextAreaFor(m => m.Remarks, new {
+                                            style = "width:100%; height:100px;",
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Remarks)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Remarks)} is required" 
+                                        }
+                                     ))
+                                </div>
+                            </div>
+                        </div>
+                        <partial name="_HistoryApproval" />
+
+                        <hr />                        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                    {
+                                        @if ((Model.Status ?? 0) == PhoenixERPWebApp.Models.StatusTransaction.Draft)
+                                        {
+                                            <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        }
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+
+                                    @if (Model.IsApprove == true)
+                                    {
+                                        @if (ViewBag.processApprove == true)
+                                        {
+                                            <button type="button" id="btnShow" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                            @*<button type="button" id="btnReject" class="btn btn-danger edit"><span class="fa fa-ban"></span> Reject</button>*@
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                        }
+                                        <a asp-action="Indexapproval" asp-controller="legaldocumentrequestfullfilment" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="index" asp-controller="legaldocumentrequestfullfilment" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+      $(document).ready(function () {
+        if ('@Model.Status' != '') {
+            if ('@Model.IsApprove' == "True" || !('@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Draft')) {// || '@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Rejected')) {
+                $("#LegalCategoryId").data("kendoDropDownList").readonly();
+                $("#EmployeeBasicInfoId").data("kendoDropDownList").readonly();
+                $("#DueDate").data("kendoDatePicker").readonly();
+                $("#Remarks").attr("readonly", "readonly");
+                $("#linkLegalRemoveFile").empty();
+            }
+          }
+
+        var LegalDocFileName = '@Model.LegalDocFileName';
+        if (LegalDocFileName == '') {
+            LegalFile();
+        } else {
+            $("#linkLegalDownloadFile").text(LegalDocFileName);
+        }
+    });
+
+    function removeLegalFile() {
+        LegalFile();
+    }
+
+    function downloadLegalFile() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#LegalDocFile").val() }});
+    }
+
+    function LegalFile() {
+        $("#linkLegalDownloadFile").empty();
+        $("#linkLegalRemoveFile").empty();
+        $("#divLegalFile").empty().append("<input name='fileLegal' id='fileLegal' type='file' required/>");
+
+        $("#fileLegal").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".pdf"]//[".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+
+
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+    $('#btnApprove').click(function () {
+        $("#RemarkRejected").removeAttr("required", "required");
+        callActionFile({ formId:"formlegaldocumentrequestfullfilment", title: "approve", type:"POST", url: '@Url.Action("approve", "legaldocumentrequestfullfilment")'});
+    });
+
+    $('#btnReject').click(function () {
+        callActionFile({ formId:"formlegaldocumentrequestfullfilment", title: "reject", type:"POST", url: '@Url.Action("reject", "legaldocumentrequestfullfilment")'});
+    });
+
+    $('#btnSubmit').click(function () {
+        callActionFile({ formId: "formlegaldocumentrequestfullfilment", title: "submit", type: "POST", url: '@Url.Action("submit", "legaldocumentrequestfullfilment")' });
+    });
+
+    $('#btnSave').click(function () {
+        callActionFile({ formId: "formlegaldocumentrequestfullfilment", title: "save", type: "POST", url: '@Url.Action("save", "legaldocumentrequestfullfilment")' });
+    });
+</script>

@@ -1,0 +1,394 @@
+@model PhoenixERPWebApp.Models.PcaTask
+<style>
+    .k-window {
+        width: 70% !important;
+    }
+
+    .k-edit-form-container {
+        width: 100% !important;
+    }
+
+    .k-window > div.k-popup-edit-form {
+        overflow: hidden !important;
+    }
+    .k-edit-form-container .editor-label, .k-edit-label{
+        text-align:left;
+    }
+    .label-required{
+        color:red;
+    }
+</style>
+<div class="row" style="margin:0px;">
+    <div class="col-sm-6" style="padding:0px;">
+        <div class="editor-label">
+            <label asp-for="Departement"></label>
+            @*<label class="label-required">*</label>*@
+        </div>
+        <div class="editor-field">
+                @(Html.Kendo().DropDownListFor(x => x.Departement)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .OptionLabel(" ")
+                .HtmlAttributes(new { style = "width:100%;" })//, required = "required" })
+                .Filter(FilterType.Contains)
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLDepartment", "Dropdown", new { area = "Pm" });
+                    }))
+                    .ServerFiltering(false)
+                )
+                .AutoBind(true)
+            )
+        </div>
+        <div class="editor-label">
+            <label asp-for="IsRateCard"></label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().CheckBoxFor(x=>x.IsRateCard).Label("").HtmlAttributes(new { onchange = "IsRateCard(this);" }))
+        </div> 
+        <div class="editor-label">
+            <div id="divLabelSubTaskRateCard">
+                <label>Sub Task</label>
+                <label class="label-required">*</label>
+            </div>
+            <div id="divLabelTaskRateCard">
+                <label asp-for="TaskName"></label>
+                <label class="label-required">*</label>
+            </div>
+        </div>
+        <div class="editor-field">
+            <div id="divSubTaskRateCard">
+                @(Html.Kendo().DropDownList()
+                .Name("SubTaskRateCard")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                .Filter(FilterType.Contains)
+                .OptionLabel(" ")
+                .Events(evt=>evt.Select("SubTaskRateCard_SelectEvent"))
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLSubTaskRateCard", "Dropdown", new { area = "Pm" }).Data("params_subTaskRateCard");
+                    }))
+                    .ServerFiltering(true)
+                ).CascadeFrom("RateCardId"))                
+            </div>
+            <div id="divTaskRateCard">
+                @(Html.Kendo().DropDownList()
+                .Name("TaskRateCard")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .OptionLabel(" ")
+                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                .Filter(FilterType.Contains)
+                .Events(evt=>evt.Select("TaskRateCard_SelectEvent"))
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLTaskRateCard", "Dropdown", new { area = "Pm" }).Data("params_taskRateCard");
+                    }))
+                    .ServerFiltering(true)
+                ).CascadeFrom("RateCardId"))                
+            </div>
+            <div id="divTask">
+            @(Html.Kendo().TextBoxFor(m => m.TaskName)
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    maxlength = 255,
+                    required = "required"
+                }
+                ))
+            </div>
+        </div>    
+        <div class="editor-label">
+            <label asp-for="Quantity"></label>
+            <label class="label-required">*</label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Quantity)
+                .Spinners(false)
+                .Format("{0:N0}")
+                .Events(e => e.Change("calculate_change"))
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    maxlength = 12,
+                    required = "required",
+                    validationmessage = $"{Html.DisplayNameFor(m => m.Quantity)} is required"
+                }
+            ))
+        </div>
+        <div class="editor-label">
+            <label asp-for="UomId"></label>
+            <label class="label-required">*</label>
+        </div>
+        <div class="editor-field">
+                @(Html.Kendo().DropDownListFor(x => x.UomId)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLUnit", "Dropdown", new { area = "Pm" });
+                    }))
+                    .ServerFiltering(false)
+                )
+                .AutoBind(true)
+            )
+        </div>
+
+        <div class="editor-label">
+            <label asp-for="Price"></label>
+            <label class="label-required">*</label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Price)
+                .Spinners(false)
+                .Format("{0:N2}")
+                .Events(e => e.Change("calculate_change"))
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    maxlength = 12,
+                    required = "required",
+                    validationmessage = $"{Html.DisplayNameFor(m => m.Price)} is required"
+                }
+            ))
+        </div>
+
+         <div class="editor-label">
+            <label asp-for="IsAsf"></label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().CheckBoxFor(x=>x.IsAsf).Label(""))
+        </div> 
+
+        <div class="editor-label" style="display:none;">
+            <label asp-for="IsPpn"></label>
+        </div>
+        <div class="editor-field" style="display:none;">
+            @(Html.Kendo().CheckBoxFor(x=>x.IsPpn).Label("").HtmlAttributes(new { onchange = "IsPPN(this);" }))
+        </div> 
+
+        <div class="editor-label" style="display:none">
+            <label asp-for="Asf"></label>
+        </div>
+        <div class="editor-field" style="display:none">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Asf)
+                .Spinners(false)
+                .Format("{0:N2}")
+                .Events(e => e.Change("calculate_change"))
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    maxlength = 12
+                }
+            ))
+        </div>
+          <div class="editor-label" style="display:none;">
+            <label asp-for="Ppn"></label>
+        </div>
+        <div class="editor-field" style="display:none;">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Ppn)
+                .Spinners(false)
+                .Format("{0:N2}") 
+                .Events(e => e.Change("calculate_change"))
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    maxlength = 12,
+                    @readonly = "readonly"
+                }
+            ))
+        </div>
+
+        <div class="editor-label" style="display:none;">
+            <label asp-for="Pph"></label>
+        </div>
+        <div class="editor-field" style="display:none;">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Pph)
+                .Spinners(false)
+                .Format("{0:N2}") 
+                .Events(e => e.Change("calculate_change"))
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    maxlength = 12
+                }
+            ))
+        </div>
+    </div>
+    
+    <div class="col-sm-6" style="padding:0px;">        
+        <div class="editor-label">
+            <label asp-for="Cost"></label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Cost)
+                .Spinners(false)
+                .Format("{0:N2}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @readonly = "readonly"
+                }
+            ))
+        </div>    
+      
+        <div class="editor-label">
+            <label asp-for="Percentage"></label>
+            <label class="label-required">*</label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Percentage)
+                .Spinners(false)
+                .Format("{0:N2}")
+                .Events(e => e.Change("calculate_change"))
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    maxlength = 12,
+                    required = "required",
+                    validationmessage = $"{Html.DisplayNameFor(m => m.Percentage)} is required"
+                }
+            ))
+        </div>
+    
+        <div class="editor-label">
+            <label asp-for="Margin"></label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Margin)
+                .Spinners(false)
+                .Format("{0:N2}")
+                  .Events(e => e.Change("calculateMargin_change"))
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    //@readonly = "readonly"
+                }
+            ))
+        </div>
+
+        <div class="editor-label">
+            <label asp-for="UnitPrice"></label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.UnitPrice)
+                .Spinners(false)
+                .Format("{0:N2}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @readonly="readonly"
+                }
+            ))
+        </div>
+        
+        <div class="editor-label">
+            <label asp-for="Total"></label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.Total)
+                .Spinners(false)
+                .Format("{0:N2}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @readonly="readonly"
+                }
+            ))
+        </div>
+                
+        <div class="editor-label">
+            <label asp-for="CurrencyId"></label>
+        </div>
+        <div class="editor-field">
+             @(Html.Kendo().DropDownListFor(x => x.CurrencyId)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.CurrencyId)}")
+                .HtmlAttributes(new { style = "width:100%;", @id="dtl_currency_id" })
+                .Filter(FilterType.Contains)
+                .Events(evt => evt.Select("currency_select"))
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLCurrencyDetail", "Dropdown", new { area = "Pm" }).Data("currencyHeader_params");
+                    }))
+                    .ServerFiltering(false)
+                ))
+        </div>
+
+        <div class="editor-label">
+            <label asp-for="ExchangeRate"></label> &nbsp; <a href="javascript:void(0);" onclick="window.open('@Url.RouteUrl(new { action = "Index", controller = "Currency", area="Finance" })?isView=true', '_blank','toolbar=yes,scrollbars=yes,resizable=yes,top=150,left=280,width=800,height=400');" id="linkCurrency" style="text-decoration:underline !important;">View</a>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.ExchangeRate)
+                .Spinners(false)
+                .Events(evt => evt.Change("calculate_change"))
+                .Format("{0:N2}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @readonly = "readonly"
+                }
+            ))
+        </div>
+        
+          <div class="editor-label">
+            <label asp-for="Operator"></label>
+        </div>
+        <div class="editor-field">
+             @(Html.Kendo().DropDownListFor(x => x.Operator)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.Operator)}")
+                .HtmlAttributes(new {
+                    style = "width:100%;",
+                    @readonly = "readonly"
+                })
+                .Filter(FilterType.Contains)
+                .Events(evt=>evt.Change("calculate_change"))
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLOperator", "Dropdown", new { area = "Pm" });
+                    }))
+                    .ServerFiltering(false)
+                ))
+        </div>
+
+        <div class="editor-label">
+            <label asp-for="TotalOriginal"></label>
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().NumericTextBoxFor(m => m.TotalOriginal)
+                .Spinners(false)
+                .Format("{0:N2}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @readonly="readonly"
+                }
+            ))
+        </div>
+        
+    </div>
+</div>

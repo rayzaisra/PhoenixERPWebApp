@@ -1,0 +1,315 @@
+﻿@model PhoenixERPWebApp.Models.PrintPce
+@{
+    ViewData["Title"] = "Production Cost Estimate - Print";
+    Layout = "";
+}
+
+<script src="~/Vendors/custom/KendoUI/js/jquery.min.js"></script>
+<link href="~/Vendors/custom/select2-4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="~/Vendors/custom/select2-4.0.13/js/select2.min.js"></script> 
+<style>
+    .content {
+        margin: 50px 100px;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    hr {
+        border: solid 2px black;
+    }
+
+    h1 {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    img {
+        width: 150px;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .left {
+        padding-left: 20px;
+    }
+
+    .border-buttom {
+        border-bottom: solid 1px black;
+    }
+
+    .border-top {
+        border-top: solid 1px black;
+    }
+
+    .tdd {
+        height: 110px;
+        border-bottom: solid 1px black;
+        margin-right: 20px;
+        margin-bottom: 5px;
+    }
+
+    .border {
+        border-bottom: solid 2px black;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    tr {
+        height: 23px;
+    }
+
+    .padding-right {
+        padding-right: 50px;
+    }
+</style>
+
+<div class="content">
+    <div class="text-right">
+        <button type="button" id="btnPrint" class="btn btn-primary edit" onclick="printDiv('print')"><span class="fa fa-paper-plane"></span> Print</button>
+    </div>
+
+    <div id="print">
+        <hr />
+        <table>
+            <tr>
+                <td colspan="2" style="width:50%; vertical-align:bottom;"><h1>PRODUCTION ESTIMATE</h1></td>
+                <td><img src="~/images/iris.png" /></td>
+            </tr>
+            <tr>
+                <td class="bold">Client :</td>
+                <td>
+                    <table>
+                        <tr><td>@Model.Client</td></tr>
+                        @if (!string.IsNullOrEmpty(Model.ClientAddress))
+                        {
+                            <tr><td>@Model.ClientAddress</td></tr>
+                        }
+                        @*<tr><td>@if(!string.IsNullOrEmpty(Model.ClientTelp)){<Label>Telp.@Model.ClientTelp,</Label> } @if(!string.IsNullOrEmpty(Model.ClientFax)){<Label>Fax @Model.ClientFax,</Label> }</td></tr>*@
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr><td>@Model.LegalEntity</td></tr>
+                        @if (!string.IsNullOrEmpty(Model.LegalEntityAddress))
+                        {
+                            <tr><td>@Model.LegalEntityAddress</td></tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.LegalEntityTelp) || !string.IsNullOrEmpty(Model.LegalEntityFax))
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(Model.LegalEntityTelp))
+                                    {<Label>Telp.@Model.LegalEntityTelp,</Label>} @if (!string.IsNullOrEmpty(Model.LegalEntityFax))
+                                    {<Label>Fax @Model.LegalEntityFax,</Label>}
+                                </td>
+                            </tr>
+                        }
+                        <tr><td class="bold">Email : @Model.LegalEntityEmail</td></tr>
+                    </table>
+                    <div style="padding-left:40px;">
+                        <table>
+                            <tr>
+                                <td class="bold">Date</td>
+                                <td>:</td>
+                                <td class="text-right"><input type="date" asp-for="Date" id="txtDate" /><label id="lblDate"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="bold">Job No.</td>
+                                <td>:</td>
+                                <td class="text-right">@Model.JobNo</td>
+                            </tr>
+                            <tr>
+                                <td class="bold">Ref No.</td>
+                                <td>:</td>
+                                <td class="text-right">@Model.RefNo</td>
+                            </tr>
+                            <tr>
+                                <td class="bold">Brand</td>
+                                <td>:</td>
+                                <td class="text-right">@Model.Brand</td>
+                            </tr>
+                            <tr>
+                                <td class="bold">Budget No</td>
+                                <td>:</td>
+                                <td class="text-right">@Model.BudgetNo</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="bold">Job Title :</td>
+                <td>@Model.JobTitle</td>
+            </tr>
+        </table>
+        <div class="border"></div>
+        <div class="bold">Job Description :</div><br />
+        <div class="left">@Model.JobDescription</div>
+        <div class="border"></div> 
+        <div id="divChannel"> 
+            <select id="ddlChannel" asp-items="ViewBag.Channel" data-placeholder="Choose an channel" style="width:50%"><option value=""></option></select>&nbsp;<button id="btnReset">CLEAR</button>
+        </div>        
+        <label id="lblChannel"></label>
+        <table class="left" cellspacing="0" style="padding-top:5px;">
+            @foreach (var item in Model.PrintTasks)
+            {
+                <tr>
+                    <td><input type="text" id="txt_@item.TaskId" value="@item.TaskName" style="width:80%" /><label id="lbl_@item.TaskId"></label></td>
+                    <td>@Model.CurrencySymbol</td>
+                    <td class="text-right">@String.Format("{0:N2}", item.TotalPrice)</td>
+                </tr>
+            }
+
+            @*<tr>
+                <td class="text-right padding-right">Sub Total</td>
+                <td class="border-top">@Model.CurrencySymbol</td>
+                <td class="text-right border-top">@String.Format("{0:N2}", Model.Subtotal)</td>
+            </tr>*@
+            <tr>
+                <td class="text-right padding-right">@Model.OtherFeeName : @String.Format("{0:N0}", Model.OtherFeePercentage)% x @String.Format("{0:N2}", Model.Subtotal)</td>
+                <td class="border-buttom">@Model.CurrencySymbol</td>
+                <td class="text-right border-buttom">@String.Format("{0:N2}", Model.OtherFee)</td>
+            </tr>
+            <tr>
+                <td class="text-right padding-right">Sub Total</td>
+                <td>@Model.CurrencySymbol</td>
+                <td class="text-right">@String.Format("{0:N2}", Model.SubtotalFee)</td>
+            </tr>
+            <tr>
+                <td class="text-right padding-right">VAT 10%</td>
+                <td class="border-buttom">@Model.CurrencySymbol</td>
+                <td class="text-right border-buttom">@String.Format("{0:N2}", Model.Vat)</td>
+            </tr>
+            <tr>
+                <td class="text-right padding-right">Total Amount</td>
+                <td class="border-buttom">@Model.CurrencySymbol</td>
+                <td class="text-right border-buttom">@String.Format("{0:N2}", Model.Total)</td>
+            </tr>
+            <tr style="height:5px;">
+                <td></td>
+                <td class="border-buttom"></td>
+                <td class="border-buttom"></td>
+            </tr>
+        </table>
+        <div class="border"></div>
+        <table>
+            <tr>
+                <td width="20%"><div class="tdd"></div></td>
+                <td width="10%;"><div class="tdd"></div></td>
+                <td width="20%"><div class="tdd"></div></td>
+                <td width="10%;"><div class="tdd"></div></td>
+                <td width="22%"><div class="tdd"></div></td>
+                <td width="10%;"><div class="tdd"></div></td>
+            </tr>
+            <tr>
+                <td>Prepared By :</td>
+                <td>Date</td>
+                <td>Checked By :</td>
+                <td>Date</td>
+                <td>Client's Approval :</td>
+                <td>Date</td>
+            </tr>
+        </table>
+        <br />
+        <div class="bold">Remarks :</div><br />
+        <div class="left"><textarea id="txtRemarks" rows="5" style="width:100%"></textarea><label id="lblRemarks"></label></div>
+        <table style="margin-top:50px;">
+            <tr>
+                <td class="bold" style="width:90px">Notes :</td>
+                <td>1.</td>
+                <td>This quotation is valid for 14 days from the date of issue</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>2.</td>
+                <td>Copyright for the professional fee will charged for alring overseas, exluded copyright for talents.</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>3.</td>
+                <td>Cancellation occurs after PO delivered, will be subjected as cancellation fee 25% from the grand total PE</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>4.</td>
+                <td>Any changes after approval of the offline, will be charged accordingly</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>5.</td>
+                <td>All products and mock-ups(if required) to be provided by client</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {   
+        initiate();
+    });
+
+    function printDiv(divName) {
+        var remarks = $("#txtRemarks").val().replace(/\r\n|\r|\n/g, "<br />");
+        var date = $("#txtDate").val(); 
+        var channelId = $('#ddlChannel').select2('data')[0].id;//$("#ddlChannel").val();
+        var channelName = $('#ddlChannel').select2('data')[0].text;
+        $("#ddlChannel").select2('destroy');
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let current_datetime = new Date(date);
+        let formatted_date = current_datetime.getDate() + "-" + months[current_datetime.getMonth()] + "-" + current_datetime.getFullYear()
+        var list = @Html.Raw(Json.Serialize(Model.PrintTasks));
+
+        var originalContents = document.body.innerHTML;
+
+        $("#lblRemarks").html(remarks);
+        $("#lblDate").html(formatted_date);
+        $("#lblChannel").html(channelName);
+
+        $("#txtRemarks").css("display", "none");
+        $("#txtDate").css("display", "none");
+        $("#divChannel").css("display", "none");
+        $("#btnReset").css("display", "none");
+
+        $.each(list, function (key, data) {
+            var taskName = $("#txt_" + data.taskId).val();
+            data.taskName = taskName;
+
+            $("#lbl_" + data.taskId).html(taskName);
+            $("#txt_" + data.taskId).css("display", "none");
+        });
+
+        var printContents = document.getElementById(divName).innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+
+        $("#txtRemarks").val(remarks);
+        $("#txtDate").val(date);
+        $("#ddlChannel").val(channelId);
+        initiate();
+
+        $.each(list, function (key, data) {
+            $("#txt_" + data.taskId).val(data.taskName);
+        });
+    }
+
+    function initiate() {
+        $('#ddlChannel').select2();
+        $('#btnReset').click(function () {
+            $("#ddlChannel").val(null).trigger("change");
+        });
+    }
+</script>

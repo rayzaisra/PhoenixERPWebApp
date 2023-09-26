@@ -1,0 +1,425 @@
+﻿@model PhoenixERPWebApp.Models.Media.MediaOrderTVArrange
+@{
+    ViewData["Title"] = "Media Control New";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">@ViewData["Title"]</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="MediaOrderTV" asp-area="Media" class="m-nav__link"><span class="m-nav__link-text">@ViewData["Title"]</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="Arrange" asp-controller="MediaOrderTV" asp-area="Media" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="Arrange" asp-controller="MediaOrderTV" asp-area="Media" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <form id="form" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input hidden name="id" value="@ViewBag.RecordID" />
+                            <div class="row">
+                                <div class="col-lg-12 m-row--no-padding">
+                                    <div class="m-section__content">
+                                        <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                            <div class="m-demo__preview">
+                                                <div class="row">
+                                                    <div class="col-lg-3 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="ClientId"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(m => m.ClientId)
+                                                                                                                                    .DataTextField("Text")
+                                                                                                                                    .DataValueField("Value")
+                                                                                                                                    .Filter(FilterType.Contains)
+                                                                                                                                    .DataSource(source =>
+                                                                                                                                    {
+                                                                                                                                        source.Read(read =>
+                                                                                                                                        {
+                                                                                                                                            read.Action("GetDDLClient", "DropDown", new { area = "Media" });
+                                                                                                                                        });
+                                                                                                                                    })
+                                                                                                                                    .OptionLabel(new
+                                                                                                                                    {
+                                                                                                                                        Text = "Select Client...",
+                                                                                                                                        Value = 0
+                                                                                                                                    })
+                                                                                                                                    .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="TmMediaTypeId"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(m => m.TmMediaTypeId)
+                                                                                                                                    .DataTextField("Text")
+                                                                                                                                    .DataValueField("Value")
+                                                                                                                                    .Filter(FilterType.Contains)
+                                                                                                                                    .DataSource(source =>
+                                                                                                                                    {
+                                                                                                                                        source.Read(read =>
+                                                                                                                                        {
+                                                                                                                                            read.Action("GetDDLMediaType", "DropDown", new { area = "Media" });
+                                                                                                                                        });
+                                                                                                                                    })
+                                                                                                                                    .OptionLabel(new
+                                                                                                                                    {
+                                                                                                                                        Text = "Select Media...",
+                                                                                                                                        Value = 0
+                                                                                                                                    })
+                                                                                                                                    .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="TargetAudience"></label> <span class="req">*</span> :
+                                                            @Html.Kendo().TextBoxFor(m => m.TargetAudience).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="BrandId"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(m => m.BrandId)
+                                                                                                                            .DataTextField("Text")
+                                                                                                                            .DataValueField("Value")
+                                                                                                                            .Filter(FilterType.Contains)
+                                                                                                                            .DataSource(source =>
+                                                                                                                            {
+                                                                                                                                source.Read(read =>
+                                                                                                                                {
+                                                                                                                                    read.Action("GetDDLBrand", "DropDown", new { area = "Media" });
+                                                                                                                                });
+                                                                                                                            })
+                                                                                                                            .OptionLabel(new
+                                                                                                                            {
+                                                                                                                                Text = "Select Vendor...",
+                                                                                                                                Value = 0
+                                                                                                                            })
+                                                                                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="MediaOrderNo"></label> <span class="req">*</span> :
+                                                            @Html.Kendo().TextBoxFor(m => m.MediaOrderNo).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <label asp-for="RevisionNo"></label> <span class="req">*</span> :
+                                                            @Html.Kendo().TextBoxFor(m => m.RevisionNo).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 m-row--no-padding">
+                                                        <div class="form-group">
+                                                            <a asp-action="DownloadTemplate" asp-controller="MediaOrderTV" asp-area="Media">Download Template Data</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="button" id="btn-new" class="btn btn-sm btn-success">New</button>
+                                </div>
+                            </div>
+                            <div style="overflow-x:scroll;">
+                                <div class="row" style="width:2000px;">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-md-1"></div>
+                                                    <div class="col-md-1"></div>
+                                                    <div class="col-md-1">
+                                                        <label>Date</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Program</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Type Program</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Start</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>End</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Air Time</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Dur</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>Action</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-1">1</div>
+                                                    <div class="col-md-1">
+                                                        @Html.Kendo().CheckBox().Name("chk")
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>11-MAR-2019</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>ANUGRAH CINTA</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>MOVIE</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>WED</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>SUN</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>07:00 09:00</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>120</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        @(Html.Kendo().DropDownListFor(m => m.TmMediaOrderStatusId)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source =>
+                                                                        {
+                                                                            source.Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLMediaOrderStatus", "DropDown", new { area = "Media" });
+                                                                            });
+                                                                        })
+                                                                        .OptionLabel(new
+                                                                        {
+                                                                            Text = "Select Status...",
+                                                                            Value = 0
+                                                                        })
+                                                                        .HtmlAttributes(new { style = "width:100%;" })
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-md-1"></div>
+                                                    <div class="col-md-1">
+                                                        <label>Date</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Program</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Type Program</label>
+                                                    </div>
+                                                    <div class="col-md-1"></div>
+                                                    <div class="col-md-2">
+                                                        <label>Start</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>End</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Air Time</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        @Html.Kendo().CheckBox().Name("chk")
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>11-MAR-2019</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        @Html.Kendo().TextBox().Name("ProgramName").HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        @(Html.Kendo().DropDownList().Name("ProgramCategoryType")
+                                                                                .DataTextField("Text")
+                                                                                .DataValueField("Value")
+                                                                                .Filter(FilterType.Contains)
+                                                                                .DataSource(source =>
+                                                                                {
+                                                                                    source.Read(read =>
+                                                                                    {
+                                                                                        read.Action("GetDDLProgramCategory", "DropDown", new { area = "Media" });
+                                                                                    });
+                                                                                })
+                                                                                .OptionLabel(new
+                                                                                {
+                                                                                    Text = "Select Category...",
+                                                                                    Value = 0
+                                                                                })
+                                                                                .HtmlAttributes(new { style = "width:100%;" })
+                                                        )
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        @(Html.Kendo().DropDownList()
+                                                            .Name("DayFrom")
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .BindTo(new List<SelectListItem>() {
+                                                                        new SelectListItem() {
+                                                                            Text = "SUN",
+                                                                            Value = "1"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "MON",
+                                                                            Value = "2"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "TUE",
+                                                                            Value = "3"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "WED",
+                                                                            Value = "4"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "THU",
+                                                                            Value = "5"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "FRI",
+                                                                            Value = "6"
+                                                                        }
+                                                                        ,
+                                                                        new SelectListItem() {
+                                                                            Text = "SAT",
+                                                                            Value = "7"
+                                                                        }
+                                                            })
+                                                            .Value("1")
+                                                            .HtmlAttributes(new { style = "width: 100%" })
+                                                        )
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        @(Html.Kendo().DropDownList()
+                                                                   .Name("DayTo")
+                                                                   .DataTextField("Text")
+                                                                   .DataValueField("Value")
+                                                                   .BindTo(new List<SelectListItem>() {
+                                                                        new SelectListItem() {
+                                                                            Text = "SUN",
+                                                                            Value = "1"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "MON",
+                                                                            Value = "2"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "TUE",
+                                                                            Value = "3"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "WED",
+                                                                            Value = "4"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "THU",
+                                                                            Value = "5"
+                                                                        },
+                                                                        new SelectListItem() {
+                                                                            Text = "FRI",
+                                                                            Value = "6"
+                                                                        }
+                                                                        ,
+                                                                        new SelectListItem() {
+                                                                            Text = "SAT",
+                                                                            Value = "7"
+                                                                        }
+                                                                   })
+                                                                   .Value("1")
+                                                                   .HtmlAttributes(new { style = "width: 100%" })
+                                                        )
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>07:00 09:00</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="button" id="btn-save" class="btn btn-sm btn-success">Save</button>
+                                    <button type="button" id="btn-submit" class="btn btn-sm btn-success">Submit</button>
+                                    <a asp-action="Index" asp-controller="MediaOrderTV" asp-area="Media" class="fakelink btn btn-sm btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

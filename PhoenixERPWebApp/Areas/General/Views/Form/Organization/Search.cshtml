@@ -1,0 +1,62 @@
+@{
+    ViewBag.ModalTitle = "Organization";
+    ViewBag.ModalId = "OrganizationModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="OrganizationFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="is_default_organization">is_default_organization</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_is_default_organization" id="search_is_default_organization"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="organization_name">organization_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_organization_name" id="search_organization_name"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="parent_organization_id">parent_organization_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_parent_organization_id" id="search_parent_organization_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="smtp_from_address">smtp_from_address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_smtp_from_address" id="search_smtp_from_address"  maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="smtp_password">smtp_password</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_smtp_password" id="search_smtp_password"  maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="smtp_port">smtp_port</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_smtp_port" id="search_smtp_port"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="smtp_server">smtp_server</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_smtp_server" id="search_smtp_server"  maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="smtp_username">smtp_username</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_smtp_username" id="search_smtp_username"  maxlength="450" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnOrganization.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnOrganization.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

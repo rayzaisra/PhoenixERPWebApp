@@ -1,0 +1,21 @@
+﻿@model object
+@(Html.Kendo().DropDownListFor(m => m)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .OptionLabel("Select Item Code..")
+    .Events(evt => evt.Select("ItemId_Select"))
+    .Height(400)
+    .Filter(FilterType.Contains)
+    .AutoBind(true)
+    .HtmlAttributes(new { style = "width:100%;", required = "required" })
+    .DataSource(source => source
+        .Custom()
+        .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Action("GetDDLBudgetCode", "Dropdown", new { area = "Finance" }).Data("itemType_params");
+        }))
+        .ServerFiltering(true)
+     )
+    .CascadeFrom("ItemTypeId")
+)

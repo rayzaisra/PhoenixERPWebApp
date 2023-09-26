@@ -1,0 +1,59 @@
+﻿
+<div class="uk-modal" id="ModalSearchUser">
+    <div class="uk-modal-dialog" style="width: 550px;margin-left:auto;margin-right:auto;">
+        <div class="uk-modal-header">
+            <h3 class="uk-modal-title">Search User</h3>
+        </div>
+        <div class="uk-modal-content">
+            <table id="searchUser" class="uk-table uk-table-hover uk-table-nowrap table_check" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="uk-width-1-10 uk-text-center small_col"><input type="checkbox" data-md-icheck class="check_all"></th>
+                        <th class="uk-width-1-10 uk-text-center uk-text-upper">Name</th>
+                        <th class="uk-width-1-10 uk-text-center uk-text-upper">Division</th>
+                        <th class="uk-width-1-10 uk-text-center uk-text-upper">Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="uk-text-center uk-table-middle small_col"><input type="checkbox" data-md-icheck value="Budi" class="check_row"></td>
+                        <td id="nama1" class="uk-text-center">Budi</td>
+                        <td class="uk-text-center">Developer</td>
+                        <td class="uk-text-center">PM</td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-center uk-table-middle small_col"><input type="checkbox" value="Mamat" data-md-icheck class="check_row"></td>
+                        <td id="nama2" class="uk-text-center">Mamat</td>
+                        <td class="uk-text-center">Finance</td>
+                        <td class="uk-text-center">Staff</td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-center uk-table-middle small_col"><input type="checkbox" value="Udin" data-md-icheck class="check_row"></td>
+                        <td id="nama3" class="uk-text-center">Udin</td>
+                        <td class="uk-text-center">Security</td>
+                        <td class="uk-text-center">Satpam</td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-center uk-table-middle small_col"><input type="checkbox" value="Sella" data-md-icheck class="check_row"></td>
+                        <td id="nama4" class="uk-text-center">Sella</td>
+                        <td class="uk-text-center">Developer</td>
+                        <td class="uk-text-center">Tester</td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-center uk-table-middle small_col"><input type="checkbox" value="Danang" data-md-icheck class="check_row"></td>
+                        <td id="nama5" class="uk-text-center">Danang</td>
+                        <td class="uk-text-center">Developer</td>
+                        <td class="uk-text-center">UIDev</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="uk-modal-footer">
+            <button onclick="addUser()" class="uk-button uk-button-small uk-button-primary">Add</button>
+        </div>
+    </div>
+</div>
+
+@section Script {
+    <script src="~/assets/js/Areas/ProjectManagement/Assignment/ModalSearchUser.js?r=@ViewBag.NOW"></script>
+}

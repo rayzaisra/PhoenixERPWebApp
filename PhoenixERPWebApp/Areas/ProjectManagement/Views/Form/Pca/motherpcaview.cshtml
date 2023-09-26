@@ -1,0 +1,49 @@
+@{
+    ViewBag.ModalTitle = "Mother PCA";
+    ViewBag.ModalId = "motherpca";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<style>
+    .option .description,
+    .option .title {
+        display: block;
+        white-space: nowrap;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .btn-sx {
+        font-size: 0.45rem !important;
+    }
+
+    .contenttitle {
+        font-weight: bold;
+        font-size: 16px;
+        border: none !important;
+    }
+
+    .option .title {
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .option .description {
+        color: #808080;
+        font-size: 10px;
+    }
+</style>
+<table id="tablemotherpca" class="tblnopadding table" style="width:100%">
+    <thead>
+        <tr>
+            <th>Job /task </th>
+            <th style="width:90px" align="right">Task cost</th>
+            <th style="width:90px" align="right">Cost</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr><td align="right">Grand Total</td><td align="right"><div id="totalmotherpca" class="xtotalpca"></div></td></tr>
+    </tfoot>
+</table>
+ 

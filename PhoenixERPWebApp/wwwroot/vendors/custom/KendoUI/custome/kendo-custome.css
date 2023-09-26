@@ -1,0 +1,267 @@
+﻿.no-scrollbar .k-grid-header {
+    padding: 0 !important;
+}
+
+.no-scrollbar .k-grid-content {
+    overflow-y: visible;
+}
+
+.k-grid-content {
+    /*overflow-x: scroll;*/
+    min-height: 80px !important;
+    max-height: 400px !important;
+}
+
+.k-grid-norecords {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /*content: "No records found.";*/
+    /*border: none;*/
+}
+
+.k-grid-norecords-template {
+    border: none;
+}
+
+.k-grid-header th.k-header {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.k-pdf-export .k-grid-toolbar,
+.k-pdf-export .k-pager-wrap {
+    display: none !important;
+}
+
+.k-grid-content tr td {
+    border-left-width: 1px !important;
+}
+
+input[readonly] {
+    /*background-color: transparent;
+    border: 0;
+    font-size: 1em;*/
+    background-color: #F8F9FA !important;
+}
+/*.k-editor{
+    background-color: #F8F9FA !important;
+}*/
+
+.readonly {
+    background-color: #F8F9FA !important;
+}
+
+textarea[readonly] {
+    background-color: #F8F9FA !important;
+}
+
+.has-danger .form-control-feedback {
+    display: none !important;
+}
+
+.req {
+    color: red;
+}
+
+.heder-approve {
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.btn.btn-secondary {
+    background-color: lightgray;
+    color: black;
+}
+
+    .btn.btn-secondary:hover {
+        color: black;
+    }
+
+.m-demo .m-demo__preview {
+    padding: 15px;
+}
+
+.search-employee {
+    font-weight: 500;
+}
+
+.header-bold {
+    font-weight: 500;
+}
+
+.table-center-item {
+    text-align: center;
+}
+
+
+/*---------------Change Icon Kendo Grid-------------------------------*/
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-delete :hover,
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-edit :hover,
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-update :hover,
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-cancel :hover {
+    cursor: pointer;
+}
+
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-edit,
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-update {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    background: transparent;
+    border: none;
+    color: green;
+    margin: 0px;
+    padding: 2px;
+}
+
+
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-delete,
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-cancel {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    background: transparent;
+    border: none;
+    color: red;
+    margin: 0px;
+    padding: 2px;
+}
+
+td[role=gridcell] > a.k-button.k-button-icontext.k-grid-cancel {
+    color: red;
+}
+/*---------------End Change Icon Kendo Grid-------------------------------*/
+.k-resizable .k-editable-area {
+    padding: 0px;
+}
+
+.k-editable-area {
+    padding: 0px;
+}
+
+.k-widget.form-control {
+    height: 100%;
+}
+
+/*set Underline Placeholder*/
+/*::-webkit-input-placeholder {
+    font-style: italic;
+    font-size: 11px;
+}
+:-moz-placeholder {
+    font-style: italic;
+    font-size: 11px;
+}
+
+::-moz-placeholder {
+    font-style: italic;
+    font-size: 11px;
+}
+
+:-ms-input-placeholder {
+    font-style: italic;
+    font-size: 11px;
+}*/
+
+
+.currentApprove {
+    background-color: #7ea700 !important;
+    color: white !important;
+}
+
+.form-control-feedback {
+    color: red;
+}
+
+.k-grid tbody .k-button {
+    min-width: 0px !important;
+}
+
+.boldColor {
+    font-weight: 500;
+}
+
+.k-combobox.no-choose .k-dropdown-wrap {
+    padding-right: 0;
+}
+
+.k-combobox.no-choose .k-select {
+    display: none;
+}
+
+::-webkit-input-placeholder { /* Edge */
+    color: #787878;
+    font-weight: 300;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #787878;
+    font-weight: 300;
+}
+
+::placeholder {
+    color: #787878;
+    font-weight: 300;
+}
+
+
+.k-grid table {
+    border-collapse: collapse !important;
+}
+
+/* Page Template for the exported PDF */
+.page-template {
+    font-family: "DejaVu Sans", "Arial", sans-serif;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+    .page-template .header {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        right: 30px;
+        /*border-bottom: 1px solid #888;*/
+        color: #888;
+        margin-bottom: 5px;
+    }
+
+        .page-template .header .page {
+            border-bottom: 1px solid #888;
+            text-align: right;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+    .page-template .footer {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        right: 30px;
+        border-top: 1px solid #888;
+        text-align: center;
+        color: #888;
+    }
+
+    .page-template .watermark {
+        font-weight: bold;
+        font-size: 400%;
+        text-align: center;
+        margin-top: 30%;
+        color: #aaaaaa;
+        opacity: 0.1;
+        transform: rotate(-35deg) scale(1.7, 1.5);
+    }
+
+.k-pdf-export .k-filterable .k-grid-filter {
+    display: none;
+}
+
+.k-pdf-export .k-grid-content {
+    max-height: none !important;
+}

@@ -1,0 +1,94 @@
+@{
+    ViewData["Title"] = "JobTitle";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <form id="JobTitleFormUpdate" method="post">
+        <input value="@ViewBag.RecordID" type="hidden" name="id" />
+        <input type="hidden" name="created_on" class="form_control" />
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Group">Group</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="business_unit_group_id" id="business_unit_group_id"></select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Subgroup">Subgroup</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="business_unit_subgroup_id" id="business_unit_subgroup_id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Division">Division</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="business_unit_division_id" id="business_unit_division_id"></select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Departement">Departement</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="business_unit_departement_id" id="business_unit_departement_id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job Grade">Job Grade</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="job_grade_id" id="job_grade_id"></select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job Level">Job Level</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="job_level_id" id="job_level_id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Superior">Superior</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="parent_id" id="parent_id"></select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Title Name">Job Title Name</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="job_title_id" id="job_title_id"></select>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Remarks">Remarks</span>* :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="remarks" id="remarks" required="required" maxlength="50" type="text">
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/Hris/JobTitle" class="fakelink btn btn-secondary">Close</a>
+            </div>
+
+        </div>
+    </form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/JobTitle.update.js"></script>
+}

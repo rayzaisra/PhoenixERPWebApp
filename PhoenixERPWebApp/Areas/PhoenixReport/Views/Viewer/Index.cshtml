@@ -1,0 +1,21 @@
+﻿@using Stimulsoft.Report.Web;
+@using Stimulsoft.Report.Mvc;
+@{
+    ViewData["Title"] = "Report-General Ledger";
+    Layout = "_LayoutEmpty";
+}
+<!-- Report Viewer Office2013 style -->
+<link href="~/vendors/custom/Stimulsoft.2018.3.5/css/stimulsoft.viewer.office2013.whiteblue.css" rel="stylesheet">
+
+<!-- Report Designer Office2013 style -->
+<link href="~/vendors/custom/Stimulsoft.2018.3.5/css/stimulsoft.designer.office2013.whiteblue.css" rel="stylesheet">
+
+@Html.StiNetCoreViewer(new StiNetCoreViewerOptions()
+{
+    Actions =
+    {
+        GetReport = "GenerateReport",
+        ViewerEvent = "ViewerEvent"
+    }
+})
+

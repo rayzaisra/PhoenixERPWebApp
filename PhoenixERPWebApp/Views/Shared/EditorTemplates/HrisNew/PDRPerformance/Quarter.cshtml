@@ -1,0 +1,13 @@
+﻿@model object
+@(Html.Kendo().DropDownListFor(m => m)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { style = "width:100%;", required = "required" })
+    .Height(250)
+    .BindTo(new List<SelectListItem>() {
+      new SelectListItem() { Text = "Q1", Value = "Q1" },
+      new SelectListItem() { Text = "Q2", Value = "Q2" },
+      new SelectListItem() { Text = "Q3", Value = "Q3" },
+      new SelectListItem() { Text = "Q4", Value = "Q4" }
+    })
+)

@@ -1,0 +1,603 @@
+﻿@model PhoenixERPWebApp.Models.DeclarationPayrollHeader
+@{
+    ViewData["Title"] = "Declaration Payroll";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Declaration Payroll</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="declarationPayroll" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Declaration Payroll</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="declarationPayroll" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="declarationPayroll" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formDeclarationPayroll" class="form-horizontal form-bordered">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+
+                                <div class="row">
+                                    <div class="col-lg-6 m-form__group-sub">
+                                        <label asp-for="Code"></label> <span class="req">*</span> :
+                                        @*@(Html.Kendo().TextBoxFor(m => m.Code)
+                                               .HtmlAttributes(new {
+                                                   style = "width:100%",
+                                                   maxlength = 50,
+                                                   placeholder = $"Input type a {Html.DisplayNameFor(m => m.Code)}",
+                                                   required = "required",
+                                                   validationmessage = $"{Html.DisplayNameFor(m => m.Code)} is required"
+                                               }
+                                            ))*@
+
+                                        @Html.Kendo().TextBoxFor(m => m.Code).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly", @disabled = "disabled", style = "width:100%", Placeholder = "Auto Generated by System.." })
+                                    </div>
+                                    <div class="col-lg-6 m-form__group-sub">
+                                        <label asp-for="Description"></label> <span class="req">*</span> :
+                                        @if (ViewBag.isReadonly)
+                                        {
+                                            @(Html.Kendo().TextBoxFor(m => m.Description)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Description)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Description)} is required",
+                                            @readonly = "readonly",
+                                            @disabled = "disabled"
+                                        }
+                                     ))
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().TextBoxFor(m => m.Description)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Description)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Description)} is required"
+                                        }
+                                     ))
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="Month"></label> <span class="req">*</span> :
+                                            @if (ViewBag.isReadonly)
+                                            {@(Html.Kendo().DropDownListFor(x => x.Month)
+                                                        .DataTextField("Text")
+                                                        .DataValueField("Value")
+                                                        //.OptionLabel($"Choose a {Html.DisplayNameFor(m => m.JobLevelId)}")
+                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" , @readonly = "readonly" })
+                                                        .Filter(FilterType.Contains)
+                                                        .DataSource(source => source
+                                                            .Custom()
+                                                            .Transport(transport => transport
+                                                            .Read(read =>
+                                                            {
+                                                                read.Action("GetDDLMonth", "Dropdown", new { area = "HrisNew" });
+                                                            }))
+                                                            .ServerFiltering(false)
+                                                        )
+                                            )
+                                            }
+                                            else
+                                            {
+                                                @(Html.Kendo().DropDownListFor(x => x.Month)
+                                                        .DataTextField("Text")
+                                                        .DataValueField("Value")
+                                                        //.OptionLabel($"Choose a {Html.DisplayNameFor(m => m.JobLevelId)}")
+                                                        .HtmlAttributes(new { style = "width:100%;", required = "required"  })
+                                                        .Filter(FilterType.Contains)
+                                                        .DataSource(source => source
+                                                            .Custom()
+                                                            .Transport(transport => transport
+                                                            .Read(read =>
+                                                            {
+                                                                read.Action("GetDDLMonth", "Dropdown", new { area = "HrisNew" });
+                                                            }))
+                                                            .ServerFiltering(false)
+                                                        )
+                                            )
+                                            }
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="Year"></label> <span class="req">*</span> :
+                                            @if (ViewBag.isReadonly)
+                                            {@(Html.Kendo().DropDownListFor(x => x.Year)
+                                                        .DataTextField("Text")
+                                                        .DataValueField("Value")
+                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" , @readonly = "readonly" })
+                                                        .Filter(FilterType.Contains)
+                                                        .DataSource(source => source
+                                                            .Custom()
+                                                            .Transport(transport => transport
+                                                            .Read(read =>
+                                                            {
+                                                                read.Action("GetDDLYear", "Dropdown", new { area = "HrisNew" });
+                                                            }))
+                                                            .ServerFiltering(false)
+                                                        )
+                                            )
+                                            }
+                                            else
+                                            {
+                                                @(Html.Kendo().DropDownListFor(x => x.Year)
+                                                        .DataTextField("Text")
+                                                        .DataValueField("Value")
+                                                        .HtmlAttributes(new { style = "width:100%;", required = "required"  })
+                                                        .Filter(FilterType.Contains)
+                                                        .DataSource(source => source
+                                                            .Custom()
+                                                            .Transport(transport => transport
+                                                            .Read(read =>
+                                                            {
+                                                                read.Action("GetDDLYear", "Dropdown", new { area = "HrisNew" });
+                                                            }))
+                                                            .ServerFiltering(false)
+                                                        )
+                                            )
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 m-form__group-sub">
+                                        <label asp-for="DeclarationType"></label> <span class="req">*</span> :
+                                        @if (ViewBag.isReadonly)
+                                        {@(Html.Kendo().DropDownListFor(m=>m.DeclarationType)
+                                          .DataTextField("Text")
+                                          .DataValueField("Value")
+                                          .BindTo(new List<SelectListItem>() {
+                                          new SelectListItem() {
+                                            Text = "Additional",
+                                            Value = "Additional"
+                                            },
+                                          new SelectListItem() {
+                                            Text = "Deductional",
+                                            Value = "Deductional"
+                                            }
+                                            })
+                                          .SelectedIndex(0)
+                                          .HtmlAttributes(new { style = "width: 100%" , @readonly = "readonly" })
+                                            )
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().DropDownListFor(m=>m.DeclarationType)
+                                          .DataTextField("Text")
+                                          .DataValueField("Value")
+                                          .BindTo(new List<SelectListItem>() {
+                                          new SelectListItem() {
+                                            Text = "Additional",
+                                            Value = "Additional"
+                                            },
+                                          new SelectListItem() {
+                                            Text = "Deductional",
+                                            Value = "Deductional"
+                                            }
+                                            })
+                                          .SelectedIndex(0)
+                                          .HtmlAttributes(new { style = "width: 100%"})
+                                            )
+                                        }
+
+                                    </div>
+                                    <div class="col-lg-6 m-form__group-sub">
+                                        <label asp-for="SubComponentName"></label> <span class="req">*</span> :
+                                        @if (ViewBag.isReadonly)
+                                        {
+                                            @(Html.Kendo().DropDownListFor(m => m.SubComponentId)
+                                        .DataTextField("Text")
+                                        .OptionLabel("Select Component")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLPayrollComponent", "DropDown", new { area = "Hrisnew" }).Data("FilterDeclarationType");
+                                            }).ServerFiltering(true);
+                                        })
+                                        //.CascadeFrom("DeclarationType")
+                                        //.Enable(false)
+                                        ////.AutoBind(false)
+                                        .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" }))
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().DropDownListFor(m => m.SubComponentId)
+                                        .DataTextField("Text")
+                                        .OptionLabel("Select Component")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLPayrollComponent", "DropDown", new { area = "Hrisnew" }).Data("FilterDeclarationType");
+                                            }).ServerFiltering(true);
+                                        })
+                                        .CascadeFrom("DeclarationType")
+                                        //.Enable(false)
+                                        //.AutoBind(false)
+                                        .HtmlAttributes(new { style = "width:100%;" }))
+                                        }
+
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-lg-12 m-form__group-sub">
+                                        <div class="pull-right">
+                                            <button type="button" id="btn-load" class="btn btn-primary">Load</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row" id="DivListEmployee" style="display:none;">
+                                    <div class="col-lg-12 m-form__group-sub">
+                                        <label>List of Employee</label>  :
+                                        @if (ViewBag.isReadonly)
+                                        {
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.DeclarationPayrollDetail>()
+                                                                .Name("grid-DeclarationPayrollDetail")
+
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Bound(p => p.Id).Visible(false);
+                                                                    columns.Bound(p => p.EmployeeBasicInfoId).Width(200).EditorTemplateName("HrisNew/DeclarationPayroll/Employee").ClientTemplate("#=EmployeeName#").Title("Employee Name");
+                                                                    columns.Bound(p => p.LegalEntityName).Width(200);
+                                                                    columns.Bound(p => p.Remarks).Width(200).ClientFooterTemplate("TOTAL");
+                                                                    columns.Bound(p => p.Amount).Width(200).EditorTemplateName("Integer").ClientFooterTemplate("#=kendo.format('{0:N2}', calculateAmount())#").HtmlAttributes(new { style = "text-align:right;" });
+
+                                                                })
+                                                                //.NoRecords()
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                    .Extra(false)
+                                                                    .Operators(operators => operators
+                                                                    .ForString(str => str.Clear()
+                                                                        .Contains("Contains")
+                                                                        .StartsWith("Start sWith")
+                                                                        .EndsWith("End sWith")
+                                                                    )))
+                                                                //.Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    //.PageSize(10)
+                                                                    //.Aggregates(aggregates =>
+                                                                    //{
+                                                                    //    aggregates.Add(p => p.Amount).Sum();
+                                                                    //})
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model => { model.Id(p => p.Id); })
+                                                                    .Read(read => read.Action("ReadDetail", "declarationPayroll").Data("grid_params"))
+                                                                    .Create(update => update.Action("Create", "declarationPayroll"))
+                                                                    .Update(update => update.Action("Update", "declarationPayroll"))
+                                                                    .Destroy(update => update.Action("Destroy", "declarationPayroll"))
+                                                                )
+                                                                .Events(e => e.Save("saveDeclarationDetail")
+                                                                //.Edit("editDeductionEvent")
+                                                                )//e.DataBound("dataBoundEvent"))
+                                                            )
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.DeclarationPayrollDetail>()
+                                                                .Name("grid-DeclarationPayrollDetail")
+                                                                .ToolBar(toolbar => toolbar.Create())
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Command(command =>
+                                                                    {
+                                                                        command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                        command.Destroy().Text(" ");
+                                                                    }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                    columns.Bound(p => p.Id).Visible(false);
+                                                                    columns.Bound(p => p.EmployeeBasicInfoId).Width(200).EditorTemplateName("HrisNew/DeclarationPayroll/Employee").ClientTemplate("#=EmployeeName#").Title("Employee Name");
+                                                                    columns.Bound(p => p.LegalEntityName).Width(200);
+                                                                    columns.Bound(p => p.Remarks).Width(200).EditorTemplateName("StringNotRequired").ClientFooterTemplate("TOTAL");
+                                                                    columns.Bound(p => p.Amount).Width(200).EditorTemplateName("Integer").ClientFooterTemplate("#=kendo.format('{0:N2}', calculateAmount())#").HtmlAttributes(new { style = "text-align:right;" });
+
+                                                                })
+                                                                //.NoRecords()
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                    .Extra(false)
+                                                                    .Operators(operators => operators
+                                                                    .ForString(str => str.Clear()
+                                                                        .Contains("Contains")
+                                                                        .StartsWith("Start sWith")
+                                                                        .EndsWith("End sWith")
+                                                                    )))
+                                                                //.Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    //.PageSize(10)
+                                                                    //.Aggregates(aggregates =>
+                                                                    //{
+                                                                    //    aggregates.Add(p => p.Amount).Sum();
+                                                                    //})
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model => { model.Id(p => p.Id); })
+                                                                    .Read(read => read.Action("ReadDetail", "declarationPayroll").Data("grid_params"))
+                                                                    .Create(update => update.Action("Create", "declarationPayroll"))
+                                                                    .Update(update => update.Action("Update", "declarationPayroll"))
+                                                                    .Destroy(update => update.Action("Destroy", "declarationPayroll"))
+                                                                )
+                                                              
+                                                                .Events(e => e.Save("saveDeclarationDetail")
+                                                                .Edit("onEdit")
+                                                                )//e.DataBound("dataBoundEvent"))
+                                                            )
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                <div class="pull-right">
+                                    @if (!ViewBag.isReadonly)
+                                    {
+                                        <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    }
+
+                                    <a asp-action="index" asp-controller="declarationPayroll" asp-area="hrisnew" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .k-grid-footer tr.k-footer-template td {
+        border-style: solid;
+        border-width: 1px 0 0 0;
+        text-align: right;
+    }
+</style>
+<script>
+
+    var param = (function (param) {
+        param.saveUrl = "@Url.Action("Save", "DeclarationPayroll")";
+        param.approveUrl = "@Url.Action("Approve", "DeclarationPayroll")";
+        param.completeUrl = "@Url.Action("Complete", "DeclarationPayroll")";
+        param.rejectUrl = "@Url.Action("Reject", "DeclarationPayroll")";
+        param.submitUrl = "@Url.Action("Submit", "DeclarationPayroll")";
+        return param;
+    })(param || {});
+
+    var pageFunction = (function (pageFunction) {
+        pageFunction.init = function () {
+            //initialize
+        };
+        pageFunction.save = function () {
+            //alert("On Progress..")
+            var validator = $("#formDeclarationPayroll").kendoValidator().data("kendoValidator");
+
+            if (validator.validate()) {
+                var gridDetails = $("#grid-DeclarationPayrollDetail").data("kendoGrid");
+                gridDetails.saveRow();
+                var dataList = {
+                    details: gridDetails.dataSource.data()
+                };
+                callAction({ formId: "formDeclarationPayroll", title: "save", type: "POST", url: param.saveUrl, objects: dataList });
+            } else {
+                swal('Information', 'Please complete your form !', 'info');
+            }
+            //callAction({ formId: "formGoodRequests", title: "Save", type: "POST", url: param.saveUrl });
+        };
+    });
+
+    $(document).ready(function () {
+        if ('@ViewBag.isReadonly' === 'True') {
+            $('#btn-load').hide();
+            $('#DivListEmployee').show();
+        } else {
+            $('#btn-load').show();
+            $('#DivListEmployee').hide();
+        }
+        $("#btn-save").click(function () {
+            var validator = $("#formDeclarationPayroll").kendoValidator().data("kendoValidator");
+
+            if (validator.validate()) {
+                var gridDetails = $("#grid-DeclarationPayrollDetail").data("kendoGrid");
+                gridDetails.saveRow();
+                var dataList = {
+                    Details: gridDetails.dataSource.data()
+                };
+                callAction({ formId: "formDeclarationPayroll", title: "save", type: "POST", url: param.saveUrl, objects: dataList });
+            } else {
+                swal('Information', 'Please complete your form !', 'info');
+            }
+        });
+        //$('#btn-save').click(pageFunction.save);
+
+        if ('@Model.Id' !== "") {
+            $('#DivListEmployee').show();
+        } else {
+            $('#DivListEmployee').hide();
+        }
+    });
+
+    $('#btn-load').click(function () {
+        var componentId = $("#SubComponentId").data("kendoDropDownList").value();
+        if (componentId !== "") {
+            $('#DivListEmployee').show();
+            ProcessData();
+        } else {
+            return swal(
+                'Information',
+                'There is no selected component. Please select the component name first',
+                'info'
+            );
+        }
+
+    })
+
+    function FilterDeclarationType() {
+        return {
+            DeclarationTypeId: $("#DeclarationType").val()
+        };
+    }
+
+    function grid_params() {
+        var month = $("#Month").data("kendoDropDownList").value();
+        var year = $("#Year").data("kendoDropDownList").value();
+        var component = $("#SubComponentId").data("kendoDropDownList").value();
+        return {
+            month: month,
+            year: year,
+            componentId:component
+        }
+    }
+
+    function ProcessData() {
+        var grid = $("#grid-DeclarationPayrollDetail").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+    }
+
+    function saveDeclarationDetail(e) {
+        var amount = $("#Amount").data("kendoNumericTextBox").value();
+        var EmployeeName = $("#EmployeeBasicInfoId").data("kendoDropDownList").text();
+        var LegalEntity = $("#LegalEntityName").val();
+        e.model.set("Amount", amount);
+        e.model.set("EmployeeName", EmployeeName);
+        e.model.set("LegalEntityName", LegalEntity);
+    }
+
+    function calculateAmount() {
+        var data = $("#grid-DeclarationPayrollDetail").data("kendoGrid").dataSource.data();
+        var total = 0;
+        for (var i = 0; i < data.length; i++) {
+            total += parseFloat(data[i].Amount);
+        }
+        return total;
+    }
+
+    function onEdit(e) {
+
+        e.container.find("input[name='LegalEntityName']").each(function () {
+            $(this).attr("disabled", "disabled")
+            $(this).removeAttr("required")
+        });
+
+    }
+    function Emp_Select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetInfoEmployee", "DeclarationPayroll")',
+                data: { Id: dataItem.Value },
+                success: function (result) {
+
+                    if (result != undefined) {
+                        $("#LegalEntityName").val(result.LegalEntityName);
+                        //$("#Id").val(result.Id);
+                        //$("#Id").prop("readonly", "readonly");
+                    }
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,94 @@
+﻿<input hidden id="detail-id" value="@ViewBag.RecordID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">City Detail</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Core/City")" class="m-nav__link">
+                        <span class="m-nav__link-text">City</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <form id="form-city" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                    <input hidden name="id" value="@ViewBag.RecordID" />
+                    <div class="m-portlet__body">
+                        <div class="m-form__group">
+                            <!-- Begin: Input Country -->
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Country :</label>
+                                        <select id="country_id" name="country_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End: Input Country -->
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>City Code :</label>
+                                        <input id="city_code" name="city_code" type="text" class="form-control form-control-sm m-input" placeholder="Enter City Code">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>City Name :</label>
+                                        <input id="city_name" name="city_name" type="text" class="form-control form-control-sm m-input  m--margin-bottom-30" placeholder="Enter City Name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                        <div class="m-form__actions m-form__actions--solid">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button type="button" id="btn-save" class="btn btn-sm btn-primary">Save</button>
+                                    <a href="@Url.Content("~/Core/City")" class="btn btn-sm btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Areas/Core/Scripts/City.Detail.js" asp-append-version="true"></script>
+    <script src="~/Areas/Core/Scripts/Lookup/Country.Lookup.js" asp-append-version="true"></script>
+}
+
+

@@ -1,0 +1,533 @@
+﻿@model PhoenixERPWebApp.Models.FinancePeriod
+@{
+    ViewData["Title"] = "Periods Detail";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto"> 
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="FinancePeriod" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Periods Detail</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="FinancePeriod" asp-area="finance"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="FinancePeriod" asp-area="finance"  asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title"> 
+                                <h3 class="m-portlet__head-text m--font-success">Periods Detail</h3>&nbsp; 
+                                @if (Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.Draft)
+                                {<span class="m-badge m-badge--info m-badge--wide" id="lblstatus">@Model.Status</span> }
+                        else if (Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.WaitingApproval)
+                        { <span class="m-badge m-badge--warning m-badge--wide" id="lblstatus">@Model.Status</span> }
+                        else if (Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.Rejected)
+                        { <span class="m-badge m-badge--danger m-badge--wide" id="lblstatus">@Model.Status</span> }
+                        else if (Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.Close)
+                        { <span class="m-badge m-badge--success m-badge--wide" id="lblstatus">@Model.Status</span>} 
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formFinancePeriod" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="FinancePeriod" asp-area="finance">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="Status" />
+                                <input type="hidden" asp-for="StatusApproval" />
+                                <input type="hidden" asp-for="IsClose" />
+  
+                                <div class="row ">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="FinancePeriodName"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.FinancePeriodName)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.FinancePeriodName)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.FinancePeriodName)} is required" 
+                                                }
+                                             ))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="FinancePeriodNumber"></label> :
+                                            @(Html.Kendo().TextBoxFor(m => m.FinancePeriodNumber)
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    @readonly = "readonly",
+                                                    placeholder = $"Auto generated by system"
+                                                }))
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row ">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                           <label asp-for="FiscalYearId"></label> <span class="req">*</span> :
+                                            @(Html.Kendo().DropDownListFor(m => m.FiscalYearId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Filter(FilterType.Contains)
+                                                .Events(evt=>evt.Select("FiscalYear_SelectEvent"))
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetFiscalYear", "Dropdown", new { area = "Finance" });
+                                                    });
+                                                })
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.FiscalYearId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.FiscalYearId)} is required"
+                                                })
+                                            )
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="LegalEntityId"></label> <span class="req">*</span> :
+                                            @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                                    });
+                                                })
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.LegalEntityId)} is required",
+                                                    @readonly="readonly"
+                                                })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row ">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label asp-for="StartDate"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DatePickerFor(m=>m.StartDate)
+                                                  .Format("dd MMMM yyyy")
+                                                  //.Start(CalendarView.Year)
+                                                  //.Depth(CalendarView.Year)
+                                                  .HtmlAttributes(new {
+                                                      style = "width: 100%",
+                                                      onkeydown = "javascript:return false;",
+                                                      placeholder = $"Input type a {Html.DisplayNameFor(m => m.StartDate)}",
+                                                      required = "required",
+                                                      validationmessage = $"{Html.DisplayNameFor(m => m.StartDate)} is required"
+
+                                                  })
+                                                  .Events(e => e.Change("startChangeActual"))
+                                            )
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label asp-for="EndDate"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DatePickerFor(m=>m.EndDate)
+                                                  .Format("dd MMMM yyyy")
+                                                  //.Start(CalendarView.Year)
+                                                  //.Depth(CalendarView.Year)
+                                                  .HtmlAttributes(new {
+                                                      style = "width: 100%",
+                                                      onkeydown = "javascript:return false;",
+                                                      placeholder = $"Input type a {Html.DisplayNameFor(m => m.EndDate)}",
+                                                      required = "required",
+                                                      validationmessage = $"{Html.DisplayNameFor(m => m.EndDate)} is required"
+
+                                                  })
+                                                  .Events(e => e.Change("endChangeActual"))
+                                            )
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <div class="row ">
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBox().Name("chkAll").Label("Select All"))
+                                   </div>
+                                </div>
+                                <div class="row ">
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x=>x.Ap).Label("Account Payable"))@*Account Payable (Create jurnalnya di TAP)*@
+                                   </div>
+                                    <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x=>x.Je).Label("Journal Entry"))
+                                   </div>
+                                </div>
+                                <div class="row ">
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x=>x.Ar).Label("Account Receivable"))@*Account Receivable (Create invoice jurnalnya)*@
+                                   </div>
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x => x.Ja).Label("Journal Adjusment"))
+                                   </div>
+                                </div>
+                                <div class="row ">
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x=>x.Cas).Label("Request Payment Salary"))
+                                   </div>
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x => x.Amor).Label("Amortization"))
+                                   </div>
+                                </div>
+                                <div class="row ">
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x=>x.Pcs).Label("Petty Cash"))
+                                   </div>
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x => x.Dep).Label("Revaluation"))
+                                   </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-lg-5">
+                                        @(Html.Kendo().CheckBoxFor(x => x.Bp).Label("Bank payment")) @*Bank payment (Payment Request modulnya)*@
+                                    </div>
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x => x.Sa).Label("Salary Allocation"))
+                                   </div>
+                                </div>
+                                 <div class="row ">
+                                   <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x=>x.Br).Label("Bank Received"))
+                                   </div>
+                                     <div class="col-lg-5">
+                                       @(Html.Kendo().CheckBoxFor(x=>x.Jc).Label("Job Closing"))
+                                   </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label asp-for="RemarksProcess"></label> :
+                                            @Html.TextAreaFor(x => x.RemarksProcess, new { style = "height:100px;width:100%" })
+                                        </div>
+                                    </div>
+                                </div> 
+                                 <partial name="_HistoryApproval" />
+                                 <partial name="_StatusLog" />                                
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.IsRequetorReOpen == true)
+                                    {
+                                        <button type="button" id="btnReOpen" class="btn btn-success edit"><span class="fa fa-save"></span> Re-Open</button>
+                                    }
+                                    else if (ViewBag.isRequestor == true)
+                                    { 
+                                        <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button> 
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button> 
+                                    }
+                                    else if (ViewBag.processApprove == true)
+                                    {
+                                        <button type="button" id="btnReject" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                        <button type="button" id="btnApprove" class="btn btn-primary"><span class="fa fa-bookmark"></span> Approve</button>
+                                    } 
+                                    <a asp-action="index" asp-controller="FinancePeriod" asp-area="finance" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script> 
+    $(document).ready(function () {
+        if ("@ViewBag.isRequestor" == "False") {
+            $("#FinancePeriodName").attr('readonly', 'readonly');
+            $("#StartDate").data("kendoDatePicker").readonly();
+            $("#EndDate").data("kendoDatePicker").readonly();
+            $("#LegalEntityId").data("kendoDropDownList").readonly();
+            $("#FiscalYearId").data("kendoDropDownList").readonly();            
+        }
+
+        $('input[name="Ap"]').val("@Model.Ap");
+        $('input[name="Je"]').val("@Model.Je");
+        $('input[name="Ar"]').val("@Model.Ar");
+        $('input[name="Ja"]').val("@Model.Ja");
+        $('input[name="Cas"]').val("@Model.Cas");
+        $('input[name="Amor"]').val("@Model.Amor");
+        $('input[name="Pcs"]').val("@Model.Pcs");
+        $('input[name="Dep"]').val("@Model.Dep");
+        $('input[name="Bp"]').val("@Model.Bp");
+        $('input[name="Sa"]').val("@Model.Sa");
+        $('input[name="Br"]').val("@Model.Br");
+        $('input[name="Jc"]').val("@Model.Jc");
+
+        if ($('#Id').val() != "") {
+            $("#FiscalYearId").data("kendoDropDownList").readonly(true);
+            $("#StartDate").data("kendoDatePicker").readonly(true);
+            $("#EndDate").data("kendoDatePicker").readonly(true);
+        }
+
+        @*var stringDate ="@ViewBag.MaxDate";
+        if (stringDate != "") {
+            var min = new Date(stringDate);
+            $("#StartDate").data("kendoDatePicker").min(min);
+            $("#EndDate").data("kendoDatePicker").min(min);
+        }*@
+    });
+
+    $('#btnApprove').click(function () {
+        callAction({ formId: "formFinancePeriod", title: "approve", type: "PUT", url: '@Url.Action("approve", "FinancePeriod")'});
+    });
+
+    $('#btnReject').click(function () {
+        $("#RemarksProcess").attr("required", "required");
+        callAction({ formId: "formFinancePeriod", title: "reject", type: "PUT", url: '@Url.Action("reject", "FinancePeriod")'});
+    });
+    
+    $('#btnSubmit').click(function () {
+        if (!isValid()) return;
+        callAction({ formId: "formFinancePeriod", title: "close", type: "POST", url: '@Url.Action("submit", "FinancePeriod")'});
+    });
+
+    $('#btnReOpen').click(function () {
+        $("#RemarksProcess").attr("required", "required"); 
+        callAction({ formId: "formFinancePeriod", title: "re-open", type: "PUT", url: '@Url.Action("reopen", "FinancePeriod")'});
+    });
+    
+    $('#btnSave').click(function () {
+        if (!isValid()) return;
+        callAction({ formId: "formFinancePeriod", title: "open", type: "POST", url: '@Url.Action("save", "FinancePeriod")'});
+    });
+
+    function isValid() {
+        var valid = $("#formFinancePeriod").validate().form();
+        if (valid) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function startChangeActual() {
+        var endPicker = $("#EndDate").data("kendoDatePicker"),
+            startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            var date = new Date(startDate.setMonth(startDate.getMonth() + 1));
+            var minEndDate = new Date(date.setDate(date.getDate() - 1));
+            endPicker.min(minEndDate);
+        }
+        ChangeNamePeriod();
+    }
+
+    function endChangeActual() {
+        var startPicker = $("#StartDate").data("kendoDatePicker"),
+            endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            var date = new Date(endDate.setDate(endDate.getDate() + 1));
+            var maxStartDate = new Date(date.setMonth(date.getMonth() - 1));
+            startPicker.max(maxStartDate);
+        }
+        ChangeNamePeriod();
+    }
+
+    $('#chkAll').change(function () {
+        var checked = this.checked;
+        $("#Ap").prop('checked', checked);
+        $("#Je").prop('checked', checked);
+        $("#Ar").prop('checked', checked);
+        $("#Ja").prop('checked', checked);
+        $("#Cas").prop('checked', checked);
+        $("#Amor").prop('checked', checked);
+        $("#Pcs").prop('checked', checked);
+        $("#Dep").prop('checked', checked);
+        $("#Bp").prop('checked', checked);
+        $("#Sa").prop('checked', checked);
+        $("#Br").prop('checked', checked);
+        $("#Jc").prop('checked', checked);
+        
+        $('input[name="Ap"]').val(checked);
+        $('input[name="Je"]').val(checked);
+        $('input[name="Ar"]').val(checked);
+        $('input[name="Ja"]').val(checked);
+        $('input[name="Cas"]').val(checked);
+        $('input[name="Amor"]').val(checked);
+        $('input[name="Pcs"]').val(checked);
+        $('input[name="Dep"]').val(checked);
+        $('input[name="Bp"]').val(checked);
+        $('input[name="Sa"]').val(checked);
+        $('input[name="Br"]').val(checked);
+        $('input[name="Jc"]').val(checked);   
+    });
+
+    $('#Ap').change(function () {
+        $('input[name="Ap"]').val(this.checked);
+    });
+
+    $('#Je').change(function () {
+        $('input[name="Je"]').val(this.checked);
+    });
+
+    $('#Ar').change(function () {
+        $('input[name="Ar"]').val(this.checked);
+    });
+
+    $('#Ja').change(function () {
+        $('input[name="Ja"]').val(this.checked);
+    });
+
+    $('#Cas').change(function () {
+        $('input[name="Cas"]').val(this.checked);
+    });
+
+    $('#Amor').change(function () {
+        $('input[name="Amor"]').val(this.checked);
+    });
+
+    $('#Pcs').change(function () {
+        $('input[name="Pcs"]').val(this.checked);
+    });
+
+    $('#Dep').change(function () {
+        $('input[name="Dep"]').val(this.checked);
+    });
+
+    $('#Bp').change(function () {
+        $('input[name="Bp"]').val(this.checked);
+    });
+
+    $('#Sa').change(function () {
+        $('input[name="Sa"]').val(this.checked);
+    });
+
+    $('#Br').change(function () {
+        $('input[name="Br"]').val(this.checked);
+    }); 
+
+    $('#Jc').change(function () {
+        $('input[name="Jc"]').val(this.checked);
+    }); 
+
+    function FiscalYear_SelectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded",
+                async: false,
+                data: { id: dataItem.Value },
+                url: "@Url.Action("Get", "financialyear")",
+                success: function (result) {
+                    if (result != null) { 
+                        $("#LegalEntityId").data("kendoDropDownList").value(result.LegalEntityId);
+                        $("#StartDate").data("kendoDatePicker").min(result.StartDate);
+                        $("#EndDate").data("kendoDatePicker").max(result.EndDate);
+
+                        if ($("#StartDate").data("kendoDatePicker").value() == null && $("#EndDate").data("kendoDatePicker").value() == null) {
+                            $("#StartDate").data("kendoDatePicker").max(result.EndDate);
+                            $("#EndDate").data("kendoDatePicker").value(result.EndDate);
+
+                            $("#StartDate").data("kendoDatePicker").value(result.StartDate);
+                            $("#EndDate").data("kendoDatePicker").min(result.StartDate);
+                        }
+                        ChangeNamePeriod();
+                    }
+                }
+            });
+        }
+    }
+
+    function ChangeNamePeriod() {
+        var entityName = $("#LegalEntityId").data("kendoDropDownList").text();
+        var startMonth = kendo.toString($("#StartDate").data("kendoDatePicker").value(), "MMMM");
+        var endMonth = kendo.toString($("#EndDate").data("kendoDatePicker").value(), "MMMM");
+        var month = startMonth;
+        var year = kendo.toString($("#StartDate").data("kendoDatePicker").value(), "yyyy");
+
+        if (startMonth != endMonth) {
+            month += " s/d " + endMonth;
+        }
+
+        var fiscalPeriodName = entityName + ' - ' + month + ' ' + year;
+        $("#FinancePeriodName").val(fiscalPeriodName);
+    }
+</script>

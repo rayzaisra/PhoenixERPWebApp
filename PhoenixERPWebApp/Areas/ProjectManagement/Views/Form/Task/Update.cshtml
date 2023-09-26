@@ -1,0 +1,34 @@
+<form id="TaskForm" method="post">
+    <div class="row taskfield">
+        <div class="col-lg-12">
+            <input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">task_name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="task_name" id="task_name" required maxlength="50" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="row taskfield">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_date" id="end_date" required>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="start_date" id="start_date" required>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="savetask()" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/BasicSalary" class="fakelink btn btn-secondary">Close</a>
+        </div>
+    </div>
+</form>

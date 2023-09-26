@@ -1,0 +1,98 @@
+﻿@model PhoenixERPWebApp.Models.Termination
+@{
+    DateTime? LastDayDate = DateTime.Now;
+    DateTime? EffectiveResignDate = DateTime.Now;
+    DateTime? TerminationInterviewDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        if (LastDayDate >= Model.LastDayDate)
+        {
+            LastDayDate = Model.LastDayDate;
+        }
+
+        if (EffectiveResignDate >= Model.EffectiveResignDate)
+        {
+            EffectiveResignDate = Model.EffectiveResignDate;
+        }
+
+        if (TerminationInterviewDate >= Model.TerminationInterviewDate)
+        {
+            TerminationInterviewDate = Model.TerminationInterviewDate;
+        }
+    }
+}
+
+<input type="hidden" asp-for="TerminationDate" />
+<input type="hidden" asp-for="ExitInterviewFiles" />
+<input type="hidden" asp-for="WarningLetter" />
+<input type="hidden" asp-for="WarningLetterDate" />
+
+<hr/>
+<div class="row">
+    <div class="col-lg-12 m-form__group-sub">
+        <div class="form-group">
+            <label></label> Retired Notes <span class="req">*</span> :
+            @(Html.Kendo().EditorFor(x => x.Notes)
+                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                .Placeholder($"Type your {Html.DisplayNameFor(m => m.Notes)} here")
+            )
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="TerminationInterviewDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.TerminationInterviewDate)
+                .Format("dd MMM yyyy")
+                .Min($"{TerminationInterviewDate}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.TerminationInterviewDate)}",
+                    onkeydown = "javascript:return false;"
+                })
+            )
+        </div>
+    </div>
+
+    <div class="col-lg-3 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="EffectiveResignDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.EffectiveResignDate)
+                .Format("dd MMM yyyy")
+                .Min($"{EffectiveResignDate}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.EffectiveResignDate)}",
+                    onkeydown = "javascript:return false;"
+                })
+            )
+        </div>
+    </div>
+
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="LastDayDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.LastDayDate)
+                .Format("dd MMM yyyy")
+                .Min($"{LastDayDate}")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    required = "required",
+                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.LastDayDate)}",
+                    onkeydown = "javascript:return false;"
+                })
+            )
+        </div>
+    </div>
+</div>

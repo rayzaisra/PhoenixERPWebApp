@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Mpp";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="MppFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="approval_id">approval_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval_id" id="approval_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="code">code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="code" id="code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="created_date">created_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="created_date" id="created_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="fiscal_year">fiscal_year</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="fiscal_year" id="fiscal_year"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="id_division">id_division</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="id_division" id="id_division"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="status">status</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="status" id="status"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="total_budget">total_budget</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="total_budget" id="total_budget"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="updated_date">updated_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="updated_date" id="updated_date"   type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Mpp" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Mpp.create.js"></script>
+}

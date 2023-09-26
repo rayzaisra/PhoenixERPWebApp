@@ -1,0 +1,20 @@
+﻿@model object
+@(Html.Kendo().DropDownListFor(m => m)
+            .DataTextField("Text")
+            .DataValueField("Value")
+            .OptionLabel("-- Select --")
+            .HtmlAttributes(new { style = "width:100%;", required = "required" })
+            .Height(400)
+            .Filter(FilterType.Contains)
+            .Events(e=>e.Select("onRounding"))
+            .BindTo(new List<SelectListItem>() {
+                          new SelectListItem() {
+                              Text = "Up",
+                              Value = "Up"
+                          },
+                          new SelectListItem() {
+                              Text = "Down",
+                              Value = "Down"
+                          }
+                      })
+)

@@ -1,0 +1,415 @@
+﻿@model PhoenixERPWebApp.Models.RptBudgetFilter
+@{ 
+    ViewData["Title"] = "Budget Opex Business Unit";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Budget Opex Business Unit</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Report</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="RptBudgetOpex" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Budget Opex Business Unit</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">
+                                Budget Opex Business Unit
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">             
+                    <form id="formSearch" >
+                        <div class="row"> 
+                            <div class="col-lg-6">   
+                                <div class="form-group">
+                                    <label asp-for="Year"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(m => m.Year)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetYearList", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Year)} is required"
+                                        })
+                                    )
+                                </div>    
+                                <div class="form-group"> 
+                                    <label asp-for="BusinessUnitId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;"
+                                        })
+                                    )
+                                </div>
+                                <div class="form-group">   
+                                   @(Html.Kendo().CheckBoxFor(x=>x.DisplayAmountWaitingApproval) 
+                                    .Label("Display Amount Waiting Approval") 
+                                    )
+                                </div> 
+                            </div> 
+                            <div class="col-lg-6"> 
+                                <div class="form-group"> 
+                                    <label asp-for="Status"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.Status)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)  
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLStatusBudget", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;"
+                                        })
+                                    )
+                                </div>
+                                <div class="form-group">  
+                                    <label asp-for="Version"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.Version)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLVersionBudgetOpex", "Dropdown", new { area = "Finance" }).Data("version_params");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;"
+                                        })
+                                        .CascadeFrom("Year")
+                                    )
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CoaLevel"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaLevel)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLCOALevel", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.CoaLevel)} is required"
+                                        })
+                                    )
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.RptBudget>()
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.AccountName).Width(250);//.Locked(true);
+                                    columns.Group(g => g.Title("All Business Unit")
+                                        .Columns(location =>
+                                        {
+                                            location.Bound(p => p.Budget01).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget02).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget03).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget04).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget05).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget06).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget07).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget08).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget09).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget10).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget11).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Budget12).Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            location.Bound(p => p.Total).Width(160).ClientFooterTemplate("#=kendo.format('{0:n2}', sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                        })
+                                    );
+                                    //columns.Bound(p => p.Status).Width(150);
+                                    //columns.Bound(p => p.Version).Width(100);
+                                })
+                                .ToolBar(toolBar =>
+                                {
+                                    toolBar.Excel();
+                                    toolBar.Pdf();
+                                })
+                                .Excel(excel => excel.AllPages(true)
+                                    .FileName("Report Budget Opex Business Unit.xlsx")
+                                    .Filterable(true)
+                                )
+                                .Pdf(pdf => pdf
+                                    .AllPages()
+                                    .AvoidLinks()
+                                    .PaperSize("A0")
+                                    .Margin("4.5cm", "1cm", "1cm", "1cm")
+                                    .Landscape()
+                                    .RepeatHeaders()
+                                    .TemplateId("page-template")
+                                    .FileName("Report Budget Opex Business Unit.pdf")
+                                ) 
+                                //.Pageable(pageable => pageable
+                                //    .Refresh(true)
+                                //    .PageSizes(true)
+                                //    .ButtonCount(5))
+                                //.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                //.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                //    .Extra(false)
+                                //    .Operators(operators => operators
+                                //    .ForString(str => str.Clear()
+                                //        .Contains("Contains")
+                                //        .StartsWith("Start sWith")
+                                //        .EndsWith("End sWith")
+                                //    )))
+                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                .Resizable(rsz => rsz.Columns(true))
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    //.PageSize(10)
+                                    .Events(events => events.Error("errorHandler"))
+                                    .Model(model => { model.Id(p => p.AccountId);})
+                                    .Aggregates(aggregates =>
+                                    {
+                                        aggregates.Add(p => p.Budget01).Sum();
+                                        aggregates.Add(p => p.Budget02).Sum();
+                                        aggregates.Add(p => p.Budget03).Sum();
+                                        aggregates.Add(p => p.Budget04).Sum();
+                                        aggregates.Add(p => p.Budget05).Sum();
+                                        aggregates.Add(p => p.Budget06).Sum();
+                                        aggregates.Add(p => p.Budget07).Sum();
+                                        aggregates.Add(p => p.Budget08).Sum();
+                                        aggregates.Add(p => p.Budget09).Sum();
+                                        aggregates.Add(p => p.Budget10).Sum();
+                                        aggregates.Add(p => p.Budget11).Sum();
+                                        aggregates.Add(p => p.Budget12).Sum();
+                                        aggregates.Add(p => p.Total).Sum();
+                                    })
+                                    .Read(read => read.Action("Read", "RptBudgetOpex").Data("gridParams"))
+                                )
+                            //.AutoBind(false)
+                            .Events(e => e.ExcelExport("customeExcelExportEvent").PdfExport("customePdfExportEvent"))
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<script type="x/kendo-template" id="page-template">
+    <div class="page-template">
+        <div class="header">
+            <div class="page">Page #: pageNum # of #: totalPages #</div> 
+            @*#if(pageNum==1){#*@
+                #=LoadPDF()#            
+            @*#}#*@
+        </div>
+        @*<div class="watermark">KENDO UI</div>
+        <div class="footer">
+            Page #: pageNum # of #: totalPages #
+        </div>*@
+    </div>
+</script>
+
+<script>   
+    function gridParams() { 
+        return {
+            Filter: { 
+                Year: $("#Year").data("kendoDropDownList").value(), 
+                BusinessUnitId: $("#BusinessUnitId").data("kendoDropDownList").value(),
+                DisplayAmountWaitingApproval: $("#DisplayAmountWaitingApproval").is(':checked'),
+                Status: $("#Status").data("kendoDropDownList").value(),
+                Version: $("#Version").data("kendoDropDownList").value(),
+                CoaLevel: $("#CoaLevel").data("kendoDropDownList").value()
+            }
+        }
+    }
+
+    function version_params() {
+        return {
+            year: $("#Year").val()
+        }
+    }
+
+    $('#btnSearch').click(function () {
+        var valid = $("#formSearch").validate().form();
+        if (valid) {
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            var buId = $("#BusinessUnitId").data("kendoDropDownList").value();
+            var buName = $("#BusinessUnitId").data("kendoDropDownList").text();
+
+            if (buId != "") {
+                $("#grid thead [data-title='All Business Unit']").html(buName);
+            } else {
+                $("#grid thead [data-title='All Business Unit']").html("All Business Unit");
+            }
+
+            $('#grid').data('kendoGrid').dataSource.read();
+            $('#grid').data('kendoGrid').refresh();
+
+            mApp.unblock("#m_blockui_list");
+        }
+    });
+
+    function customeExcelExportEvent(e) {
+        var sheet = GetBodyExportExcel(e)
+        sheet.frozenRows = 7;
+        //sheet.mergedCells = ["A1:B1", "A2:B2", "A3:B3", "A4:B4", "A5:B5"];
+        //sheet.name = "Header"; 
+
+        var coaLevel = $("#CoaLevel").data("kendoDropDownList").text();
+        var version = $("#Version").data("kendoDropDownList").text();
+        var status = $("#Status").data("kendoDropDownList").text();
+        var bu = $("#BusinessUnitId").data("kendoDropDownList").text();
+        var year = $("#Year").data("kendoDropDownList").text();
+
+        sheet.rows.splice(0, 0, { cells: [{ value: "COA Level", bold: true }, { value: coaLevel, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Version", bold: true }, { value: version, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Status", bold: true }, { value: status, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Business Unit", bold: true }, { value: bu, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Year", bold: true }, { value: year, bold: true }], type: "header", height: 20 });
+    }
+
+    function LoadPDF() {
+        var coaLevel = $("#CoaLevel").data("kendoDropDownList").text();
+        var version = $("#Version").data("kendoDropDownList").text();
+        var status = $("#Status").data("kendoDropDownList").text();
+        var bu = $("#BusinessUnitId").data("kendoDropDownList").text();
+        var year = $("#Year").data("kendoDropDownList").text();
+
+        return "<table style='width:100%;'>" +
+                "<tr>" +
+                    "<td style='width:50%; vertical-align:top;'>"+
+                        "<table>"+
+                            "<tr>"+
+                                "<td style='width:200px;'>Year</td>"+
+                                "<td>:</td>"+
+                                "<td>"+year+"</td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<td>Business Unit</td>"+
+                                "<td>:</td>"+
+                                "<td>"+bu+"</td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<td>Status</td>"+
+                                "<td>:</td>"+
+                                "<td>"+status+"</td>"+
+                            "</tr>"+ 
+                        "</table>"+
+                    "</td>"+
+                    "<td style='width:50%; vertical-align:top;'>"+
+                        "<table>" +                            
+                            "<tr>"+
+                                "<td style='width:200px;'>Version</td>"+
+                                "<td>:</td>"+
+                                "<td>"+version+"</td>"+
+                            "</tr>"+ 
+                            "<tr>"+
+                                "<td>COA Level</td>"+
+                                "<td>:</td>"+
+                                "<td>"+coaLevel+"</td>"+
+                            "</tr>"+ 
+                        "</table>"+
+                    "</td>"+
+                "</tr>" +                
+            "</table>";
+    }
+
+    function customePdfExportEvent(e) {
+        //e.sender.unlockColumn("AccountName");
+        //e.preventDefault(); 
+
+        //e.sender.saveAsPDF().then(function () {
+        //    e.sender.lockColumn("AccountName"); 
+        //});
+    }
+</script>

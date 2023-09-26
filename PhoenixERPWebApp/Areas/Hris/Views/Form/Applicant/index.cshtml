@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "ApplicantProgress";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    @*<a href="@Url.Content("~/Hris/ApplicantProgress/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>*@
+}
+
+@section Paneltools{
+    @*<a  data-target="#ApplicantProgressModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>*@
+}
+@section Panelbody{
+    <legend>Applicant Tracking Status</legend>
+    <form id="AplicantTrackingForm" name="AplicantTrackingForm" method="post">
+
+    
+    </form>
+
+
+    @*@Html.Partial("ApplicantProgress/Search")*@
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/ApplicantProgress.js"></script>
+}

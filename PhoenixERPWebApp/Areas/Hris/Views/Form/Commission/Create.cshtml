@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Commission";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="CommissionFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="amount">amount</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="amount" id="amount"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="commission_description">commission_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="commission_description" id="commission_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="date_commission">date_commission</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="date_commission" id="date_commission"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="notes" id="notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="title">title</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="title" id="title"  maxlength="200" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Commission" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Commission.create.js"></script>
+}

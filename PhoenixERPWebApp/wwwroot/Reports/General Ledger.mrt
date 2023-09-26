@@ -1,0 +1,1009 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="1">
+      <MS_x0020_SQL Ref="2" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>MS SQL</Alias>
+        <ConnectionStringEncrypted>9PJJw1tNE93sazmEZFygEtFW28vmUXuRaRv97E5MoEaFePNrT12r8eFr0UTPJeAXnlr1a2VKG8jiXD2Yw8DnD8RYz+/FA/uZ+UHV3ORcaWOLbPuCRQFa7cIVpclKdPVe2XhpaEtMQwVyRpyY6hnhL4l4dWBDBfOdbEEh9OlEokbC1NnL1nFz+W9NnPlnRCVnxXjBK8hM4/lrX7TEcyXyZ95syevGbJuMQVi9mGQEoj+C2NErRU27vOIb0fTpmCU/wsj5aU1Ost1pXf38SET2E4twU4jFSML17US5yWJE</ConnectionStringEncrypted>
+        <Name>MS SQL</Name>
+      </MS_x0020_SQL>
+    </Databases>
+    <DataSources isList="true" count="3">
+      <account Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>account</Alias>
+        <Columns isList="true" count="23">
+          <value>id,System.String</value>
+          <value>created_by,System.String</value>
+          <value>created_on,System.DateTime</value>
+          <value>modified_by,System.String</value>
+          <value>modified_on,System.DateTime</value>
+          <value>approved_by,System.String</value>
+          <value>approved_on,System.DateTime</value>
+          <value>deleted_by,System.String</value>
+          <value>deleted_on,System.DateTime</value>
+          <value>is_active,System.Boolean</value>
+          <value>is_locked,System.Boolean</value>
+          <value>is_default,System.Boolean</value>
+          <value>is_deleted,System.Boolean</value>
+          <value>owner_id,System.String</value>
+          <value>organization_id,System.String</value>
+          <value>account_group_id,System.String</value>
+          <value>account_parent_id,System.String</value>
+          <value>account_number,System.String</value>
+          <value>account_name,System.String</value>
+          <value>account_level,System.Int32</value>
+          <value>currency_id,System.String</value>
+          <value>cost_sharing_allocation_id,System.String</value>
+          <value>legal_entity_id,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>account</Name>
+        <NameInSource>MS SQL</NameInSource>
+        <Parameters isList="true" count="2">
+          <value>p_legal_entity_id,legal_entity_id,12,50</value>
+          <value>p_account_id,,12,50</value>
+        </Parameters>
+        <SqlCommand>SELECT * FROM fn.account 
+	WHERE 
+	is_active=1 AND COALESCE(is_deleted,0)=0 AND 
+	legal_entity_id=@p_legal_entity_id 
+	--AND id LIKE @p_account_id</SqlCommand>
+      </account>
+      <beginingBalance Ref="4" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>beginingBalance</Alias>
+        <Columns isList="true" count="7">
+          <value>tx_date,System.DateTime</value>
+          <value>transaction_number,System.Int32</value>
+          <value>account_id,System.String</value>
+          <value>account_number,System.String</value>
+          <value>account_name,System.String</value>
+          <value>debit,System.Decimal</value>
+          <value>credit,System.Decimal</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>beginingBalance</Name>
+        <NameInSource>MS SQL</NameInSource>
+        <Parameters isList="true" count="2">
+          <value>p_legal_entity_id,legal_entity_id,12,50</value>
+          <value>p_account_id,IIF_x0028_account_id_x003D__x003D__x0022__x0022__x002C__x0022__x0025__x0025__x0022__x002C_account_id_x0029_,12,50</value>
+        </Parameters>
+        <SqlCommand>WITH BeginingBalance AS (
+SELECT  
+	MAX(r.tx_date) AS tx_date,
+	transaction_number = null,
+	r.account_id ,
+	r.account_name,
+	r.account_number,
+	SUM(r.debit) AS debit,
+	SUM(r.credit) AS credit
+	FROM (
+SELECT 
+	CONVERT(DATE,ft.transaction_datetime) AS tx_date,
+	ft.transaction_number ,
+	r.account_id ,
+	a.account_name,
+	a.account_number,
+	COALESCE(r.debit,0) AS debit,
+	COALESCE(r.credit,0) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+LEFT OUTER JOIN fn.account lv5 ON lv5.id = [fn].[get_parent_account](a.id,2)
+LEFT OUTER JOIN fn.financial_year fy ON fy.legal_entity_id=a.legal_entity_id
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND ftt.transaction_type like '%BEGINNING BALANCE%' 
+AND r.account_id like COALESCE(@p_account_id,'%%') 
+AND ft.transaction_datetime &gt;= fy.start_date AND  ft.transaction_datetime &lt;= fy.end_date
+AND fy.is_active = 1
+
+) AS r
+GROUP BY 	
+	r.account_id ,
+	r.account_name,
+	r.account_number
+)
+SELECT * FROM BeginingBalance</SqlCommand>
+      </beginingBalance>
+      <mutation Ref="5" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>mutation</Alias>
+        <Columns isList="true" count="14">
+          <value>id,System.String</value>
+          <value>tx_date,System.DateTime</value>
+          <value>transaction_number,System.String</value>
+          <value>account_id,System.String</value>
+          <value>account_name,System.String</value>
+          <value>account_number,System.String</value>
+          <value>debit,System.Decimal</value>
+          <value>credit,System.Decimal</value>
+          <value>normalized_debit,System.Decimal</value>
+          <value>normalized_credit,System.Decimal</value>
+          <value>currency_id,System.String</value>
+          <value>exchange_rate,System.Decimal</value>
+          <value>balance,System.Decimal</value>
+          <value>description,System.String</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>mutation</Name>
+        <NameInSource>MS SQL</NameInSource>
+        <Parameters isList="true" count="2">
+          <value>_x0040_p_legal_entity_id,legal_entity_id,22,50</value>
+          <value>_x0040_p_account_id,IIF_x0028_account_id_x003D__x003D__x0022__x0022__x002C__x0022__x0022__x002C_account_id_x0029_,22,50</value>
+        </Parameters>
+        <SqlCommand>exec fn.usp_mutation_posted @p_legal_entity_id,@p_account_id</SqlCommand>
+      </mutation>
+    </DataSources>
+    <Relations isList="true" count="2">
+      <Name Ref="6" type="DataRelation" isKey="true">
+        <Alias>Name</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>account_id</value>
+        </ChildColumns>
+        <ChildSource isRef="4" />
+        <Dictionary isRef="1" />
+        <Name>Name</Name>
+        <NameInSource>Relation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>id</value>
+        </ParentColumns>
+        <ParentSource isRef="3" />
+      </Name>
+      <Name Ref="7" type="DataRelation" isKey="true">
+        <Alias>Name</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>account_id</value>
+        </ChildColumns>
+        <ChildSource isRef="5" />
+        <Dictionary isRef="1" />
+        <Name>Name</Name>
+        <NameInSource>Relation3</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>id</value>
+        </ParentColumns>
+        <ParentSource isRef="3" />
+      </Name>
+    </Relations>
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="2">
+      <value>,legal_entity_id,legal_entity_id,,System.String,ee538df0-83bc-4874-bb0f-154e73166e72,False,False,False,False</value>
+      <value>,account_id,account_id,,System.String,,False,False,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Key>96bfd22c7b94466c81376edcb13400fc</Key>
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="8" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="7">
+        <PageHeaderBand1 Ref="9" type="PageHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.2,8.1,0.5</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text23 Ref="10" type="Text" isKey="true">
+              <Border>Bottom;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,3.9,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,19</Font>
+              <Guid>43844af109e34cf49d984a7fe42dfd59</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text23</Name>
+              <Page isRef="8" />
+              <Parent isRef="9" />
+              <Text>General Ledger</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text23>
+            <Text20 Ref="11" type="Text" isKey="true">
+              <Border>Bottom;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.9,0,3.8,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,19</Font>
+              <Guid>10f8207e0cb34494b4e05f6da4dd965c</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text20</Name>
+              <Page isRef="8" />
+              <Parent isRef="9" />
+              <Text>PT.NAVA</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text20>
+            <Text18 Ref="12" type="Text" isKey="true">
+              <Border>None;[102:77:38];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6,0.3,1.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <Guid>6683b3e43cd345f39f87cc3b680af804</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text18</Name>
+              <Page isRef="8" />
+              <Parent isRef="9" />
+              <Text>Date: {Today.ToString("Y")}</Text>
+              <TextBrush>[102:77:38]</TextBrush>
+              <TextFormat Ref="13" type="DateFormat" isKey="true">
+                <StringFormat>yyyy, MMMM</StringFormat>
+              </TextFormat>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+            </Text18>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeaderBand1</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+        </PageHeaderBand1>
+        <ReportTitleBand1 Ref="14" type="ReportTitleBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,1.1,8.1,0.2</ClientRectangle>
+          <Components isList="true" count="0" />
+          <Conditions isList="true" count="0" />
+          <Guid>fa563d8641794779af235942b0f2c0ea</Guid>
+          <Name>ReportTitleBand1</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+        </ReportTitleBand1>
+        <DataBand1 Ref="15" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,1.7,8.1,0.4</ClientRectangle>
+          <Components isList="true" count="7">
+            <Text19 Ref="16" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>HatchBrush,BackwardDiagonal,Silver,White</Brush>
+              <ClientRectangle>0,0.2,8.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>e06073adbca84acd8aebd4ef542da6c4</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text19</Name>
+              <Page isRef="8" />
+              <Parent isRef="15" />
+              <Text>{account.account_number} - {account.account_name}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text19>
+            <Text24 Ref="17" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>0.6,0,1.3,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>1f79af6241074ee5b27f88a16aeaa566</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text24</Name>
+              <Page isRef="8" />
+              <Parent isRef="15" />
+              <Text>No. Trans</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text24>
+            <Text25 Ref="18" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>1.9,0,2.3,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>03d2f062e98542d1a3abb587623d7c66</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text25</Name>
+              <Page isRef="8" />
+              <Parent isRef="15" />
+              <Text>Description</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text25>
+            <Text21 Ref="19" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>0,0,0.6,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>dca82b75257a4971a31752ccb7b43323</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text21</Name>
+              <Page isRef="8" />
+              <Parent isRef="15" />
+              <Text>Date</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text21>
+            <Text22 Ref="20" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>4.2,0,1.3,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>cf8c2f96a5cc46f0be149afb0d134b82</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text22</Name>
+              <Page isRef="8" />
+              <Parent isRef="15" />
+              <ShiftMode>DecreasingSize, OnlyInWidthOfComponent</ShiftMode>
+              <Text>Debit</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text22>
+            <Text26 Ref="21" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>5.5,0,1.3,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>1dde0faa36264113831a580f4cdab285</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text26</Name>
+              <Page isRef="8" />
+              <Parent isRef="15" />
+              <ShiftMode>DecreasingSize, OnlyInWidthOfComponent</ShiftMode>
+              <Text>Credit</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text26>
+            <Text34 Ref="22" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>6.8,0,1.3,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>0856fa2f30004dc68508c703d637aab0</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text34</Name>
+              <Page isRef="8" />
+              <Parent isRef="15" />
+              <ShiftMode>DecreasingSize, OnlyInWidthOfComponent</ShiftMode>
+              <Text>Balance</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text34>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>account</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>DataBand1</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+          <Sort isList="true" count="2">
+            <value>ASC</value>
+            <value>account_number</value>
+          </Sort>
+        </DataBand1>
+        <DataBand2 Ref="23" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,2.5,8.1,0.2</ClientRectangle>
+          <Components isList="true" count="4">
+            <Text16 Ref="24" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,0.9,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>6ff47ea232204c9694fdd35aff736c9e</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text16</Name>
+              <Page isRef="8" />
+              <Parent isRef="23" />
+              <Text>{beginingBalance.tx_date}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="25" type="CustomFormat" isKey="true">
+                <StringFormat>MM/dd/yyyy</StringFormat>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text16>
+            <Text33 Ref="26" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>4.2,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>9b1fd7ffe44142c68eabdfffc4eaf70d</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text33</Name>
+              <Page isRef="8" />
+              <Parent isRef="23" />
+              <Text>{beginingBalance.debit}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="27" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text33>
+            <Text1 Ref="28" type="Text" isKey="true">
+              <AutoWidth>True</AutoWidth>
+              <Border>None;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>2.4,0,1.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>674857ebca7b4edb906af1fd3c05e4c2</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="8" />
+              <Parent isRef="23" />
+              <Text>Begining Balance</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text1>
+            <Text35 Ref="29" type="Text" isKey="true">
+              <AutoWidth>True</AutoWidth>
+              <Border>None;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>1,0,1.4,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>f105797d3dd442f3ba356020adf43954</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text35</Name>
+              <Page isRef="8" />
+              <Parent isRef="23" />
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text35>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName>Relation</DataRelationName>
+          <DataSourceName>beginingBalance</DataSourceName>
+          <Filters isList="true" count="0" />
+          <MasterComponent isRef="15" />
+          <Name>DataBand2</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+          <Sort isList="true" count="0" />
+        </DataBand2>
+        <DataBand3 Ref="30" type="DataBand" isKey="true">
+          <Bookmark>{mutation.account_name}</Bookmark>
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,3.1,8.1,0.2</ClientRectangle>
+          <Components isList="true" count="6">
+            <Text3 Ref="31" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>000d5056039e450586584d40c404f1c5</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="8" />
+              <Parent isRef="30" />
+              <Text>{mutation.tx_date}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="32" type="CustomFormat" isKey="true">
+                <StringFormat>MM/dd/yyyy</StringFormat>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text3>
+            <Text4 Ref="33" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>1,0,1.4,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>7040ee30645e49d183265e4f15f23296</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="8" />
+              <Parent isRef="30" />
+              <Text>{mutation.transaction_number}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text4>
+            <Text6 Ref="34" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>4.2,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>8c86102336ed43bd8d76811fc69fe384</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="8" />
+              <Parent isRef="30" />
+              <Text>{mutation.debit}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="35" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text6>
+            <Text7 Ref="36" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>5.5,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>fa05d379680c43c689e7894b66263a92</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="8" />
+              <Parent isRef="30" />
+              <Text>{mutation.credit}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="37" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text7>
+            <Text5 Ref="38" type="Text" isKey="true">
+              <AutoWidth>True</AutoWidth>
+              <Border>None;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>2.4,0,1.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="8" />
+              <Parent isRef="30" />
+              <Text>{mutation.description}</Text>
+              <TextBrush>Black</TextBrush>
+            </Text5>
+            <Text28 Ref="39" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>6.8,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>fac28ea845574acab1238dafed990492</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text28</Name>
+              <Page isRef="8" />
+              <Parent isRef="30" />
+              <Text>{mutation.balance}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="40" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text28>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName>Relation3</DataRelationName>
+          <DataSourceName>mutation</DataSourceName>
+          <Filters isList="true" count="0" />
+          <MasterComponent isRef="15" />
+          <Name>DataBand3</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+          <Sort isList="true" count="0" />
+        </DataBand3>
+        <FooterBand1 Ref="41" type="FooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3.7,8.1,0.5</ClientRectangle>
+          <Components isList="true" count="5">
+            <Text17 Ref="42" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>2.4,0,1.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>7f889aa704f445baa997dd583ce3b65d</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text17</Name>
+              <Page isRef="8" />
+              <Parent isRef="41" />
+              <Text>Total :  </Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+            </Text17>
+            <Text2 Ref="43" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>4.1,0,1.4,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>5752b09214db42d883b0b1cd157e741d</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="8" />
+              <Parent isRef="41" />
+              <Text>{Sum(DataBand3,mutation.debit) + Sum(DataBand2,beginingBalance.debit)}</Text>
+              <TextBrush>White</TextBrush>
+              <TextFormat Ref="44" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text2>
+            <Text10 Ref="45" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>5.5,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>c8ed529007ab4795a27eb3fe1b1426da</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="8" />
+              <Parent isRef="41" />
+              <Text>{Sum(DataBand3,mutation.credit) + Sum(DataBand2,beginingBalance.credit)}</Text>
+              <TextBrush>White</TextBrush>
+              <TextFormat Ref="46" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text10>
+            <Text36 Ref="47" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>4.1,0.2,1.4,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>6f18a51a96bc4d89b6cea66b9894913e</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text36</Name>
+              <Page isRef="8" />
+              <Parent isRef="41" />
+              <Text>{(Sum(DataBand3,mutation.debit) + Sum(DataBand2,beginingBalance.debit))-(Sum(DataBand3,mutation.credit) + Sum(DataBand2,beginingBalance.credit))}</Text>
+              <TextBrush>White</TextBrush>
+              <TextFormat Ref="48" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text36>
+            <Text37 Ref="49" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>2.4,0.2,1.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>13ae29b40de14d4dba67c2806417058d</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text37</Name>
+              <Page isRef="8" />
+              <Parent isRef="41" />
+              <Text>Balance :  </Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+            </Text37>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Guid>6e481da3c17b4bf6ac8cde50f3b4c097</Guid>
+          <Name>FooterBand1</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+        </FooterBand1>
+        <ReportSummaryBand1 Ref="50" type="ReportSummaryBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,4.6,8.1,0.6</ClientRectangle>
+          <Components isList="true" count="9">
+            <Text12 Ref="51" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>2.4,0,2.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>dfab821cec6044d1908029b1538b25da</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text12</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>Grand Total Begining Balance :  </Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+            </Text12>
+            <Text13 Ref="52" type="Text" isKey="true">
+              <Border>All;DimGray;1;Solid;False;4;Black</Border>
+              <Brush>White</Brush>
+              <ClientRectangle>4.6,0,1.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>016b85093c2549a98b43351d0c295ca0</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text13</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>{SumDRunning(DataBand2,beginingBalance.debit)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="53" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text13>
+            <Text14 Ref="54" type="Text" isKey="true">
+              <Border>All;DimGray;1;Solid;False;4;Black</Border>
+              <Brush>White</Brush>
+              <ClientRectangle>6.4,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>1c3e601448c841339afe24e7ce16607f</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text14</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>{SumDRunning(DataBand2,beginingBalance.credit)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="55" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Totals</Type>
+            </Text14>
+            <Text11 Ref="56" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>2.4,0.2,2.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>786c77e368244eb7ba38460e954ae26e</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text11</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>Grand Total Mutation :  </Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+            </Text11>
+            <Text15 Ref="57" type="Text" isKey="true">
+              <Border>All;DimGray;1;Solid;False;4;Black</Border>
+              <Brush>White</Brush>
+              <ClientRectangle>4.6,0.2,1.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>f4128aca85dd4ea5a6bf328852f6750f</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text15</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>{SumDRunning(DataBand3,mutation.debit)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="58" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Totals</Type>
+            </Text15>
+            <Text29 Ref="59" type="Text" isKey="true">
+              <Border>All;DimGray;1;Solid;False;4;Black</Border>
+              <Brush>White</Brush>
+              <ClientRectangle>6.4,0.2,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>3e038c0a38ae4466ab294fb91cbac172</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text29</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>{SumDRunning(DataBand3,mutation.credit)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="60" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Totals</Type>
+            </Text29>
+            <Text30 Ref="61" type="Text" isKey="true">
+              <Border>All;Transparent;1;Solid;False;4;Black</Border>
+              <Brush>DimGray</Brush>
+              <ClientRectangle>2.4,0.4,2.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>23b54aa6f20d404a99ffff847afe2faa</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text30</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>Grand Total :  </Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+            </Text30>
+            <Text31 Ref="62" type="Text" isKey="true">
+              <Border>All;DimGray;1;Solid;False;4;Black</Border>
+              <Brush>White</Brush>
+              <ClientRectangle>4.6,0.4,1.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>88e13f88a3a0450d9f44d4cd7bd719be</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text31</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>{(SumDRunning(DataBand2,beginingBalance.debit) + SumDRunning(DataBand3,mutation.debit))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="63" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text31>
+            <Text32 Ref="64" type="Text" isKey="true">
+              <Border>All;DimGray;1;Solid;False;4;Black</Border>
+              <Brush>White</Brush>
+              <ClientRectangle>6.4,0.4,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>9565aa56e831427faebdfa56d21794c6</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text32</Name>
+              <Page isRef="8" />
+              <Parent isRef="50" />
+              <Text>{(SumDRunning(DataBand2,beginingBalance.credit) + SumDRunning(DataBand3,mutation.credit))}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="65" type="CurrencyFormat" isKey="true">
+                <DecimalDigits>2</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <PositivePattern>0</PositivePattern>
+                <State>CurrencySymbol</State>
+                <Symbol>Rp.</Symbol>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text32>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>ReportSummaryBand1</Name>
+          <Page isRef="8" />
+          <Parent isRef="8" />
+        </ReportSummaryBand1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>937958176cb04efab2c16e87eff00452</Guid>
+      <Margins>0.2,0.2,0.2,0.2</Margins>
+      <Name>Page1</Name>
+      <PageHeight>11</PageHeight>
+      <PageWidth>8.5</PageWidth>
+      <PaperSize>Letter</PaperSize>
+      <Report isRef="0" />
+      <Watermark Ref="66" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="67" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>1/15/2019 5:56:14 PM</ReportChanged>
+  <ReportCreated>1/6/2019 10:40:03 PM</ReportCreated>
+  <ReportFile>C:\Users\Mr.dotnet\Documents\Visual Studio 2017\Projects\PhoenixERP\PhoenixERPWebApp\wwwroot\Reports\General Ledger.mrt</ReportFile>
+  <ReportGuid>b19cab1465a7472c9b2b815377ace6f9</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Inches</ReportUnit>
+  <ReportVersion>2018.3.5.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>

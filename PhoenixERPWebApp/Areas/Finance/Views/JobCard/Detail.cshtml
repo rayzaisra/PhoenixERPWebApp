@@ -1,0 +1,730 @@
+@model PhoenixERPWebApp.Models.VwJobCard
+@{
+    ViewData["Title"] = "Job Card";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<style>
+    .k-grid-footer {
+        display: none;
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Job Card</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Job</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="jobcard" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Job Card</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item"> 
+                    <a asp-action="Detail" asp-controller="jobcard" asp-area="finance" asp-route-Id="@Model.JobId" class="m-nav__link"><span class="m-nav__link-text"> Detail</span></a>                    
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Job Card</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list"> 
+                    <div class="row ">
+                        <div class="col-lg-12">    
+                            <div class="row m-row--col-separator-xl">
+                                <div class="col-lg-4">                                    
+                                    <div class="form-group">
+                                        <label asp-for="JobNumber"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.JobNumber)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="JobName"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.JobName)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="MainserviceCategoryId"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().DropDownListFor(x => x.MainserviceCategoryId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .HtmlAttributes(new { style = "width:100%;", @readonly="readonly" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLMainserviceCategoryPCA", "Dropdown", new { area = "Pm" });
+                                                }))
+                                                .ServerFiltering(false)
+                                        ))
+                                    </div>   
+                                    <div class="form-group">
+                                            <label asp-for="TypeOfExpenseId"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().DropDownListFor(x => x.TypeOfExpenseId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            .Filter(FilterType.Contains) 
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLTypeOfExpense", "Dropdown", new { area = "Pm" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div> 
+                                    <div class="form-group">
+                                        <label asp-for="JobStarted"></label> :
+                                        @(Html.Kendo().DatePickerFor(m=>m.JobStarted)
+                                            .Format("dd MMMM yyyy")
+                                            .HtmlAttributes(new {
+                                                style = "width: 100%", 
+                                                @readonly = "readonly"
+                                            })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label asp-for="ClientName"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.ClientName)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BrandName"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.BrandName)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ShareservicesId"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().DropDownListFor(x => x.ShareservicesId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLShareservices", "Dropdown", new { area = "Pm" }).Data("shareService_params");
+                                                }))
+                                                .ServerFiltering(true)
+                                            ))
+                                    </div>
+                                     <div class="form-group">
+                                            <label asp-for="CurrencyId"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().DropDownListFor(x => x.CurrencyId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLCurrency", "Dropdown", new { area = "Pm" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div> 
+                                    <div class="form-group">
+                                        <label asp-for="PceId"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.PceId)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label asp-for="BusinessUnitId"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                                });
+                                            }) 
+                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                        )
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="LegalEntityId"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                                });
+                                            }) 
+                                            .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                        )
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="JobStatus"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.JobStatus)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="AgingUpToDay"></label> :
+                                        @(Html.Kendo().NumericTextBoxFor(m => m.AgingUpToDay)
+                                            .Spinners(false)
+                                            .Format("## \\days") 
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PcaId"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.PcaId)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @readonly = "readonly"
+                                            }
+                                        ))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group"> 
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.VwReportJobCard>()
+                                    .Name("gridReportJobCard")
+                                    .Columns(columns =>
+                                    {
+                                        //columns.Bound(p => p.pce_id).Width(200);
+                                        columns.Bound(p => p.task_name).Width(200);
+                                        columns.Bound(p => p.pce_price).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.Billed).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.balance_pce).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        //columns.Bound(p => p.pca_task_id).Width(200);
+                                        columns.Bound(p => p.pca_price).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.estimated_po).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.Actual).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.accrual_gain_losses).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.gain_losses).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                    })
+                                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                    .Resizable(rsz => rsz.Columns(true))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(model => { model.Id(p => p.task_id); })
+                                        .Read(read => read.Action("ReadReportJobCard", "jobcard").Data("details_params"))
+                                    )
+                                    .Events(evt=>evt.DataBound("gridReportJobCard_databound"))
+                                )
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <br />
+                    <div class="row" id="ap_data_detail" style="display:block">
+                        <div class="col-lg-12 m-row--no-padding">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="ap_Detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head show" role="tab" id="ap_Detail_head" data-toggle="collapse" href="#ap_Detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                        <span class="m-accordion__item-title">Cost of Billing from Account Payable</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="ap_Detail_body" role="tabpanel" aria-labelledby="ap_Detail_head" data-parent="#ap_Detail">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-lg-12 m-form__group-sub">
+                                                    <div class="alert m-alert--default">Total Invoice Open/TAP (@Model.TotalInvoice)</div>
+                                                    <div class="alert m-alert--default">Total PO (@Model.TotalPO)</div>
+                                                    <div class="form-group">
+                                                        @(Html.Kendo().TreeList<PhoenixERPWebApp.Models.VwReportJobCardCobAp>()
+                                                            .Name("gridReportJobCardCobAp")
+                                                            .Columns(columns =>
+                                                            {
+                                                                //columns.Add().Field(p => p.PcaTaskId).Width(200);
+                                                                columns.Add().Field(p => p.task_name).Expandable(true).Width(200);
+                                                                columns.Add().Field(p => p.PO_Number).Width(200);
+                                                                columns.Add().Field(p => p.po_date).Width(200);
+                                                                columns.Add().Field(p => p.po_amount).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                //columns.Add().Field(p => p.Vat).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Add().Field(p => p.invoice_number).Width(200);
+                                                                columns.Add().Field(p => p.invoice_date).Width(200);
+                                                                columns.Add().Field(p => p.total_amount).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                //columns.Add().Field(p => p.total_vat).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Add().Field(p => p.Status).Template("#= GetStatusButtonPOInvoice(data) #").Width(200);
+                                                                columns.Add().Field(p => p.Balance).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                            })
+                                                            .Resizable(true)
+                                                            .DataSource(dataSource => dataSource
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(m =>
+                                                                {
+                                                                    m.Id(f => f.id);
+                                                                    m.ParentId(f => f.parent_id).Nullable(true);
+                                                                    m.Expanded(true);
+                                                                })
+                                                                .Sort(sort => sort.Add(p => p.Status).Ascending())
+                                                                .Read(read => read.Action("ReadReportJobCardCOBAp", "jobcard").Data("details_params"))
+                                                            )
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <br />
+                    <div class="row" id="ca_data_detail" style="display:block">
+                        <div class="col-lg-12 m-row--no-padding">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="ca_Detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head show" role="tab" id="ca_Detail_head" data-toggle="collapse" href="#ca_Detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                        @*<span class="m-accordion__item-title">Cost of Billing from Cash Advance / Petty Cash</span>*@
+                                        <span class="m-accordion__item-title">Cost of Billing from Petty Cash / Journal Entry</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="ca_Detail_body" role="tabpanel" aria-labelledby="ca_Detail_head" data-parent="#ca_Detail">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-lg-12 m-form__group-sub">
+                                                    @*<div class="alert m-alert--default">Total CA Unsettle (@Model.TotalCAUnsettle)</div>*@
+                                                    <div class="alert m-alert--default">Total Petty Cash Unsettle (@Model.TotalPettyCashUnsettle)</div>
+                                                    <div class="alert m-alert--default">Total Journal Entry Unsettle (@Model.TotalJournalEntryUnsettle)</div>
+                                                    <div class="form-group">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.VwReportJobCardCobCa>()
+                                                            .Name("gridReportJobCardCobCa")
+                                                            .Columns(columns =>
+                                                            {
+                                                                //columns.Bound(p => p.PcaTaskId).Width(200);
+                                                                columns.Bound(p => p.task_name).Width(200);
+                                                                columns.Bound(p => p.reff_number).Width(200);
+                                                                columns.Bound(p => p.Date).Width(200);
+                                                                columns.Bound(p => p.amount_request).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                //columns.Bound(p => p.amount_settlement).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButtonPettyCash(data) #").Width(200);
+                                                            })
+                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                            .Resizable(rsz => rsz.Columns(true))
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.pca_task_id); })
+                                                                .Sort(sort => sort.Add(p => p.Status).Ascending())
+                                                                .Read(read => read.Action("ReadReportJobCardCOBCa", "jobcard").Data("details_params"))
+                                                            )
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <br />
+                    <div class="row" id="ar_data_detail" style="display:block">
+                        <div class="col-lg-12 m-row--no-padding">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="ar_Detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head show" role="tab" id="ar_Detail_head" data-toggle="collapse" href="#ar_Detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                        <span class="m-accordion__item-title">Billing from Account Receivable</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="ar_Detail_body" role="tabpanel" aria-labelledby="ar_Detail_head" data-parent="#ar_Detail">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-lg-12 m-form__group-sub">
+                                                    <div class="alert m-alert--default">Total AR Unclosed (@Model.TotalARUnclosed)</div>
+                                                    <div class="form-group">
+                                                        @(Html.Kendo().TreeList<PhoenixERPWebApp.Models.VwReportJobCardCobAr>()
+                                                            .Name("gridReportJobCardCobAr")
+                                                            .Columns(columns =>
+                                                            {
+                                                                //columns.Add().Field(p => p.TaskId).Width(200);
+                                                                columns.Add().Field(p => p.task_name).Expandable(true).Width(200);
+                                                                columns.Add().Field(p => p.ar_number).Width(200);
+                                                                columns.Add().Field(p => p.Date).Width(200);
+                                                                columns.Add().Field(p => p.Amount).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Add().Field(p => p.sum_amount_billed).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Add().Field(p => p.Balance).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Add().Field(p => p.Status).Template("#= GetStatusButtonAR(data) #").Width(200);
+                                                            })
+                                                            .Resizable(true)
+                                                            .DataSource(dataSource => dataSource
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(m =>
+                                                                {
+                                                                    m.Id(f => f.id);
+                                                                    m.ParentId(f => f.parent_id).Nullable(true);
+                                                                    m.Expanded(true);
+                                                                })
+                                                                .Sort(sort => sort.Add(p => p.Status).Ascending())
+                                                                .Read(read => read.Action("ReadReportJobCardCOBAr", "jobcard").Data("details_params"))
+                                                            )
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <br />
+                    <div class="row" id="br_data_detail" style="display:block">
+                        <div class="col-lg-12 m-row--no-padding">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="br_Detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head show" role="tab" id="br_Detail_head" data-toggle="collapse" href="#br_Detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                        <span class="m-accordion__item-title">Bank Received</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="br_Detail_body" role="tabpanel" aria-labelledby="br_Detail_head" data-parent="#br_Detail">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-lg-12 m-form__group-sub"> 
+                                                    <div class="alert m-alert--default">Total Amount Paid : @Model.TotalAmountBR</div>
+                                                    <div class="form-group">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.VwReportJobCardCobBr>()
+                                                            .Name("gridReportJobCardCobBr")
+                                                            .Columns(columns =>
+                                                            {
+                                                                columns.Bound(p => p.Date).Width(200);
+                                                                columns.Bound(p => p.cr_number).Width(200);
+                                                                columns.Bound(p => p.ar_number).Width(200);
+                                                                columns.Bound(p => p.invoice_amount).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Bound(p => p.amount_paid).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Bound(p => p.Pph).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButtonBR(data) #").Width(200);
+                                                            })
+                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                            .Resizable(rsz => rsz.Columns(true))
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.Id); })
+                                                                .Sort(sort => sort.Add(p => p.Status).Ascending())
+                                                                .Read(read => read.Action("ReadReportJobCardCOBBr", "jobcard").Data("details_params"))
+                                                            )
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <br />
+                    <div class="row" id="bp_data_detail" style="display:block">
+                        <div class="col-lg-12 m-row--no-padding">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="bp_Detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head show" role="tab" id="bp_Detail_head" data-toggle="collapse" href="#bp_Detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                        <span class="m-accordion__item-title">Bank Payment</span> 
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="bp_Detail_body" role="tabpanel" aria-labelledby="bp_Detail_head" data-parent="#bp_Detail">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-lg-12 m-form__group-sub">
+                                                    <div class="alert m-alert--default">Total Amount : @Model.TotalAmountBP</div>
+                                                    <div class="form-group">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.VwReportJobCardCobBp>()
+                                                            .Name("gridReportJobCardCobBp")
+                                                            .Columns(columns =>
+                                                            {
+                                                                columns.Bound(p => p.Date).Width(200);
+                                                                columns.Bound(p => p.cv_number).Width(200);
+                                                                columns.Bound(p => p.vendor_name).Width(200);
+                                                                columns.Bound(p => p.invoice_number).Width(200);
+                                                                columns.Bound(p => p.ap_number).Width(200);
+                                                                columns.Bound(p => p.Amount).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Bound(p => p.Paid).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButtonBP(data) #").Width(200);
+                                                            })
+                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                            .Resizable(rsz => rsz.Columns(true))
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.Id); })
+                                                                .Sort(sort => sort.Add(p => p.Status).Ascending())
+                                                                .Read(read => read.Action("ReadReportJobCardCOBBp", "jobcard").Data("details_params"))
+                                                            )
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <br />
+                    <div class="row" id="ca_data_detail" style="display:block">
+                        <div class="col-lg-12 m-row--no-padding">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="rfq_ca_Detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head show" role="tab" id="rfq_ca_Detail_head" data-toggle="collapse" href="#rfq_ca_Detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                        <span class="m-accordion__item-title">Request For Quotation /  Cash Advance</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="rfq_ca_Detail_body" role="tabpanel" aria-labelledby="rfq_ca_Detail_head" data-parent="#rfq_ca_Detail">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-lg-12 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.VwReportJobCardRfqCa>()
+                                                            .Name("gridReportJobCardRfqCa")
+                                                            .Columns(columns =>
+                                                            {
+                                                                //columns.Bound(p => p.PcaTaskId).Width(200);
+                                                                columns.Bound(p => p.task_name).Width(200);
+                                                                columns.Bound(p => p.reff_number).Width(200);
+                                                                columns.Bound(p => p.Date).Width(200);
+                                                                columns.Bound(p => p.amount_request).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButtonRFQCA(data) #").Width(200);
+                                                            })
+                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                            .Resizable(rsz => rsz.Columns(true))
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.pca_task_id); })
+                                                                .Sort(sort=>sort.Add(p=>p.Status).Ascending())
+                                                                .Read(read => read.Action("ReadReportJobCardRfqCa", "jobcard").Data("details_params"))
+                                                            )
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pull-right">
+                                <a asp-action="index" asp-controller="jobcard" asp-area="finance" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function details_params() {
+        return {
+            JobId: "@Model.JobId"
+        }
+    }
+
+    function shareService_params() {
+        return {
+            MainserviceCategoryId: $("#MainserviceCategoryId").val()
+        }
+    }
+
+    function gridReportJobCard_databound(e) { 
+        var rows = e.sender.tbody.children();
+        for (var j = 0; j < rows.length; j++) {
+            var row = $(rows[j]);
+            var dataItem = e.sender.dataItem(row);
+             
+            var pcaid = dataItem.get("pce_id");
+            var task_name = dataItem.get("task_name");
+            if (pcaid == undefined && (task_name == "Sub Total" || task_name == "Total" || task_name == "Grand Total" )) {
+                row.addClass("boldStyle");
+            } 
+        }
+    }
+
+    function GetStatusButtonPOInvoice(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.PurchaseOrderStatus.Closed" || data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Posted)" )
+             buttonType = " m-badge--success";
+        else buttonType = " m-badge--danger"; 
+
+        if (data.Status == undefined)
+            return "";
+        else return "<center><a href='javascript: void(0);' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status + "</a></center>";
+    }
+    
+    function GetStatusButtonPettyCash(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.PettyCashStatus.StatusName(PhoenixERPWebApp.Models.PettyCashStatus.Approved)")
+             buttonType = " m-badge--success";
+        else buttonType = " m-badge--danger"; 
+
+        if (data.Status == undefined)
+            return "";
+        else return "<center><a href='javascript: void(0);' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+
+    function GetStatusButtonAR(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.ARStatus.Posted")
+             buttonType = " m-badge--success";
+        else buttonType = " m-badge--danger"; 
+
+        if (data.Status == undefined)
+            return "";
+        else return "<center><a href='javascript: void(0);' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+
+     function GetStatusButtonBR(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.GetStatus(PhoenixERPWebApp.Models.PaymentRequestStatus.Complete)" || data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.GetStatus(PhoenixERPWebApp.Models.PaymentRequestStatus.Reconsiliation)")
+             buttonType = " m-badge--success";
+         else buttonType = " m-badge--danger"; 
+
+         if (data.Status == undefined)
+             return "";
+         else return "<center><a href='javascript: void(0);' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+
+     function GetStatusButtonBP(data) {
+         var buttonType = "";
+         if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.GetStatus(PhoenixERPWebApp.Models.PaymentRequestStatus.Complete)" || data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.GetStatus(PhoenixERPWebApp.Models.PaymentRequestStatus.Reconsiliation)")
+             buttonType = " m-badge--success";
+         else buttonType = " m-badge--danger"; 
+
+         if (data.Status == undefined)
+              return ""; 
+         else return "<center><a href='javascript: void(0);' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status + "</a></center>"; 
+    }
+
+
+     function GetStatusButtonRFQCA(data) {
+        var buttonType = "";
+        if (data.Status =="@PhoenixERPWebApp.Models.StatusTransactionName.Completed")
+             buttonType = " m-badge--success";
+        else buttonType = " m-badge--danger"; 
+
+        if (data.Status == undefined)
+            return "";
+        else return "<center><a href='javascript: void(0);' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+</script>
+<style>
+    .boldStyle{
+        font-weight:bold;
+    }
+</style>

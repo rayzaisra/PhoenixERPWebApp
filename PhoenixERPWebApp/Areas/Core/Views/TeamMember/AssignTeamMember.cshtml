@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+@*<div class="col-xl-12 no-record ">
+    <div class="alert m-alert--default" role="alert">
+        <strong>No Record</strong> Team Member.
+    </div>
+</div>*@
+
+<div class="col-md-12">
+    <div class="btn-group m-btn-group" role="group" aria-label="...">
+        <button id="btn-add-team_member" type="button" class="btn btn-sm btn-secondary">Add</button>
+        <button id="btn-remove-team_member" type="button" class="btn btn-sm btn-danger">Remove</button>
+        <form id="form-search-dt_basic">
+            <div class="input-group">
+                <input autocomplete="off" type="text" name="q" class="form-control form-control-sm m-input searchbox" placeholder="Search">
+                <div class="input-group-prepend"><span class="input-group-text input-group-sm"><i class="la la-search"></i></span></div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-xl-12">
+
+
+    <table class="table" id="dt_basic">
+        <thead>
+            <tr>
+                <th width="20px">
+                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
+                        <input type="checkbox" value="" class="m-group-checkable" name="select_all">
+                        <span></span>
+                    </label>
+                </th>
+                <th >User</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script src="~/Areas/Core/Scripts/TeamMember.AssignTeamMember.js"></script>

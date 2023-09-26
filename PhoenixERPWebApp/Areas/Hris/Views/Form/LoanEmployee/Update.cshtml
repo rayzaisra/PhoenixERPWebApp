@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "LoanEmployee";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="LoanEmployeeFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="count_repayment">count_repayment</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="count_repayment" id="count_repayment"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="date_loan">date_loan</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="date_loan" id="date_loan" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="monthly_repayment">monthly_repayment</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="monthly_repayment" id="monthly_repayment"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="reason">reason</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="reason" id="reason" required maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="repayment_end_date">repayment_end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="repayment_end_date" id="repayment_end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="repayment_start_date">repayment_start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="repayment_start_date" id="repayment_start_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="value">value</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="value" id="value" required  type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/LoanEmployee" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/LoanEmployee.update.js"></script>
+}

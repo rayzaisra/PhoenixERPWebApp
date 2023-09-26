@@ -1,0 +1,399 @@
+﻿@model PhoenixERPWebApp.Models.Attendance
+@{
+	ViewData["Title"] = "Attendance";
+	Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+	var clockIn = Model.TimeAttendance==null? "-" : ((TimeSpan)Model.TimeAttendance).ToString(@"hh\:mm\:ss");
+	var clockOut = Model.TimeAttendanceOut==null? "-" : ((TimeSpan)Model.TimeAttendanceOut).ToString(@"hh\:mm\:ss");
+	var attDate = Model.DateAttendance == null ? "" : Model.DateAttendance.Value.ToString("dd MMM yyyy");
+	var attDateOut = Model.DateAttendanceOut == null ? "" : Model.DateAttendanceOut.Value.ToString("dd MMM yyyy");
+}
+<style>
+    #mapid {
+        height: 450px;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .time-frame {
+        background-color: transparent;
+        color: black;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+    }
+
+    #date-part {
+        font-size: 1.2em;
+    }
+
+    #time-part {
+        font-size: 2em;
+    }
+</style>
+<link rel="stylesheet" href="~/assets/plugins/leaflet/leaflet.css">
+<link rel="stylesheet" href="~/assets/plugins/leaflet/MarkerCluster.Default.css">
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="attendance" asp-controller="attendance" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Attendance</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <h3 class="m-portlet__head-text m--font-success">Clock In Clock Out</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formAttendance" class="form-horizontal form-bordered" role="form">
+                        @*enctype="multipart/form-data"*@
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                                <input type="hidden" asp-for="Lat" />
+                                <input type="hidden" asp-for="Lng" />
+                                @*<input type="hidden" asp-for="LocationName" />*@
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                                <input type="hidden" asp-for="DateAttendance" />
+                                <input type="hidden" asp-for="TimeAttendance" />
+                                <input type="hidden" id="clockinval" name="clockinval" />
+                                <input type="hidden" id="clockoutval" name="clockoutval" />
+
+                                <div class="row" id="employee_data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="employee_Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="employee_Detail_head" data-toggle="collapse" href="#employee_Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa fa-user"></i></span>
+                                                    <span class="m-accordion__item-title">Employee Info</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="employee_Detail_body" role="tabpanel" aria-labelledby="employee_Detail_head" data-parent="#employee_Detail">
+                                                    <div class="m-accordion__item-content">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Employee ID</label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.requestEmployee.EmployeeId)
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%",
+                                                                        @readonly = "readonly",
+                                                                        @class = "form-control form-control-sm m-input",
+                                                                    }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Employee Name</label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.requestEmployee.EmployeeName)
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%",
+                                                                        @readonly = "readonly",
+                                                                        @class = "form-control form-control-sm m-input",
+                                                                    }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="requestEmployee.JobTitle"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.requestEmployee.JobTitle)
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%",
+                                                                        @readonly = "readonly",
+                                                                        @class = "form-control form-control-sm m-input",
+                                                                    }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="requestEmployee.Grade"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.requestEmployee.Grade)
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%",
+                                                                        @readonly = "readonly",
+                                                                        @class = "form-control form-control-sm m-input",
+                                                                    }))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row time-frame">
+                                    <div class="col-md-4">
+                                        <div align="center">
+                                            <label style="font-size:1em">Clock In</label>
+                                            <h5 class="m--font-info">@attDate</h5>
+                                            <h3 class="m--font-info">@clockIn</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div align="center">
+                                            <div id='date-part'></div>
+                                            <div id='time-part'></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div align="center">
+                                            <label style="font-size:1em">Clock Out</label>
+                                            <h5 class="m--font-info">@attDateOut</h5>
+                                            <h3 class="m--font-info">@clockOut</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 m-form__group-sub">
+                                        <div class="form-group">
+                                            <div id="mapid"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @Html.TextAreaFor(x => x.LocationName, new { @style = "height:120px;width:100%;", @readonly = "readonly" })
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 m-form__group-sub">
+                                        <div class="form-group">
+                                            @if (@ViewBag.IsChecIn == false)
+                                            {
+                                                <button type="button" id="btn-checkin" class="btn btn-success m-btn m-btn--icon" style="width:100px;height:50px"><i class="fa fa-clock"></i> Clock In</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" id="btn-checkin" class="btn btn-success m-btn m-btn--icon" style="width:100px;height:50px" disabled><i class="fa fa-clock"></i> Clock In</button>
+                                            }
+                                            @if (@ViewBag.IsChecOut == false)
+                                            {
+                                                <button type="button" id="btn-checkout" class="btn btn-danger m-btn m-btn--icon" style="width:100px;height:50px"><i class="fa fa-bell"></i> Clock Out</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" id="btn-checkout" class="btn btn-danger m-btn m-btn--icon" style="width:100px;height:50px" disabled><i class="fa fa-bell"></i> Clock Out</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p id="demo" style="display:none"></p>
+</div>
+<script>
+	$(function () {
+		var deviceTime,
+        serverTime,
+        actualTime,
+        timeOffset;
+        getLocation();
+        var hiddenLat = $('#Lat').val();
+        var hiddenLng = $('#Lng').val();
+        var x = document.getElementById("demo");
+     
+        //6.2226432
+        //106.82368
+        //LoadMapId(hiddenLat, hiddenLng);
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+
+            $('#LocationName').val('');
+            $('#LocationName').removeAttr('readonly');
+            $('#Lat').val(position.coords.latitude);
+            $('#Lng').val(position.coords.longitude);
+            LoadMapId(position.coords.latitude, position.coords.longitude);
+          
+        }
+
+        function LoadMapId(lat, long) {
+            var mymap = L.map('mapid').setView([lat, long], 10);
+            L.marker([lat, long]).addTo(mymap);
+
+            var LeafIcon = L.Icon.extend({
+
+            });
+
+            //var greenIcon = new LeafIcon({ iconUrl: WEB + '/assets/img/marker.png' });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(mymap);
+
+            //ambil titik (nantinya di bungkus ajax)
+            //if (markers !== undefined) {
+            //    mymap.removeLayer(markers);
+            //}
+
+            markers = new L.markerClusterGroup();
+            //var resp = itemmarker;
+            //$.each(resp, function (index, item) {
+
+            //    var icondata = greenIcon;
+            //    var marker = L.marker([item.lintang, item.bujur], { icon: icondata, title: item.nama }).on('click', markerOnClick);
+            //    markers.addLayer(marker);
+            //});
+            mymap.addLayer(markers);
+        }
+		
+        var interval = setInterval(function () {
+            var momentNow = moment();
+            $('#date-part').html(momentNow.format('dddd') + ','
+                + momentNow.format('DD MMMM YYYY'));
+            $('#time-part').html(momentNow.format('HH:mm:ss'));//hh:mm:ss A
+        }, 100);
+
+		
+		// Run each second lap to show times in real time
+    //    var updateDisplay = function () {
+    //    	// Show dynamic time data
+    //    	var displayDateFormat = 'DD MMMM YYYY';
+    //    	var displayTimeFormat = 'HH:mm:ss';
+    //    	$('#date-part').html(actualTime.format(displayDateFormat));
+    //    	$('#time-part').html(actualTime.format(displayTimeFormat));
+    //    };
+
+    //    var timerHandler = function () {
+    //    	// Get current time on the device
+    //    	actualTime = moment();
+
+    //    	// Add the calculated offset
+    //    	actualTime.add(timeOffset);
+
+    //    	// Show our new results
+    //    	updateDisplay();
+
+    //    	// Re-run this next second wrap
+    //    	setTimeout(timerHandler, (1000 - (new Date().getTime() % 1000)));
+    //    };
+
+	//	// Fetch the server time through a HEAD request to current URL
+	//	// using asynchronous request.
+    //    var fetchServerTime = function () {
+    //    	var xmlhttp = new XMLHttpRequest();
+    //    	xmlhttp.onload = function () {
+    //    		var dateHeader = xmlhttp.getResponseHeader('Date');
+
+    //    		// Just store the current time on device for display purpose
+    //    		deviceTime = moment();
+
+    //    		// Turn the "Date:" header field into a "moment" object,
+    //    		// use JavaScript Date() object as parser
+    //    		serverTime = moment(new Date(dateHeader)); // Read
+
+    //    		// Store the differences between device time and server time
+    //    		timeOffset = serverTime.diff(moment());
+
+    //    		// Now when we've got all data, trigger the timer for the first time
+    //    		timerHandler();
+    //    	}
+    //    	xmlhttp.open("HEAD", window.location.href);
+    //    	xmlhttp.send();
+    //    }
+
+	//	// Trigger the whole procedure
+    //    fetchServerTime();
+    });
+
+	$('#btn-checkin').click(function () {
+		var momentNow = moment();
+		var dtClockIn = momentNow.format('YYYY-MM-DD');
+		var tmClockIn = momentNow.format('HH:mm:ss');
+		$("#clockinval").val(dtClockIn + ' ' + tmClockIn);
+		//console.log($("#clockinval").val());
+		//console.log(JSON.stringify(momentNow));
+        callAction({ formId: "formAttendance", title: "clock in", type: "POST", url: '@Url.Action("checkin", "attendance")'});
+	});
+
+	$('#btn-checkout').click(function () {
+		var momentNow = moment();
+		var dtClockOut = momentNow.format('DD MMMM YYYY');
+		var tmClockOut = momentNow.format('HH:mm:ss');
+		$("#clockoutval").val(dtClockOut + ' ' + tmClockOut);
+        callAction({ formId: "formAttendance", title: "clock out", type: "POST", url: '@Url.Action("checkout", "attendance")' });
+    });
+</script>
+<script src="~/assets/plugins/leaflet/leaflet.js"></script>
+<script src="~/assets/plugins/leaflet/leaflet.markercluster.js"></script>

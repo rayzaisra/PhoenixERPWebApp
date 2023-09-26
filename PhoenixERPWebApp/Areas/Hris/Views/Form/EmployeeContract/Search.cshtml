@@ -1,0 +1,57 @@
+@{
+    ViewBag.ModalTitle = "EmployeeContract";
+    ViewBag.ModalId = "EmployeeContractModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="EmployeeContractFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="active">active</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_active" id="search_active"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_recruitment_id">candidate_recruitment_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_candidate_recruitment_id" id="search_candidate_recruitment_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="contract_upload">contract_upload</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_contract_upload" id="search_contract_upload"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_end_date" id="search_end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_notes" id="search_notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_start_date" id="search_start_date"   type="number">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnEmployeeContract.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnEmployeeContract.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

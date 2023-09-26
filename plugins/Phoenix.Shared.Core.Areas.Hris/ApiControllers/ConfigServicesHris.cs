@@ -1,0 +1,128 @@
+using Microsoft.Extensions.DependencyInjection;
+using Phoenix.Shared.Core.Areas.General.Services;
+using Phoenix.Shared.Core.Areas.Hris.Services;
+
+namespace Phoenix.Shared.Core.Areas.Hris.Api
+{
+    public class ConfigServicesHris
+    {
+        public static void Init(IServiceCollection services)
+        {
+            services.AddScoped<IMppServices, MppServices>();
+            services.AddScoped<IBonusServices, BonusServices>();
+            services.AddScoped<ILeaveServices, LeaveServices>();
+            services.AddScoped<IFamilyServices, FamilyServices>();
+            services.AddScoped<IStatusServices, StatusServices>();
+            services.AddScoped<ILoanCategoryServices, LoanCategoryServices>();
+            services.AddScoped<ITravelServices, TravelServices>();
+            services.AddScoped<IHolidayServices, HolidayServices>();
+            services.AddScoped<ISeminarServices, SeminarServices>();
+            services.AddScoped<IVacancyServices, VacancyServices>();
+            services.AddScoped<IActivityServices, ActivityServices>();
+            services.AddScoped<IDivisionServices, DivisionServices>();
+            services.AddScoped<IJobTestServices, JobTestServices>();
+            services.AddScoped<ILocationServices, LocationServices>();
+            services.AddScoped<IOvertimeServices, OvertimeServices>();
+            services.AddScoped<IPositionServices, PositionServices>();
+            services.AddScoped<IProvinceServices, ProvinceServices>();
+            services.AddScoped<IReligionServices, ReligionServices>();
+            services.AddScoped<ISubgroupServices, SubgroupServices>();
+            services.AddScoped<IEducationServices, EducationServices>();
+            services.AddScoped<IJobGradeServices, JobGradeServices>();
+            services.AddScoped<IJobLevelServices, JobLevelServices>();
+            services.AddScoped<IJobTitleServices, JobTitleServices>();
+            services.AddScoped<IReimburseServices, ReimburseServices>();
+            services.AddScoped<ITransportServices, TransportServices>();
+            services.AddScoped<ICommissionServices, CommissionServices>();
+            services.AddScoped<ICompetenceServices, CompetenceServices>();
+            services.AddScoped<IMasterTaxServices, MasterTaxServices>();
+            services.AddScoped<IMppDetailServices, MppDetailServices>();
+            services.AddScoped<IMppStatusServices, MppStatusServices>();
+            services.AddScoped<IPremiaskesServices, PremiaskesServices>();
+            services.AddScoped<IStatusTaxServices, StatusTaxServices>();
+            services.AddScoped<IAchievementServices, AchievementServices>();
+            services.AddScoped<IBankBranchServices, BankBranchServices>();
+            services.AddScoped<ICostCenterServices, CostCenterServices>();
+            services.AddScoped<IDepartementServices, DepartementServices>();
+            services.AddScoped<IInformationServices, InformationServices>();
+            services.AddScoped<IInstitutionServices, InstitutionServices>();
+            services.AddScoped<INationalityServices, NationalityServices>();
+            services.AddScoped<IResignationServices, ResignationServices>();
+            services.AddScoped<ITerminationServices, TerminationServices>();
+            services.AddScoped<IBasicSalaryServices, BasicSalaryServices>();
+            services.AddScoped<IBscCategoryServices, BscCategoryServices>();
+            services.AddScoped<ICompensationServices, CompensationServices>();
+            services.AddScoped<IEmployeeOutServices, EmployeeOutServices>();
+            services.AddScoped<IEmployeeBankServices, EmployeeBankServices>();
+            services.AddScoped<IFamilyStatusServices, FamilyStatusServices>();
+            services.AddScoped<IJobInterviewServices, JobInterviewServices>();
+            services.AddScoped<ILoanEmployeeServices, LoanEmployeeServices>();
+            services.AddScoped<IMedicalClaimServices, MedicalClaimServices>();
+            services.AddScoped<IHiringRequestServices, HiringRequestServices>();
+            services.AddScoped<IJobRepositoryServices, JobRepositoryServices>();
+            services.AddScoped<ILegalCategoryServices, LegalCategoryServices>();
+            services.AddScoped<ILevelPositionServices, LevelPositionServices>();
+            services.AddScoped<IMarriedStatusServices, MarriedStatusServices>();
+            services.AddScoped<ISalaryProcessServices, SalaryProcessServices>();
+            services.AddScoped<ICompanyAccountServices, CompanyAccountServices>();
+            services.AddScoped<IEducationLevelServices, EducationLevelServices>();
+            services.AddScoped<IJobInterviewerServices, JobInterviewerServices>();
+            services.AddScoped<IStatusEmployeeServices, StatusEmployeeServices>();
+            services.AddScoped<ICompetenceLevelServices, CompetenceLevelServices>();
+            services.AddScoped<IEmployeeAbsenceServices, EmployeeAbsenceServices>();
+            services.AddScoped<IEmployeeAccountServices, EmployeeAccountServices>();
+            services.AddScoped<IEmployeeWarningServices, EmployeeWarningServices>();
+            services.AddScoped<IHiringApplicantServices, HiringApplicantServices>();
+            services.AddScoped<IJobIntervieweesServices, JobIntervieweesServices>();
+            services.AddScoped<ISalaryComponentServices, SalaryComponentServices>();
+            services.AddScoped<IEmployeeCampaignServices, EmployeeCampaignServices>();
+            services.AddScoped<IEmployeeContractServices, EmployeeContractServices>();
+            services.AddScoped<IEmployeeIdentityServices, EmployeeIdentityServices>();
+            services.AddScoped<IEmployeeTrainingServices, EmployeeTrainingServices>();
+            services.AddScoped<IInstitutionLevelServices, InstitutionLevelServices>();
+            services.AddScoped<IWorkingEffectiveServices, WorkingEffectiveServices>();
+            services.AddScoped<IApplicantProgressServices, ApplicantProgressServices>();
+            services.AddScoped<IEmployeeComplaintServices, EmployeeComplaintServices>();
+            services.AddScoped<IEmployementStatusServices, EmployementStatusServices>();
+            services.AddScoped<ITravelDestinationServices, TravelDestinationServices>();
+            services.AddScoped<IVacancyJobSourceServices, VacancyJobSourceServices>();
+            services.AddScoped<IEmployeeBasicInfoServices, EmployeeBasicInfoServices>();
+            services.AddScoped<IEmployeeExperienceServices, EmployeeExperienceServices>();
+            services.AddScoped<IMppApprovedStatusServices, MppApprovedStatusServices>();
+            services.AddScoped<ICostCenterCampaignServices, CostCenterCampaignServices>();
+            services.AddScoped<ITrainingRequisitionServices, TrainingRequisitionServices>();
+            services.AddScoped<ICandidateRecruitmentServices, CandidateRecruitmentServices>();
+            services.AddScoped<IInstitutionCompetenceServices, InstitutionCompetenceServices>();
+            services.AddScoped<IOrganizationJobLevelServices, OrganizationJobLevelServices>();
+            services.AddScoped<IBasicInfoGradeTittleServices, BasicInfoGradeTittleServices>();
+            services.AddScoped<IBussinesUnitJobLevelServices, BussinesUnitJobLevelServices>();
+            services.AddScoped<IJobPostingRequisitionServices, JobPostingRequisitionServices>();
+            services.AddScoped<ISalaryProcessComponentServices, SalaryProcessComponentServices>();
+            services.AddScoped<IEmployeeEmergencyContactServices, EmployeeEmergencyContactServices>();
+            services.AddScoped<IEmployeeTrainingRequisitionServices, EmployeeTrainingRequisitionServices>();
+            services.AddScoped<IHiringRequestDetailBudgetedServices, HiringRequestDetailBudgetedServices>();
+            services.AddScoped<IHiringRequestDetailUnbudgetedServices, HiringRequestDetailUnbudgetedServices>();
+            services.AddScoped<IHiringRequestDetailReplacementServices, HiringRequestDetailReplacementServices>();
+            services.AddScoped<IJobVacancyServices, JobVacancyServices>();
+            services.AddScoped<IJobVacancyJobSourceServices, JobVacancyJobSourceServices>();
+            services.AddScoped<ICandidateRecruitmentCoursesServices, CandidateRecruitmentCoursesServices>();
+            services.AddScoped<ICandidateRecruitmentEducationInfoServices, CandidateRecruitmentEducationInfoServices>();
+            services.AddScoped<ICandidateRecruitmentEmploymentHistoryServices, CandidateRecruitmentEmploymentHistoryServices>();
+            services.AddScoped<ICandidateRecruitmentTrainingServices, CandidateRecruitmentTrainingServices>();
+            services.AddScoped<ICandidateRecruitmentCommentServices, CandidateRecruitmentCommentServices>();
+            services.AddScoped<ICandidateRecruitmentInterviewServices, CandidateRecruitmentInterviewServices>();
+            services.AddScoped<ITrainingServices, TrainingServices>();
+
+            services.AddScoped<IJobVacancyServices, JobVacancyServices>();
+            services.AddScoped<ISubDeductionsServices, SubDeductionsServices>();
+            services.AddScoped<ITHRSettingServices, THRSettingServices>();
+            services.AddScoped<IPTKPSettingServices, PTKPSettingServices>();
+            services.AddScoped<IEmployeeLoanServices, EmployeeLoanServices>();
+            services.AddScoped<ISubSalaryComponentServices, SubSalaryComponentServices>();
+            services.AddScoped<IMasterLocationServices, MasterLocationServices>();
+            services.AddScoped<IEmployeeChecklistServices, EmployeeChecklistServices>();
+            services.AddScoped<IEmployeeChecklistCategoryServices, EmployeeChecklistCategoryServices>();
+            services.AddScoped<ITrainingBondingServices, TrainingBondingServices>();
+        }
+    }
+}

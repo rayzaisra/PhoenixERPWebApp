@@ -1,0 +1,48 @@
+@{
+    ViewData["Title"] = "Subgroup";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="SubgroupFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+            <input type="hidden" name="business_unit_type_id" id="business_unit_type_id" value="4480E261-D854-42C8-87F6-7C13524114DE" />
+            <input type="hidden" name="affiliation_id" id="affiliation_id" value="27f5efff-e898-473b-b5d6-890429706b1c" />
+            <input type="hidden" name="default_team" id="default_team" value="cd82a649-d58b-472e-ad63-e9a89129fb91" />
+            <div class="form-group">
+                <label><span class="translate" data-args="Group">Group</span> :</label>
+                <select class="form-control" name="parent_unit" id="parent_unit"></select>
+</div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="SubGroup Code">SubGroup Code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="subgroup_code" id="subgroup_code" maxlength="50" type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="Subgroup Name">Subgroup Name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="subgroup_name" id="subgroup_name" maxlength="100" type="text" required>
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Subgroup" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Subgroup.create.js"></script>
+}

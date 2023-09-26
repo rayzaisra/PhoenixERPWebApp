@@ -1,0 +1,174 @@
+@{
+    ViewData["Title"] = "Tracking New Applicant Create";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="TrackingNewApplicantFormCreate" method="post">
+    <input value="@ViewBag.RecordID" type="hidden" name="job_vacancy_id" id="job_vacancy_id" />
+    <input value="0" type="hidden" name="applicant_progress_id" id="applicant_progress_id" />
+    <input value="0" type="hidden" name="applicant_move_stage_id" id="applicant_move_stage_id" />
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="First Name">First Name</span> <span style="color:red">*</span> :</label>
+                <input type="text" class="form-control" name="first_name" id="first_name" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Last Name">Last Name</span> <span style="color:red">*</span> :</label>
+                <input type="text" class="form-control" name="last_name" id="last_name" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Nick Name">Nick Name</span> :</label>
+                <input type="text" class="form-control" name="nick_name" id="nick_name" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Gender">Gender</span> <span style="color:red">*</span> :</label>
+            </div>
+            <div class="form-group">
+                <input type="radio" name="gender" id="gender" value="male" /> Male
+                <input type="radio" name="gender" id="gender" value="female" /> Female
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Birth Place">Birth Place</span> <span style="color:red">*</span>:</label>
+                <input type="text" class="form-control" name="birth_place" id="birth_place" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label for="date_birth">Date of Birth <span style="color:red">*</span></label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control" data-date-format="yyyy-mm-dd" id="date_birth" name="date_birth">
+                    <span class="input-group-btn">
+                        <button class="btn default" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Last Education">Last Education</span> <span style="color:red">*</span>:</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="last_education" id="last_education"></select>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Year Experience">Year Experience</span> :</label>
+                <input type="text" class="form-control" name="year_experience" id="year_experience">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Mobile Phone">Mobile Phone</span> <span style="color:red">*</span>:</label>
+                <input type="text" class="form-control" name="phone_number" id="phone_number" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Email">Email</span> <span style="color:red">*</span>:</label>
+                    <input type="text" class="form-control" name="email" id="email" />
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Willing Work With Alcohol Brand">Willing Work With Alcohol Brand</span> <span style="color:red">*</span>:</label>
+            </div>
+            <div class="form-group">
+                <input type="radio" name="alcohol_willing" id="alcohol_willing" value="true" /> Yes
+                <input type="radio" name="alcohol_willing" id="alcohol_willing" value="false" /> No
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Souce">Source</span> :</label>
+                    <select type="text" class="form-control" name="source" id="source">
+                        <option value="JobStreet">JobStreet</option>
+                        <option value="Linkedin">Linkedin</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="JobDb">JobDb</option>
+                        <option value="Others">Others</option>
+                        <option value="Internal">Internal</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Address">Address</span> <span style="color:red">*</span>:</label>
+                <textarea name="address" id="adress" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <label><span class="translate" data-args="CV/Resume">CV/Resume</span> <span style="color:red">*</span>:</label>
+                    <div id="divcvplace"><input type="text" class="form-control" name="cv" id="cv" /></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Willing to Work Out of Town">Willing to Work Out of Town</span> <span style="color:red">*</span>:</label>
+            </div>
+            <div class="form-group">
+                <input type="radio" name="out_of_town_willing" id="out_of_town_willing" value="true" /> Yes
+                <input type="radio" name="out_of_town_willing" id="out_of_town_willing" value="false" /> No
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Photo">Photo</span> <span style="color:red">*</span>:</label>
+                <div id="divphotoplace"><input type="text" class="form-control" name="photo" id="photo" /></div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Portfolio">Portfolio</span> :</label>
+                    <div id="divportfolioplace"><input type="text" class="form-control" name="portfolio" id="portfolio" /></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Applicant/TrackingNewApplicant/@ViewBag.RecordID" class=" btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/ApplicantProgress.TrackingNewApplicant.create.js"></script>
+}

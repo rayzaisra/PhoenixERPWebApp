@@ -1,0 +1,102 @@
+@{
+    ViewBag.ModalTitle = "JobPostingRequisition";
+    ViewBag.ModalId = "JobPostingRequisitionModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="JobPostingRequisitionFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="business_unit_id">business_unit_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_business_unit_id" id="search_business_unit_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_age_range_end">candidate_age_range_end</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_candidate_age_range_end" id="search_candidate_age_range_end"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_age_range_start">candidate_age_range_start</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_candidate_age_range_start" id="search_candidate_age_range_start"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_experience">candidate_experience</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_candidate_experience" id="search_candidate_experience"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_qualification">candidate_qualification</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_candidate_qualification" id="search_candidate_qualification"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="central_resource_id">central_resource_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_central_resource_id" id="search_central_resource_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="client_brief_id">client_brief_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_client_brief_id" id="search_client_brief_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="code">code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_code" id="search_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_post_description">job_post_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_job_post_description" id="search_job_post_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_title">job_title</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_job_title" id="search_job_title"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_notes" id="search_notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="number_of_position">number_of_position</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_number_of_position" id="search_number_of_position"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="reg_code">reg_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_reg_code" id="search_reg_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="salary_end">salary_end</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_salary_end" id="search_salary_end"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="salary_start">salary_start</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_salary_start" id="search_salary_start"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="status">status</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_status" id="search_status"  maxlength="50" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnJobPostingRequisition.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnJobPostingRequisition.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

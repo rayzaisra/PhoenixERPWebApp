@@ -1,0 +1,714 @@
+@{
+    ViewData["Title"] = "EmployeeBasicInfo";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <span class="translate" data-args="Detail">Detail</span>
+}
+
+@section Paneltools{
+
+}
+
+<style>
+    .modal.large {
+        width: 80%; /* respsonsive width */
+        margin-left: -40%; /* width/2) */
+    }
+</style>
+
+@section Panelbody{
+    <form id="EmployeeBasicInfoFormUpdate" method="post">
+        <input value="@ViewBag.RecordID" type="hidden" name="id" />
+        <fieldset>
+            <legend>Detail Employee Information</legend>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="first_name">First Name *</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Nick Name *</label>
+                        <input type="text" class="form-control" id="nick_name" name="nick_name" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="birth_place">Birth Place *</label>
+                        <input type="text" class="form-control" id="birth_place" name="birth_place" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number *</label>
+                        <input type="text" class="form-control" id="phone_number" name="phone_number" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile_number">Mobile Number</label>
+                        <input type="text" class="form-control" id="mobile_number" name="mobile_number" disabled />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="last_name">Last Name *</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" disabled />
+                    </div><br />
+                    <div class="form-group">
+                        <label for="gender">Gender*</label><br>
+                        <input type="radio" data-role="radio" value="Male" name="gender" /> Male
+                        <input type="radio" data-role="radio" value="Female" name="gender" /> Female
+                    </div>
+                    <div class="form-group">
+                        <label for="date_birth">Date of Birth*</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="date_birth" name="date_birth" disabled>
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email*</label>
+                        <input type="email" class="form-control" id="email" name="email" disabled />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </form>
+    <hr />
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#PersonalInfo" role="tab" data-toggle="tab">Personal Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#FamilyInfo" role="tab" data-toggle="tab">Family Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#EmergencyContacts" role="tab" data-toggle="tab">Emergency Contacts</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#EducationInfo" role="tab" data-toggle="tab">Education Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#EmployementHistory" role="tab" data-toggle="tab">Employement History</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#Course" role="tab" data-toggle="tab">Course / Seminar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#JobInfo" role="tab" data-toggle="tab">Job Info</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="PersonalInfo">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="nationality_id">Nationality *</label>
+                        <select data-role="combobox" id="nationality_id" name="nationality_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kitas_number">KITAS Number *</label>
+                        <input id="kitas_number" name="kitas_number" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="kitas_number">KITAS Expired Date *</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="kitas_expiry" name="kitas_expiry">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="religion_id">Religion *</label>
+                        <select data-role="combobox" id="religion_id" name="religion_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="married_status_id">Maritial Status *</label>
+                        <select data-role="combobox" id="married_status_id" name="married_status_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="blood">Blood *</label>
+                        <select data-role="combobox" id="blood" name="blood" class="form-control">
+                            <option value="A">A</option>
+                            <option value="AB">AB</option>
+                            <option value="B">B</option>
+                            <option value="O">O</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="post_code">Post Code *</label>
+                        <input id="post_code" name="post_code" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="address_identity_card">Identity Address *</label>
+                        <textarea id="address_identity_card" name="address_identity_card" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="home_address">Home Address *</label>
+                        <textarea id="home_address" name="home_address" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="last_education">Last Education *</label>
+                        <select data-role="combobox" id="last_education" name="last_education" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="passport_number">Passport Number *</label>
+                        <input id="passport_number" name="passport_number" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="passport_expiry">Passport Expired Date *</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="passport_expiry" name="passport_expiry">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="npwp_number">NPWP Number *</label>
+                        <input id="npwp_number" name="npwp_number" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="passport_expiry">NPWP Expired Date *</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="npwp_expiry" name="npwp_expiry">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="identity_card">ID Card Number *</label>
+                        <input id="identity_card" name="identity_card" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="kk_no">KK Number *</label>
+                        <input id="kk_no" name="kk_no" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="photo">Employee Photo *</label>
+                        <input id="photo" type="text" name="photo" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="FamilyInfo">
+            <a onclick="fnEmployeeBasicInfo.OpenFamilyModal()" href="javascript:void(0)" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+            <table class="table table-striped" id="FamilyList"></table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="EmergencyContacts">
+            <a onclick="fnEmployeeBasicInfo.OpenEmergencyModal()" href="javascript:void(0)" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+            <table class="table table-striped" id="EmergencyContactList"></table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="EducationInfo">
+            <a onclick="fnEmployeeBasicInfo.OpenEducationModal()" href="javascript:void(0)" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+            <table class="table table-striped" id="EducationList"></table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="EmployementHistory">
+            <a onclick="fnEmployeeBasicInfo.OpenHistoryModal()" href="javascript:void(0)" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+            <table id="HistoryList" class="table-striped"></table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="Course">
+            <a onclick="fnEmployeeBasicInfo.OpenCourseModal()" href="javascript:void(0)" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Add</a>
+            <table id="CourseList" class="table-striped"></table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="JobInfo">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="passport_expiry">Join Date</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="join_date" name="join_date">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reports_to">Reports to</label>
+                        <select data-role="combobox" id="reports_to" name="reports_to" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="job_title_id">Job Title*</label>
+                        <select data-role="combobox" id="job_title_id" name="job_title_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="legal_entity_id">Legal Entity*</label>
+                        <select data-role="combobox" id="legal_entity_id" name="legal_entity_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="business_unit_id">Job Title*</label>
+                        <select id="business_unit_job_level_id" name="business_unit_job_level_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="business_unit_id">Business Unit*</label>
+                        <input id="business_unit_id" name="business_unit_id" hidden>
+                        <input id="business_unit_id_name" name="business_unit_id_name" class="form-control" type="text" readonly />
+                        <span class="md-input-bar "></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="departement_id">Departement*</label>
+                        <input data-role="combobox" id="departement_id" name="departement_id" class="form-control" type="text" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="location_id">Location*</label>
+                        <select data-role="combobox" id="location_id" name="location_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type_tax">PTKP / Untax*</label>
+                        <select data-role="combobox" id="type_tax" name="type_tax" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bpjs_tk">BPJS TK Number</label>
+                        <input id="bpjs_tk" name="bpjs_tk" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="bpjs_healthy">BPJS Kesehatan Number</label>
+                        <input id="bpjs_healthy" name="bpjs_healthy" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="type_tax">Payroll Method*</label>
+                        <select data-role="combobox" id="type_tax" name="type_tax" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status_employee_id">Employement Status*</label>
+                        <select data-role="combobox" id="status_employee_id" name="status_employee_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bank_id">Bank</label>
+                        <select data-role="combobox" id="bank_id" name="bank_id" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bank_branch">Branch</label>
+                        <input id="bank_branch" name="bank_branch" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="bank_address">Bank Address</label>
+                        <input id="bank_address" name="bank_address" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="bank_city">Bank City</label>
+                        <input id="bank_city" name="bank_city" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="account_name">Account Name</label>
+                        <input id="account_name" name="account_name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="account_no">Account No</label>
+                        <input id="account_no" name="account_no" class="form-control" />
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+             <button class="btn btn-primary" type="submit">Save</button> 
+            <a href="@Url.Content("~/Hris/EmployeeBasicInfo/")" class="btn btn-warning">Cancel</a>
+        </div>
+    </div>
+
+
+    <!-- Modal Emergency Contact -->
+    <div class="modal fade" id="emergencyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add Emergency Contact</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="emergency_family_status_id">Relation</label>
+                                <select data-role="combobox" id="emergency_family_status_id" name="emergency_family_status_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                <input id="emergency_id" hidden name="emergency_id" />
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_phone_no">Phone No.</label>
+                                <input id="emergency_phone_no" name="emergency_phone_no" class="form-control form-control-sm m-input m-input--square" />
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_address">Address</label>
+                                <textarea id="emergency_address" name="emergency_address" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="emergency_name">Full Name</label>
+                                <input id="emergency_name" name="emergency_name" class="form-control form-control-sm m-input m-input--square" />
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency_other_no">Other No.</label>
+                                <input id="emergency_other_no" name="emergency_other_no" class="form-control form-control-sm m-input m-input--square" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="fnEmployeeBasicInfo.addEmergency()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Course / Training -->
+    <div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add / Edit Course</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="course_name">Course Name</label>
+                                <input name="course_name" id="course_name" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="course_address">Course Address</label>
+                                <input name="course_address" id="course_address" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="no_certification">No Cert</label>
+                                <input name="no_certification" id="no_certification" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="expired_certificate">Expired Cert</label>
+                                <div class="input-group date" data-provide="datepicker">
+                                    <input type="text" class="form-control" id="expired_certificate" name="expired_certificate">
+                                    <span class="input-group-btn">
+                                        <button class="btn default" type="button">
+                                            <i class="fa fa-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="course_cert">Upload Cert</label>
+                                <input id="course_cert" type="text" name="course_cert" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="course_institute_id">Institute Name</label>
+                                <select data-role="combobox" id="course_institute_id" name="course_institute_id" class="form-control"></select>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="start_training">Start</label>
+                                        <div class="input-group date" data-provide="datepicker">
+                                            <input type="text" class="form-control" id="start_training" name="start_training">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="end_training">End</label>
+                                        <div class="input-group date" data-provide="datepicker">
+                                            <input type="text" class="form-control" id="end_training" name="end_training">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="course_description">Remarks</label>
+                                <textarea id="course_description" name="course_description" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="fnEmployeeBasicInfo.addCourse()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Family -->
+    <div class="modal fade" id="familyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add / Edit Family</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="FamilyFormUpdate" method="post">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="family_name">Name <span class="req">*</span>:</label>
+                                    <input class="form-control form-control-sm m-input m-input--square" name="family_name" id="family_name" required maxlength="50" type="text">
+                                    <input name="family_id" id="family_id" hidden type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_birthday">Birthday :</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control" id="family_birthday" name="family_birthday">
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-calendar"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_education_level_id">Education :</label>
+                                    <select data-role="combobox" class="form-control form-control-sm m-input m-input--square" name="family_education_level_id" id="family_education_level_id" maxlength="50" type="text"></select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_status_id">Family Status <span class="req">*</span>:</label>
+                                    <select data-role="combobox" class="form-control form-control-sm m-input m-input--square" name="family_status_id" id="family_status_id"></select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_gender">Gender*</label><br>
+                                    <input type="radio" data-role="radio" value="Male" name="family_gender" /> Male
+                                    <input type="radio" data-role="radio" value="Female" name="family_gender" /> Female
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_institution_id">Institution :</label>
+                                    <select data-role="combobox" class="form-control form-control-sm m-input m-input--square" name="family_institution_id" id="family_institution_id"></select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_married_status_id">Married Status :</label>
+                                    <select data-role="combobox" class="form-control form-control-sm m-input m-input--square" name="family_married_status_id" id="family_married_status_id"></select>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+
+                                <div class="form-group">
+                                    <label for="family_phone_no">Phone No :</label>
+                                    <input class="form-control form-control-sm m-input m-input--square" name="family_phone_no" id="family_phone_no" maxlength="50" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_other_no">Other No :</label>
+                                    <input class="form-control form-control-sm m-input m-input--square" name="family_other_no" id="family_other_no" maxlength="50" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_place_birth">Place Birth :</label>
+                                    <input class="form-control form-control-sm m-input m-input--square" name="family_place_birth" id="family_place_birth" maxlength="50" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_religion_id">Religion :</label>
+                                    <select data-role="combobox" class="form-control form-control-sm m-input m-input--square" name="family_religion_id" id="family_religion_id"></select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_address">Address :</label>
+                                    <textarea rows="3" class="form-control form-control-sm m-input m-input--square" name="family_address" id="family_address" maxlength="100" type="text"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="family_description">Description :</label>
+                                    <textarea rows="3" class="form-control form-control-sm m-input m-input--square" name="family_description" id="family_description" maxlength="2147483647" type="text"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="fnEmployeeBasicInfo.addFamily()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Education Info -->
+    <div class="modal fade" id="educationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add / Edit Education</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="education_level_id">Last Education :</label>
+                                <select class="form-control form-control-sm m-input m-input--square" name="education_level_id" id="education_level_id" maxlength="50" type="text"></select>
+                                <input type="text" id="education_id" name="education_id" hidden>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="start_education">Year :</label>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" id="start_education" name="start_education">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" id="end_education" name="end_education">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="qualification">Qualification Attained :</label>
+                                <input class="form-control form-control-sm m-input m-input--square" name="qualification" id="qualification" maxlength="50" type="text">
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="education_major">Major :</label>
+                                <input class="form-control form-control-sm m-input m-input--square" name="education_major" id="education_major" maxlength="50" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="education_institution_id">Institution Name :</label>
+                                <select class="form-control form-control-sm m-input m-input--square" name="education_institution_id" id="education_institution_id" maxlength="50" type="text"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="education_location">Location :</label>
+                                <input class="form-control form-control-sm m-input m-input--square" name="education_location" id="education_location" maxlength="50" type="text">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="fnEmployeeBasicInfo.addEducation()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal History -->
+    <div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add / Edit Employement History</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="company_name">Company Name :</label>
+                                <input class="form-control form-control-sm m-input m-input--square" name="company_name" id="company_name" maxlength="50" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="history_start">Year :</label>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="history_start" name="history_start">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="history_end" name="history_end">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="history_remark">Remark :</label>
+                                <textarea class="form-control form-control-sm m-input m-input--square" name="history_remark" id="history_remark" rows="5" type="text"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="history_phone">Company Phone :</label>
+                                <input class="form-control form-control-sm m-input m-input--square" name="history_phone" id="history_phone" maxlength="50" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="history_position">Position :</label>
+                                <input class="form-control form-control-sm m-input m-input--square" name="history_position" id="history_position" maxlength="50" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="history_address">Address :</label>
+                                <textarea class="form-control form-control-sm m-input m-input--square" name="history_address" id="history_address" rows="5" type="text"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="fnEmployeeBasicInfo.addHistory()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/EmployeeBasicInfo.update.js"></script>
+}

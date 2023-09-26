@@ -1,0 +1,1061 @@
+@model PhoenixERPWebApp.Models.PdrEmployee
+@{
+    if (Model.IsApprove == true)
+    {
+        ViewData["Title"] = "PDR Apprisal Form Approval";
+    }
+    else
+    {
+        ViewData["Title"] = "PDR Apprisal Form";
+    }
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+
+    DateTime? EffectivePermanent = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        EffectivePermanent = Model.PdrRecomendation.EffectivePermanent;
+    }
+
+    int pdrParameter = 0;
+    decimal? finalScore = 0;
+    decimal? CountParameter = 0;
+    decimal? finalScoreIn5 = 0;
+}
+<style>
+    .middleCenter {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .middle {
+        vertical-align: middle;
+    }
+
+    .top {
+        vertical-align: top;
+    }
+
+    .td-width {
+        width: 150px;
+    }
+
+    table {
+        margin-bottom: 40px;
+        width: 100%;
+    }
+
+    td {
+        border: 1px solid darkgray;
+        padding: 5px;
+    }
+
+    .grade {
+        border: none;
+        width: 20%;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .header {
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .centerBold {
+        font-weight: bold;
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="indexapproval" asp-controller="pdrperformance" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">PDR Apprisal Approval</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="index" asp-controller="pdrperformance" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">PDR Apprisal Appraisal</span></a>
+                    }
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="addedit" asp-controller="pdrperformance" asp-area="hrisnew" asp-route-Id="@Model.Id" asp-route-isApprove="true" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="pdrperformance" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="pdrperformance" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">PDR Apprisal Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formpdrperformance" class="form-horizontal form-bordered" role="form">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                                <input type="hidden" asp-for="FinalScore" />
+                                <input type="hidden" asp-for="Grade" />
+                                <input type="hidden" asp-for="JobGradeId" />
+                                <input type="hidden" asp-for="PdrRecomendation.Type" />
+                                <input type="hidden" asp-for="PdrRecomendation.Id" />
+                                <input type="hidden" asp-for="DateSubmit" />
+                                <input type="hidden" asp-for="DateAppraisal" />
+                                <input type="hidden" asp-for="Year" />
+                                <input type="hidden" asp-for="FileResult" />
+                                <input type="hidden" asp-for="SalaryIncrease" /> 
+
+                                <partial name="_AssignEmploye" />
+                                <br/>
+                                
+                                <div class="row" id="data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                    <span class="m-accordion__item-title">Request Detail</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                                    <div class="m-accordion__item-content">
+                            
+                                                        <div class="row">
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ReviewStart"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.ReviewStart)
+                                                                        .Format("dd MMMM yyyy")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width: 100%",
+                                                                            onkeydown = "javascript:return false;",
+                                                                            //placeholder = $"Input type a {Html.DisplayNameFor(m => m.ReviewStart)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.ReviewStart)} is required"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ReviewEnd"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.ReviewEnd)
+                                                                        .Format("dd MMMM yyyy")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width: 100%",
+                                                                            onkeydown = "javascript:return false;",
+                                                                            //placeholder = $"Input type a {Html.DisplayNameFor(m => m.ReviewEnd)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.ReviewEnd)} is required"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top:20px;">
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    @foreach (var item in Model.PdrCategorys.OrderBy(x => x.No))
+                                                                    {
+                                                                        var result = item.Id+";"+item.PdrParameters.Count();
+                                                                        <input type="hidden" id="hdResultPdrParameters_@item.Id" value="@result"/>
+
+                                                                        <h5>@(item.No + ". " + item.Name)</h5>
+                                                                        <label style="font-style:normal">@item.Description</label>
+
+                                                                        <div style="margin-left:30px;">
+                                                                            @if (item.No == 4)
+                                                                            {
+                                                                                @Html.TextAreaFor(x => x.Notes, new { style = "width: 100%; height:100px;", placeholder = "input notes here" })
+                                                                            }
+                                                                            else if (item.No == 5)
+                                                                            {
+         
+                                                                                <div class="row">
+                                                                                    <div class="col-lg-6 m-form__group-sub">
+                                                                                        <div class="form-group">
+                                                                                            <label asp-for="PdrRecomendation.ContractExtended"></label> <span class="req" id="span-extended">*</span> :
+                                                                                            @(Html.Kendo().NumericTextBoxFor(m => m.PdrRecomendation.ContractExtended)
+                                                                                                .Spinners(false)
+                                                                                                .Round(true)
+                                                                                                .Format("0 Months")
+                                                                                                .Events(evt => evt.Change("contractExtended_change"))
+                                                                                                .HtmlAttributes(new
+                                                                                                {
+                                                                                                    style = "width:100%",
+                                                                                                    @class = "form-control form-control-sm m-input",
+                                                                                                    required = "required"
+                                                                                                }))
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-lg-6 m-form__group-sub">
+                                                                                        <div class="form-group">
+                                                                                            <label asp-for="PdrRecomendation.Terminated"></label> <span class="req" id="span-terminated">*</span> :
+                                                                                            @(Html.Kendo().RadioButtonFor(m => m.PdrRecomendation.Terminated).Label("Yes").Value(true).HtmlAttributes(new { required = "required" }))
+                                                                                            @(Html.Kendo().RadioButtonFor(m => m.PdrRecomendation.Terminated).Label("No").Value(false).HtmlAttributes(new { required = "required" }))
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-lg-6 m-form__group-sub">
+                                                                                        <div class="form-group">
+                                                                                            <label asp-for="PdrRecomendation.EffectivePermanent"></label> <span class="req" id="span-efecctive">*</span> :
+                                                                                            @(Html.Kendo().DatePickerFor(m => m.PdrRecomendation.EffectivePermanent)
+                                                                                                .Format("dd MMM yyyy")
+                                                                                                .Min($"{EffectivePermanent}")
+                                                                                                .Events(evt => evt.Change("effectivePermanent_change"))
+                                                                                                .HtmlAttributes(new
+                                                                                                {
+                                                                                                    style = "width:100%",
+                                                                                                    @class = "form-control form-control-sm m-input",
+                                                                                                    required = "required",
+                                                                                                    //placeholder = $"Choose a {Html.DisplayNameFor(m => m.PdrRecomendation.EffectivePermanent)}",
+                                                                                                    //onkeydown = "javascript:return false;"
+                                                                                                })
+                                                                                            )
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                            else if (item.No == 6)
+                                                                            {
+                                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.PdrDevelopmentPlan>()
+                                                                                    .Name("gridPdrDevelopmentPlan")
+                                                                                    .ToolBar(toolbar => {
+                                                                                        if (ViewBag.isRequestor == true)
+                                                                                        {
+                                                                                            toolbar.Create();
+                                                                                        }
+                                                                                    })
+                                                                                    .Columns(columns =>
+                                                                                    {
+                                                                                        if (ViewBag.isRequestor == true)
+                                                                                        {
+                                                                                            columns.Command(
+                                                                                                command =>
+                                                                                                {
+                                                                                                    command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                                                    command.Destroy().Text(" ");
+                                                                                                }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(50);
+                                                                                        }
+                                                                                        columns.Bound(p => p.Activities).Width(150);
+                                                                                        columns.Bound(p => p.Quarter).EditorTemplateName("HrisNew/PDRPerformance/Quarter").Width(150);
+                                                                                    })
+                                                                                    .NoRecords()
+                                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                                    //.Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                                    .DataSource(dataSource => dataSource
+                                                                                        .Ajax()
+                                                                                        .PageSize(20)
+                                                                                        .ServerOperation(false)
+                                                                                        .Events(events => events.Error("errorHandler"))
+                                                                                        .Model(model =>
+                                                                                        {
+                                                                                            model.Id(p => p.Id);
+                                                                                        })
+                                                                                        .Read(read => read.Action("ReadPdrDevelopmentPlan", "PdrPerformance").Data("grid_params"))
+                                                                                        .Create(create => create.Action("CreatePdrDevelopmentPlan", "PdrPerformance"))
+                                                                                        .Update(update => update.Action("UpdatePdrDevelopmentPlan", "PdrPerformance"))
+                                                                                        .Destroy(destroy => destroy.Action("DestroyPdrDevelopmentPlan", "PdrPerformance"))
+                                                                                    )
+                                                                                //.Events(e => e.Save("saveDevelopmentPlanEvent"))
+                                                                                )
+                                                                            }
+                                                                            else if (item.No == 3)
+                                                                            {
+                                                                                <table>
+                                                                                    <tr style="background-color:#00B0F0;" class="header">
+                                                                                        <td>SECTION</td>
+                                                                                        <td>AVERAGE SCORE</td>
+                                                                                        <td>PERCENTAGE (%)</td>
+                                                                                        <td>TOTAL SCORE</td>
+                                                                                    </tr>
+                                                                                    @{ var modelPDRCategory = Model.PdrCategorys.Where(x => x.PdrParameters.Count > 0).OrderBy(x => x.No).ToList();
+                                                                                        var poor = Model.PdrGrades.Where(x => x.Id == PhoenixERPWebApp.Models.Grades.Poor).FirstOrDefault();
+                                                                                        var fair = Model.PdrGrades.Where(x => x.Id == PhoenixERPWebApp.Models.Grades.Fair).FirstOrDefault();
+                                                                                        var good = Model.PdrGrades.Where(x => x.Id == PhoenixERPWebApp.Models.Grades.Good).FirstOrDefault();
+                                                                                        var veryGood = Model.PdrGrades.Where(x => x.Id == PhoenixERPWebApp.Models.Grades.VeryGood).FirstOrDefault();
+                                                                                        var excellent = Model.PdrGrades.Where(x => x.Id == PhoenixERPWebApp.Models.Grades.Excellent).FirstOrDefault();
+                                                                                       
+                                                                                    }
+                                                                                    @for (int i = 0; i < modelPDRCategory.Count(); i++)
+                                                                                    {
+                                                                                        var SectionNo = i + 1;
+
+                                                                                        decimal? averageScore = 0;
+                                                                                        decimal? percentage = 0;
+                                                                                        decimal? total = 0;
+                                                                                        if (Model.PdrOverallScores != null)
+                                                                                        {
+                                                                                            var overallScore = Model.PdrOverallScores.Where(x => x.PdrCategoryId == modelPDRCategory[i].Id).FirstOrDefault();
+                                                                                            if (overallScore != null)
+                                                                                            {
+                                                                                                averageScore = overallScore.AverageScore;
+                                                                                                percentage = overallScore.Percentage;
+                                                                                                total = overallScore.Total;
+                                                                                                finalScore = Model.FinalScore;
+                                                                                                CountParameter = Model.PdrDetailM2belows.Where(x => x.PdrEmployeeId == Model.Id).Count();
+                                                                                                finalScoreIn5 = (finalScore / CountParameter);
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                percentage = modelPDRCategory[i].Percentage;
+                                                                                            }
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            percentage = modelPDRCategory[i].Percentage;
+                                                                                        }
+
+                                                                                        if (percentage == null)
+                                                                                        {
+                                                                                            percentage = ((averageScore / 5) * 100);
+                                                                                        }
+
+                                                                                        if ( total == null)
+                                                                                        {
+                                                                                            total = Model.PdrDetailM2belows.Where(x => x.PdrCategoryId == modelPDRCategory[i].Id).Sum(x=>x.Score);
+                                                                                        }
+
+
+                                                                                        <tr>
+                                                                                            <td>Section @SectionNo<br />(@modelPDRCategory[i].Name)</td>
+                                                                                            <td style="text-align:center;"><label id="lblAverage_@modelPDRCategory[i].Id">@String.Format("{0:N2}", averageScore)</label></td>
+                                                                                            <td style="text-align:center;"><label id="lblPercentage_@modelPDRCategory[i].Id" text="">@String.Format("{0:N2}", percentage)</label></td>
+                                                                                            <td class="centerBold"><label id="lblTotal_@modelPDRCategory[i].Id">@String.Format("{0:N2}", total)</label></td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                    @{ 
+                                                                                                        if (finalScore == null)
+                                                                                                        {
+                                                                                                            finalScore = Model.PdrDetailM2belows.Where(x => x.PdrEmployeeId == Model.Id).Sum(x=>x.Score);
+                                                                                                            CountParameter = Model.PdrDetailM2belows.Where(x => x.PdrEmployeeId == Model.Id).Count();
+                                                                                                            finalScoreIn5 = (finalScore / CountParameter);
+                                                                                                        }
+
+                                                                                                    }
+                                                                                    <tr>
+                                                                                        <td class="centerBold" colspan="3">FINAL SCORE</td>
+                                                                                        <td class="centerBold" style="background-color:#EEEEEE;"><label id="lblFinal">@String.Format("{0:N2}", finalScore)</label></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="centerBold" colspan="4">GRADE</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="4">
+                                                                                            <table style="margin:0;">
+                                                                                                <tr style="font-size:20px;">
+                                                                                                    <td class="grade"><i class="fa fa-square fa-lg" aria-hidden="true" style="color:#CF2A28"></i> POOR</td>
+                                                                                                    <td class="grade"><i class="fa fa-square fa-lg" aria-hidden="true" style="color:#FFE599"></i> FAIR</td>
+                                                                                                    <td class="grade"><i class="fa fa-square fa-lg" aria-hidden="true" style="color:#2A78E4"></i> GOOD</td>
+                                                                                                    <td class="grade"><i class="fa fa-square fa-lg" aria-hidden="true" style="color:#009E11"></i> VERY GOOD</td>
+                                                                                                    <td class="grade"><i class="fa fa-star fa-lg" aria-hidden="true" style="color:#FF9900"></i> EXCELLENT</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td class="grade"><small>&lt;=<label id="lblPoor">@String.Format("{0:N2}", poor.EndRange)</label><br />(@poor.Result)</small></td>
+                                                                                                    <td class="grade"><small><label id="lblFairStart">@String.Format("{0:N2}", fair.StartRange)</label> - <label id="lblFairEnd">@String.Format("{0:N2}", fair.EndRange)</label><br />(@fair.Result)</small></td>
+                                                                                                    <td class="grade"><small><label id="lblGoodStart">@String.Format("{0:N2}", good.StartRange)</label> - <label id="lblGoodEnd">@String.Format("{0:N2}", good.EndRange)</label><br />(@good.Result)</small></td>
+                                                                                                    <td class="grade"><small><label id="lblVeryGoodStart">@String.Format("{0:N2}", veryGood.StartRange)</label> - <label id="lblVeryGoodEnd">@String.Format("{0:N2}", veryGood.EndRange)</label><br />(@veryGood.Result)</small></td>
+                                                                                                    <td class="grade"><small><label id="lblExcellentStart">@String.Format("{0:N2}", excellent.StartRange)</label> - <label id="lblExcellentEnd">@String.Format("{0:N2}", excellent.EndRange)</label><br />(@excellent.Result)</small></td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    @{
+                                                                                                        bool isChekedPoor = finalScoreIn5 <= poor.EndRange;
+                                                                                                bool isChekedFair = finalScoreIn5 >= fair.StartRange && finalScoreIn5 <= fair.EndRange;
+                                                                                                bool isChekedGood = finalScoreIn5 >= good.StartRange && finalScoreIn5 <= good.EndRange;
+                                                                                                bool isChekedVeryGood = finalScoreIn5 >= veryGood.StartRange && finalScoreIn5 <= veryGood.EndRange;
+                                                                                                bool isChekedExcellent = finalScoreIn5 >= excellent.StartRange && finalScoreIn5 <= excellent.EndRange;
+
+                                                                                            }
+                                                                                                    <td class="grade">@(Html.Kendo().CheckBox().Name("chkPoor").Label("").Enable(false).Checked(isChekedPoor)) <input type="hidden" id="hdPoor" value="@poor.Id" /></td>
+                                                                                                    <td class="grade">@(Html.Kendo().CheckBox().Name("chkFair").Label("").Enable(false).Checked(isChekedFair)) <input type="hidden" id="hdFair" value="@fair.Id" /></td>
+                                                                                                    <td class="grade">@(Html.Kendo().CheckBox().Name("chkGood").Label("").Enable(false).Checked(isChekedGood)) <input type="hidden" id="hdGood" value="@good.Id" /></td>
+                                                                                                    <td class="grade">@(Html.Kendo().CheckBox().Name("chkVeryGood").Label("").Enable(false).Checked(isChekedVeryGood)) <input type="hidden" id="hdVeryGood" value="@veryGood.Id" /></td>
+                                                                                                    <td class="grade">@(Html.Kendo().CheckBox().Name("chkExcellent").Label("").Enable(false).Checked(isChekedExcellent)) <input type="hidden" id="hdExcellent" value="@excellent" /></td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                pdrParameter = pdrParameter + item.PdrParameters.Count();
+                                                                                foreach (var item2 in item.PdrParameters.OrderBy(x => x.Alphabet))
+                                                                                {
+                                                                                    decimal score = 0;
+                                                                                        string notes = "";
+
+                                                                                    if(Model.PdrDetailM2belows!=null){
+                                                                                        var m2Belows = Model.PdrDetailM2belows.Where(x => x.PdrCategoryId == item.Id && x.PdrParameterId == item2.Id).FirstOrDefault();
+                                                                                        if (m2Belows != null)
+                                                                                        {
+                                                                                            score = m2Belows.Score ?? 0;
+                                                                                            notes = m2Belows.Notes;
+                                                                                        }
+                                                                                    }
+                                                                                    <h5>@(item2.Alphabet + ". " + item2.Subject)</h5>
+                                                                                    <label style="font-style:normal">@item2.Description</label><br /><br />
+                                                                                    <table>
+                                                                                        @if (item.No == 1)
+                                                                                        {
+                                                                                            <tr style="background-color:#00B0F0;" class="header">
+                                                                                                <td class="top" style="width:100px;">Parameter</td>
+                                                                                                <td class="td-width">1</td>
+                                                                                                <td class="td-width">2</td>
+                                                                                                <td class="td-width">3</td>
+                                                                                                <td class="td-width">4</td>
+                                                                                                <td class="td-width">5</td>
+                                                                                                <td rowspan="2" style="width:100px;">TOTAL SCORE</td>
+                                                                                            </tr>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <tr style="background-color:#008000;" class="header">
+                                                                                                <td class="top" style="width:100px;">Parameter</td>
+                                                                                                <td class="td-width">1</td>
+                                                                                                <td class="td-width">2</td>
+                                                                                                <td class="td-width">3</td>
+                                                                                                <td class="td-width">4</td>
+                                                                                                <td class="td-width">5</td>
+                                                                                                <td rowspan="2" style="width:100px;">TOTAL SCORE</td>
+                                                                                            </tr>
+                                                                                        }
+
+                                                                                        <tr>
+                                                                                            @if (item.No == 1)
+                                                                                        {
+                                                                                                <td class="top" style="background-color:#00B0F0; font-weight:bold; color:white;">Parameter's description</td>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <td class="top" style="background-color:#008000; font-weight:bold; color:white;">Parameter's description</td>
+                                                                                            }
+                                                                                            <td class="top">@item2.KeyBehavior1</td>
+                                                                                            <td class="top">@item2.KeyBehavior2</td>
+                                                                                            <td class="top">@item2.KeyBehavior3</td>
+                                                                                            <td class="top">@item2.KeyBehavior4</td>
+                                                                                            <td class="top">@item2.KeyBehavior5</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            @if (item.No == 1)
+                                                                                        {
+                                                                                                <td class="top" style="background-color:#00B0F0; font-weight:bold; color:white;">Score</td>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <td class="top" style="background-color:#008000; font-weight:bold; color:white;">Score</td>
+                                                                                            }
+                                                                                            @if (item.No == 1)
+                                                                                        {
+                                                                                            if (score == 1)
+                                                                                            {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey1_@item.Id@item2.Id" class="k-radio" value="1" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey1_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey1_@item.Id@item2.Id" class="k-radio" value="1" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey1_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 2)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey2_@item.Id@item2.Id" class="k-radio" value="2" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey2_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey2_@item.Id@item2.Id" class="k-radio" value="2" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey2_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 3)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey3_@item.Id@item2.Id" class="k-radio" value="3" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey3_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey3_@item.Id@item2.Id" class="k-radio" value="3" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey3_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 4)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey4_@item.Id@item2.Id" class="k-radio" value="4" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey4_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey4_@item.Id@item2.Id" class="k-radio" value="4" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey4_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 5)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey5_@item.Id@item2.Id" class="k-radio" value="5" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey5_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#C5D9F1;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey5_@item.Id@item2.Id" class="k-radio" value="5" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey5_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                            }
+                                                                                            else
+                                                                                            {
+
+                                                                                                if (score == 1)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey1_@item.Id@item2.Id" class="k-radio" value="1" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey1_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey1_@item.Id@item2.Id" class="k-radio" value="1" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey1_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 2)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey2_@item.Id@item2.Id" class="k-radio" value="2" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey2_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey2_@item.Id@item2.Id" class="k-radio" value="2" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey2_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 3)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey3_@item.Id@item2.Id" class="k-radio" value="3" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey3_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey3_@item.Id@item2.Id" class="k-radio" value="3" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey3_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 4)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey4_@item.Id@item2.Id" class="k-radio" value="4" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey4_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey4_@item.Id@item2.Id" class="k-radio" value="4" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey4_@item.Id@item2.Id"></label></td>
+                                                                                                }
+
+                                                                                                if (score == 5)
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey5_@item.Id@item2.Id" class="k-radio" value="5" onclick="Score_Change(this,'@item.Id','@item2.Id')" checked><label class="k-radio-label" for="rbKey5_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <td class="middleCenter" style="background-color:#CCFFCC;"><input type="radio" name="rbKey_@item.Id@item2.Id" id="rbKey5_@item.Id@item2.Id" class="k-radio" value="5" onclick="Score_Change(this,'@item.Id','@item2.Id')"><label class="k-radio-label" for="rbKey5_@item.Id@item2.Id"></label></td>
+                                                                                                }
+                                                                                            }
+                                                                                            <td class="middleCenter"><label id="lblValue_@item.Id@item2.Id" style="font-weight:bold;">@String.Format("{0:N2}", score)</label></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            @if (item.No == 1)
+                                                                                        {
+                                                                                                <td class="top" style="background-color:#00B0F0; font-weight:bold; color:white;">Notes</td>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <td class="top" style="background-color:#008000; font-weight:bold; color:white;">Notes</td>
+                                                                                            }
+                                                                                            <td colspan="6"><textarea id="txtNotes_@item.Id@item2.Id" style="width:100%; height:80px" placeholder="input notes here">@notes</textarea></td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                }
+                                                                            }
+                                                                        </div>
+                                                                    }                                            
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <partial name="_HistoryApproval" />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                                                                        {
+                                                                                            @if ((Model.Status ?? 0) == PhoenixERPWebApp.Models.StatusTransaction.Draft)
+                                        {
+                                            <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        }
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+
+                                    @if (Model.IsApprove == true)
+                                                                                        {
+                                                                                            @if (ViewBag.processApprove == true)
+                                        {
+                                            <button type="button" id="btnShow"  class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                            @*<button type="button" id="btnReject" class="btn btn-danger edit"><span class="fa fa-ban"></span> Reject</button>*@
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                        }
+                                        <a asp-action="Indexapproval" asp-controller="pdrperformance" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="index" asp-controller="pdrperformance" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var pdr_detail_m2below = [];
+    var pdr_overall_score = [];
+    var countParameter = 0;
+    $(document).ready(function () {
+        if ('@Model.Status' != '') {
+            if ('@ViewBag.isRequestor' == "False") {
+                $("#ReviewStart").data("kendoDatePicker").readonly();
+                $("#ReviewEnd").data("kendoDatePicker").readonly();
+                //$("#Notes").attr("readonly", "readonly");
+                $("textarea").attr('readonly', 'readonly');
+                $("#RemarkRejected").removeAttr("readonly");
+                //$("input[name='PdrRecomendation.Terminated']").attr("disabled", true);
+                $("input[type=radio]").attr('disabled', true);
+                $("#PdrRecomendation_ContractExtended").data("kendoNumericTextBox").readonly();
+                $("#PdrRecomendation_EffectivePermanent").data("kendoDatePicker").readonly();
+                $("#PdrRecomendation_ContractExtended").removeAttr("required");
+                $("#PdrRecomendation_EffectivePermanent").removeAttr("required");
+                $("#search").remove();
+            } else {
+                var contractExtended = "@((Model.PdrRecomendation.ContractExtended??0) != 0)" == "True";
+                var effectivePermanent = "@(Model.PdrRecomendation.EffectivePermanent != null)" == "True";
+                var terminated = "@Model.PdrRecomendation.Terminated" == "True"
+
+                if (contractExtended) {
+                    disableContractExtended(contractExtended);
+                } else if (effectivePermanent) {
+                    disableEffectivePermanent(effectivePermanent);
+                } else if (terminated) {
+                    disableTerminated(terminated);
+                }
+
+                @*@foreach(var item in Model.PdrOverallScores) { <Text>pdr_overall_score.push({ PdrCategoryId: '@item.PdrCategoryId', AverageScore: @item.AverageScore, Percentage: @item.Percentage, Total: @item.Total });</text>}
+                @foreach(var item in Model.PdrDetailM2belows) { <Text>pdr_detail_m2below.push({ PdrCategoryId: '@item.PdrCategoryId', PdrParameterId: '@item.PdrParameterId', Score: @item.Score, Percentage: @item.Percentage, Notes: '@item.Notes' });</text>}*@
+            }
+
+            //var lblPoor = parseFloat($("#lblPoor").text());
+            //var lblFairStart = parseFloat($("#lblFairStart").text());
+            //var lblFairEnd = parseFloat($("#lblFairEnd").text());
+            //var lblGoodStart = parseFloat($("#lblGoodStart").text());
+            //var lblGoodEnd = parseFloat($("#lblGoodEnd").text());
+            //var lblVeryGoodStart = parseFloat($("#lblVeryGoodStart").text());
+            //var lblVeryGoodEnd = parseFloat($("#lblVeryGoodEnd").text());
+            //var lblExcellentStart = parseFloat($("#lblExcellentStart").text());
+            //var lblExcellentEnd = parseFloat($("#lblExcellentEnd").text());
+            //var grandTotal = parseFloat();
+
+            //var isPoor = grandTotal <= lblPoor;
+            //var isFair = grandTotal >= lblFairStart && grandTotal <= lblFairEnd;
+            //var isGood = grandTotal >= lblGoodStart && grandTotal <= lblGoodEnd;
+            //var isVeryGood = grandTotal >= lblVeryGoodStart && grandTotal <= lblVeryGoodEnd;
+            //var isExcellent = grandTotal >= lblExcellentStart && grandTotal <= lblExcellentEnd;
+
+            //if (isPoor) {
+            //    $("#Grade").val("POOR");
+            //    $("#JobGradeId").val($("#hdPoor").val());
+            //}
+            //else if (isFair) {
+            //    $("#Grade").val("FAIR");
+            //    $("#JobGradeId").val($("#hdFair").val());
+            //}
+            //else if (isGood) {
+            //    $("#Grade").val("GOOD");
+            //    $("#JobGradeId").val($("#hdGood").val());
+            //}
+            //else if (isVeryGood) {
+            //    $("#Grade").val("VERY GOOD");
+            //    $("#JobGradeId").val($("#hdVeryGood").val());
+            //}
+            //else if (isExcellent) {
+            //    $("#Grade").val("EXCELLENT");
+            //    $("#JobGradeId").val($("#hdExcellent").val());
+            //}
+
+            //$("#chkPoor").prop('checked', isPoor);
+            //$("#chkFair").prop('checked', isFair);
+            //$("#chkGood").prop('checked', isGood);
+            //$("#chkVeryGood").prop('checked', isVeryGood);
+            //$("#chkExcellent").prop('checked', isExcellent);
+        }
+        if ('@pdrParameter' !== '0') {
+            countParameter = '@pdrParameter';
+        }
+        
+        
+
+
+    });
+
+    function grid_params() {
+        return {
+            pdrEmployeeId: '@Model.Id'
+        };
+    }
+
+    function Score_Change(e, pdrCategoryId, pdrParameterId) {
+        var value = parseFloat(e.value);
+        var percentage = parseFloat($("#lblPercentage_" + pdrCategoryId).text());
+
+        var setParameter = pdr_detail_m2below.filter((x) => { return x.PdrCategoryId == pdrCategoryId && x.PdrParameterId == pdrParameterId; });
+        if (setParameter.length == 1) {
+            setParameter[0].Score = value;
+        } else {
+            pdr_detail_m2below.push({ PdrCategoryId: pdrCategoryId, PdrParameterId: pdrParameterId, Score: value, Percentage: percentage, Notes: $("#txtNotes_" + pdrCategoryId + pdrParameterId).val() });
+        }
+
+        var hdResultPdrParameters = $("#hdResultPdrParameters_" + pdrCategoryId).val().split(";");
+        var countPdrParameters = 0;
+        if (hdResultPdrParameters[0] == pdrCategoryId) {
+            countPdrParameters = hdResultPdrParameters[1];
+        }
+
+        var scores = pdr_detail_m2below.filter((x) => { return x.PdrCategoryId == pdrCategoryId; }).map(item => item.Score);
+
+        var sum = scores.reduce((prev, next) => prev + next);
+        var average = sum / countPdrParameters;//values.length;
+        var total = (average * (percentage / 100));
+        var percentage2 = (average / 5) * 100;
+
+        var setCategory = pdr_overall_score.filter((x) => { return x.PdrCategoryId == pdrCategoryId; });
+        if (setCategory.length == 1) {
+            //setCategory[0].Total = total;
+            setCategory[0].Total = sum;
+            setCategory[0].AverageScore = average;
+        } else {
+            //pdr_overall_score.push({ PdrCategoryId: pdrCategoryId, AverageScore: average, Percentage: percentage, Total:total });
+            pdr_overall_score.push({ PdrCategoryId: pdrCategoryId, AverageScore: average, Percentage: percentage2, Total:sum });
+        }
+
+        var grandTotal = pdr_overall_score.map(item => item.Total).reduce((prev, next) => prev + next).toFixed(2);
+        
+        $("#lblValue_" + pdrCategoryId + pdrParameterId).html(value.toFixed(2));
+        $("#lblAverage_" + pdrCategoryId).html(average.toFixed(2));
+        //$("#lblTotal_" + pdrCategoryId).html(total.toFixed(2));
+         $("#lblTotal_" + pdrCategoryId).html(sum.toFixed(2));
+        $("#lblPercentage_" + pdrCategoryId).html(percentage2.toFixed(2));
+        $("#lblFinal").html(grandTotal);
+        $("#FinalScore").val(grandTotal);
+
+        var lblPoor = parseFloat($("#lblPoor").text());
+        var lblFairStart = parseFloat($("#lblFairStart").text());
+        var lblFairEnd = parseFloat($("#lblFairEnd").text());
+        var lblGoodStart = parseFloat($("#lblGoodStart").text());
+        var lblGoodEnd = parseFloat($("#lblGoodEnd").text());
+        var lblVeryGoodStart = parseFloat($("#lblVeryGoodStart").text());
+        var lblVeryGoodEnd = parseFloat($("#lblVeryGoodEnd").text());
+        var lblExcellentStart = parseFloat($("#lblExcellentStart").text());
+        var lblExcellentEnd = parseFloat($("#lblExcellentEnd").text());
+
+
+        var finalGrandTotal = (grandTotal / countParameter);
+      
+        var isPoor = finalGrandTotal <= lblPoor;
+        var isFair = finalGrandTotal >= lblFairStart && finalGrandTotal <= lblFairEnd;
+        var isGood = finalGrandTotal >= lblGoodStart && finalGrandTotal <= lblGoodEnd;
+        var isVeryGood = finalGrandTotal >= lblVeryGoodStart && finalGrandTotal <= lblVeryGoodEnd;
+        var isExcellent = finalGrandTotal >= lblExcellentStart && finalGrandTotal <= lblExcellentEnd;
+      
+
+        if (isPoor) {
+            $("#Grade").val("POOR");
+            $("#JobGradeId").val($("#hdPoor").val());
+        }
+        else if (isFair) {
+            $("#Grade").val("FAIR");
+            $("#JobGradeId").val($("#hdFair").val());
+        }
+        else if (isGood) {
+            $("#Grade").val("GOOD");
+            $("#JobGradeId").val($("#hdGood").val());
+        }
+        else if (isVeryGood) {
+            $("#Grade").val("VERY GOOD");
+            $("#JobGradeId").val($("#hdVeryGood").val());
+        }
+        else if (isExcellent) {
+            $("#Grade").val("EXCELLENT");
+            $("#JobGradeId").val($("#hdExcellent").val());
+        }
+
+        $("#chkPoor").prop('checked', isPoor);
+        $("#chkFair").prop('checked', isFair);
+        $("#chkGood").prop('checked', isGood);
+        $("#chkVeryGood").prop('checked', isVeryGood);
+        $("#chkExcellent").prop('checked', isExcellent);
+    }
+
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+    $('#btnApprove').click(function () {
+         $("#RemarkRejected").removeAttr("required", "required");
+         callAction({ formId: "formpdrperformance", title: "approve", type: "POST", url: '@Url.Action("approve", "pdrperformance")', objects: result()});
+    });
+
+    $('#btnReject').click(function () {
+        callAction({ formId: "formpdrperformance", title: "reject", type: "POST", url: '@Url.Action("reject", "pdrperformance")', objects: result()});
+    });
+
+    $('#btnSubmit').click(function () {
+        if (!isValid()) return;
+        callAction({ formId: "formpdrperformance", title: "submit", type: "POST", url: '@Url.Action("submit", "pdrperformance")', objects: result() });
+    });
+
+    $('#btnSave').click(function () {
+     
+        if (!isValid()) return;
+        callAction({ formId: "formpdrperformance", title: "save", type: "POST", url: '@Url.Action("save", "pdrperformance")', objects: result()  });
+    });
+
+
+    function isValid() {
+        var valid = $("#formpdrperformance").validate().form();
+        if (valid) {
+            //var pdrDevelopmentPlan = $("#gridPdrDevelopmentPlan").data("kendoGrid").dataSource.data();
+            //if (pdrDevelopmentPlan.length == 0) {
+            //    swal('Warning', "Please input individual development plan list", 'warning');
+            //    return false;
+            //}
+            
+            var pdrParameter = parseInt('@pdrParameter');
+            var pdrDetail = pdr_detail_m2below.length;
+
+            if (pdrParameter != pdrDetail) {
+                swal('Warning', "Please check scoring value...", 'warning');
+                return false;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function result() {
+        var gridPdrDevelopmentPlan = $("#gridPdrDevelopmentPlan").data("kendoGrid"); 
+
+        gridPdrDevelopmentPlan.saveRow(); 
+
+        pdr_detail_m2below.forEach(function (data) {
+            data.Notes = $("#txtNotes_" + data.PdrCategoryId + data.PdrParameterId).val();
+        });
+
+        var dataList = {
+            PdrDetailM2belows: pdr_detail_m2below,
+            PdrOverallScores: pdr_overall_score,
+            PdrDevelopmentPlans: gridPdrDevelopmentPlan.dataSource.data()
+        }
+
+        return dataList;
+    }
+
+    //function saveDevelopmentPlanEvent(e) {
+    //    var Activities = $("#Activities").val();
+    //    var Quarter = $("#Quarter").data("kendoDropDownList").value();
+
+    //    //e.model.set("Id", '123');
+    //    e.model.set("Activities", Activities);
+    //    e.model.set("Quarter", Quarter);
+    //}
+
+    function contractExtended_change(e) {
+        var effectivePermanent = $("#PdrRecomendation_EffectivePermanent").data("kendoDatePicker");
+        var isReadonly = (this.value() != null);
+        disableContractExtended(isReadonly);
+    }
+
+    function effectivePermanent_change(e) {
+        var contractExtended = $("#PdrRecomendation_ContractExtended").data("kendoNumericTextBox");
+        var isReadonly = (this.value() != null);
+        disableEffectivePermanent(isReadonly);
+    }
+
+    $("input[name='PdrRecomendation.Terminated']").click(function () {
+        var isReadonly = $("input:radio[name='PdrRecomendation.Terminated']:checked").val() == "True";
+        var contractExtended = $("#PdrRecomendation_ContractExtended").data("kendoNumericTextBox");
+        var effectivePermanent = $("#PdrRecomendation_EffectivePermanent").data("kendoDatePicker");
+        disableTerminated(isReadonly);
+    });
+
+    function disableContractExtended(isReadonly) {
+        var effectivePermanent = $("#PdrRecomendation_EffectivePermanent").data("kendoDatePicker");
+        effectivePermanent.readonly(isReadonly);
+        if (!isReadonly) {
+            $("#PdrRecomendation_Type").val("");
+            $("input[name='PdrRecomendation.Terminated']").removeAttr("disabled")
+            $("#PdrRecomendation_EffectivePermanent").attr("required", "required");
+            $('#span-extended').text('*');
+            $('#span-terminated').text('*');
+            $('#span-efecctive').text('*');
+
+        } else {
+            effectivePermanent.value("");
+            $("#PdrRecomendation_Terminated_False").prop('checked', true);
+            $("#PdrRecomendation_Type").val("Contract extender");
+            $("input[name='PdrRecomendation.Terminated']").attr("disabled", true);
+            $("#PdrRecomendation_EffectivePermanent").removeAttr("required");
+            $('#span-extended').text('*');
+            $('#span-terminated').text('*');
+            $('#span-efecctive').text('');
+        }
+    }
+
+    function disableEffectivePermanent(isReadonly) {
+        var contractExtended = $("#PdrRecomendation_ContractExtended").data("kendoNumericTextBox");
+        contractExtended.readonly(isReadonly);
+        if (!isReadonly) {
+            $("#PdrRecomendation_Type").val("");
+            $("input[name='PdrRecomendation.Terminated']").removeAttr("disabled");
+            $("#PdrRecomendation_ContractExtended").attr("required", "required");
+            $('#span-extended').text('*');
+            $('#span-terminated').text('*');
+            $('#span-efecctive').text('*');
+        } else {
+            contractExtended.value("");
+            $("#PdrRecomendation_Terminated_False").prop('checked', true);
+            $("#PdrRecomendation_Type").val("Promotion to be permanent");
+            $("input[name='PdrRecomendation.Terminated']").attr("disabled", true);
+            $("#PdrRecomendation_ContractExtended").removeAttr("required");
+            $('#span-extended').text('');
+            $('#span-terminated').text('*');
+            $('#span-efecctive').text('*');
+        }
+    }
+
+    function disableTerminated(isReadonly) {
+        var contractExtended = $("#PdrRecomendation_ContractExtended").data("kendoNumericTextBox");
+        var effectivePermanent = $("#PdrRecomendation_EffectivePermanent").data("kendoDatePicker");
+        contractExtended.readonly(isReadonly);
+        effectivePermanent.readonly(isReadonly);
+        if (!isReadonly) {
+            $("#PdrRecomendation_Type").val("");
+            $("#PdrRecomendation_ContractExtended").attr("required", "required");
+            $("#PdrRecomendation_EffectivePermanent").attr("required", "required");
+            $('#span-extended').text('*');
+            $('#span-terminated').text('*');
+            $('#span-efecctive').text('*');
+        } else {
+            contractExtended.value("");
+            effectivePermanent.value("");
+            $("#PdrRecomendation_Type").val("Contract terminated");
+            $("#PdrRecomendation_ContractExtended").removeAttr("required");
+            $("#PdrRecomendation_EffectivePermanent").removeAttr("required");
+            $('#span-extended').text('');
+            $('#span-terminated').text('');
+            $('#span-efecctive').text('');
+        }
+    }
+</script>

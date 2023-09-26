@@ -1,0 +1,296 @@
+﻿@model PhoenixERPWebApp.Models.ReconcileSearch
+@{
+    ViewData["Title"] = "Reconcile";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Reconcile &nbsp;&nbsp;</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="Reconcile" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text">Reconcile</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="form-group">
+
+                                <form id="formSearch" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+                                    <div class="row" style="padding:0px">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label style="width:100%" asp-for="Type"></label>
+                                                @(Html.Kendo().DropDownListFor(x=>x.Type)
+                                                     .DataTextField("Text")
+                                                     .DataValueField("Value")
+                                                     //.Events(e => e.Change("type_change"))
+                                                     .BindTo(new List<SelectListItem>() {
+                                                         new SelectListItem() { Text = "CV", Value = "CV"},
+                                                         new SelectListItem() { Text = "CR", Value = "CR"}
+                                                     })
+                                                     .HtmlAttributes(new {
+                                                         style = "width: 100%",
+                                                         required = "required",
+                                                         validationmessage = $"{Html.DisplayNameFor(m => m.Type)} is required"
+                                                     })
+                                                )
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label style="width:100%" asp-for="LegalEntityId"></label>
+                                                @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                                    .DataTextField("Text")
+                                                    .DataValueField("Value")
+                                                    .Filter(FilterType.Contains)
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                                        });
+                                                    })
+                                                    .OptionLabel(" ")
+                                                    //.OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+                                                    .HtmlAttributes(new
+                                                    {
+                                                        style = "width:100%;",
+                                                        required = "required",
+                                                        validationmessage = $"{Html.DisplayNameFor(m => m.LegalEntityId)} is required"
+                                                    })
+                                                )
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label style="width:100%" asp-for="AccountId"></label>
+                                                @(Html.Kendo().DropDownListFor(m => m.AccountId)
+                                                    .DataTextField("Text")
+                                                    .DataValueField("Value")
+                                                    .Filter(FilterType.Contains)
+                                                    .OptionLabel($"All {Html.DisplayNameFor(m => m.AccountId)}")
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.ServerFiltering(false).Read(read =>
+                                                        {
+                                                            read.Action("GetCOABank", "DropDown", new { area = "Finance" });
+                                                        });
+                                                    })
+                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                )
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <br />
+                                <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="alert m-alert--default" role="alert">
+                                    <span id="judul_atas">List Reconcile</span>
+                                </div>
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ReconcileList>()
+                                    .Name("grid")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.LegalEntityName).Width(180).Title("Legal Entity");
+                                        columns.Bound(p => p.AccountName).Width(180);
+                                        columns.Bound(p => p.AccountNo).Width(150);
+                                        columns.Bound(p => p.PaymentRequestDate).Title("Date").Width(110);
+                                        columns.Bound(p => p.PaymentRequestNumber).Title("CV Number").ClientTemplateId("cvnumber-template").Width(130);
+                                        columns.Bound(p => p.ReferenceNumberId).Title("REF No").Width(150).Encoded(false);
+                                        columns.Bound(p => p.VendorName).Width(180).Title("Vendor Name");
+                                        columns.Bound(p => p.JobName).Width(250).Title("Job ID-Name").Encoded(false);
+                                        columns.Bound(p => p.BusinessUnitName).Width(180).Title("Business Unit");
+                                        columns.Bound(p => p.PaymentTypeName).Width(180).Title("Payment Type");
+                                        columns.Bound(p => p.CurrencyName).Width(180).Title("Original Currency");
+                                        columns.Bound(p => p.AmountPay).Width(140).Title("Amount (Rp)").HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.Status).Title("Status").ClientTemplate("#= GetStatusButton(data) #").Width(140);
+                                        //columns.Bound(p => p.Period).Title("Date").Width(110);
+                                        //columns.Bound(p => p.Notes).Title("Notes").Width(110);
+                                    })
+                                    .ToolBar(toolBar =>
+                                    {
+                                        toolBar.Excel(); 
+                                    })
+                                    .Excel(excel => excel.AllPages(true)
+                                        .FileName("Reconcile.xlsx")
+                                        .Filterable(true)
+                                    )
+                                     .Pageable(pageable => pageable
+                                        .Refresh(true)
+                                        .PageSizes(true)
+                                        .ButtonCount(5))
+                                    .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                    .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                        .Extra(false)
+                                        .Operators(operators => operators
+                                        .ForString(str => str.Clear()
+                                            .Contains("Contains")
+                                            .StartsWith("Start sWith")
+                                            .EndsWith("End sWith")
+                                        )))
+                                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                    .Resizable(rsz => rsz.Columns(true))
+                                    .NoRecords()
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(10)
+                                        .Events(events => events.Error("errorHandler").RequestEnd("onRequestEnd"))
+                                        .Model(model => { model.Id(p => p.Id); })
+                                        .Read(read => read.Action("Read", "Reconcile").Data("grid_params"))
+                                    )
+                                    .Events(e => e.ExcelExport("excelExportEvent"))
+                                )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalReconcile" class="modal fade" role="dialog"></div>
+<script id="cvnumber-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline; word-wrap: break-word'>#=PaymentRequestNumber#</span></a>
+</script>
+<script>
+    $(document).ready(function () {
+    });
+
+    function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.ReconcileStatus.Unreconciled") buttonType = "m-badge--info";
+        else if (data.Status == "@PhoenixERPWebApp.Models.ReconcileStatus.Reconciled") buttonType = " m-badge--success";
+        return "<center><a href='javascript: void(0);' onclick='editGridRow(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+
+    function editGridRow(e) {
+        var item = dataItem(e);
+        if ($("#Type").data("kendoDropDownList").value() == "CV") {
+            window.location.href = '@Url.Action("Detail", "PaymentRequest")?Id=' + item.Id;
+        } else {
+            window.location.href = '@Url.Action("Detail", "BankReceived")?Id=' + item.Id;
+        }
+    }
+
+    function grid_params() {
+        return {
+            search: {
+                Type: $("#Type").data("kendoDropDownList").value(),
+                LegalEntityId: $("#LegalEntityId").data("kendoDropDownList").value(),
+                AccountId: $("#AccountId").data("kendoDropDownList").value(),
+            }
+        }
+    }
+
+    $('#btnSearch').click(function () {
+        var valid = $("#formSearch").validate().form();
+        if (valid) {
+            $("#grid thead [data-field='PaymentRequestNumber']").html($("#Type").data("kendoDropDownList").value() + " Number");
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $('#grid').data('kendoGrid').dataSource.read();
+            $('#grid').data('kendoGrid').refresh();
+        }
+
+    });
+
+    function onRequestEnd() {
+        mApp.unblock("#m_blockui_list");
+    }
+
+     function GetStatusButton(data) {
+         var buttonType = "";
+         if (data.Status == "@PhoenixERPWebApp.Models.ReconcileStatus.Reconciled") buttonType = "m-badge--success";
+         if (data.Status == "@PhoenixERPWebApp.Models.ReconcileStatus.Unreconciled") buttonType = "m-badge--danger";
+         return "<center><a href='javascript: void(0);' onclick='editGridRowReconcile(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+
+    function editGridRowReconcile(e) {
+        var item = dataItem(e);
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        $.ajax({
+            type: 'GET',
+            url:'@Url.Action("Detail")',
+            data: {
+                Id: item.ReconcileId,
+                ReferenceId : item.Id
+            },
+            success: function (result) {
+                $('#modalReconcile').html(result);
+                $('#modalReconcile').modal('show');
+                mApp.unblock("#m_blockui_list");
+            },
+            error: function (e, t, s) {
+                console.log(e)
+                mApp.unblock("#m_blockui_list");
+            }
+        }).then(setTimeout(function () {
+            mApp.unblock("#m_blockui_list");
+        }, 2e3));
+    }
+
+    function saveReconcile() {
+        callAction({ formId: "formReconcile", title: "save", type: "POST", url: '@Url.Action("Save", "Reconcile")' });
+    }
+
+</script>

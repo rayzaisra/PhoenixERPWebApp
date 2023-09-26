@@ -1,0 +1,334 @@
+﻿@model PhoenixERPWebApp.Models.EmployeeServiceRequest
+@{
+    ViewData["Title"] = "Employee Termination";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<style>
+    .rating {
+        float: left;
+    }
+
+        /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t
+      follow these rules. Every browser that supports :checked also supports :not(), so
+      it doesn’t make the test unnecessarily selective */
+        .rating:not(:checked) > input {
+            position: absolute;
+            top: -9999px;
+            clip: rect(0,0,0,0);
+        }
+
+        .rating:not(:checked) > label {
+            float: right;
+            width: 1em;
+            /* padding:0 .1em; */
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 300%;
+            /* line-height:1.2; */
+            color: #ddd;
+        }
+
+            .rating:not(:checked) > label:before {
+                content: '★ ';
+            }
+
+        .rating > input:checked ~ label {
+            color: dodgerblue;
+        }
+
+        .rating:not(:checked) > label:hover,
+        .rating:not(:checked) > label:hover ~ label {
+            color: dodgerblue;
+        }
+
+        .rating > input:checked + label:hover,
+        .rating > input:checked + label:hover ~ label,
+        .rating > input:checked ~ label:hover,
+        .rating > input:checked ~ label:hover ~ label,
+        .rating > label:hover ~ input:checked ~ label {
+            color: dodgerblue;
+        }
+
+        .rating > label:active {
+            position: relative;
+            top: 2px;
+            left: 2px;
+        }
+</style>
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="comment" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Comment</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="comment" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="comment" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Service Request Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formComment" class="form-horizontal form-bordered" role="form">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="Fullfilment" />
+                        <input type="hidden" asp-for="FollowUpRemarks" />
+                        <input type="hidden" asp-for="RequestBy" />
+                        <input type="hidden" asp-for="IsServiceReq" />
+
+                        <partial name="_RequestEmploye" />
+
+                        <div class="row" id="data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Request Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                            <div class="m-accordion__item-content">                                                
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="MasterMappingRequestId"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(x => x.MasterMappingRequestId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.MasterMappingRequestId)}")
+                                                                    .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm m-input", required = "required", @readonly = "readonly" })
+                                                                    .Height(400)
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source => source
+                                                                        .Custom()
+                                                                        .Transport(transport => transport
+                                                                        .Read(read =>
+                                                                        {
+                                                                            read.Action("GetDDLServiceName", "Dropdown", new { area = "HrisNew" });
+                                                                        }))
+                                                                        .ServerFiltering(false)
+                                                                    )
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="DueDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.DueDate)
+                                                                .Format("dd MMM yyyy")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    @readonly = "readonly",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose or type an {Html.DisplayNameFor(m => m.DueDate)}"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="DateClose"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.DateClose)
+                                                                .Format("dd MMM yyyy")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose or type an {Html.DisplayNameFor(m => m.DateClose)}"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Remarks"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().EditorFor(x => x.Remarks)
+                                                                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                                .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                                .Placeholder($"Type your {Html.DisplayNameFor(m => m.Remarks)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Rating"></label> <span class="req"></span> :
+                                                            </br>
+                                                            <div class="rating">
+                                                                <input type="radio" id="star5" asp-for="Rating" value="5" /><label for="star5" title="5">5 stars</label>
+                                                                <input type="radio" id="star4" asp-for="Rating" value="4" /><label for="star4" title="4">4 stars</label>
+                                                                <input type="radio" id="star3" asp-for="Rating" value="3" /><label for="star3" title="3">3 stars</label>
+                                                                <input type="radio" id="star2" asp-for="Rating" value="2" /><label for="star2" title="2">2 stars</label>
+                                                                <input type="radio" id="star1" asp-for="Rating" value="1" /><label for="star1" title="1">1 star</label>
+                                                            </div>
+                                                            @*<input asp-for="Rating" class="rating rating-loading" data-min="0" data-max="5" data-size="xs" data-show-clear="false" data-disabled="true">*@
+                                                            @*<input id="Rating" class="kv-gly-star rating-loading" value="@Model.Rating" data-min="0" data-max="5" data-size="xs" data-show-clear="false" data-disabled="true">*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Comment"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().EditorFor(x => x.Comment)
+                                                                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                                .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                                .Placeholder($"Type your {Html.DisplayNameFor(m => m.Comment)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Status"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(x => x.Status)
+                                                                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required", @readonly = "readonly" })
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .BindTo(new List<SelectListItem>() { new SelectListItem() { Text = "Close", Value = "5" } })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="pull-right">
+                                                            @if (Model.Status == @PhoenixERPWebApp.Models.EmployeeServiceRequestStatus.Fullfillment)
+                                                            {
+                                                                <button type="button" id="btnSubmit" class="btn btn-primary"><span class="fa fa-paper-plane"></span> Submit</button>
+                                                            }
+                                                            @if (Model.IsServiceReq)
+                                                            {
+                                                                <a asp-action="index" asp-controller="servicerequest" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a asp-action="index" asp-controller="comment" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var $star_rating = $('.star-rating .fa');
+    var SetRatingStar = function () {
+        return $star_rating.each(function () {
+            if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                return $(this).removeClass('fa-star-o').addClass('fa-star');
+            } else {
+                return $(this).removeClass('fa-star').addClass('fa-star-o');
+            }
+        });
+    };
+
+    $star_rating.on('click', function () {
+        $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+        return SetRatingStar();
+    });
+
+    $(document).ready(function () {
+        SetRatingStar();
+    });
+
+    $(function () {
+        //$('.k-editor-toolbar').hide();
+        $($('#Remarks').data().kendoEditor.body).attr('contenteditable', false);
+        $($("#Remarks").data().kendoEditor.body).css("background-color", "#F8F9FA");
+    })
+
+    $('#btnSubmit').click(function () {
+        callAction({ formId:"formComment", title: "submit", type:"POST", url: '@Url.Action("submit", "comment")'});
+    });
+
+    @*$('#btnSave').click(function () {
+        callActionFile({ formId:"formServiceRequest", title: "save", type:"POST", url: '@Url.Action("save", "servicerequest")'});
+    });*@
+</script>

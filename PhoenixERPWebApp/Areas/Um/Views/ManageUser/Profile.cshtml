@@ -1,0 +1,285 @@
+﻿
+@{
+    ViewData["Title"] = "User Management";
+    Layout = "~/Views/Shared/metronic/_Layout.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">User Management</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <a href="@Url.Content("/Um/ManageUser/ChangePassword")" class="btn btn-sm btn-info"><i class="fa fa-key"></i> Change Password</a>
+                                <a href="@Url.Content("/Um/ManageUser/UpdateProfile")" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="row" style="padding-bottom:15px">
+                        <div class="col-md-12">
+                            <div class="well well-sm">
+                                <div class="media">
+                                    <a class="thumbnail pull-left" href="#">
+                                        <img class="media-object" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" id="img-proflie-nava" width="225">
+                                    </a>
+                                    <div class="media-body" style="padding-left: 25px;">
+                                        <h4 class="media-heading h-name"></h4>
+                                        <input type="hidden" id="EmployeeId" />
+                                        <p><i class="label label-info">Title</i></p>
+                                        <p><b><span class="label label-info sp-title"></span></b></p>
+                                        <p><i class="label label-info">Email</i></p>
+                                        <p><b><span class="label label-info sp-email"></span></b></p>
+                                        <p><i class="label label-info">Gender</i></p>
+                                        <p><b><span class="label label-info sp-gender"></span></b></p>
+
+                                        <p><i class="label label-info">Nick Name</i></p>
+                                        <p><b><span class="label label-info sp-nick"></span></b></p>
+                                        <p><i class="label label-info">Division</i></p>
+                                        <p><b><span class="label label-info sp-divisi"></span></b></p>
+                                        <p><i class="label label-info">Department</i></p>
+                                        <p><b><span class="label label-info sp-dept"></span></b></p>
+
+                                        <p><i class="label label-info">More Info</i></p>
+                                        <p><a href="javascript:void(0)" onclick="gotoprofile()">Detail</a></p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        @*<div class="col-lg-12">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#PersonalInfo" role="tab" data-toggle="tab">Personal Info</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#JobInfo" role="tab" data-toggle="tab">Job Info</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="PersonalInfo">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Nationality</i> :</p>
+                                                    <b><span class="label label-info" id="Nationality"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">KITAS No</i> :</p>
+                                                    <b><span class="label label-info" id="KITASNo"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">KITAS Exipired Date</i> :</p>
+                                                    <b><span class="label label-info" id="KITASExpiredDate"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Religion</i> :</p>
+                                                    <b><span class="label label-info" id="Religion"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Married Status</i> :</p>
+                                                    <b><span class="label label-info" id="MarriedStatusId"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Blood</i> :</p>
+                                                    <b><span class="label label-info" id="Blood"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Post Code</i> :</p>
+                                                    <b><span class="label label-info" id="PostCode"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Identity Address</i> :</p>
+                                                    <b><span class="label label-info" id="AddressIdentityCard"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Home Address</i> :</p>
+                                                    <b><span class="label label-info" id="HomeAddress"></span></b>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Last Education</i> :</p>
+                                                    <b><span class="label label-info" id="LastEducation"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Passport Number</i> :</p>
+                                                    <b><span class="label label-info" id="PassportNumber"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Passport Expired Date</i> :</p>
+                                                    <b><span class="label label-info" id="PassportExpiry"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">NPWP Number</i> :</p>
+                                                    <b><span class="label label-info" id="NpwpNumber"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Identity Card Number</i> :</p>
+                                                    <b><span class="label label-info" id="IdentityCard"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">KK Number</i> :</p>
+                                                    <b><span class="label label-info" id="KkNo"></span></b>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div role="tabpanel" class="tab-pane fade" id="JobInfo">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Join Date</i> :</p>
+                                                    <b><span class="label label-info" id="JoinDate"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Job Title</i> :</p>
+                                                    <b><span class="label label-info" id="JobTitle"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Report To</i> :</p>
+                                                    <b><span class="label label-info" id="ReportTo"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Grade</i> :</p>
+                                                    <b><span class="label label-info" id="Grade"></span></b>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Legal Entity</i> :</p>
+                                                    <b><span class="label label-info" id="LegalEntity"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Employement Status</i> :</p>
+                                                    <b><span class="label label-info" id="EmployementStatus"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Location</i> :</p>
+                                                    <b><span class="label label-info" id="Location"></span></b>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><i class="label label-info">Contract End Date</i> :</p>
+                                                    <b><span class="label label-info" id="ContractEndDate"></span></b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>*@
+                    </div>
+
+                    @*<div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label">NICK NAME</label>
+                                    <br />
+                                    <b><span class="sp-nick"></span></b>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label">DIVISION</label>
+                                    <br />
+                                    <b><span class="sp-divisi"></span></b>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label">DEPARTMENT</label>
+                                    <br />
+                                    <b><span class="sp-dept"></span></b>
+                                </div>
+                            </div>
+                        </div>*@
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Areas/Um/Scripts/manage-profile.js?v=@DateTime.Now.ToString("yyyyMMddhmmsstt")"></script>
+
+@section Scripts{
+    
+    @*<script>
+        //$(function () {
+        //    //getImageProfile();
+        //    bindProfile();
+        //});
+
+        //function gotoprofile() {
+        //    var empId = $('#EmployeeId').val();
+
+        //    window.location.href = WEB+"/hrisnew/EmployeeBasic/AddEdit?Id=" + empId + "&paramcol=&paramval=&isReadOnly=1"
+        //}
+    </script>*@
+}
+
+

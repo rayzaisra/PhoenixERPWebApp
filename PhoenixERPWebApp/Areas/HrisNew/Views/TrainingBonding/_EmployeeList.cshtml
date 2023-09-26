@@ -1,0 +1,178 @@
+﻿@model PhoenixERPWebApp.Models.TrainingRequisition
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+</style>
+
+<div class="modal fade" id="modal-choice-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Employee</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formVendor" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+                    <div class="m-form__group">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Group</label><span class="req">*</span>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.GroupId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Events(e => e.Change("OnChange"))
+                                            .OptionLabel("All")
+                                            .Filter(FilterType.Contains)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetDDLGroups", "DropDown", new { area = "HrisNew" });
+                                                });
+                                            }))
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Subgroup</label><span class="req">*</span>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.SubgroupId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Events(e => e.Change("OnChange"))
+                                            .OptionLabel("All")
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .CascadeFrom("GroupId")
+                                            .Filter(FilterType.Contains)
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .DataSource(source => source
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLSubgroup", "Departement").Data("filterGroups");
+                                                }).ServerFiltering(true))
+                                            )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Division</label><span class="req">*</span>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.DivisionId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Events(e => e.Change("OnChange"))
+                                            .OptionLabel("All")
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .CascadeFrom("SubgroupId")
+                                            .Filter(FilterType.Contains)
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .DataSource(source => source
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLDivision", "Departement").Data("filterSubGroups");
+                                                }).ServerFiltering(true))
+                                            )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Department</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.DepartementId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Events(e => e.Change("OnChange"))
+                                                .OptionLabel("All")
+                                                .Filter(FilterType.Contains)
+                                                .HtmlAttributes(new { style = "width:100%;" })
+                                                .CascadeFrom("DivisionId")
+                                                .Enable(false)
+                                                .AutoBind(false)
+                                                .DataSource(source => source
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLDepartement", "Departement").Data("filterDivision");
+                                                    }).ServerFiltering(true))
+                                                )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row">
+                                <div class="col-lg-4">
+                                </div>
+                                <div class="col-lg-8">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group m-form__group row m-row--no-padding">
+                                <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.TrainingRequisitionDetail>()
+                                            .Name("grid-choice-employee")
+                                            .Columns(columns =>
+                                            {
+
+                                                columns.Select().ClientHeaderTemplate(" ").Width(40).HtmlAttributes(new { style = "text-align:center;" });
+                                                columns.Bound(p => p.EmployeeBasicInfoName).Title("Name").Width(100);
+                                                columns.Bound(p => p.JobTitleName).Title("Title").Width(100);
+                                                columns.Bound(p => p.JobGradeName).Title("Grade").Width(100);
+                                                columns.Bound(p => p.DivisionName).Title("Division").Width(100);
+                                            })
+                                            .Scrollable(
+                                                scr => scr.Height(150)
+                                            )
+                                            .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .PageSize(10)
+                                                .Events(events => events.Error("errorHandler"))
+                                                .Model(model => { model.Id(p => p.Id); })
+                                                .Read(read => read.Action("ReadEmployeeChoiceList", "TrainingRequisition").Data("gridChoiceEmployee_params"))
+                                            )
+                                            .NoRecords()
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="SaveSelectedEmployee()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>     
+    </div>
+</div>

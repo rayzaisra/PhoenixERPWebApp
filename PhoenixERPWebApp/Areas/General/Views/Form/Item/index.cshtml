@@ -1,0 +1,711 @@
+@{
+    ViewData["Title"] = "Item";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+@section Panelhead{
+    <link rel="stylesheet" href="~/assets/plugins/leaflet/leaflet.css">
+    <link rel="stylesheet" href="~/assets/plugins/leaflet/MarkerCluster.Default.css">
+    <style>
+        #mapid {
+            height: 480px;
+        }
+    </style>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <div class="row">
+        <div class="col-md-9">
+            <div id="mapid"></div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Business Type">Business Type</span> :</label>
+                <select multiple id="jobs" name="jobs[]" class="form-control form-control-sm m-input m-input--square"></select>
+            </div>
+        </div>
+    </div>
+}
+@section Panelscript{
+
+    <script>
+        //------------INI untuk select multiple
+        var ajaxUrljoblist = API + "ProjectManagement/job/List";
+        $(function () {
+            $('#jobs').setcombobox({
+                data: { 'rows': 100 },
+                url: ajaxUrljoblist,
+                maxItems: 0,
+                searchparam: 'search_job_name',
+                labelField: 'job_name',
+                valueField: 'id',
+            });
+        });
+        //------------ini untuk map
+        var markers;
+        var itemmarker = [{
+            "kode": "AC1",
+            "bujur": "97.9125555555556",
+            "lintang": "4.167",
+            "nama": "Desa Kaloy",
+            "id": "5"
+        },
+        {
+            "kode": "AC2",
+            "bujur": "98.0384166666667",
+            "lintang": "4.18569444444444",
+            "nama": "Jembatan Seumadam",
+            "id": "8"
+        },
+        {
+            "kode": "AC3",
+            "bujur": "98.0568888888889",
+            "lintang": "4.26336111111111",
+            "nama": "Jembatan Gantung Kebun Tengah ",
+            "id": "7"
+        },
+        {
+            "kode": "AC4",
+            "bujur": "98.0030833333333",
+            "lintang": "4.27836111111111",
+            "nama": "Jembatan Sekerak Kec. Sekerak",
+            "id": "11"
+        },
+        {
+            "kode": "AC5",
+            "bujur": "98.0562222222222",
+            "lintang": "4.28752777777778",
+            "nama": "Jembatan Kota Lintang",
+            "id": "12"
+        },
+        {
+            "kode": "AC6",
+            "bujur": "98.1067222222222",
+            "lintang": "4.36377777777778",
+            "nama": "Jembatan Alur Manis",
+            "id": "10"
+        },
+        {
+            "kode": "AC7",
+            "bujur": "98.1822777777778",
+            "lintang": "4.3545",
+            "nama": "Peukan Seureway",
+            "id": "9"
+        },
+        {
+            "kode": "BLI8",
+            "bujur": "115.143761",
+            "lintang": "-8.40255",
+            "nama": "Bendung Penebel, Desa Belulang, Kec. Penebel, Kab.",
+            "id": "170"
+        },
+        {
+            "kode": "BBL1",
+            "bujur": "107.923",
+            "lintang": "-2.740972",
+            "nama": "Aik Batu Buding ",
+            "id": "169"
+        },
+        {
+            "kode": "BTN1",
+            "bujur": "106.6583611",
+            "lintang": "-6.3114167",
+            "nama": "Jembatan Cisauk",
+            "id": "59"
+        },
+        {
+            "kode": "BTN2",
+            "bujur": "106.6346389",
+            "lintang": "-6.2278056",
+            "nama": "Jembatan Gading Serpong",
+            "id": "60"
+        },
+        {
+            "kode": "BTN4",
+            "bujur": "106.6130278",
+            "lintang": "-6.1464167",
+            "nama": "Jembatan PT. Indorama",
+            "id": "62"
+        },
+        {
+            "kode": "BTN8",
+            "bujur": "106.1974167",
+            "lintang": "-6.1974167",
+            "nama": "Ranca Sumur",
+            "id": "66"
+        },
+        {
+            "kode": "BTN3",
+            "bujur": "106.6241944",
+            "lintang": "-6.20175",
+            "nama": "Jembatan Cikokol",
+            "id": "61"
+        },
+        {
+            "kode": "BTN5",
+            "bujur": "106.628975",
+            "lintang": "-6.1755139",
+            "nama": "Jembatan Robinson",
+            "id": "63"
+        },
+        {
+            "kode": "BTN6",
+            "bujur": "106.6274111",
+            "lintang": "-6.16025",
+            "nama": "Jembatan Pintu Air 10 Pasar Baru ",
+            "id": "64"
+        },
+        {
+            "kode": "BTN7",
+            "bujur": "106.6960278",
+            "lintang": "-6.2223611",
+            "nama": "Kopo Maja",
+            "id": "65"
+        },
+        {
+            "kode": "BTN9",
+            "bujur": "106.45575",
+            "lintang": "-6.1900278",
+            "nama": "Cikande Asem",
+            "id": "67"
+        },
+        {
+            "kode": "BTN11",
+            "bujur": "106.8970861",
+            "lintang": "-6.2811417",
+            "nama": "Jembatan Kresek",
+            "id": "70"
+        },
+        {
+            "kode": "BTN10",
+            "bujur": "106.9466944",
+            "lintang": "-6.2789361",
+            "nama": "Jembatan Joper",
+            "id": "69"
+        },
+        {
+            "kode": "BTN12",
+            "bujur": "106.2228889",
+            "lintang": "-6.2228889",
+            "nama": "Jembatan Kronjo",
+            "id": "71"
+        },
+        {
+            "kode": "JKT1",
+            "bujur": "106.838387",
+            "lintang": "-6.348944",
+            "nama": "Kelapa Dua \/ Srengseng Sawah",
+            "id": "73"
+        },
+        {
+            "kode": "JKT2",
+            "bujur": "106.85347",
+            "lintang": "-6.292833",
+            "nama": "Intake PAM Condet \/ Kampung Gedong",
+            "id": "74"
+        },
+        {
+            "kode": "JKT3",
+            "bujur": "106.863503",
+            "lintang": "-6.231528",
+            "nama": "Kampung Melayu Dalam",
+            "id": "84"
+        },
+        {
+            "kode": "JKT4",
+            "bujur": "106.860474",
+            "lintang": "-6.257917",
+            "nama": "Jembatan Kalibata",
+            "id": "85"
+        },
+        {
+            "kode": "JKT5",
+            "bujur": "106.85778",
+            "lintang": "-6.212694",
+            "nama": "Sebelum Pintu Air Manggarai",
+            "id": "75"
+        },
+        {
+            "kode": "JKT6",
+            "bujur": "106.833969",
+            "lintang": "-6.204694",
+            "nama": "Jl. Halimun",
+            "id": "86"
+        },
+        {
+            "kode": "JKT7",
+            "bujur": "106.815224",
+            "lintang": "-6.200917",
+            "nama": "Jl. KH. Mas Mansyur \/ Karet Tengsin",
+            "id": "76"
+        },
+        {
+            "kode": "JKT8",
+            "bujur": "106.810776",
+            "lintang": "-6.199",
+            "nama": "Jl. Gudang PLN \/ Kebon Jeruk",
+            "id": "77"
+        },
+        {
+            "kode": "JKT9",
+            "bujur": "106.773064",
+            "lintang": "-6.116678",
+            "nama": "Jembatan Pantai Indah Kapuk \/ Muara Angke",
+            "id": "78"
+        },
+        {
+            "kode": "JKT10",
+            "bujur": "106.836502",
+            "lintang": "-6.181606",
+            "nama": "Jl. Kwitang Dalam (Gunung Agung)",
+            "id": "79"
+        },
+        {
+            "kode": "JKT11",
+            "bujur": "106.819023",
+            "lintang": "-6.159622",
+            "nama": "Jl. Gajah Mada Tangki",
+            "id": "80"
+        },
+        {
+            "kode": "JKT12",
+            "bujur": "106.83118",
+            "lintang": "-6.13464",
+            "nama": "Jl. Gunung Sahari (Depan WTC)",
+            "id": "81"
+        },
+        {
+            "kode": "JKT13",
+            "bujur": "106.802086",
+            "lintang": "-6.125319",
+            "nama": "Jl. Raya Pluit \/ Penjaringan",
+            "id": "82"
+        },
+        {
+            "kode": "JKT14",
+            "bujur": "106.813639",
+            "lintang": "-6.71925",
+            "nama": "Outlet Pompa Danau Pluit",
+            "id": "83"
+        },
+        {
+            "kode": "JKT15",
+            "bujur": "106.82998",
+            "lintang": "-6.17106",
+            "nama": "Jl. Inspeksi Banjir Istiqlal",
+            "id": "87"
+        },
+        {
+            "kode": "JKT16",
+            "bujur": "106.81093",
+            "lintang": "-6.1612",
+            "nama": "Jl. Cideng Timur",
+            "id": "88"
+        },
+        {
+            "kode": "JKT17",
+            "bujur": "106.88335",
+            "lintang": "-6.37022",
+            "nama": "Jl. AURI (Taman Bunga Cibubur )",
+            "id": "105"
+        },
+        {
+            "kode": "JKT18",
+            "bujur": "106.87196",
+            "lintang": "-6.28751",
+            "nama": "Jl. Pondok Gede (Hek)",
+            "id": "106"
+        },
+        {
+            "kode": "JKT19",
+            "bujur": "106.87084",
+            "lintang": "-6.28919",
+            "nama": "Jl. Raya Bogor (Komsenko)",
+            "id": "109"
+        },
+        {
+            "kode": "JKT20",
+            "bujur": "106.87446",
+            "lintang": "-6.30085",
+            "nama": "Jl. Kp. Dukuh (Gd Air PDAM)",
+            "id": "107"
+        },
+        {
+            "kode": "JKT21",
+            "bujur": "106.88028",
+            "lintang": "-6.32779",
+            "nama": "Jl. Raya Ciracas ( Damkar)",
+            "id": "108"
+        },
+        {
+            "kode": "JKT22",
+            "bujur": "106.88056",
+            "lintang": "-6.23975",
+            "nama": "Halim PK (depan BBWSCC)",
+            "id": "110"
+        },
+        {
+            "kode": "JKT23",
+            "bujur": "106.72869",
+            "lintang": "-6.17585",
+            "nama": "Jl. Duri Kosambi (Ciledug)",
+            "id": "111"
+        },
+        {
+            "kode": "JKT24",
+            "bujur": "106.76674",
+            "lintang": "-6.15778",
+            "nama": "Jl. Raya Pesing (Kali Angke )",
+            "id": "112"
+        },
+        {
+            "kode": "JKT25",
+            "bujur": "106.76372",
+            "lintang": "-6.15914",
+            "nama": "Jl. Daan Mogot (Pesing)",
+            "id": "115"
+        },
+        {
+            "kode": "JKT26",
+            "bujur": "106.76768",
+            "lintang": "-6.15857",
+            "nama": "Jl. Tubagus Angke",
+            "id": "116"
+        },
+        {
+            "kode": "JKT27",
+            "bujur": "106.6833",
+            "lintang": "-6.1613",
+            "nama": "Bir Bintang Kalideres",
+            "id": "127"
+        },
+        {
+            "kode": "JKT28",
+            "bujur": "106.73094",
+            "lintang": "-6.15536",
+            "nama": "Rawa Buaya",
+            "id": "128"
+        },
+        {
+            "kode": "JKT29",
+            "bujur": "106.71949",
+            "lintang": "-6.15344",
+            "nama": "Sumur Bor (Jembatan Pelangi)",
+            "id": "129"
+        },
+        {
+            "kode": "JKT30",
+            "bujur": "106.70498",
+            "lintang": "-6.15689",
+            "nama": "Jembatan Semanan",
+            "id": "130"
+        },
+        {
+            "kode": "JKT31",
+            "bujur": "106.69505",
+            "lintang": "-6.15983",
+            "nama": "Jembatan Bakrie",
+            "id": "131"
+        },
+        {
+            "kode": "JKT32",
+            "bujur": "106.78838333333333",
+            "lintang": "-6.311233333333333",
+            "nama": "Jl. H. Ipin",
+            "id": "137"
+        },
+        {
+            "kode": "JKT33",
+            "bujur": "106.78523333333334",
+            "lintang": "-6.2631",
+            "nama": "Jl. Radio Dalam (PIM)",
+            "id": "138"
+        },
+        {
+            "kode": "JKT34",
+            "bujur": "106.79245",
+            "lintang": "-6.2079",
+            "nama": "Senayan Pal Merah",
+            "id": "139"
+        },
+        {
+            "kode": "JKT35",
+            "bujur": "106.79005",
+            "lintang": "-6.162",
+            "nama": "RS Jiwa Grogol Jelambar",
+            "id": "140"
+        },
+        {
+            "kode": "JKT36",
+            "bujur": "106.78413333333333",
+            "lintang": "-6.125683333333333",
+            "nama": "PLTU Pluit",
+            "id": "141"
+        },
+        {
+            "kode": "JKT37",
+            "bujur": "106.88363055555556",
+            "lintang": "-6.345016666666666",
+            "nama": "Jl. Pondok Rangon",
+            "id": "147"
+        },
+        {
+            "kode": "JKT38",
+            "bujur": "106.90862777777778",
+            "lintang": "-6.285577777777777",
+            "nama": "Jl. Raya Hankam (Lubang Buaya)",
+            "id": "148"
+        },
+        {
+            "kode": "JKT39",
+            "bujur": "106.8922888888889",
+            "lintang": "-6.239805555555556",
+            "nama": "Jl. Kalimalang (Depan SMA Penabur)",
+            "id": "149"
+        },
+        {
+            "kode": "JKT40",
+            "bujur": "106.89750833333333",
+            "lintang": "-6.202780555555556",
+            "nama": "Jl. Jatinegara Kaum",
+            "id": "150"
+        },
+        {
+            "kode": "JKT41",
+            "bujur": "106.89639444444445",
+            "lintang": "-6.117797222222221",
+            "nama": "Bogasari Koja",
+            "id": "151"
+        },
+        {
+            "kode": "JKT42",
+            "bujur": "106.88611666666667",
+            "lintang": "-6.155561111111111",
+            "nama": "Jl. Yos Sudarso (Kodamar)",
+            "id": "152"
+        },
+        {
+            "kode": "JKT43",
+            "bujur": "106.8078",
+            "lintang": "-6.311125",
+            "nama": "Jl. Raya Pondok Labu",
+            "id": "159"
+        },
+        {
+            "kode": "JKT44",
+            "bujur": "106.8175111111111",
+            "lintang": "-6.2388972222222225",
+            "nama": "Jl. Tendean (Sungai Krukut)",
+            "id": "160"
+        },
+        {
+            "kode": "JKT45",
+            "bujur": "106.81114833333334",
+            "lintang": "-6.201513333333334",
+            "nama": "Jl. Raya Pejompongan",
+            "id": "161"
+        },
+        {
+            "kode": "DKI46",
+            "bujur": "106.812225",
+            "lintang": "-6.278613888888889",
+            "nama": "Jl. Benda Bawah",
+            "id": "162"
+        },
+        {
+            "kode": "JKT47",
+            "bujur": "106.81691666666666",
+            "lintang": "-6.182169444444445",
+            "nama": "Jl. Fachrudin",
+            "id": "163"
+        },
+        {
+            "kode": "JBR1",
+            "bujur": "106.813638888889",
+            "lintang": "-6.71925",
+            "nama": "Muara Jaya",
+            "id": "13"
+        },
+        {
+            "kode": "JBR2",
+            "bujur": "106.792583333333",
+            "lintang": "-6.60505555555556",
+            "nama": "Jembatan Pancasan",
+            "id": "14"
+        },
+        {
+            "kode": "JBR3",
+            "bujur": "106.776527777778",
+            "lintang": "-6.584",
+            "nama": "Karya Bhakti",
+            "id": "15"
+        },
+        {
+            "kode": "JBR4",
+            "bujur": "106.760333333333",
+            "lintang": "-6.567",
+            "nama": "Jembatan Yasmin",
+            "id": "16"
+        },
+        {
+            "kode": "JBR5",
+            "bujur": "106.667944444444",
+            "lintang": "-6.473583333",
+            "nama": "Karihkil",
+            "id": "17"
+        },
+        {
+            "kode": "JBR6",
+            "bujur": "106.987361111111",
+            "lintang": "-6.69894444444444",
+            "nama": "Selum Mesjid Atta'awun",
+            "id": "18"
+        },
+        {
+            "kode": "JBR7",
+            "bujur": "106.8368333",
+            "lintang": "-6.63325",
+            "nama": "Katulampa",
+            "id": "19"
+        },
+        {
+            "kode": "JBR8",
+            "bujur": "106.8081944",
+            "lintang": "-6.562611111",
+            "nama": "Kedung Halang",
+            "id": "20"
+        },
+        {
+            "kode": "JBR9",
+            "bujur": "106.8128333",
+            "lintang": "-6.445472222",
+            "nama": "Pondok Rajeg",
+            "id": "21"
+        },
+        {
+            "kode": "JBR10",
+            "bujur": "106.83175",
+            "lintang": "-6.400666667",
+            "nama": "Jembatan Panus",
+            "id": "22"
+        },
+        {
+            "kode": "JBR11",
+            "bujur": "107.7485278",
+            "lintang": "-7.074111111",
+            "nama": "Wangisagara",
+            "id": "23"
+        },
+        {
+            "kode": "JBR12",
+            "bujur": "107.7252778",
+            "lintang": "-7.015305556",
+            "nama": "Koyod",
+            "id": "24"
+        },
+        {
+            "kode": "JBR13",
+            "bujur": "107.6127778",
+            "lintang": "-6.978361111",
+            "nama": "Setelah IPAL Cisirung",
+            "id": "25"
+        },
+        {
+            "kode": "JBR14",
+            "bujur": "107.5358611",
+            "lintang": "-6.941611111",
+            "nama": "Nanjung",
+            "id": "26"
+        },
+        {
+            "kode": "JBR15",
+            "bujur": "107.3891111",
+            "lintang": "-6.51875",
+            "nama": "Outlet Waduk Jatiluhur",
+            "id": "27"
+        },
+        {
+            "kode": "JBR16",
+            "bujur": "107.3625556",
+            "lintang": "-6.382916667",
+            "nama": "Bendung Walahar",
+            "id": "28"
+        },
+        {
+            "kode": "JBR17",
+            "bujur": "107.2756389",
+            "lintang": "-6.079833333",
+            "nama": "Tunggak Jati",
+            "id": "29"
+        },
+        {
+            "kode": "JBR18",
+            "bujur": "108.1984444",
+            "lintang": "-7.158972222",
+            "nama": "Panumbangan",
+            "id": "30"
+        },
+        {
+            "kode": "JBR19",
+            "bujur": "108.5600833",
+            "lintang": "-7.368055556",
+            "nama": "Bendung Pataruman",
+            "id": "31"
+        },
+        {
+            "kode": "JBR20",
+            "bujur": "108.731529",
+            "lintang": "-7.614",
+            "nama": "Tunggilis",
+            "id": "32"
+        },
+        {
+            "kode": "SS-1",
+            "bujur": "101.636983",
+            "lintang": "0.604767",
+            "nama": "Sei Tapung Kiri - Tandun",
+            "id": "113"
+        }];
+        $(function () {
+            function markerOnClick(e) {
+                var title = this.options.title
+                console.log(this.options);
+                alert(title);
+                //--------nanti diganti kalau butuh on marker click
+
+            }
+
+            var mymap = L.map('mapid').setView([-7.614, 108.5600833], 10);
+            var LeafIcon = L.Icon.extend({
+
+            });
+            L.marker([-7.614, 108.5600833]).addTo(mymap);
+            var greenIcon = new LeafIcon({ iconUrl: WEB + '/assets/img/marker.png' });
+ 
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(mymap);
+
+            //ambil titik (nantinya di bungkus ajax)
+            if (markers !== undefined) {
+                mymap.removeLayer(markers);
+            }
+            
+            markers = new L.markerClusterGroup();
+            var resp = itemmarker;
+            $.each(resp, function (index, item) {
+
+                var icondata = greenIcon;
+                var marker = L.marker([item.lintang, item.bujur], {  icon: icondata, title: item.nama }).on('click', markerOnClick);
+                markers.addLayer(marker);
+            });
+            mymap.addLayer(markers);
+        });
+    </script>
+    <script src="~/assets/plugins/leaflet/leaflet.js"></script>
+    <script src="~/assets/plugins/leaflet/leaflet.markercluster.js"></script>
+}

@@ -1,0 +1,663 @@
+@model PhoenixERPWebApp.Models.LegalEntity
+@{
+    ViewData["Title"] = "Master Legal Entity";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Master Legal Entity</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                       <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="legalentity" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Master Legal Entity</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="legalentity" asp-area="finance"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="legalentity" asp-area="finance"  asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">@ViewBag.Header Master Legal Entity</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formLegalEntity" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="legalentity" asp-area="Finance" enctype="multipart/form-data">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+  
+                                <div class="row m-row--col-separator-xl">
+                                    <div class="col-lg-4">
+                                         <div class="form-group">
+                                            <label asp-for="LegalEntityName"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.LegalEntityName)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.LegalEntityName)}",
+                                                    required = "required",
+                                                    validationmessage = $"Client Name is required"
+                                                }
+                                             ))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Website"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.Website)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.Website)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.Website)} is required" 
+                                                }
+                                             ))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="DirectorName"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.DirectorName)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.DirectorName)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.DirectorName)} is required" 
+                                                }
+                                             ))
+                                        </div>
+                                         <div class="form-group">
+                                               <label asp-for="OfficeAddress"></label> :
+                                               @Html.TextAreaFor(m => m.OfficeAddress, new { style = "height:100px; width:100%;", @placeholder = $"Input type a {Html.DisplayNameFor(m => m.OfficeAddress)}" })
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label asp-for="OfficeCountryId"></label> <span class="req">*</span>  :
+                                             @(Html.Kendo().DropDownListFor(x => x.OfficeCountryId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.OfficeCountryId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",                                              
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.OfficeCountryId)} is required" 
+                                                                                            })
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLCountry", "Dropdown",new {area="finance"});
+                                                     }))
+                                                    .ServerFiltering(false)
+                                                )
+                                            )
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="OfficeProvinceId"></label> <span class="req">*</span>  :
+                                             @(Html.Kendo().DropDownListFor(x => x.OfficeProvinceId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.OfficeProvinceId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",                                              
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.OfficeProvinceId)} is required" 
+                                                                                            })
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLProvince", "Dropdown",new {area="finance"}).Data("officeProvince_params");
+                                                     }))
+                                                    .ServerFiltering(true)
+                                                ).CascadeFrom("OfficeCountryId")
+                                            )
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="OfficeCityId"></label> <span class="req">*</span>  :
+                                             @(Html.Kendo().DropDownListFor(x => x.OfficeCityId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.OfficeCityId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",                                              
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.OfficeCityId)} is required" 
+                                                                                            })
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLCity", "Dropdown",new {area="finance"}).Data("officeCity_params");
+                                                     }))
+                                                    .ServerFiltering(true)
+                                                ).CascadeFrom("OfficeProvinceId")
+                                            )
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="OfficeZipCode"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.OfficeZipCode)
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    maxlength = 5,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.OfficeZipCode)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.OfficeZipCode)} is required"
+                                                }
+                                                ))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">                                        
+                                        <div class="form-group">
+                                            <label asp-for="NPWPNumber"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.NPWPNumber)
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.NPWPNumber)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.NPWPNumber)} is required"
+                                                }
+                                                ))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="ImageTaxScan"></label> :
+                                            <div id="divImageTaxScan"></div>
+                                            <div style="width:100%">
+                                                <input type="hidden" asp-for="ImageTaxScan" />
+                                                <a href='javascript: void(0);' id="linkImageTaxScanDownloadFile" onclick='downloadImageTaxScan()'></a> &nbsp;
+                                                <a href='javascript: void(0);' id="linkImageTaxScanRemoveFile" onclick='removeImageTaxScan()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="ImageLegalScan"></label> :
+                                            <div id="divImageLegalScan"></div>
+                                            <div style="width:100%">
+                                                <input type="hidden" asp-for="ImageLegalScan" />
+                                                <a href='javascript: void(0);' id="linkImageLegalScanDownloadFile" onclick='downloadImageLegalScan()'></a> &nbsp;
+                                                <a href='javascript: void(0);' id="linkImageLegalScanRemoveFile" onclick='removeImageLegalScan()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               <br/>
+                                <div class="row" id="billing_setup_data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="billing_setup_detail" role="tablist">
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="billing_setup_detail_head" data-toggle="collapse" href="#billing_setup_detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa fa-file-invoice"></i></span>
+                                                    <span class="m-accordion__item-title">Billing Address</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="billing_setup_detail_body" role="tabpanel" aria-labelledby="billing_setup_detail_head" data-parent="#billing_setup_detail" style="">
+                                                    <div class="m-accordion__item-content">
+                                                        <div class="row ">
+                                                           <div class="col-lg-12">
+                                                               @(Html.Kendo().CheckBoxFor(x=>x.IsFromOfficeAddress));
+                                                           </div>
+                                                        </div>
+                                                        <br/>
+                                                        <div class="row m-row--col-separator-xl">
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label asp-for="BillingAddress"></label> :
+                                                                    @Html.TextAreaFor(m => m.BillingAddress, new { style = "height:90px; width:100%;", @placeholder = $"Input type a {Html.DisplayNameFor(m => m.BillingAddress)}" })
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="BillingCountryId"></label> <span class="req">*</span>  :
+                                                                     @(Html.Kendo().DropDownListFor(x => x.BillingCountryId)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BillingCountryId)}")
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%;",                                              
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.BillingCountryId)} is required" 
+                                                                                                                    })
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source => source
+                                                                            .Custom()
+                                                                            .Transport(transport => transport
+                                                                            .Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLCountry", "Dropdown",new {area="finance"});
+                                                                             }))
+                                                                            .ServerFiltering(false)
+                                                                        )
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                
+                                                                <div class="form-group">
+                                                                    <label asp-for="BillingProvinceId"></label> <span class="req">*</span>  :
+                                                                     @(Html.Kendo().DropDownListFor(x => x.BillingProvinceId)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BillingProvinceId)}")
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%;",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.BillingProvinceId)} is required"
+                                                                        })
+                                                                        .Events(evt => evt.DataBound("BillingProvince_databound"))
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source => source
+                                                                            .Custom()
+                                                                            .Transport(transport => transport
+                                                                            .Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLProvince", "Dropdown",new {area="finance"}).Data("billingProvince_params");
+                                                                            }))
+                                                                            .ServerFiltering(true)
+                                                                        ).CascadeFrom("BillingCountryId")
+                                                                    )
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="BillingCityId"></label> <span class="req">*</span>  :
+                                                                     @(Html.Kendo().DropDownListFor(x => x.BillingCityId)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BillingCityId)}")
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%;",                                              
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.BillingCityId)} is required" 
+                                                                        })
+                                                                        .Events(evt => evt.DataBound("BillingCity_databound"))
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source => source
+                                                                            .Custom()
+                                                                            .Transport(transport => transport
+                                                                            .Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLCity", "Dropdown",new {area="finance"}).Data("billingCity_params");
+                                                                             }))
+                                                                            .ServerFiltering(true)
+                                                                        ).CascadeFrom("BillingProvinceId")
+                                                                    )
+                                                                </div>
+                                                                 <div class="form-group">
+                                                                    <label asp-for="BillingZipCode"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.BillingZipCode)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 5,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.BillingZipCode)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.BillingZipCode)} is required" 
+                                                                        }
+                                                                     ))
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row" id="contact_setup_data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="contact_setup_detail" role="tablist">
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="contact_setup_detail_head" data-toggle="collapse" href="#contact_setup_detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa fa-address-book"></i></span>
+                                                    <span class="m-accordion__item-title">Contact</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="contact_setup_detail_body" role="tabpanel" aria-labelledby="contact_setup_detail_head" data-parent="#contact_setup_detail" style="">
+                                                    <div class="m-accordion__item-content">                                                        
+                                                        <div class="row m-row--col-separator-xl">
+                                                             <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ContactName"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.ContactName)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.ContactName)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.ContactName)} is required" 
+                                                                        }
+                                                                     ))
+                                                                </div>
+                                                                 <div class="form-group">
+                                                                    <label asp-for="Phone"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Phone)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Phone)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.Phone)} is required" 
+                                                                        }
+                                                                     ))
+                                                                </div>
+                                                                 <div class="form-group">
+                                                                    <label asp-for="MobilePhone"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.MobilePhone)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.MobilePhone)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.MobilePhone)} is required" 
+                                                                        }
+                                                                     ))
+                                                                </div>                                                                  
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                     <label asp-for="Fax"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Fax)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Fax)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.Fax)} is required" 
+                                                                        }
+                                                                     ))
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="Email"></label> <span class="req">*</span>  :
+                                                                    <input type="email" asp-for="Email" class="k-textbox" placeholder="Input type a @Html.DisplayNameFor(m => m.Email)" required validationmessage="@Html.DisplayNameFor(m => m.Email)" data-email-msg="Email format is not valid" style="width: 100%" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="Facebook"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Facebook)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Facebook)}"
+                                                                        }
+                                                                     ))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                 <div class="form-group">
+                                                                    <label asp-for="Twitter"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Twitter)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Twitter)}" 
+                                                                        }
+                                                                     ))
+                                                                </div>
+                                                                <div class="form-group">
+                                                                     <label asp-for="Instagram"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Instagram)
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Instagram)}"
+                                                                        }
+                                                                     ))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a asp-action="index" asp-controller="LegalEntity" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        readonly($('#IsFromOfficeAddress').is(":checked"));
+
+        var ImageTaxScanName = '@Model.ImageTaxScanName';
+        if (ImageTaxScanName == '') {
+            ImageTaxScan();
+        } else {
+            $("#linkImageTaxScanDownloadFile").text(ImageTaxScanName);
+         }
+
+        var ImageLegalScanName = '@Model.ImageLegalScanName';
+        if (ImageLegalScanName == '') {
+            ImageLegalScan();
+        } else {
+            $("#linkImageLegalScanDownloadFile").text(ImageLegalScanName);
+        }
+    });
+    
+    function removeImageTaxScan() {
+        ImageTaxScan();
+    }
+
+    function downloadImageTaxScan() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#ImageTaxScan").val() }});
+    }
+
+    function ImageTaxScan() {
+        $("#linkImageTaxScanDownloadFile").empty();
+        $("#linkImageTaxScanRemoveFile").empty();
+        $("#divImageTaxScan").empty().append("<input name='fileImageTaxScan' id='fileImageTaxScan' type='file'/>");
+
+        $("#fileImageTaxScan").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg", ".png", ".gif", ".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+    
+    function removeImageLegalScan() {
+        ImageLegalScan();
+    }
+
+    function downloadImageLegalScan() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#ImageLegalScan").val() }});
+    }
+
+    function ImageLegalScan() {
+        $("#linkImageLegalScanDownloadFile").empty();
+        $("#linkImageLegalScanRemoveFile").empty();
+        $("#divImageLegalScan").empty().append("<input name='fileImageLegalScan' id='fileImageLegalScan' type='file'/>");
+
+        $("#fileImageLegalScan").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg", ".png", ".gif", ".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+
+    function officeProvince_params() {
+        return {
+            CountryId: $("#OfficeCountryId").val()
+        }
+    }
+
+    function officeCity_params() {
+        return {
+            ProvinceId: $("#OfficeProvinceId").val()
+        }
+    }
+
+    function billingProvince_params() {
+
+        return {
+            CountryId: $("#BillingCountryId").val()
+        }
+    }
+
+    function billingCity_params() {
+        return {
+            ProvinceId: $("#BillingProvinceId").val()
+        }
+    }
+
+    $('#btn-save').click(function () {
+        callActionFile({ formId:"formLegalEntity", title: "save", type:"POST"});
+    });
+    
+    function bank_selectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+            
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Get", "Bank")',
+                data: { id: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#AccountNumber").val(result.AccountNumber);
+                    } else {
+                        $("#AccountNumber").val("");
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    }
+
+    $('#IsFromOfficeAddress').change(function () {
+        var checked = this.checked;
+        readonly(checked);
+
+        if (checked) {
+            var countryId = $("#OfficeCountryId").data("kendoDropDownList").value();
+            var provinceId = $("#OfficeProvinceId").data("kendoDropDownList").value();
+            var cityId = $("#OfficeCityId").data("kendoDropDownList").value();
+            var address = $("#OfficeAddress").val();
+            var zipCode = $("#OfficeZipCode").val();
+
+            $("#BillingCountryId").data("kendoDropDownList").value(countryId);
+            $("#BillingProvinceId").data("kendoDropDownList").value(provinceId);
+            $("#BillingCityId").data("kendoDropDownList").value(cityId);
+            $("#BillingAddress").val(address);
+            $("#BillingZipCode").val(zipCode);
+        }
+    });
+
+    function readonly(checked){
+        $("#BillingCountryId").data("kendoDropDownList").readonly(checked);
+        $("#BillingProvinceId").data("kendoDropDownList").readonly(checked);
+        $("#BillingCityId").data("kendoDropDownList").readonly(checked)
+
+        if (checked) {
+            $("#BillingAddress").attr("readonly", "readonly");
+            $("#BillingZipCode").attr("readonly", "readonly");
+        } else {
+            $("#BillingAddress").removeAttr("readonly", "readonly");
+            $("#BillingZipCode").removeAttr("readonly", "readonly");
+        }
+    }
+
+    function BillingProvince_databound(e) {
+        $("#BillingProvinceId").data("kendoDropDownList").readonly($('#IsFromOfficeAddress').is(":checked"));
+    }
+
+    function BillingCity_databound(e) {
+        $("#BillingCityId").data("kendoDropDownList").readonly($('#IsFromOfficeAddress').is(":checked"));
+    }
+</script>

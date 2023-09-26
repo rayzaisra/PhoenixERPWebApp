@@ -1,0 +1,87 @@
+@{
+    ViewBag.ModalTitle = "BusinessUnit";
+    ViewBag.ModalId = "BusinessUnitModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="BusinessUnitFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="business_unit_type_id">business_unit_type_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_business_unit_type_id" id="search_business_unit_type_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="default_team">default_team</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_default_team" id="search_default_team"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="latitude">latitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_latitude" id="search_latitude"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="longitude">longitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_longitude" id="search_longitude"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="organization_id">organization_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_organization_id" id="search_organization_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="parent_unit">parent_unit</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_parent_unit" id="search_parent_unit"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_address">unit_address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_unit_address" id="search_unit_address"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_code">unit_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_unit_code" id="search_unit_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_description">unit_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_unit_description" id="search_unit_description"  maxlength="255" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_email">unit_email</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_unit_email" id="search_unit_email"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_fax">unit_fax</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_unit_fax" id="search_unit_fax"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_name">unit_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_unit_name" id="search_unit_name"  maxlength="350" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_phone">unit_phone</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_unit_phone" id="search_unit_phone"  maxlength="50" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnBusinessUnit.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnBusinessUnit.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

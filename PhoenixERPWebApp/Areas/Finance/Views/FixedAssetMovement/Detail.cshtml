@@ -1,0 +1,528 @@
+﻿@model PhoenixERPWebApp.Models.FixedAssetMovement
+@{
+    ViewData["Title"] = " Fixed Asset Movement";
+    if (Model != null && ViewBag.IsApprove == true)
+    {
+        ViewData["Title"] = "Fixed Asset Movement Form Approval";
+
+    }
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+    var userSession = CodeMarvel.Infrastructure.Sessions.SessionManager.UserSession;
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/FixedAssetMovement")" class="m-nav__link">
+                        <span class="m-nav__link-text"> Fixed Asset Movement</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    @if (string.IsNullOrEmpty(Model.Id))
+                                    {
+                                        <span>@ViewBag.Header  &nbsp;</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@ViewBag.Header  &nbsp;</span>
+                                    }
+                                    @if (Model.Status != null)
+                                    {
+                                        @if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open)
+                                        {
+                                            <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open)</span>
+                                        }
+                                        else if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval)
+                                        {
+                                            <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval)</span>
+                                        }
+                                        else if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Approved)
+                                        {
+                                            <span class="m-badge m-badge--warning m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Approved)</span>
+                                        }
+                                        else if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed)
+                                        {
+                                            <span class="m-badge m-badge--success m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open)</span>
+                                        }
+                                    }
+                                    <span id="status"></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+
+                        <!--begin::Form-->
+                        @*<input hidden name="approval_id" />*@
+                        <form id="formFixedAssetMovement" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="CreatedBy" />
+                            <input type="hidden" asp-for="CreatedOn" />
+                            <input type="hidden" asp-for="ModifiedBy" />
+                            <input type="hidden" asp-for="ModifiedOn" />
+                            <input type="hidden" asp-for="ApprovedBy" />
+                            <input type="hidden" asp-for="ApprovedOn" />
+                            <input type="hidden" asp-for="DeletedBy" />
+                            <input type="hidden" asp-for="DeletedOn" />
+                            <input type="hidden" asp-for="IsActive" />
+                            <input type="hidden" asp-for="IsLocked" />
+                            <input type="hidden" asp-for="IsDefault" />
+                            <input type="hidden" asp-for="IsDeleted" />
+                            <input type="hidden" asp-for="OwnerId" />
+                            <input type="hidden" asp-for="Remark" />
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>FA Movement Number :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.FaaNumber).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly", style = "width:100%", Placeholder = "Auto Generated by System.." })
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Date Request :</label>
+                                        @if ((Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval) || (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed))
+                                        {
+                                            @Html.Kendo().DatePickerFor(m => m.FaaDateTime).Format("dd MMM yyyy").HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.Kendo().DatePickerFor(m => m.FaaDateTime).Format("dd MMM yyyy").HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required" })
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>From Location :</label>
+                                        @if ((Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval) || (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed))
+                                        {@(Html.Kendo().DropDownListFor(i => i.FromLocationID)
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .OptionLabel("Select From Location ... ")
+                                                                .Filter(FilterType.Contains)
+                                                                .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly", @required = "required" })
+                                                                .DataSource(source => source
+                                                                    .Custom()
+                                                                    .Transport(transport => transport
+                                                                    .Read(read =>
+                                                                    {
+                                                                        read.Action("GetMasterLocationProcurement", "Dropdown", new { area = "Finance" });
+                                                                    }))
+                                                                .ServerFiltering(false)
+                                                                ))}
+                                    else
+                                    {@(Html.Kendo().DropDownListFor(i => i.FromLocationID)
+                                                             .DataTextField("Text")
+                                                             .DataValueField("Value")
+                                                             .OptionLabel("Select From Location ... ")
+                                                             .Filter(FilterType.Contains)
+                                                             .HtmlAttributes(new { style = "width:100%;", @required = "required" })
+                                                             .DataSource(source => source
+                                                                 .Custom()
+                                                                 .Transport(transport => transport
+                                                                 .Read(read =>
+                                                                 {
+                                                                     read.Action("GetMasterLocationProcurement", "Dropdown", new { area = "Finance" });
+                                                                 }))
+                                                             .ServerFiltering(false)
+                                                             ))}
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>To Location :</label>
+                                        @if ((Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval) || (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed))
+                                        {@(Html.Kendo().DropDownListFor(i => i.ToLocationID)
+                                                                     .DataTextField("Text")
+                                                                     .DataValueField("Value")
+                                                                     .OptionLabel("Select To Location ... ")
+                                                                     .Filter(FilterType.Contains)
+                                                                     .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly", @required = "required" })
+                                                                     .DataSource(source => source
+                                                                         .Custom()
+                                                                         .Transport(transport => transport
+                                                                         .Read(read =>
+                                                                         {
+                                                                             read.Action("GetMasterLocationProcurement", "Dropdown", new { area = "Finance" });
+                                                                         }))
+                                                                     .ServerFiltering(false)
+                                                                     )) }
+                                    else
+                                    {@(Html.Kendo().DropDownListFor(i => i.ToLocationID)
+                                                           .DataTextField("Text")
+                                                           .DataValueField("Value")
+                                                           .OptionLabel("Select To Location ... ")
+                                                           .Filter(FilterType.Contains)
+                                                           .HtmlAttributes(new { style = "width:100%;", @required = "required" })
+                                                           .DataSource(source => source
+                                                               .Custom()
+                                                               .Transport(transport => transport
+                                                               .Read(read =>
+                                                               {
+                                                                   read.Action("GetMasterLocationProcurement", "Dropdown", new { area = "Finance" });
+                                                               }))
+                                                           .ServerFiltering(false)
+                                                           ))}
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Requestor :</label>
+                                        <div class="input-group input-group-sm">
+                                            @Html.Kendo().TextBoxFor(m => m.EmployeeName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="m-accordion m-accordion--bordered m-accordion--solid" id="detail" role="tablist">
+                                        <!--begin::Item-->
+                                        <div class="m-accordion__item">
+                                            <div class="m-accordion__item-head" role="tab" id="status_head" data-toggle="collapse" href="#detail_body" aria-expanded="true">
+                                                <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                <span class="m-accordion__item-title">Detail</span>
+                                                <span class="m-accordion__item-mode"></span>
+                                            </div>
+                                            <div class="m-accordion__item-body show" id="detail_body" role="tabpanel" aria-labelledby="detail_head" data-parent="#detail" style="">
+                                                <div class="m-accordion__item-content">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group ">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.FixedAssetMovementDetail>()
+                                                                    .Name("FixedAssetGrid")
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        //columns.Bound(b => b.Id).Hidden(true);
+                                                                        columns.Bound(b => b.FixedAssetNumber).Title("Fixed Asset Name").EditorTemplateName("Finance/FixedAssetMovement/FixedStatusId").ClientTemplate("#= Link(data) #").Width("100px");
+                                                                        columns.Bound(b => b.FixedAssetName).Width("150px");
+                                                                        columns.Bound(b => b.LocationName).ClientTemplate("#=LocationName#").Width("100px");
+                                                                        columns.Bound(b => b.ConditionName).Width("100px");
+                                                                        columns.Bound(b => b.Qty).EditorTemplateName("Decimal").Width("100px");
+                                                                        columns.Bound(b => b.LegalEntityName).Width("150px");
+                                                                        columns.Bound(b => b.RemarksDepreciation).Title("Remarks").Width("100px");
+                                                                        columns.Bound(b => b.UnitCount).Hidden(true);
+                                                                        columns.Command(cmd =>
+                                                                        {
+                                                                            cmd.Edit();
+                                                                            cmd.Destroy();
+                                                                        }).Title("Action").Width("100px");
+
+                                                                    })
+                                                                    .ToolBar(t =>
+                                                                    {
+                                                                        t.Create().Text("Add New Fixed Asset");
+
+                                                                    })
+                                                                    .Pageable()
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .Sortable()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Groupable()
+                                                                    .Scrollable()
+                                                                    //.Events(events => events.DataBound("dataBound"))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .Events(e => e.Sync("endRequest"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.Id);
+                                                                            model.Field(p => p.Id);
+                                                                            model.Field(b => b.FixedAssetName);
+                                                                            model.Field(b => b.FixedAssetNumber);
+                                                                            model.Field(b => b.LocationName);
+                                                                            model.Field(b => b.ConditionName);
+                                                                            model.Field(b => b.Qty);
+                                                                            model.Field(b => b.LegalEntityName);
+                                                                            model.Field(b => b.RemarksDepreciation);
+                                                                            model.Field(b => b.UnitCount);
+                                                                        }).Read(read => read.Action("ReadDetail", "FixedAssetMovement").Data("GetRequestId"))
+                                                                        .Update(update => update.Action("GRDetail_Update", "FixedAssetMovement"))
+                                                                    ).Events(e => e.Save("SaveDetailList"))
+                                                                )
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                    <hr />
+
+                    <br />
+                    <partial name="_HistoryApproval" />
+
+                    <br />
+                    <partial name="_StatusLog" />
+                    <br />
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="col-lg-2">
+                                    <label>Log Remark</label>
+                                </div>
+                                <div class="col-lg-10">
+                                    @Html.TextAreaFor(x => x.LogDescription, new { style = "height:150px;width:100%" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pull-right">
+                                @if (ViewBag.processApprove == true)
+                                {
+                                    <button type="button" id="btn-reject" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                    <button type="button" id="btn-approve" class="btn btn-primary"><span class="fa fa-bookmark"></span> Approve</button>
+                                }
+
+                                @if ((((Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open) || (Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Rejected))
+                                {
+                                    <button type="button" id="btn-save" class="btn btn-success">Save</button>
+                                    <button type="button" id="btn-submit" class="btn btn-info">Submit</button>
+                                }
+                                <a href="@Url.Content("~/Finance/FixedAssetMovement")" class="fakelink btn btn-secondary">Back</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        if ($("#EmployeeName").val() == "") {
+            $("#EmployeeName").val("@userSession.FullName").change();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetDivLogin", "FixedAssetMovement")',
+                data: { BasicLogin: "@userSession.AppUserId" },
+                success: function (data) {
+                    console.log("employee", data);
+                    $("#division_name").val(data.DivisiName);
+                    $("#division_id").val(data.DivisionId);
+                }
+            });
+
+        }
+
+    });
+
+    function Link(data) {
+        console.log('halo' + data);
+        return "<center><a href='javascript: void(0);' onclick='Detail(this)' title='Edit' class='edit' target='_blank'>" + data.FixedAssetNumber + "</a></center>";
+
+    }
+
+    function Detail(e) {
+        var item = dataItem(e);
+        window.open('@Url.Action("Detail", "FixedAsset")?Id=' + item.FixedAssetNumber,'_blank');
+    }
+
+    function grid_params() {
+        return {
+            locationId: $("#FromLocationID").data("kendoDropDownList").value()
+        }
+    }
+    function GetRequestId() {
+        return {
+            id: $("#Id").val()
+        };
+    }
+    function endRequest() {
+        var grid = $("#FixedAssetGrid").data("kendoGrid");
+    }
+
+    function GR_Select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetDataFixedAsset", "FixedAssetMovement")',
+            data: { Id: dataItem.Value },
+            success: function (result) {
+                if (result != undefined) {
+                    $("#FixedAssetName").val(result.FixedAssetName);
+                    $("#LocationId").val(result.LocationId);
+                    $("#Condition").val(result.Condition);
+                    $("#LegalEntityId").val(result.LegalEntityId);
+                    $("#LocationName").val(result.LocationName);
+                    $("#ConditionName").val(result.ConditionName);
+                    $("#LegalEntityName").val(result.LegalEntityName);
+                    $("#Qty").val(result.Qty);
+                    $("#UnitCount").val(result.UnitCount);
+                    $("#RemarksDepreciation").val(result.RemarksDepreciation);
+                    $("#FixedAssetName").prop("disabled", true);
+                    $("#LocationName").prop("disabled", true);
+                    $("#LegalEntityName").prop("disabled", true);
+                    $("#ConditionName").prop("disabled", true);
+                    //$("#Id").val(result.Id);
+                    //$("#Id").prop("readonly", "readonly");
+                }
+            }
+        });
+        }
+    }
+
+    function SaveDetailList(e) {
+        var FixedAssetNumber = $("#FixedAssetNumber").val();
+        var FixedAssetName = $("#FixedAssetName").val();
+        var LocationId = $("#LocationId").val();
+        var Condition = $("#Condition").val();
+        var LegalEntityId = $("#LegalEntityId").val();
+        var LocationName = $("#LocationName").val();
+        var ConditionName = $("#ConditionName").val();
+        var LegalEntityName = $("#LegalEntityName").val();
+        var Qty = $("#Qty").val();
+        var RemarksDepreciation = $("#RemarksDepreciation").val();
+        var UnitCount = $("#UnitCount").val();
+        e.model.set("FixedAssetName", FixedAssetName);
+        e.model.set("FixedAssetNumber", FixedAssetNumber);
+        e.model.set("LocationId", LocationId);
+        e.model.set("Condition", Condition);
+        e.model.set("LegalEntityId", LegalEntityId);
+        e.model.set("LocationName", LocationName);
+        e.model.set("ConditionName", ConditionName);
+        e.model.set("LegalEntityName", LegalEntityName);
+        e.model.set("Qty", Qty);
+        e.model.set("RemarksDepreciation", RemarksDepreciation);
+        e.model.set("UnitCount", UnitCount);
+    }
+
+    $('#btn-save').on("click", function (e) {
+        var validator = $("#formFixedAssetMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#FixedAssetGrid").data("kendoGrid");
+              $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedAssetMovement", title: "save", type: "POST", url: "@Url.Action("Save", "FixedAssetMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+
+    $('#btn-submit').on("click", function (e) {
+        var validator = $("#formFixedAssetMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#FixedAssetGrid").data("kendoGrid");
+            $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedAssetMovement", title: "submit", type: "POST", url: "@Url.Action("Submit","FixedAssetMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+
+    $('#btn-approve').on("click", function (e) {
+        var validator = $("#formFixedAssetMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#FixedAssetGrid").data("kendoGrid");
+              $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedAssetMovement", title: "submit", type: "POST", url: "@Url.Action("Approve","FixedAssetMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+
+    $('#btn-reject').on("click", function (e) {
+        var validator = $("#formFixedAssetMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#FixedAssetGrid").data("kendoGrid");
+              $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedAssetMovement", title: "submit", type: "POST", url: "@Url.Action("Reject","FixedAssetMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+</script>

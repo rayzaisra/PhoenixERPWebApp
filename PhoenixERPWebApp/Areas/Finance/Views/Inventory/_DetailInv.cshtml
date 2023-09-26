@@ -1,0 +1,282 @@
+﻿@model PhoenixERPWebApp.Models.Finance.Transaction.Inventory.Inventory
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: ##f4516c;
+    }
+</style>
+<div class="modal fade" id="modalDetailInv" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Add Edit Detail Inventory
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formDetailInv" class="form-horizontal form-bordered" role="form" asp-action="SaveDetailPersist" asp-controller="Inventory" asp-area="Finance" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="InventoryDetail.ConditionName" />
+                    <input type="hidden" asp-for="InventoryDetail.UnitOfMeasure" />
+                    <input type="hidden" asp-for="InventoryDetail.LocationName" />
+                    <input type="hidden" asp-for="InventoryDetail.InventoryId" />
+                    <input type="hidden" asp-for="InventoryDetail.status_name" />
+                    <div class="m-form__group">
+                        <div class="row ">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Inventory Detail ID :</label>
+                                    @Html.Kendo().TextBoxFor(m => m.InventoryDetail.Id).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Product Number :</label>
+                                    @Html.Kendo().TextBoxFor(m => m.InventoryDetail.ProductNumber).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Color :</label>
+                                    @Html.Kendo().TextBoxFor(m => m.InventoryDetail.Color).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Qty :</label>
+                                    @Html.Kendo().NumericTextBoxFor(m => m.InventoryDetail.Qty).Spinners(false).HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required", @readonly = "readonly"})
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Location :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.InventoryDetail.Location)
+                                    .DataTextField("Text")
+                                    .OptionLabel("Select Location...")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                    source.Read(read =>
+                                    {
+                                    read.Action("GetMasterLocationProcurement", "DropDown", new { area = "Finance" });
+                                    });
+                                    })
+                                    .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm", required = "required" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <!--Atribute Ini DI ubah Dri Status Menjadi Condition-->
+                                <div class="form-group">
+                                    <label>Condition :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.InventoryDetail.Status)
+                                    .DataTextField("Text")
+                                    .OptionLabel("Select Status...")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                    source.Read(read =>
+                                    {
+                                    read.Action("InventoryDetailstatus", "DropDown", new { area = "Finance" });
+                                    });
+                                    })
+                                    .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm", required = "required" })
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            
+                        </div>
+                        <!--Area Hide-->
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub" style="display:none;">
+                                <div class="form-group">
+                                    <label>Item Name :</label>
+                                    @Html.Kendo().TextBoxFor(m => m.InventoryDetail.ItemName).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub" style="display:none;">
+                                <div class="form-group">
+                                    <label>Condition :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.InventoryDetail.Condition)
+                                    .DataTextField("Text")
+                                    .OptionLabel("Select Condition...")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                    source.Read(read =>
+                                    {
+                                    read.Action("GetDDLConditionProcurement", "DropDown", new { area = "Finance" });
+                                    });
+                                    })
+                                    .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub" style="display:none;">
+                                <div class="form-group">
+                                    <label>Image :</label>
+                                    <div id="divFileAttachment"></div>
+                                    <div style="width:100%">
+                                        <input type="hidden" asp-for="InventoryDetail.FileUpload" />
+                                        <a href='javascript: void(0);' id="downloadLinkFileAttachment" onclick='downloadFile()'></a> &nbsp;
+                                        <a href='javascript: void(0);' id="removeLinkFileAttachment" onclick='removeFile()' title='Delete'></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group" style="display:none;">
+                                    <label>Vendor Brand :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.InventoryDetail.VendorBrandId)
+                                    .DataTextField("Text")
+                                    .OptionLabel("Select Vendor Brand...")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                    source.Read(read =>
+                                    {
+                                    read.Action("GetDDLBrandWithCompany", "DropDown", new { area = "Finance" }).Data("filterVendorId");
+                                    }).ServerFiltering(true);
+                                    })
+                                    .CascadeFrom("InventoryDetail_VendorNameId")
+                                    .Enable(false)
+                                    .AutoBind(false)
+                                    .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group" style="display:none;">
+                                    <label>Manufacture :</label>
+                                    @Html.Kendo().TextBoxFor(m => m.InventoryDetail.Manufacturer).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group" style="display:none;">
+                                    <label>Vendor Name :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.InventoryDetail.VendorNameId)
+                                    .DataTextField("Text")
+                                    .OptionLabel("Select Vendor Name...")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                    source.Read(read =>
+                                    {
+                                    read.Action("GetVendorNames", "DropDown", new { area = "Finance" });
+                                    });
+                                    })
+                                    .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="row " style="display:none;">
+                                <div class="col-lg-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Date Receipt :</label>
+                                        @(Html.Kendo().DatePickerFor(m => m.InventoryDetail.DateReceipt)
+                                    .Format("dd-MM-yyyy")
+                                    .HtmlAttributes(new
+                                    {
+                                    style = "width: 100%"
+                                    })
+                                    )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group" style="display:none;">
+                                    <label>Brand :</label>
+                                    @Html.Kendo().TextBoxFor(m => m.InventoryDetail.Brand).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group" style="display:none;">
+                                    <label>Model :</label>
+                                    @Html.Kendo().TextBoxFor(m => m.InventoryDetail.Model).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub" style="display:none;">
+                                <div class="form-group">
+                                    <label>Unit of Measure :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.InventoryDetail.UomId)
+                                           .DataTextField("Text")
+                                           .OptionLabel("Select Location...")
+                                           .DataValueField("Value")
+                                           .Filter(FilterType.Contains)
+                                           .DataSource(source =>
+                                           {
+                                           source.Read(read =>
+                                           {
+                                           read.Action("GetDDLUnit", "DropDown", new { area = "Finance" });
+                                           });
+                                           })
+                                           .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                        )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group" style="display:none;">
+                                    <label>Lead Time :</label>
+                                    @Html.Kendo().NumericTextBoxFor(m => m.InventoryDetail.LeadTime).Spinners(false).HtmlAttributes(new { @class = "form-control form-control-sm", @format = "{0:N0}" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Area Hide-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="saveDetailInv()">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function filterVendorId() {
+        return {
+            company_id: $("#InventoryDetail_VendorNameId").val()
+        };
+    }
+
+    function removeFile() {
+        FileAttachmentFunction();
+    }
+
+    function downloadFile() {
+        console.log($("#InventoryDetail_FileAttachment").val());
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#InventoryDetail_FileAttachment").val() }});
+    }
+
+     function FileAttachmentFunction() {
+        //$("#linkInterviewDownloadFile").empty();
+        $("#downloadLinkFileAttachment").empty();
+        $("#divFileAttachment").empty().append("<input name='FileAttachmentUpload' id='FileAttachmentUpload' type='file'/>");
+        $("#FileAttachmentUpload").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg",".jpeg", ".png", ".gif", ".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+
+
+</script>
+

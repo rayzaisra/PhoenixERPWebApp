@@ -1,0 +1,466 @@
+@model PhoenixERPWebApp.Models.Termination
+@{
+    ViewData["Title"] = "Exit Clearance Form";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+    int countNumber = 0;
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="exitchecklist" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Exit Clearance Form</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="addedit" asp-controller="exitchecklist" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text">Process</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Exit Clearance Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formExitChecklist" class="form-horizontal form-bordered" role="form">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                        @*<input type="hidden" asp-for="LastDayDate" />*@
+                        @*<input type="hidden" asp-for="EffectiveResignDate" />*@
+                        <input type="hidden" asp-for="ResignLetter" />
+                        <input type="hidden" asp-for="EndOfContract" />
+                        <input type="hidden" asp-for="Penalty" />
+                        <input type="hidden" asp-for="TrainingBonding" />
+                        <input type="hidden" asp-for="Reason" />
+                        <input type="hidden" asp-for="TerminationType" />
+                        @*<input type="hidden" asp-for="TerminationDate" />*@
+                        <input type="hidden" asp-for="MedicalCertificate" />
+                        <input type="hidden" asp-for="DateOfSick" />
+                        <input type="hidden" asp-for="SalaryCalculation" />
+                        <input type="hidden" asp-for="FaulsNoticeDate" />
+                        <input type="hidden" asp-for="InterviewWarningDate" />
+                        <input type="hidden" asp-for="FaultCategoryId" />
+                        <input type="hidden" asp-for="InterviewWarningFile" />
+                        <input type="hidden" asp-for="StatementOfPoliceReport" />
+                        @*<input type="hidden" asp-for="WarningLetter" />
+                        <input type="hidden" asp-for="WarningLetterDate" />*@
+                        <input type="hidden" asp-for="Status" />
+                        <input type="hidden" asp-for="StatusInterview" />
+                        <input type="hidden" asp-for="StatusChecklist" />
+                        <input type="hidden" asp-for="RequestDate" />
+                        <input type="hidden" asp-for="Requestor" />
+                        @*<input type="hidden" asp-for="TerminationInterviewDate" />*@
+                        @*<input type="hidden" asp-for="Notes" />*@
+                        @*<input type="hidden" asp-for="ExitInterviewFiles" />*@
+                        <input type="hidden" asp-for="ReplacementStatus" />
+                        <input type="hidden" asp-for="IsInterview" />
+                        <input type="hidden" asp-for="IsChecklist" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="IsHcProcess" />
+                        <input type="hidden" asp-for="IsHcApprove" />
+
+                        <partial name="_AssignEmploye" />
+                        <br/>
+                        <div class="row" id="data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Request Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                            <div class="m-accordion__item-content">                                            
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <ul class="nav nav-tabs" role="tablist">
+                                                            <li class="nav-item"> <a class="nav-link  active show" data-toggle="tab" href="#" data-target="#tabjobHandover">Job Handover</a> </li>
+                                                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabOfficeManagement">Office Management</a> </li>
+                                                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabInformationTechnology">Information Technology</a> </li>
+                                                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabFinance">Finance</a>  </li>
+                                                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabHumanResource">Human Resource</a> </li>
+                                                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabOther">Other</a> </li>
+                                                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabFinalHandover">Final Handover</a> </li>
+                                                        </ul>
+
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane active show" id="tabjobHandover" role="tabpanel">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ExitChecklist>()
+                                                                    .Name("gridJobHandover")
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        columns.Command(command =>{ command.Edit().Text(" ").UpdateText(" ").CancelText(" "); }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }) .HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        columns.Bound(p => p.Checklistitem).Width(150);
+                                                                        columns.Bound(p => p.InCharge).Width(150);
+                                                                        columns.Bound(p => p.Notes).Width(200).EditorTemplateName("Text");
+                                                                        columns.Bound(p => p.IsDone).Width(80).HtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.EndDate).Width(120).EditorTemplateName("Date");
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(20)
+                                                                        .ServerOperation(false)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.EmployeeChecklistId);
+                                                                            model.Field(p => p.Id).Editable(false);
+                                                                            model.Field(p => p.Checklistitem).Editable(false);
+                                                                            model.Field(p => p.InCharge).Editable(false);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadJobHandover", "exitchecklist").Data("grid_params"))
+                                                                        .Update(update => update.Action("Update", "exitchecklist"))
+                                                                    )
+                                                                )
+                                                            </div>
+                                                            <div class="tab-pane" id="tabOfficeManagement" role="tabpanel">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ExitChecklist>()
+                                                                    .Name("gridOfficeManagement")
+                                                                    .Columns(columns =>
+                                                                    {
+
+                                                                        columns.Command(command => { command.Edit().Text(" ").UpdateText(" ").CancelText(" "); }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        columns.Bound(p => p.Checklistitem).Width(150);
+                                                                        columns.Bound(p => p.InCharge).Width(150);
+                                                                        columns.Bound(p => p.Notes).Width(200).EditorTemplateName("Text");
+                                                                        columns.Bound(p => p.IsDone).Width(80).HtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.EndDate).Width(120).EditorTemplateName("Date");
+
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(20)
+                                                                        .ServerOperation(false)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.EmployeeChecklistId);
+                                                                            model.Field(p => p.Id).Editable(false);
+                                                                            model.Field(p => p.Checklistitem).Editable(false);
+                                                                            model.Field(p => p.InCharge).Editable(false);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadOfficeManagement", "exitchecklist").Data("grid_params"))
+                                                                        .Update(update => update.Action("Update", "exitchecklist"))
+                                                                    )
+                                                                )
+                                                            </div>
+                                                            <div class="tab-pane" id="tabInformationTechnology" role="tabpanel">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ExitChecklist>()
+                                                                    .Name("gridInformationTechnology")
+                                                                    .Columns(columns =>
+                                                                    {
+
+                                                                        columns.Command(command => { command.Edit().Text(" ").UpdateText(" ").CancelText(" "); }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        columns.Bound(p => p.Checklistitem).Width(150);
+                                                                        columns.Bound(p => p.InCharge).Width(150);
+                                                                        columns.Bound(p => p.Notes).Width(200).EditorTemplateName("Text");
+                                                                        columns.Bound(p => p.IsDone).Width(80).HtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.EndDate).Width(120).EditorTemplateName("Date");
+
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(20)
+                                                                        .ServerOperation(false)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.EmployeeChecklistId);
+                                                                            model.Field(p => p.Id).Editable(false);
+                                                                            model.Field(p => p.Checklistitem).Editable(false);
+                                                                            model.Field(p => p.InCharge).Editable(false);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadInformationTechnology", "exitchecklist").Data("grid_params"))
+                                                                        .Update(update => update.Action("Update", "exitchecklist"))
+                                                                    )
+                                                                )
+                                                            </div>
+                                                            <div class="tab-pane" id="tabFinance" role="tabpanel">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ExitChecklist>()
+                                                                    .Name("gridFinance")
+                                                                    .Columns(columns =>
+                                                                    {
+
+                                                                        columns.Command(command => { command.Edit().Text(" ").UpdateText(" ").CancelText(" "); }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        columns.Bound(p => p.Checklistitem).Width(150);
+                                                                        columns.Bound(p => p.InCharge).Width(150);
+                                                                        columns.Bound(p => p.Notes).Width(200).EditorTemplateName("Text");
+                                                                        columns.Bound(p => p.IsDone).Width(80).HtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.EndDate).Width(120).EditorTemplateName("Date");
+
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(20)
+                                                                        .ServerOperation(false)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.EmployeeChecklistId);
+                                                                            model.Field(p => p.Id).Editable(false);
+                                                                            model.Field(p => p.Checklistitem).Editable(false);
+                                                                            model.Field(p => p.InCharge).Editable(false);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadFinance", "exitchecklist").Data("grid_params"))
+                                                                        .Update(update => update.Action("Update", "exitchecklist"))
+                                                                    )
+                                                                )
+                                                            </div>
+                                                            <div class="tab-pane" id="tabHumanResource" role="tabpanel">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ExitChecklist>()
+                                                                    .Name("gridHumanResource")
+                                                                    .Columns(columns =>
+                                                                    {
+
+                                                                        columns.Command(command => { command.Edit().Text(" ").UpdateText(" ").CancelText(" "); }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        columns.Bound(p => p.Checklistitem).Width(150);
+                                                                        columns.Bound(p => p.InCharge).Width(150);
+                                                                        columns.Bound(p => p.Notes).Width(200).EditorTemplateName("Text");
+                                                                        columns.Bound(p => p.IsDone).Width(80).HtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.EndDate).Width(120).EditorTemplateName("Date");
+
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(20)
+                                                                        .ServerOperation(false)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.EmployeeChecklistId);
+                                                                            model.Field(p => p.Id).Editable(false);
+                                                                            model.Field(p => p.Checklistitem).Editable(false);
+                                                                            model.Field(p => p.InCharge).Editable(false);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadHumanResource", "exitchecklist").Data("grid_params"))
+                                                                        .Update(update => update.Action("Update", "exitchecklist"))
+                                                                    )
+                                                                )
+                                                            </div>
+                                                            <div class="tab-pane" id="tabOther" role="tabpanel">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ExitChecklist>()
+                                                                    .Name("gridOther")
+                                                                    .Columns(columns =>
+                                                                    {
+
+                                                                        columns.Command(command => { command.Edit().Text(" ").UpdateText(" ").CancelText(" "); }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        columns.Bound(p => p.Checklistitem).Width(150);
+                                                                        columns.Bound(p => p.InCharge).Width(150);
+                                                                        columns.Bound(p => p.Notes).Width(200).EditorTemplateName("Text");
+                                                                        columns.Bound(p => p.IsDone).Width(80).HtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.EndDate).Width(120).EditorTemplateName("Date");
+
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(20)
+                                                                        .ServerOperation(false)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.EmployeeChecklistId);
+                                                                            model.Field(p => p.Id).Editable(false);
+                                                                            model.Field(p => p.Checklistitem).Editable(false);
+                                                                            model.Field(p => p.InCharge).Editable(false);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadOther", "exitchecklist").Data("grid_params"))
+                                                                        .Update(update => update.Action("Update", "exitchecklist"))
+                                                                    )
+                                                                )
+                                                            </div>
+                                                            <div class="tab-pane" id="tabFinalHandover" role="tabpanel">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ExitChecklist>()
+                                                                    .Name("gridFinalHandover")
+                                                                    .Columns(columns =>
+                                                                    {
+
+                                                                        columns.Command(command => { command.Edit().Text(" ").UpdateText(" ").CancelText(" "); }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        columns.Bound(p => p.Checklistitem).Width(150);
+                                                                        columns.Bound(p => p.InCharge).Width(150);
+                                                                        columns.Bound(p => p.Notes).Width(200).EditorTemplateName("Text");
+                                                                        columns.Bound(p => p.IsDone).Width(80).HtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.EndDate).Width(120).EditorTemplateName("Date");
+
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(20)
+                                                                        .ServerOperation(false)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.EmployeeChecklistId);
+                                                                            model.Field(p => p.Id).Editable(false);
+                                                                            model.Field(p => p.Checklistitem).Editable(false);
+                                                                            model.Field(p => p.InCharge).Editable(false);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadFinalHandover", "exitchecklist").Data("grid_params"))
+                                                                        .Update(update => update.Action("Update", "exitchecklist"))
+                                                                    )
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+
+                                    @if (Model.StatusChecklist != PhoenixERPWebApp.Models.TerminationExitChecklistStatus.Done)
+                                    {
+                                        <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+                                    <a asp-action="index" asp-controller="exitchecklist" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function grid_params() {
+        return {
+            terminationId :'@Model.Id',
+            employeeBasicInfoId :'@Model.EmployeeBasicInfoId'
+        }
+    }
+
+     $('#btnSubmit').click(function () {
+         var gridJobHandover = $("#gridJobHandover").data("kendoGrid").dataSource.data();
+         var gridOfficeManagement = $("#gridOfficeManagement").data("kendoGrid").dataSource.data();
+         var gridInformationTechnology = $("#gridInformationTechnology").data("kendoGrid").dataSource.data();
+         var gridFinance = $("#gridFinance").data("kendoGrid").dataSource.data();
+         var gridHumanResource = $("#gridHumanResource").data("kendoGrid").dataSource.data();
+         var gridOther = $("#gridOther").data("kendoGrid").dataSource.data();
+         var gridFinalHandover = $("#gridFinalHandover").data("kendoGrid").dataSource.data();
+
+         var data = {
+             JobHandover: gridJobHandover,
+             OfficeManagement: gridOfficeManagement,
+             InformationTechnology: gridInformationTechnology,
+             Finance: gridFinance,
+             HumanResource: gridHumanResource,
+             Other: gridOther,
+             FinalHandover: gridFinalHandover
+         }
+         callAction({ formId: "formExitChecklist", title: "Submit", type: "POST", url: '@Url.Action("submit", "exitchecklist")', objects: data });
+     });
+
+    $('#btnSave').click(function () {
+         var gridJobHandover = $("#gridJobHandover").data("kendoGrid").dataSource.data();
+         var gridOfficeManagement = $("#gridOfficeManagement").data("kendoGrid").dataSource.data();
+         var gridInformationTechnology = $("#gridInformationTechnology").data("kendoGrid").dataSource.data();
+         var gridFinance = $("#gridFinance").data("kendoGrid").dataSource.data();
+         var gridHumanResource = $("#gridHumanResource").data("kendoGrid").dataSource.data();
+         var gridOther = $("#gridOther").data("kendoGrid").dataSource.data();
+         var gridFinalHandover = $("#gridFinalHandover").data("kendoGrid").dataSource.data();
+
+         var data = {
+             JobHandover: gridJobHandover,
+             OfficeManagement: gridOfficeManagement,
+             InformationTechnology: gridInformationTechnology,
+             Finance: gridFinance,
+             HumanResource: gridHumanResource,
+             Other: gridOther,
+             FinalHandover: gridFinalHandover
+         }
+         callAction({ formId: "formExitChecklist", title: "Save", type: "POST", url: '@Url.Action("save", "exitchecklist")', objects: data });
+     });
+
+</script>

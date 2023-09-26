@@ -1,0 +1,372 @@
+﻿@{
+    ViewData["Title"] = "Opening Balance";
+}
+
+
+<link rel="stylesheet" type="text/css" href="~/vendors/custom/jeasyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="~/vendors/custom/jeasyui/themes/icon.css">
+
+
+
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">General Ledger</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/ExcelTest/SlickGrid")" class="m-nav__link">
+                        <span class="m-nav__link-text">General Ledger Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+
+
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+
+
+                <!--begin::Form-->
+                <form id="form-opening_balance" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+
+                    <input hidden name="id" value="@ViewBag.RecordID" />
+                    <div class="m-portlet__body">
+
+                        <div class="form-group m-form__group row">
+                            <div class="col-lg-12">
+                                <h4>Financial Transaction</h4>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Transaction No :</label>
+                                    <input class="form-control form-control-sm" readonly name="transaction_number"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Transaction Date :</label>
+                                    <div class="input-group input-group-sm date">
+                                        <input type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                               placeholder="Select Date" id="transaction_datetime">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="la la-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Business Unit</label>
+                                    <div class="input-group">
+                                        <input hidden name="business_unit_id" />
+                                        <input id="business_unit_id" type="text" readonly class="form-control form-control-sm m-input" placeholder="Choose Business Unit">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm" type="button" id="btn-choose_business_unit"><i class="la la-arrow-down"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div id="tree_businessunit" class="tree-demo"> </div>*@
+                        </div>
+                        <div class="form-group m-form__group row m-row--no-padding">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <h4>Transaction Details</h4>
+                                <table id="dg" style="height:auto">
+                                    <thead>
+                                        <tr>
+                                            <th>Item ID</th>
+                                            <th>Product</th>
+                                            <th>List Price</th>
+                                            <th>Unit Cost</th>
+                                            <th>Attribute</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <div id="tb" style="height:auto">
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" id="btn-append">Append</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" id="btn-removeit">Remove</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" id="btn-accept">Accept</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" id="btn-reject">Reject</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" id="btn-getchanges">GetChanges</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" id="btn-save">Save</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <!--end::Form-->
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+
+    <script>
+
+        (function ($) {
+
+
+
+            var pageFunction = function () {
+
+                $("#transaction_date, #transaction_date_validate").datepicker({
+                    todayHighlight: !0,
+                    orientation: "bottom left",
+                    templates: {
+                        leftArrow: '<i class="la la-angle-left"></i>',
+                        rightArrow: '<i class="la la-angle-right"></i>'
+                    }
+                });
+
+                var editIndex = undefined;
+                var dg = $('#dg').datagrid({
+                    iconCls: 'icon-edit',
+                    singleSelect: true,
+                    toolbar: '#tb',
+                    //url: 'datagrid33_getdata.php',
+                    //method: 'get',
+                    pagination: true,
+                    clientPaging: false,
+                    remoteFilter: true,
+                    rownumbers: true,
+                    onClickCell: onClickCell,
+                    onEndEdit: onEndEdit,
+                    width: "auto",
+                    columns: [[
+                        { field: 'itemid', title: 'Item ID', width: 60 },
+                        {
+                            field: 'productid', title: 'Product', width: 200,
+                            formatter: function (value, row) {
+                                return row.productname || value;
+                            },
+
+
+                            editor: {
+                                type: 'combogrid',
+                                options: {
+                                    panelWidth: 500,
+                                    //valueField: 'productid',
+                                    //textField: 'productname',
+                                    idField: 'itemid',
+                                    textField: 'productname',
+                                    columns: [[
+                                        { field: 'itemid', title: 'Item ID', width: 80 },
+                                        { field: 'productname', title: 'Product', width: 120 },
+                                        { field: 'listprice', title: 'List Price', width: 80, align: 'right' },
+                                        { field: 'unitcost', title: 'Unit Cost', width: 80, align: 'right' },
+                                        { field: 'attr1', title: 'Attribute', width: 200 },
+                                        { field: 'status', title: 'Status', width: 60, align: 'center' }
+                                    ]],
+                                    data: [{ "productid": "FI-SW-01", "productname": "Koi", "unitcost": 10.00, "status": "P", "listprice": 36.50, "attr1": "Large", "itemid": "EST-1" },
+                                    { "productid": "K9-DL-01", "productname": "Dalmation", "unitcost": 12.00, "status": "P", "listprice": 18.50, "attr1": "Spotted Adult Female", "itemid": "EST-10" },
+                                    { "productid": "RP-SN-01", "productname": "Rattlesnake", "unitcost": 12.00, "status": "P", "listprice": 38.50, "attr1": "Venomless", "itemid": "EST-11" },
+                                    { "productid": "RP-SN-01", "productname": "Rattlesnake", "unitcost": 12.00, "status": "P", "listprice": 26.50, "attr1": "Rattleless", "itemid": "EST-12" },
+                                    { "productid": "RP-LI-02", "productname": "Iguana", "unitcost": 12.00, "status": "P", "listprice": 35.50, "attr1": "Green Adult", "itemid": "EST-13" },
+                                    { "productid": "FL-DSH-01", "productname": "Manx", "unitcost": 12.00, "status": "P", "listprice": 158.50, "attr1": "Tailless", "itemid": "EST-14" },
+                                    { "productid": "FL-DSH-01", "productname": "Manx", "unitcost": 12.00, "status": "P", "listprice": 83.50, "attr1": "With tail", "itemid": "EST-15" },
+                                    { "productid": "FL-DLH-02", "productname": "Persian", "unitcost": 12.00, "status": "P", "listprice": 23.50, "attr1": "Adult Female", "itemid": "EST-16" },
+                                    { "productid": "FL-DLH-02", "productname": "Persian", "unitcost": 12.00, "status": "P", "listprice": 89.50, "attr1": "Adult Male", "itemid": "EST-17" },
+                                    { "productid": "AV-CB-01", "productname": "Amazon Parrot", "unitcost": 92.00, "status": "P", "listprice": 63.50, "attr1": "Adult Male", "itemid": "EST-18" }],
+                                    required: true
+                                }
+                            }
+                        },
+                        { field: 'listprice', title: 'List Price', width: 80, align: 'right', editor: { type: 'numberbox', options: { precision: 1 } } },
+                        { field: 'unitcost', title: 'Unit Cost', width: 80, align: 'right', editor: 'numberbox' },
+                        { field: 'attr1', title: 'Attribute', width: 180, editor: 'text' },
+                        {
+                            field: 'status', title: 'Status', width: 50, align: 'center',
+                            editor: {
+                                type: 'checkbox',
+                                options: {
+                                    on: 1,
+                                    off: 0
+                                }
+                            }
+                        }
+                    ]]
+                });
+
+
+                function endEditing() {
+                    if (editIndex == undefined) { return true }
+                    if ($('#dg').datagrid('validateRow', editIndex)) {
+                        $('#dg').datagrid('endEdit', editIndex);
+                        editIndex = undefined;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+
+                function onEndEdit(index, row) {
+                    var ed = $(this).datagrid('getEditor', {
+                        index: index,
+                        field: 'productid'
+                    });
+                    row.productname = $(ed.target).combobox('getText');
+                }
+                function onClickCell(index, field) {
+                    if (editIndex != index) {
+                        if (endEditing()) {
+                            $('#dg').datagrid('selectRow', index)
+                                .datagrid('beginEdit', index);
+                            var ed = $('#dg').datagrid('getEditor', { index: index, field: field });
+                            if (ed) {
+                                ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                            }
+                            editIndex = index;
+                        } else {
+                            setTimeout(function () {
+                                $('#dg').datagrid('selectRow', editIndex);
+                            }, 0);
+                        }
+                    }
+                }
+
+                function append() {
+                    if (endEditing()) {
+                        $('#dg').datagrid('appendRow', { status: 'P' });
+                        editIndex = $('#dg').datagrid('getRows').length - 1;
+                        $('#dg').datagrid('selectRow', editIndex)
+                            .datagrid('beginEdit', editIndex);
+                    }
+                }
+
+                function accept() {
+                    if (endEditing()) {
+                        $('#dg').datagrid('acceptChanges');
+                    }
+                }
+
+                function removeit() {
+                    if (editIndex == undefined) { return }
+                    $('#dg').datagrid('cancelEdit', editIndex)
+                        .datagrid('deleteRow', editIndex);
+                    editIndex = undefined;
+                }
+
+                function reject() {
+                    $('#dg').datagrid('rejectChanges');
+                    editIndex = undefined;
+                }
+                function getChanges() {
+                    var rows = $('#dg').datagrid('getChanges');
+                    alert(rows.length + ' rows are changed!');
+                }
+
+                $('#btn-append').click(function () {
+                    append();
+                });
+
+
+                $('#btn-accept').click(function () {
+                    accept();
+                });
+
+                $('#btn-reject').click(function () {
+                    reject();
+                });
+
+                $('#btn-removeit').click(function () {
+                    removeit();
+                });
+
+                $('#btn-getchanges').click(function () {
+                    getChanges();
+                });
+
+                $('#btn-save').click(function () {
+                    console.log($('#dg').datagrid('acceptChanges'));
+                    var data = $('#dg').datagrid('getData');
+                    console.log(data);
+                });
+
+                $('#btn-choose_business_unit').click(function () {
+                    var btn = $(this);
+                    btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+                    $('.modal-container').load($.helper.resolve("~/Core/BusinessUnit/Lookup/"), function (result) {
+                        var $modal = $('#m_modal_business_unit');
+
+                        $modal.modal({ show: true });
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                        var $tree = $('#tree_businessunit');
+                        $modal.find('#btn-addselected').click(function () {
+                            var selected = $tree.jstree("get_selected", true)[0];
+                            console.log(selected);
+                            $('input[name="business_unit_id"]').val(selected.id);
+                            $('input[id="business_unit_id"]').val(selected.text);
+                            $modal.modal('toggle');
+                        });
+
+
+                        //$("#m_modal_business_unit").on('hidden.bs.modal', function () {
+
+                        //});
+                    });
+
+
+
+                });
+
+
+
+                return {
+                    init: function () {
+                        //initialize
+
+                    }
+                };
+            }();
+
+
+
+            $(document).ready(function () {
+                pageFunction.init();
+            });
+        }(jQuery));
+
+
+    </script>
+}
+
+

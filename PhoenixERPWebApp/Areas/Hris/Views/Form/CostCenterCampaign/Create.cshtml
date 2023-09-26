@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "CostCenterCampaign";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="CostCenterCampaignFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="address">address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="address" id="address"  maxlength="255" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="cost">cost</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="cost" id="cost"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_date">end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_date" id="end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="external_client_id">external_client_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="external_client_id" id="external_client_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="notes" id="notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="phone_no">phone_no</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="phone_no" id="phone_no"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_date">start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="start_date" id="start_date"   type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/CostCenterCampaign" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/CostCenterCampaign.create.js"></script>
+}

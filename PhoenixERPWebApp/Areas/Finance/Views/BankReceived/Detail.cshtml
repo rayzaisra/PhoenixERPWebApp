@@ -1,0 +1,1844 @@
+﻿@model PhoenixERPWebApp.Models.BankReceived
+@{
+    ViewData["Title"] = "Bank Received Detail";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    DateTime? EffectiveDate = DateTime.Now;
+    DateTime? EndDate = DateTime.Now;
+}
+@*<style>
+    .k-footer-template {
+        text-align: right;
+    }
+</style>*@
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Bank Received</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="BankReceived" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text">Bank Received</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="Detail" asp-controller="BankReceived" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="Detail" asp-controller="BankReceived" asp-area="Finance" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title"> 
+                            <h3 class="m-portlet__head-text m--font-success">Bank Received</h3>&nbsp;
+                                @if (!string.IsNullOrEmpty(Model.Status))
+                                {
+                                    @if (Model.Status == @PhoenixERPWebApp.Models.PaymentRequestStatus.Open)
+                                    { <span class="m-badge m-badge--info m-badge--wide" id="status">@Model.StatusDesc</span> }
+                                    else if (Model.Status == @PhoenixERPWebApp.Models.PaymentRequestStatus.PayBalance)
+                                    { <span class="m-badge m-badge--focus m-badge--wide" id="status">@Model.StatusDesc</span> }
+                                    else if (Model.Status == @PhoenixERPWebApp.Models.PaymentRequestStatus.WaitingApproval)
+                                    { <span class="m-badge m-badge--warning m-badge--wide" id="status">@Model.StatusDesc</span> }
+                                    else if (Model.Status == @PhoenixERPWebApp.Models.PaymentRequestStatus.Reject)
+                                    { <span class="m-badge m-badge--danger m-badge--wide" id="status">@Model.StatusDesc</span> } 
+                                    else if (Model.Status == @PhoenixERPWebApp.Models.PaymentRequestStatus.Complete)
+                                    { <span class="m-badge m-badge--success m-badge--wide" id="status">@Model.StatusDesc</span> }
+                                    else if (Model.Status == @PhoenixERPWebApp.Models.PaymentRequestStatus.Reconsiliation)
+                                    { <span class="m-badge m-badge--dark m-badge--wide" id="status">@Model.StatusDesc</span> }
+                                    else
+                                    { <span class="m-badge m-badge--info m-badge--wide" id="status">@Model.StatusDesc</span> }
+                                }
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    @*<div class="m-form__group">*@
+                    <form id="form" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="InvoiceReceivableId" />
+                        @*<input type="hidden" asp-for="BusinessUnitId" />*@
+                        <input type="hidden" asp-for="LegalEntityId" />
+                        <input type="hidden" asp-for="JobId" />
+                        <input type="hidden" asp-for="PurchaseRequestId" />
+                        <input type="hidden" asp-for="ReferenceNumberId" />
+                        <input type="hidden" asp-for="DueDate" />
+                        <input type="hidden" asp-for="Status" />
+                        @*<input type="hidden" asp-for="PaymentRequestNumber" />*@
+                        <input type="hidden" asp-for="PaymentRequestDate" />
+                        @*<input type="hidden" asp-for="MainServiceCategoryId" />*@
+                        <input type="hidden" asp-for="SourceDoc" />
+                        <input type="hidden" asp-for="Ca_CashAdvanceId" />
+                        <input type="hidden" asp-for="PairingGroupId" />
+                        <input type="hidden" asp-for="isAdvancePayment" id="isAdvancePay" />
+                        <input type="hidden" asp-for="Balance" id="tempBalanceValue" />
+                        <input type="hidden" asp-for="Inv_VendorId" />
+                        <input type="hidden" asp-for="AffilitionId" />
+                        <input type="hidden" asp-for="CurrencySymbol" />  
+                        <input type="hidden" asp-for="CurrencyIdDefault" />  
+                        <input type="hidden" asp-for="CurrencySymbolDefault" />  
+
+                        <div class="row" id="payment_request_data_detail" style="display:block">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="payment_request_detail" role="tablist"> 
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="payment_request_detail_head" data-toggle="collapse" href="#payment_request_detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa fa-briefcase"></i></span>
+                                            <span class="m-accordion__item-title">List Of Bank Received</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body collapse show" id="payment_request_detail_body" role="tabpanel" aria-labelledby="payment_request_detail_head" data-parent="#payment_request_detail" style="">
+                                            <div class="m-accordion__item-content">
+                                                @if (Model.SourceDoc != "")
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-lg-12 m-form__group-sub">
+                                                            <div class="form-group">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.AccountReceivable>()
+                                                                    .Name("grid-multi-ar")
+                                                                    .ToolBar(x =>
+                                                                    {
+                                                                        if (Model.Status == PhoenixERPWebApp.Models.PaymentRequestStatus.Open)
+                                                                        {
+                                                                            x.ClientTemplateId("grid-toolbar-template");
+                                                                        }
+
+                                                                    })
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        if(Model.Status == PhoenixERPWebApp.Models.PaymentRequestStatus.Open)
+                                                                        {
+                                                                            columns.Bound("").ClientTemplateId("btnAction-template").Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(60);
+                                                                        }
+                                                                        columns.Bound(p => p.AccountReceivableNumber).Title("Reff Number").ClientTemplateId("reffno-template").Width(130);
+                                                                        columns.Bound(p => p.TransactionDate).Width(100);
+                                                                        columns.Bound(p => p.BusinessUnitName).Width(150);
+                                                                        columns.Bound(p => p.LegalEntity).Width(150);
+                                                                        columns.Bound(p => p.ClientName).Width(150);
+                                                                        columns.Bound(p => p.ClientBrand).Width(150);
+                                                                        columns.Bound(p => p.CurrencyName).Width(150);
+                                                                        columns.Bound(p => p.Amount).ClientTemplate("#if(CurrencySymbol!=null && Amount!=null){# #=CurrencySymbol# #}# #if(Amount!=null){# #=kendo.format('{0:n2}', Amount)# #}#").Width(150).HtmlAttributes(new { style = "text-align:right;" });
+                                                                    })
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                        .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(10)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model => { model.Id(p => p.Id); })
+                                                                        .Read(read => read.Action("ReadDetailAR", "BankReceived").Data("ar_params"))
+                                                                    )
+                                                                    .NoRecords()
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col-lg-8"><div class="pull-right">Total Bank Received</div></div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                @(Html.Kendo().NumericTextBoxFor(m => m.Amount)
+                                                                    .Spinners(false)
+                                                                    .Format("{0:N0}")
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%; text-align: right;padding-right: 10px",
+                                                                        @readonly = "readonly"
+                                                                    }
+                                                                ))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="display:none">
+                                                        <div class="col-lg-8"><div class="pull-right">Grand Total</div></div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                @(Html.Kendo().NumericTextBoxFor(m => m.TotalAmount)
+                                                                    .Spinners(false)
+                                                                    .Format("{0:N0}")
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%; text-align: right;padding-right: 10px",
+                                                                        @readonly = "readonly"
+                                                                    }
+                                                                ))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <hr />
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row" id="payment_pay_to_data" style="display:block">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="payment_pay_to" role="tablist">
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="payment_form_detail_head" data-toggle="collapse" href="#payment_payto_detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa fa-briefcase"></i></span>
+                                            <span class="m-accordion__item-title">Received From / Transfer From</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body collapse show" id="payment_payto_detail_body" role="tabpanel" aria-labelledby="payment_payto_detail__head" data-parent="#payment_pay_to" style="">
+                                            <div class="m-accordion__item-content">
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Received Type <span class="req">*</span></label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.PayToType)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                    .OptionLabel($"Choose pay to type..")
+                                                                    .Events(e =>
+                                                                    {
+                                                                        e.Change("onChangeDDLPayToType");
+                                                                    })
+                                                                    .DataSource(source =>
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetPayToType", "BankReceived", new { area = "Finance" });
+                                                                        })
+                                                                        .ServerFiltering(false)
+                                                                    ))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                         <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Account COA</label> <span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.PaytoCoaId)//coa
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .OptionLabel($"Choose a COA..")
+                                                                    .HtmlAttributes(new { style = "width:100%;", @required = "required", @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+
+                                                <div class="row">                                                        
+                                                    <div class="col-lg-6" id="bankoption" style="display:none">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Bank Account <span class="req">*</span></label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.PaytoBank)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetDDLBanksList", "Dropdown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .Events(e =>
+                                                                    {
+                                                                        e.Change("onSelectPayToBank");
+                                                                    })
+                                                                    .OptionLabel($"Choose a Bank Name..")
+                                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6" id="pettycashoption" style="display:none">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Petty Cash <span class="req">*</span></label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.PayToPettyCash)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetPettyCash", "Dropdown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .Events(e =>
+                                                                    {
+                                                                        e.Change("onSelectPayToPettyCash");
+                                                                    })
+                                                                    .OptionLabel($"Choose a Petty Cash..")
+                                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6" id="vendoroption" style="display:none">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Client Name <span class="req">*</span></label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.PayToVendor)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                                    .OptionLabel($"Choose a Vendor Name..")
+                                                                    .Events(e =>
+                                                                    {
+                                                                        e.Change("onSelectDDLVendor");
+                                                                    })
+                                                                    .DataSource(source =>
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetDDLClient", "Dropdown");
+                                                                        })
+                                                                        .ServerFiltering(false)
+                                                                    ))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6" style="display:none">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Account Number</label><span id="sVendor_Brand_PayTo" class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @Html.Kendo().TextBoxFor(i => i.PayToAccountNumber).HtmlAttributes(new { @readonly = "readonly", @style = "width:100%;" })
+
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+
+                                                <div class="row" style="display:none;">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Bank Name</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @Html.Kendo().TextBoxFor(i => i.PaytoBankName).HtmlAttributes(new { style = "width:100%", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" id="payment_form_data_detail" style="display:block">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="payment_form_detail" role="tablist">
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="payment_form_detail_head" data-toggle="collapse" href="#payment_form_detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa fa-briefcase"></i></span>
+                                            <span class="m-accordion__item-title">Received To</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body collapse show" id="payment_form_detail_body" role="tabpanel" aria-labelledby="payment_request_detail_head" data-parent="#payment_form_detail" style="">
+                                            <div class="m-accordion__item-content">                                               
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Bank / Petty cash</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                <div class="input-group">
+                                                                    @(Html.Kendo().DropDownListFor(i => i.Type)
+                                                                           .DataTextField("Text")
+                                                                           .DataValueField("Value") 
+                                                                           .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                           .OptionLabel($"Choose a type..")
+                                                                            .Filter(FilterType.Contains)
+                                                                           .Events(e =>
+                                                                           {
+                                                                               e.Change("onChangeDDLType");
+                                                                           })
+                                                                           .DataSource(source =>
+                                                                               source.Read(read =>
+                                                                               {
+                                                                                   read.Action("GetType", "BankReceived", new { area = "Finance" });
+                                                                               })
+                                                                               .ServerFiltering(false)
+                                                                    ))
+                                                                    <div id="banktooption" style="width:100%">
+                                                                        @(Html.Kendo().DropDownListFor(m => m.BankId)
+                                                                            .DataTextField("Text")
+                                                                            .DataValueField("Value")
+                                                                            .Filter(FilterType.Contains)
+                                                                            .DataSource(source =>
+                                                                            {
+                                                                                source.Read(read =>
+                                                                                {
+                                                                                    read.Action("GetDDLBankByLegalEntity", "Dropdown", new { area = "Finance" }).Data("bank_params");
+                                                                                });
+                                                                            })
+                                                                            .Events(e =>
+                                                                            {
+                                                                                e.Change("onSelectBank");
+                                                                            })
+                                                                            .OptionLabel($"Choose a Bank..")
+                                                                            .HtmlAttributes(new { style = "width:100%;padding-top:10px;" })
+                                                                        )
+                                                                    </div>
+                                                                    <div id="pettycashtooption" style="width:100%; display:none;">
+                                                                        @(Html.Kendo().DropDownListFor(i => i.PettyCashId)
+                                                                            .DataTextField("Text")
+                                                                            .DataValueField("Value")
+                                                                            .Filter(FilterType.Contains)
+                                                                            .HtmlAttributes(new { style = "width:100%;padding-top:10px;" })
+                                                                            .OptionLabel($"Choose a Petty Cash..")
+                                                                            .Events(e =>
+                                                                            {
+                                                                                e.Change("onChangeDDLPettyCash");
+                                                                            })
+                                                                            .DataSource(source =>
+                                                                                source.Read(read =>
+                                                                                {
+                                                                                    read.Action("GetPettyCashByLegalEntity", "Dropdown", new { area = "Finance" }).Data("bank_params");
+                                                                                })
+                                                                                .ServerFiltering(false)
+                                                                            ))
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Account COA</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(m => m.AccountId)//coa
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source =>
+                                                                        {
+                                                                            source.Read(read =>
+                                                                            {
+                                                                                read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                                            });
+                                                                        })
+                                                                        .OptionLabel($"Choose a COA..")
+                                                                        .HtmlAttributes(new { style = "width:100%;", @required = "required", @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Account Number</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().TextBoxFor(m => m.AccountNumber).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly", style = "width:100%" }))
+                                                                @*<input type="hidden" asp-for="LegalEntityId" id="LegalEntityId" />*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Business Unit</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.BusinessUnitId)//
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source => source
+                                                                        .Custom()
+                                                                        .Transport(transport => transport
+                                                                        .Read(read =>
+                                                                        {
+                                                                            read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                                                        }))
+                                                                        .ServerFiltering(false)
+                                                                    )
+                                                                    .OptionLabel($"Choose a Business Unit..")
+                                                                    .HtmlAttributes(new { style = "width:100%;", @required = "required" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Currency</label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.CurrencyId)
+                                                                      .DataTextField("Text")
+                                                                      .DataValueField("Value")
+                                                                      .Filter(FilterType.Contains)
+                                                                      .OptionLabel("Choose a currency")
+                                                                      .Events(e => e.Select("currency_select"))
+                                                                      .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                                                      .DataSource(source => source
+                                                                          .Custom()
+                                                                          .Transport(transport => transport
+                                                                          .Read(read =>
+                                                                          {
+                                                                              read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                                                          }))
+                                                                          .ServerFiltering(false)
+                                                                      ))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Exchange</label><span class="req">*</span>&nbsp; <a href="javascript:void(0);" onclick="window.open('@Url.RouteUrl(new { action = "Index", controller = "Currency", area="Finance" })?isView=true', '_blank','toolbar=yes,scrollbars=yes,resizable=yes,top=150,left=280,width=800,height=400');" id="linkCurrency" style="text-decoration:underline !important;">View</a>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().NumericTextBoxFor(m => m.ExchangeRate).Spinners(false).HtmlAttributes(new { @readonly = "readonly", style = "width:100%; text-align:right; padding-right:10px" }))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" id="payment_detail_data" style="display:block">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="payment_detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="payment_form_detail_head" data-toggle="collapse" href="#payment_detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa fa-briefcase"></i></span>
+                                            <span class="m-accordion__item-title">Received Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body collapse show" id="payment_detail_body" role="tabpanel" aria-labelledby="payment_request_detail_head" data-parent="#payment_detail" style="">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Date</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @Html.Kendo().DatePickerFor(i => i.PaymentRequestDate).Format("dd MMM yyyy").HtmlAttributes(new { style = "width:100%", @Id = "date_pay_detail", @required = "required" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Received Amount</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @Html.Kendo().NumericTextBoxFor(i => i.AmountPay).Spinners(false).HtmlAttributes(new { @required = "required", @style = "width:100%; text-align: right;padding-right: 10px" }).Events(e => e.Change("Calculate"))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Tax Payable Coa</label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(m => m.TaxPayCoaId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .Events(e => e.Change("DDLTaxCoaChange"))
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .OptionLabel($"Choose a COA..")
+                                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Tax Payable Amount</label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().NumericTextBoxFor(m => m.TaxPayable)
+                                                                    .Spinners(false)
+                                                                    //.Format("{0:N0}")
+                                                                    .Events(e => e.Change("Calculate"))
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%; text-align: right;padding-right: 10px",
+                                                                        @readonly = "readonly"
+                                                                    }
+                                                                ))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Bank Charges</label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(i => i.BankChargesCoaId)//coa
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .Events(e => e.Change("OnChangeCoaBankCharges"))
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .OptionLabel("Choose a COA..")
+                                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Charges</label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @Html.Kendo().NumericTextBoxFor(i => i.Charges).Spinners(false).HtmlAttributes(new { @style = "width:100%; text-align: right;padding-right: 10px", @readonly = "readonly" }).Events(e => e.Change("Calculate"))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Payment Type</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().DropDownListFor(m => m.PaymentTypeId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetPaymentType", "Dropdown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .OptionLabel($"Choose Payment Type..")
+                                                                    .HtmlAttributes(new { style = "width:100%;", @required = "required" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>Total Received Amount</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().NumericTextBoxFor(i => i.TotalAmountPay).Spinners(false).HtmlAttributes(new { style = "width:100%; text-align: right;padding-right: 10px", @required = "required", @readonly = "readonly" }))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-4">
+                                                                <label>CR Number</label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                @(Html.Kendo().TextBoxFor(i => i.PaymentRequestNumber).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" }))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-2">
+                                                                <label>Description</label><span class="req">*</span>
+                                                            </div>
+                                                            <div class="col-lg-10">
+                                                                @Html.TextAreaFor(x => x.Remarks, new { style = "height:150px;width:100%", @required = "required" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" id="journal_data_detail" style="display:block">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="journal_detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="journal_detail_head" data-toggle="collapse" href="#journal_detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa fa-file"></i></span>
+                                            <span class="m-accordion__item-title">Journal Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="journal_detail_body" role="tabpanel" aria-labelledby="journal_detail_head" data-parent="#journal_detail" style="">
+                                            <div class="m-accordion__item-content">
+                                                
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.BankReceivedDetailJournal>()
+                                                                .Name("gridJournalEntry")
+                                                                .ToolBar(x =>
+                                                                {
+                                                                    if (ViewBag.CreateJournal == true)
+                                                                    {
+                                                                        x.Create();
+                                                                    }
+
+                                                                })
+                                                                .Columns(columns =>
+                                                                {
+                                                                    if (ViewBag.CreateJournal == true)
+                                                                    {
+                                                                        columns.Command(command =>
+                                                                        {
+                                                                            command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                            command.Destroy().Text(" ");
+                                                                        }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                    }
+
+                                                                    columns.Bound(p => p.TransactionDate).Title("Date").EditorTemplateName("Date").Width(100);
+                                                                    columns.Bound(p => p.CoaId).ClientTemplate("#:AccountName == null ? '' : AccountName #").EditorTemplateName("Finance/Journal/AccountIdDropdown").Width(200);
+                                                                    columns.Bound(p => p.Description).Width(250).ClientFooterTemplate("TOTAL").FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                    columns.Bound(p => p.Condition).EditorTemplateName("Finance/Journal/ConditionDropdown").Width(100);
+                                                                    columns.Bound(p => p.Debit).ClientTemplate("#=kendo.format('{0:n2}', JEValue(Debit))#").Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sumJEDebit())#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                    columns.Bound(p => p.Credit).ClientTemplate("#=kendo.format('{0:n2}', JEValue(Credit))#").Width(150).ClientFooterTemplate("#=kendo.format('{0:n2}', sumJECredit())#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                })
+                                                                //.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                //.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                //    .Extra(false)
+                                                                //    .Operators(operators => operators
+                                                                //    .ForString(str => str.Clear()
+                                                                //        .Contains("Contains")
+                                                                //        .StartsWith("Start sWith")
+                                                                //        .EndsWith("End sWith")
+                                                                //    )))
+                                                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .NoRecords()
+                                                                .Editable(x => x.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model => { model.Id(p => p.Id); })
+                                                                    .Read(read => read.Action("readJournalEntry", "BankReceived").Data("grid_params"))
+                                                                    .Create(create => create.Action("createJournalEntry", "BankReceived"))
+                                                                    .Update(update => update.Action("updateJournalEntry", "BankReceived"))
+                                                                    .Destroy(destroy => destroy.Action("destroyJournalEntry", "BankReceived"))
+                                                                )
+                                                                .Events(evt=>evt.Save("save_event").Edit("edit_event"))
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                @if (ViewBag.CreateJournal == true)
+                                                {
+                                                    @*<button type="button" id="btn-journal" onclick="CreateJournal()" class="btn btn-primary edit"> Create Journal</button>
+                                                    <br /><br />*@
+                                                        <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <button type="button" id="btn-journal"  onclick="CreateJournal()" class="btn btn-primary edit"><span class="fa fa-plus"></span> Create Journal</button>
+                                                            <div class="pull-right">
+                                                                <h3 class="m--font-info"><span id="lblBalance"></span></h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br/>
+                                                }
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Journal>()
+                                                              .Name("gridjournal")
+                                                              .Columns(columns =>
+                                                              {
+                                                                  if (ViewBag.CreateJournal == true)
+                                                                  {
+                                                                      columns.Command(command =>
+                                                                      {
+                                                                          command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                      }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                  }
+                                                                  columns.Bound(p => p.CodeRec).Width(120);
+                                                                  columns.Bound(p => p.AccountName).Width(200);
+                                                                  columns.Bound(p => p.JobIdName).Width(250);
+                                                                  columns.Bound(p => p.Description).Width(200);
+                                                                  columns.Bound(p => p.DivisiName).Width(200);
+                                                                  columns.Bound(p => p.LegalEntityName).Width(200).ClientFooterTemplate("TOTAL").FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                  //columns.Bound(p => p.OriginalAmount).ClientTemplate("#if(CurrencySymbolOriginal!=null && OriginalAmount!=null){# #=CurrencySymbolOriginal# #}# #if(OriginalAmount!=null){# #=kendo.format('{0:n2}', OriginalAmount)# #}#").Width(160).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                  columns.Bound(p => p.Debit).ClientTemplate("#if(CurrencySymbol!=null && Debit!=null){# #=CurrencySymbol# #}# #if(Debit!=null){# #=kendo.format('{0:n2}', Debit)# #}#").Width(160).ClientFooterTemplate("#=sumJournal(sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                  columns.Bound(p => p.Credit).ClientTemplate("#if(CurrencySymbol!=null && Credit!=null){# #=CurrencySymbol# #}# #if(Credit!=null){# #=kendo.format('{0:n2}', Credit)# #}#").Width(160).ClientFooterTemplate("#=sumJournal(sum)#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                              })
+                                                              .NoRecords()
+                                                              //.Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                              .DataSource(dataSource => dataSource
+                                                                  .Ajax()
+                                                                  .Aggregates(aggregates =>
+                                                                  {
+                                                                      aggregates.Add(p => p.Debit).Sum();
+                                                                      aggregates.Add(p => p.Credit).Sum();
+                                                                  })
+                                                                  .PageSize(10)
+                                                                  .Events(events => events.Error("errorHandler"))
+                                                                  .Model(model =>
+                                                                  {
+                                                                      model.Id(p => p.Id);
+                                                                      model.Field(p => p.CodeRec).Editable(false);
+                                                                      model.Field(p => p.AccountName).Editable(false);
+                                                                      model.Field(p => p.JobIdName).Editable(false);
+                                                                      model.Field(p => p.DivisiName).Editable(false);
+                                                                      model.Field(p => p.LegalEntityName).Editable(false);
+                                                                      model.Field(p => p.Debit).Editable(false);
+                                                                      model.Field(p => p.Credit).Editable(false);
+                                                                  })
+                                                                  .Read(read => read.Action("ReadJournal", "BankReceived").Data("ar_params"))
+                                                                  .Update(update => update.Action("updateJournal", "BankReceived"))
+                                                              )
+                                                        )
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row">
+                                    <div class="col-lg-2">
+                                        <label>Remark</label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        @Html.TextAreaFor(x => x.LogDescription, new { style = "height:100px;width:100%" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <partial name="_HistoryApproval" /> <br />
+                        <partial name="_StatusLog" /> <br />
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                    {
+                                        @if (Model.Status == "" || string.IsNullOrEmpty(Model.Status) || Model.Status == PhoenixERPWebApp.Models.PaymentRequestStatus.Open || Model.isAdvancePayment == true)
+                                        {
+                                            <button type="button" id="btnSave" class="btn btn-success">Save</button> 
+                                        }
+                                        <button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>
+                                    }
+                                    else if (ViewBag.processApprove == true)
+                                    {
+                                        <button type="button" id="btnReject" class="btn btn-danger"><span class="fa fa-ban"></span> Revise</button>
+                                        <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                        @if (Model.Status == PhoenixERPWebApp.Models.PaymentRequestStatus.Complete)
+                                        {
+                                            <button type="button" id="btn-reconsiliation" class="btn btn-primary">Reconciliation</button>
+                                        }
+                                    }
+                                    <a asp-action="Index" asp-controller="BankReceived" asp-area="Finance" class="fakelink btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_ARList" />
+
+<script id="reffno-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='LinktoReffNumber(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'>#=AccountReceivableNumber#</span></a>
+</script> 
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='deleteGridRowARList(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+</script>
+<script id="grid-toolbar-template" type="text/x-kendo-template">
+    <a class='k-button' href='javascript: void(0);' onclick='AddAR(this)'><span class='k-icon k-i-plus'></span>Add AR</a>
+</script>
+
+<script>
+    $(document).ready(function () {
+        ActionPayToType();
+        ActionType();
+        setCurrencyValue();
+
+        var grid = $("#grid-multi-ar").data("kendoGrid");
+        grid.dataSource.fetch(function () {
+            if (grid.dataSource.data().length > 0) {
+                $('#PaytoCoaId').data("kendoDropDownList").readonly();
+                $("#PayToType").data("kendoDropDownList").readonly();
+                $("#PayToVendor").data("kendoDropDownList").readonly();
+            } 
+        }); 
+
+        if ($('#Status').val() != '') {
+            DDLCurrencyChange();
+
+            //if ($("#PayToType").val() == "3") {
+            //    $("#PayToVendor").data("kendoDropDownList").readonly(true);
+            //    $('#PaytoCoaId').data("kendoDropDownList").readonly(); 
+            //} else {
+            //    //$('#AmountPay').data('kendoNumericTextBox').readonly(false);
+            //}
+
+            //if ($("#PayToVendor").val() != '') {
+            //    $("#PayToType").data("kendoDropDownList").readonly(true);
+            //    $('#PaytoCoaId').removeAttr("required");
+            //}
+
+            //if ($("#TaxPayCoaId").val() != "") {
+            //    $('#TaxPayable').data('kendoNumericTextBox').readonly(false);
+            //}
+
+            //if ($("#BankChargesCoaId").val() != "") {
+            //    $('#Charges').data('kendoNumericTextBox').readonly(false);
+            //}
+
+            // status != open
+            if (parseInt($('#Status').val()) > 1) {
+                $("[data-role]").each(function (index, el) {
+                    var widget = kendo.widgetInstance($(el));
+                    if (widget.enable) {
+                        widget.readonly();
+                    }
+                });
+                $('#Remarks').attr("readonly", "readonly");
+                $('.k-button').css('pointer-events', 'none');
+                $('#Charges').data('kendoNumericTextBox').readonly(true);
+            }
+        }
+    });
+
+    
+    function grid_params() { return { Id: $("#Id").val() };  } 
+    
+    function ar_params() {
+        return {
+            bankReceivableId: $("#Id").val()
+        }
+    }
+
+    function bank_params() {
+        var legalId = "";
+        var dataAR = $("#grid-multi-ar").data('kendoGrid').dataSource.data(); 
+        if (dataAR.length > 0) {
+            var item = dataAR[0];
+            legalId = item.LegalEntityId;
+        }
+
+        return {
+            legalEntityId: legalId
+        }
+    }
+    
+    function LinktoReffNumber(e) {
+        var item = dataItem(e);
+        window.open('@Url.Action("Detail", "AccountReceivable")?id=' + item.Id);
+    }
+
+    function deleteGridRowARList(e) {
+        swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: !0
+        }).then(function (ok) {
+            if (ok.value) { 
+                var item = dataItem(e);
+                $("#grid-multi-ar").data("kendoGrid").dataSource.remove(item);
+                 
+                var itemRow = $("#grid-multi-ar").data("kendoGrid").dataSource.data();
+                if (itemRow.length == 0) { 
+                    var paytoCoaid = $('#PaytoCoaId').data("kendoDropDownList");
+                    var coaidPayFrom = $('#AccountId').data("kendoDropDownList");
+                    var divIdPayFrom = $('#BusinessUnitId').data("kendoDropDownList");
+                    var PaytoVedor = $('#PayToVendor').data("kendoDropDownList"); 
+                    var currencyIdPayfrom = $('#CurrencyId').data("kendoDropDownList");
+                    var bankChargesCoaId = $('#BankChargesCoaId').data("kendoDropDownList");
+                     
+                    divIdPayFrom.enable(true);
+                    PaytoVedor.enable(true);
+                    currencyIdPayfrom.enable(true);
+
+                    bankChargesCoaId.value('');
+                    paytoCoaid.value('');
+                    coaidPayFrom.value('');
+                    divIdPayFrom.value('');
+                    PaytoVedor.value(''); 
+
+                    $("#Amount").data("kendoNumericTextBox").value(0);
+                    $("#TaxPayable").data("kendoNumericTextBox").value(0);
+                    $("#TotalAmount").data("kendoNumericTextBox").value(0);
+                    $("#AmountPay").data("kendoNumericTextBox").value(0);
+                    $("#TotalAmountPay").data("kendoNumericTextBox").value(0);
+                    $("#PaytoBankName").val(""); 
+
+                    $("#Charges").data("kendoNumericTextBox").value(0);
+                    $("#Charges").data("kendoNumericTextBox").readonly();
+                    $("#PayToType").data("kendoDropDownList").value("4");
+                    $("#PayToType").data("kendoDropDownList").readonly(false);
+                    $("#PaytoCoaId").data("kendoDropDownList").readonly(false);                    
+
+                    $('#PettyCashId').data("kendoDropDownList").value("");
+                    $('#BankId').data("kendoDropDownList").value("");
+                    $("#Type").data("kendoDropDownList").value("2");
+
+                    ActionPayToType();
+                    ActionType();
+
+                    $("#BankId").data("kendoDropDownList").dataSource.read();
+                    $("#PettyCashId").data("kendoDropDownList").dataSource.read();
+                }
+
+                CalculateAmount(); 
+            }
+        }).catch(swal.noop);
+    }
+
+    function SaveSelectedAR() {
+        var grid = $("#grid-choice-ar").data("kendoGrid");
+        var allSelected = grid.select();
+        if (allSelected.length < 1) {
+            swal('Warning', "At Lease Choose 1 AR Id, Please Choose more.", 'error');
+            return;
+        }
+
+        var rowDataItem = [];
+        var isError = false;
+        allSelected.each(function (index, row) {
+            var dataItem = grid.dataItem(row);
+            var dataAR = $("#grid-multi-ar").data('kendoGrid').dataSource.data()[0];
+            var rowItem = rowDataItem[0];
+            if (dataAR != null || rowItem != null) {
+                var VendorId, BusinessUnitId, LegalEntityId, MainserviceCategoryId, CurrencyId;
+                if (dataAR != null) {
+                    //VendorId = dataAR.VendorId;
+                    //BusinessUnitId = dataAR.BusinessUnitId;
+                    LegalEntityId = dataAR.LegalEntityId;
+                    //MainserviceCategoryId = dataAR.MainserviceCategoryId;
+                    CurrencyId = dataAR.CurrencyId;
+                } else if (rowItem != null) {
+                    //VendorId = rowItem.VendorId;
+                    //BusinessUnitId = rowItem.BusinessUnitId;
+                    LegalEntityId = rowItem.LegalEntityId;
+                    //MainserviceCategoryId = rowItem.MainserviceCategoryId;
+                    CurrencyId = rowItem.CurrencyId;
+                }
+
+                if (//dataItem.VendorId == VendorId && dataItem.BusinessUnitId == BusinessUnitId &&
+                    dataItem.LegalEntityId == LegalEntityId &&
+                    //dataItem.MainserviceCategoryId == MainserviceCategoryId &&
+                    dataItem.CurrencyId == CurrencyId) {
+                    rowDataItem.push(dataItem);
+                } else {
+                    isError = true;
+                    //swal('Warning', "please choose the same vendor, currency, legal entity, business unit and main service category", 'error');
+                    swal('Warning', "please choose the same currency and legal entity", 'error');
+                    return;
+                }
+            } else {       
+                var paytoCoaid = $('#PaytoCoaId').data("kendoDropDownList");
+                var coaidPayFrom = $('#AccountId').data("kendoDropDownList");
+                var divIdPayFrom = $('#BusinessUnitId').data("kendoDropDownList");
+
+                var PaytoVedor = $('#PayToVendor').data("kendoDropDownList"); // vendor id
+                var currencyIdPayfrom = $('#CurrencyId').data("kendoDropDownList");
+
+                //$("#AmountPay").data("kendoNumericTextBox").readonly();
+
+                divIdPayFrom.value(dataItem.BusinessUnitId);
+                PaytoVedor.value(dataItem.ClientId);
+                paytoCoaid.value(dataItem.AccountId);
+                currencyIdPayfrom.value(dataItem.CurrencyId);
+                $('#ExchangeRate').data("kendoNumericTextBox").value(dataItem.ExchangeRate); 
+
+                $('#BusinessUnitId').val(dataItem.BusinessUnitId);
+                if (dataItem.BusinessUnitId !== "") {
+                    var BusinessUnitIdDropDownList = $("#BusinessUnitId").data("kendoDropDownList");
+                    BusinessUnitIdDropDownList.readonly();
+                }; 
+
+                $("#AffilitionId").val(dataItem.AffilitionId);
+                $('#PayToAccountNumber').val(dataItem.VendorAccountNumber);//todo
+                $("#PaytoBankName").val(dataItem.BankAccountDestination);
+                $('#PaytoCoaId').val(dataItem.AccountId);
+                $('#PaytoCoaId').removeAttr("required");   
+
+                divIdPayFrom.readonly();
+                PaytoVedor.readonly();
+                paytoCoaid.readonly();
+                currencyIdPayfrom.readonly(); 
+                rowDataItem.push(dataItem);
+
+                $("#CurrencyIdDefault").val(dataItem.CurrencyIdDefault);
+                $("#CurrencySymbol").val(dataItem.CurrencySymbol);
+                $("#CurrencySymbolDefault").val(dataItem.CurrencySymbolDefault);
+                DDLCurrencyChange();
+                setCurrencyValue();
+            }
+        });
+
+        if (!isError) {
+            $.each(rowDataItem, function (i, dataItem) {
+                //$("#grid-multi-ar").data('kendoGrid').dataSource.add(dataItem); 
+                $("#grid-multi-ar").data('kendoGrid').dataSource.pushCreate(dataItem);
+            });
+        }
+
+        CalculateAmount();
+      
+        $("#PayToType").data("kendoDropDownList").value("3");        
+        ActionPayToType();
+
+        $("#PayToType").data("kendoDropDownList").readonly(true);
+        $("#PaytoCoaId").data("kendoDropDownList").readonly(true);
+
+        $("#BankId").data("kendoDropDownList").dataSource.read();
+        $("#PettyCashId").data("kendoDropDownList").dataSource.read();
+       
+        if (isError)
+            $('#modal-choice-ar').modal('show');
+        else
+            $('#modal-choice-ar').modal('toggle');
+    }
+
+    function AddAR(e) {
+        var dataAR = $("#grid-multi-ar").data('kendoGrid').dataSource.data();
+        var isTrue = dataAR.length > 0;
+        if (isTrue) {
+            var item = dataAR[0];
+            $("#pop_legalEntityId").data("kendoDropDownList").value(item.LegalEntityId);
+            //$("#pop_BussinessUnitId").data("kendoDropDownList").value(item.BusinessUnitId);
+            //$("#pop_MainServiceCategoryId").data("kendoDropDownList").value(item.MainserviceCategoryId);
+            //$("#pop_ClientId").data("kendoDropDownList").value(item.VendorId);
+            $("#pop_CurrencyId").data("kendoDropDownList").value(item.CurrencyId);
+
+        } else {
+            $("#pop_legalEntityId").data("kendoDropDownList").value("");
+            //$("#pop_BussinessUnitId").data("kendoDropDownList").value("");
+            //$("#pop_MainServiceCategoryId").data("kendoDropDownList").value("");
+            //$("#pop_ClientId").data("kendoDropDownList").value("");
+            $("#pop_CurrencyId").data("kendoDropDownList").value("");
+            $("#pop_ARNumber").data("kendoDropDownList").value("");
+        }
+
+        $("#pop_legalEntityId").data("kendoDropDownList").readonly(isTrue);
+        //$("#pop_BussinessUnitId").data("kendoDropDownList").readonly(isTrue);
+        //$("#pop_MainServiceCategoryId").data("kendoDropDownList").readonly(isTrue);
+        //$("#pop_ClientId").data("kendoDropDownList").readonly(isTrue);
+        $("#pop_CurrencyId").data("kendoDropDownList").readonly(isTrue);
+
+        //$("#grid-choice-ar").data('kendoGrid').dataSource.data([]);
+        bindARList();
+        $('#modal-choice-ar').modal('show');
+    }
+    
+    function bindARList() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+
+        var grid = $("#grid-choice-ar").data("kendoGrid");
+        var ddlAp = $("#pop_ARNumber").data("kendoDropDownList");
+
+        //grid.dataSource.read();
+        //ddlAp.dataSource.read();
+
+        grid.dataSource.fetch(function () {
+            $("#grid-multi-ar").data("kendoGrid").dataSource.data().forEach(function (item) {
+                var item2 = grid.dataSource.get(item.Id);
+                if (item2 != null) {
+                    grid.dataSource.remove(item2);
+                }
+            });
+        });
+
+        //ddlAp.dataSource.fetch(function () {
+        //$("#grid-multi-ar").data("kendoGrid").dataSource.data().forEach(function (item) {
+        //    //ddlAp.dataSource.filter({ field: "Value", operator: "neq", value: item.Id });  
+        //    var item2 = ddlAp.dataSource.data()[0];
+        //    ddlAp.dataSource.remove(item2);
+        //    ddlAp.refresh();
+        //    ddlAp.dataSource.trigger("change");
+        //});
+        //});
+        mApp.unblock("#m_blockui_list");
+    };
+      
+    function CalculateAmount() {
+        var charges = $('#Charges').data("kendoNumericTextBox").value();
+        var taxPayable = $("#TaxPayable").data("kendoNumericTextBox").value();
+        var griddtldsData = $("#grid-multi-ar").data('kendoGrid').dataSource.data();
+
+        if (griddtldsData.length > 0) {
+            var amt = 0;
+            for (var i = 0; i < griddtldsData.length; i++) {
+                amt += griddtldsData[i].Amount;
+            }
+
+            $("#Amount").data("kendoNumericTextBox").value(amt);
+            $("#TotalAmount").data("kendoNumericTextBox").value(amt);
+            $("#AmountPay").data("kendoNumericTextBox").value(amt); 
+            $("#TotalAmountPay").data("kendoNumericTextBox").value(amt - charges - taxPayable);  
+        } else {
+            var amt = $("#AmountPay").data("kendoNumericTextBox").value();
+            $("#TotalAmountPay").data("kendoNumericTextBox").value(amt - charges - taxPayable);  
+        }
+    }
+    
+    function Calculate() {
+        var charges = $('#Charges').data("kendoNumericTextBox").value();
+        var taxPayable = $("#TaxPayable").data("kendoNumericTextBox").value();
+        var amt = $("#AmountPay").data("kendoNumericTextBox").value();
+        $("#TotalAmountPay").data("kendoNumericTextBox").value(amt - charges - taxPayable); 
+    }
+    
+    function DDLCurrencyChange() {  
+        if ($('#CurrencyId').data("kendoDropDownList").value() == $("#CurrencyIdDefault").val() &&
+            $('#CurrencyId').data("kendoDropDownList").value() != "") {
+            $("#ExchangeRate").data("kendoNumericTextBox").value("1");
+            $('#ExchangeRate').data("kendoNumericTextBox").readonly();
+        }
+        else {
+            $('#ExchangeRate').data("kendoNumericTextBox").readonly(false);
+        } 
+    }
+        
+    function currency_select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;            
+                 mApp.block("#m_blockui_list", {
+                        overlayColor: "#000000",
+                        type: "loader",
+                        state: "primary",
+                        message: "Processing..."
+                    });
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    data: { id: dataItem.Value },
+                    url: "@Url.Action("Get", "Currency",new { area="Finance"})",
+                    success: function (result) {
+                        if (result != null) {                            
+                            $("#CurrencySymbol").val(result.CurrencySymbol);
+                            $("#CurrencyIdDefault").val(result.CurrencyIdDefault);
+                            $("#CurrencySymbolDefault").val(result.CurrencySymbolDefault);
+
+                            if (dataItem.Value == result.CurrencyIdDefault) {
+                                    $("#ExchangeRate").data("kendoNumericTextBox").value("1");
+                                    $('#ExchangeRate').data("kendoNumericTextBox").readonly();
+                             }
+                             else { 
+                                    $('#ExchangeRate').data("kendoNumericTextBox").readonly(false);
+                            }
+
+                            setCurrencyValue();
+
+                            //var dataSource = $("#treelist").data("kendoGrid").dataSource;
+                            //var view = dataSource.view();
+                            //for (var i = 0; i < view.length; i++) { 
+                            //    view[i].set("CurrencySymbol", result.CurrencySymbol); 
+                            //}
+                        }
+                    },
+                    error: function (e, t, s) {
+                        console.log(e)
+                        mApp.unblock("#m_blockui_list");
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblock("#m_blockui_list");
+                }, 2e3)); 
+        }
+    }
+
+    function onChangeDDLPayToType() {
+        //cleansing data
+        $('#PaytoCoaId').data("kendoDropDownList").value("");
+        $('#PaytoBank').data("kendoDropDownList").value("");
+        $('#PayToVendor').data("kendoDropDownList").value("");
+        $("#PayToAccountNumber").val("");  
+        $("#PaytoBankName").val("");
+
+        ActionPayToType(); 
+    }
+
+    function ActionPayToType() {
+        if ($("#PayToType").val() == "1") {  //petty cash     
+            $("#pettycashoption").css("display", "block");
+            $("#PayToPettyCash").attr("required", "required"); 
+            $('#PaytoCoaId').data("kendoDropDownList").readonly();               
+        } else {
+            $("#pettycashoption").css("display", "none");
+            $("#PayToPettyCash").removeAttr("required");  
+        }
+
+        if ($("#PayToType").val() == "2") { //bank
+            $("#bankoption").css("display", "block");  
+            $("#PaytoBank").attr("required", "required"); 
+            $('#PaytoCoaId').data("kendoDropDownList").readonly();
+        } else {
+            $("#bankoption").css("display", "none");
+            $("#PaytoBank").removeAttr("required");  
+        }
+
+        if ($("#PayToType").val() == "3") { //client
+            $("#vendoroption").css("display", "block");         
+            $("#PayToVendor").attr("required", "required"); 
+            $('#PaytoCoaId').data("kendoDropDownList").readonly(false);
+        } else {
+            $("#vendoroption").css("display", "none");
+            $("#PayToVendor").removeAttr("required"); 
+        }
+
+        if ($("#PayToType").val() == "4") { //other          
+            $('#PaytoCoaId').data("kendoDropDownList").readonly(false);
+        }
+    }
+
+    function onChangeDDLType() {
+        $('#PettyCashId').data("kendoDropDownList").value("");
+        $('#BankId').data("kendoDropDownList").value("");
+        ActionType();
+    }
+
+    function ActionType() {
+        if ($("#Type").val() == "1") {  //petty cash     
+            $("#pettycashtooption").css("display", "block");
+            $("#PettyCashId").attr("required", "required"); 
+        } else {
+            $("#pettycashtooption").css("display", "none");
+            $("#PettyCashId").removeAttr("required");
+        }
+
+        if ($("#Type").val() == "2") { //bank
+            $("#banktooption").css("display", "block");
+            $("#BankId").attr("required", "required"); 
+        } else {
+            $("#banktooption").css("display", "none");
+            $("#BankId").removeAttr("required");
+        }
+    }
+
+    function onChangeDDLPettyCash(e) {
+        var pettyId = $("#PettyCashId").data("kendoDropDownList").value();
+        if (pettyId!=null) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Get", "MasterPettyCash")',
+                data: { Id: pettyId },
+                success: function (result) {
+                    if (result != undefined) {  
+                        $("#AccountNumber").val(result.BankAccountNumber); 
+                        $('#AccountId').data("kendoDropDownList").value(result.ChartAccountId);
+                         
+                        if ($("#grid-multi-ar").data('kendoGrid').dataSource.data().length==0) {
+                            $('#CurrencyId').data("kendoDropDownList").value(result.CurrencyId);
+                        }
+                                                 
+                        //$("#LegalEntityName").val(result.LegalEntityName);
+                        $("#LegalEntityId").val(result.LegalEntityId);   
+
+                        DDLCurrencyChange();
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            });
+        }
+    }
+
+    function onSelectDDLVendor(e) {
+        var Bank = $("#PayToVendor").data("kendoDropDownList").value();
+        if (Bank != null) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetVendorData", "BankReceived")',
+                data: { Id: Bank },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#PayToAccountNumber").val(result.AccountNumber); 
+                        $('#PaytoCoaId').data("kendoDropDownList").value(result.CoaId);
+                        $("#PaytoBankName").val(result.BankName);
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    }
+
+    function onSelectPayToBank(e) {
+        var Bank = $("#PaytoBank").data("kendoDropDownList").value();
+        if (Bank != null) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetAccountNumberData", "BankReceived")',
+                data: { Id: Bank },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#PayToAccountNumber").val(result.AccountNumber); 
+                        $('#PaytoCoaId').data("kendoDropDownList").value(result.CoaId);
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    }
+        
+    function onSelectPayToPettyCash(e) {
+        var pettyId = $("#PayToPettyCash").data("kendoDropDownList").value();
+        if (pettyId!=null) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Get", "MasterPettyCash")',
+                data: { Id: pettyId },
+                success: function (result) {
+                    if (result != undefined) {  
+                        $('#PaytoCoaId').data("kendoDropDownList").value(result.ChartAccountId);
+                        $("#PayToAccountNumber").val(result.BankAccountNumber); 
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            });
+        }
+    }
+     
+    function onSelectBank(e) {
+        var Bank = $("#BankId").data("kendoDropDownList").value();
+        if (Bank != null) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetAccountNumberData", "BankReceived")',
+                data: { Id: Bank },
+                success: function (result) {
+                    if (result != undefined) {
+                        //console.log(result)
+                        $("#AccountNumber").val(result.AccountNumber);
+                        //$("#LegalEntityName").val(result.LegalEntityName);
+                        $("#LegalEntityId").val(result.LegalEntityId);
+                        $('#AccountId').data("kendoDropDownList").value(result.CoaId);
+
+                        if ($("#grid-multi-ar").data('kendoGrid').dataSource.data().length == 0) {
+                            $('#CurrencyId').data("kendoDropDownList").value(result.CurrencyId);
+                        } 
+                        
+                        DDLCurrencyChange();
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    }
+
+    function OnChangeCoaBankCharges() {
+        var _charges = $("#Charges").data('kendoNumericTextBox');
+        if ($("#BankChargesCoaId").val() != "") {
+            _charges.readonly(false);
+            $("#Charges").attr("required", true);
+        } else {
+            _charges.readonly(true);
+            $("#Charges").attr("required", false); 
+            _charges.value(0);
+            CalculateAmount();
+
+        }
+    }
+
+    function DDLTaxCoaChange() {
+        var taxAmoun = $('#TaxPayable').data("kendoNumericTextBox");
+        if ($('#TaxPayCoaId').val() != '') {
+            $('#TaxPayable').attr('required', 'required');
+            taxAmoun.readonly(false);
+            $('#TaxPayable').focus();
+        } else {
+            $('#TaxPayable').attr('required', false);
+            taxAmoun.readonly();
+        }
+
+    }
+
+    
+    function isValid() {
+        var valid = $("#form").validate().form();
+        if (valid) { 
+            if (Balance() == false) {
+                swal('Warning', "Debit value is not the same as credit value, please make sure the debit value must be equal to the credit value.", 'warning');
+                return false;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function isValidBalance() { 
+        var valid = $("#form").validate().form();
+        if (valid) {
+            //var grid = $("#gridJournalEntry").data("kendoGrid").dataSource.data();
+            //if (grid.length == 0) {
+            //    swal('Warning', "Please input journal detail list", 'warning');
+            //    return false;
+            //}
+
+            if (Balance() == false) {
+                swal('Warning', "Debit value is not the same as credit value, please make sure the debit value must be equal to the credit value.", 'warning');
+                return false;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function result() {
+        var dataList = null;
+        if ($("#SourceDoc").val() != "")  {
+            dataList = {
+                ARList: $("#grid-multi-ar").data("kendoGrid").dataSource.data(),
+                JournalEntry: $("#gridJournalEntry").data("kendoGrid").dataSource.data()
+            };
+        } else {
+            dataList = {
+                JournalEntry: $("#gridJournalEntry").data("kendoGrid").dataSource.data()
+            };
+        }
+        return dataList;
+    }
+
+    $('#btnSubmit').click(function () {
+        if (!isValid()) return;
+        var gridJournal = $("#gridjournal").data("kendoGrid").dataSource.data();
+        if (gridJournal.length == 0) {
+            swal('Warning', 'Create journal first please !', 'warning');
+            return false;
+        }  
+        callAction({ formId: "form", title: "Submit", type: "POST", url: '@Url.Action("Submit", "BankReceived")', objects: result() }); 
+    });
+    
+    function CreateJournal () {
+        if (!isValidBalance()) return;  
+        callAction({ formId: "form", title: "Create Journal", type: "POST", url: '@Url.Action("CreateJournal", "BankReceived")', objects: result() }); 
+    }
+
+    $('#btnSave').click(function () {
+        if (!isValid()) return;  
+        callAction({ formId: "form", title: "Save", type: "POST", url: '@Url.Action("Save", "BankReceived")', objects: result()}); 
+    });
+
+    $('#btnApprove').click(function () {
+        $("#LogDescription").removeAttr("required"); 
+        callAction({ formId: "form", title: "Approve", type: "PUT", url: '@Url.Action("Approve", "BankReceived")'});
+    });
+
+    $('#btnReject').click(function () {
+        $("#LogDescription").attr("required", "required");
+        callAction({ formId: "form", title: "Reject", type: "PUT", url: '@Url.Action("Reject", "BankReceived")'});
+    });
+         
+    $('#btn-reconsiliation').click(function () {
+        callAction({ formId: "form", title: "Reconsiliation", type: "PUT", url: '@Url.Action("Reconsiliations", "BankReceived")'});
+    });     
+       
+
+    function save_event(e) {
+        var CoaId = $("#CoaId").data("kendoDropDownList").value();
+        var AccountName = $("#CoaId").data("kendoDropDownList").text();
+        var CodeRec = $("#CodeRec").val();
+        var Condition = $("#Condition").data("kendoDropDownList").value();
+        var Debit = $("#Debit").data("kendoNumericTextBox").value();
+        var Credit = $("#Credit").data("kendoNumericTextBox").value();
+
+        e.model.set("CoaId", CoaId);
+        e.model.set("CodeRec", CodeRec);
+        e.model.set("AccountName", AccountName);
+        e.model.set("Condition", Condition);
+        e.model.set("Debit", Debit);
+        e.model.set("Credit", Credit);
+
+        var TransactionDate = $("#TransactionDate").data("kendoDatePicker").value();
+        e.model.set("TransactionDate", TransactionDate)
+
+        Balance();
+    }
+
+    function edit_event(e) {
+        Condition(e.model.Condition);
+    }
+
+    function Condition_Select(e) {
+        if (e.dataItem) {
+            Condition(e.dataItem.Value);
+            if (e.dataItem.Value == "Debit") {
+                $('#Credit').data("kendoNumericTextBox").value(0);
+            } else {
+                $('#Debit').data("kendoNumericTextBox").value(0);
+            }
+        }
+    }
+
+    function Condition(value) {
+        var isReadOnly = (value == "Debit");
+        $("#Debit").data("kendoNumericTextBox").readonly(!isReadOnly);
+        $("#Credit").data("kendoNumericTextBox").readonly(isReadOnly);
+    }
+
+    function Balance() {
+        var models = $("#gridJournalEntry").data("kendoGrid").dataSource.data();
+        var totalDebit = 0;
+        var totalCredit = 0;
+
+        $.each(models, function (index, data) {
+            if (data.Debit != null) {
+                totalDebit += data.Debit;
+            }
+            if (data.Credit != null) {
+                totalCredit += data.Credit;
+            }
+        });
+        var balance = (totalCredit == totalDebit);
+        if (balance) {
+            $("#lblBalance").html("<span style='color:green;'>Balance</span>");
+        } else {
+            $("#lblBalance").html("<span style='color:red;'>Not Balance</span>");
+        }
+        return balance;
+    }
+
+    function JEValue(value) {
+        return $("#CurrencySymbolDefault").val() + ' ' + kendo.toString(value, '#,###.##');
+    }
+     
+    function sumJEDebit() {
+        var models = $("#gridJournalEntry").data("kendoGrid").dataSource.data();
+        var result = 0;
+
+        $.each(models, function (index, data) {
+            if (data.Debit != null) {
+                result += data.Debit;
+            }
+        });
+        return $("#CurrencySymbolDefault").val() + ' ' + kendo.toString(result, '#,###.##');
+    }
+
+    function sumJECredit() {
+        var models = $("#gridJournalEntry").data("kendoGrid").dataSource.data();
+        var result = 0;
+
+        $.each(models, function (index, data) {
+            if (data.Credit != null) {
+                result += data.Credit;
+            }
+        });
+        return $("#CurrencySymbolDefault").val() + ' ' + kendo.toString(result, '#,###.##');
+    }
+
+
+    function sumJournal(sum) {
+        return $("#CurrencySymbolDefault").val() + ' ' + kendo.toString(sum, '#,###.##');
+    } 
+
+
+    function setCurrencyValue() {
+        var currencySymbol = $("#CurrencySymbol").val();
+        var CurrencySymbolDefault = $("#CurrencySymbolDefault").val();
+
+        var amount = $('#Amount').data('kendoNumericTextBox');
+        var amountPay = $('#AmountPay').data('kendoNumericTextBox');
+        var totalAmount = $('#TotalAmount').data('kendoNumericTextBox');
+        var taxPayable = $('#TaxPayable').data('kendoNumericTextBox');
+        var charges = $('#Charges').data('kendoNumericTextBox');
+        var totalAmountPay = $('#TotalAmountPay').data('kendoNumericTextBox');
+        var exchangeRate = $('#ExchangeRate').data('kendoNumericTextBox');
+
+        var amountValue = amount.value();
+        var amountPayValue = amountPay.value();
+        var totalAmountValue = totalAmount.value();
+        var taxPayableValue = taxPayable.value();
+        var chargesValue = charges.value();
+        var totalAmountPayValue = totalAmountPay.value();
+        var exchangeRateValue = exchangeRate.value();
+
+        amount.setOptions({ value: amountValue, format: currencySymbol + " #,###.##" });
+        amountPay.setOptions({ value: amountPayValue, format: currencySymbol + " #,###.##" });
+        totalAmount.setOptions({ value: totalAmountValue, format: currencySymbol + " #,###.##" });
+        taxPayable.setOptions({ value: taxPayableValue, format: currencySymbol + " #,###.##" });
+        charges.setOptions({ value: chargesValue, format: currencySymbol + " #,###.##" });
+        totalAmountPay.setOptions({ value: totalAmountPayValue, format: currencySymbol + " #,###.##" });
+        exchangeRate.setOptions({ value: exchangeRateValue, format: CurrencySymbolDefault + " #,###.##" });
+    }
+
+</script> 

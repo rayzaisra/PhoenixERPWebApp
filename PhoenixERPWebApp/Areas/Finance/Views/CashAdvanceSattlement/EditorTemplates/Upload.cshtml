@@ -1,0 +1,20 @@
+﻿@model string 
+@(Html.Kendo().Upload()
+        .Name("receiptFile")
+        //.Events(events =>
+        //{
+        //    events.Select("onSelectFile").Complete("onCompleteFile");
+        //})
+        //.Messages(messages =>
+        //{
+        //    messages.Select("Upload");
+        //})
+        //.Async(async =>
+        //{
+        //    //async.Save("SaveResumeFile", "CashAdvanceSattlement");
+        //    //async.Remove("DeleteResumeFile", "CashAdvanceSattlement");
+        //    async.Save("Events_Save", "CashAdvanceSattlement");
+        //    async.Remove("Events_Remove", "CashAdvanceSattlement");
+        //    async.AutoUpload(true);
+        //})
+        .Multiple(false))

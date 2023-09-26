@@ -1,0 +1,725 @@
+@model PhoenixERPWebApp.Models.RptProfitAndLossFilter
+@{ 
+    ViewData["Title"] = "Profit And Loss";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Profit And Loss</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Report</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="rptprofitandloss" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Profit And Loss</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">
+                                Profit And Loss
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">             
+                    <form id="formSearch" >
+                        <div class="row"> 
+                            <div class="col-lg-6"> 
+                                <div class="form-group">
+                                    <label asp-for="LegalEntityId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .Events(x => x.Select("legalEntity_select"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.LegalEntityId)} is required"
+                                        })
+                                    )
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="BusinessUnitId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .Events(x => x.Select("businessUnit_select"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetPNLReportDivisionFinance", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.BusinessUnitId)} is required"
+                                        })
+                                    )
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CoaLevel"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaLevel)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLCOALevel", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.CoaLevel)} is required"
+                                        })
+                                    )
+                                </div>
+                            </div> 
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="CurrencyId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CurrencyId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new
+                                                {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            @readonly = "readonly",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.CurrencyId)} is required"
+                                        })
+                                    )
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="EndingDate"></label> :
+                                    <div class="row" style="padding:0px">
+                                        <div class="col-lg-6">
+                                            @(Html.Kendo().DropDownListFor(m => m.Type)
+                                                 .DataTextField("Text")
+                                                 .DataValueField("Value")
+                                                 .Events(e => e.Change("type_change"))
+                                                 .BindTo(new List<SelectListItem>() {
+                                                     new SelectListItem() { Text = "Day", Value = "Day"},
+                                                     new SelectListItem() { Text = "Month", Value = "Month"},
+                                                     new SelectListItem() { Text = "Year", Value = "Year"},
+                                                     new SelectListItem() { Text = "Custom Range", Value = "Custom Range"}
+                                                 })
+                                                 .HtmlAttributes(new { style = "width: 100%" })
+                                            )
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div id="divDate"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group"> 
+                                    <div class="row" style="padding:0px">
+                                        <div class="col-lg-6">
+                                            <div id="divDateStart"></div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div id="divDateEnd"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @(Html.Kendo().CheckBoxFor(x => x.DisplayZeroBalance)
+                                     .Label("Display Zero Balance")
+                                    )
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="divGrid">No records available.</div> 
+                        </div>
+                    </div>
+                    @*<div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.RptProfitAndLoss>()
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.name1).Width(150).ClientGroupHeaderTemplate("#=value#").Hidden();
+                                    columns.Bound(p => p.code_rec).Width(80);
+                                    columns.Bound(p => p.name5).Width(250).ClientGroupFooterTemplate("TOTAL :").ClientFooterTemplate("TOTAL REVENUE : <br/>TOTAL EXPENSES & COST OF REVENUE : <br/> TOTAL PROFIT AND LOSS : ").FooterHtmlAttributes(new { style = "text-align:right;" });
+                                    columns.Bound(p => p.balance).Width(150).ClientGroupFooterTemplate("#=kendo.format('{0:n2}', sum)#").ClientFooterTemplate("#=window.balance()#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                })
+                                .ToolBar(toolBar =>
+                                {
+                                    toolBar.Excel();
+                                    toolBar.Pdf();
+                                })
+                                .Excel(excel => excel.AllPages(true)
+                                    .FileName("Profit And Loss.xlsx")
+                                    .Filterable(true)
+                                )
+                                .Pdf(pdf => pdf
+                                    .AllPages()
+                                    .AvoidLinks()
+                                    .PaperSize("A4")
+                                    .Margin("2cm", "1cm", "1cm", "1cm")
+                                    .Landscape()
+                                    .RepeatHeaders()
+                                    .TemplateId("page-template")
+                                    .FileName("Profit And Loss.pdf")
+                                )
+                                //.Pageable(pageable => pageable
+                                //    .Refresh(true)
+                                //    .PageSizes(true)
+                                //    .ButtonCount(5))
+                                //.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                //.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                //    .Extra(false)
+                                //    .Operators(operators => operators
+                                //    .ForString(str => str.Clear()
+                                //        .Contains("Contains")
+                                //        .StartsWith("Start sWith")
+                                //        .EndsWith("End sWith")
+                                //    )))
+                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                .Resizable(rsz => rsz.Columns(true))
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    //.PageSize(10)
+                                    .Events(events => events.Error("errorHandler"))
+                                    .Model(model => { model.Id(p => p.account_id);})
+                                    .Aggregates(aggregates =>
+                                    {
+                                        aggregates.Add(p => p.balance).Sum();
+                                    })
+                                    .Group(grp=>grp.Add(p => p.name1))
+                                    .Sort(sort=>sort.Add(p=>p.code_rec).Ascending())
+                                    .Read(read => read.Action("Read", "rptprofitandloss").Data("gridParams"))
+                                )
+                            .AutoBind(false)
+                            .Events(e => e.ExcelExport("customeExcelExportEvent"))
+                            )
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<script type="x/kendo-template" id="page-template">
+    <div class="page-template">
+        <div class="header">
+            <div class="page">Page #: pageNum # of #: totalPages #</div> 
+            @*#if(pageNum==1){#*@
+                #=LoadPDF()#            
+            @*#}#*@
+        </div>
+        @*<div class="watermark">KENDO UI</div>
+        <div class="footer">
+            Page #: pageNum # of #: totalPages #
+        </div>*@
+    </div>
+</script>
+<script>   
+    $(document).ready(function () {
+        type_change();
+        LoadData();
+    });
+
+    //function gridParams() { 
+    //    return {
+    //        Filter: {
+    //            LegalEntityId: $("#LegalEntityId").data("kendoDropDownList").value(),
+    //            BusinessUnitId: $("#BusinessUnitId").data("kendoDropDownList").value(),
+    //            Type: $("#Type").data("kendoDropDownList").value(),
+    //            EndingDate: $("#EndingDate").data("kendoDatePicker").value(),
+    //            CurrencyId: $("#CurrencyId").data("kendoDropDownList").value(),
+    //            DisplayZeroBalance: $("#DisplayZeroBalance").is(':checked'),
+    //            CoaLevel: $("#CoaLevel").data("kendoDropDownList").value()
+    //        }
+    //    }
+    //}
+
+    $('#btnSearch').click(function () {
+        var valid = $("#formSearch").validate().form();
+        if (valid) {
+            LoadData();
+        }
+    });
+
+    function LoadData() {        
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        //$('#grid').data('kendoGrid').dataSource.read();
+        //$('#grid').data('kendoGrid').refresh();
+
+            $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetGenerateList", "RptProfitAndLoss")',
+            data: { 
+                LegalEntityId: $("#LegalEntityId").data("kendoDropDownList").value(),
+                BusinessUnitId: $("#BusinessUnitId").data("kendoDropDownList").value(),
+                Type: $("#Type").data("kendoDropDownList").value(),
+                StartingDate:  $("#StartingDate").data("kendoDatePicker") == undefined ? undefined : kendo.format('{0:yyyy/MM/dd}', $("#StartingDate").data("kendoDatePicker").value()),
+                EndingDate: kendo.format('{0:yyyy/MM/dd}', $("#EndingDate").data("kendoDatePicker").value()),
+                CurrencyId: $("#CurrencyId").data("kendoDropDownList").value(),
+                DisplayZeroBalance: $("#DisplayZeroBalance").is(':checked'),
+                CoaLevel: $("#CoaLevel").data("kendoDropDownList").value()
+                },
+            dataType: 'json',
+            aync: false,
+            success: function (result) {
+                if (result.success) {
+                    generateGrid(result); 
+                } else {
+                    swal('Error', result.message, 'error');
+                }
+                mApp.unblock("#m_blockui_list");
+            },
+            error: function (e, t, s) {
+                var errorMessage = e.responseJSON.errorMessage;
+                if (errorMessage === "" || errorMessage === undefined) {
+                    errorMessage = "Ooops, something went wrong !";
+                }
+                console.log(errorMessage);
+                mApp.unblock("#m_blockui_list");
+            }
+        }); 
+    }
+
+    function businessUnit_select(e) {
+        if (e.dataItem) {
+            //$("#LegalEntityId").data("kendoDropDownList").readonly(e.dataItem.Value != "");
+            if (e.dataItem.Value != "") {
+                $("#LegalEntityId").removeAttr("required");
+                $("#LegalEntityId-error").css("display", "none");
+                $("#LegalEntityId").data("kendoDropDownList").value("");
+            } else {
+                $("#LegalEntityId").attr("required", "required");
+                $("#LegalEntityId-error").css("display", "block");
+            }
+        }
+    }
+
+    function legalEntity_select(e) {
+        if (e.dataItem) {
+            //$("#BusinessUnitId").data("kendoDropDownList").readonly(e.dataItem.Value != "");
+            if (e.dataItem.Value != "") {
+                $("#BusinessUnitId").removeAttr("required");
+                $("#BusinessUnitId-error").css("display", "none");
+                $("#BusinessUnitId").data("kendoDropDownList").value("");
+            } else {
+                $("#BusinessUnitId").attr("required", "required");
+                $("#BusinessUnitId-error").css("display", "block");
+            }
+        }
+    }
+
+    //function balance() {
+    //    var models = $("#grid").data("kendoGrid").dataSource.data();
+    //    var revenue = 0;
+    //    var cob = 0;
+    //    var expenses = 0;
+
+    //    $.each(models, function (index, data) {
+    //        var balance = data.aggregates.balance.sum;
+    //        if (data.value == "4. REVENUE") {
+    //            revenue += balance; 
+    //        } else if (data.value == "5. COB") {
+    //            cob += balance; 
+    //        } else if (data.value == "6. EXPENSES") {
+    //            expenses += balance; 
+    //        }
+    //    });
+
+    //    var result = kendo.format('{0:n2}', revenue) + "<br/>" + kendo.format('{0:n2}', (expenses + cob)) + "<br/>" + kendo.format('{0:n2}', revenue - (expenses + cob)) + "<br/>";
+    //    return result;
+    //}
+
+    function type_change() {
+        var type = $("#Type").data("kendoDropDownList").value();
+        $("#divDate").empty();
+        $("#divDateStart").empty();
+        $("#divDateEnd").empty();
+
+        if (type == "Month") {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder=' ' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "MMM yyyy",
+                start: "year",
+                depth: "year",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else if (type == "Year") {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder=' ' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "yyyy",
+                start: "decade",
+                depth: "decade",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else if (type == "Custom Range") {
+             $("#divDateStart").empty().append("<input name='StartingDate' id='StartingDate' type='text' style='width: 100%;' placeholder='Start' required/>");
+             $("#divDateEnd").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder='End' required/>");
+
+             $("#StartingDate").kendoDatePicker({
+                format: "dd MMM yyyy",
+                start: "month",
+                depth: "month",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+             });
+
+            $("#EndingDate").kendoDatePicker({
+                format: "dd MMM yyyy",
+                start: "month",
+                depth: "month",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder=' ' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "dd MMM yyyy",
+                start: "month",
+                depth: "month",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        }
+    }
+     
+    function generateGrid(result) {
+        if (result.Data != null) {
+            var amoutColumn = 0;
+            for (var property in result.Data[0]) {
+                amoutColumn++;
+            }
+
+            var paperSize = "A0";
+            if (amoutColumn < 6)
+                paperSize = "A4";
+            else if (amoutColumn < 8)
+                paperSize = "A3";
+            else if (amoutColumn < 9)
+                paperSize = "A2";
+            else if (amoutColumn < 10)
+                paperSize = "A1";
+
+            var model = generateModel(result.Data[0]);
+            $("#divGrid").empty().kendoGrid({
+                dataSource: {
+                    data: result.Data,
+                    model: model,
+                    //pageSize: 10,
+                    group: {
+                        field: "name1",
+                        aggregates: AggregatesGeneration(result.Data)
+                    },
+                    aggregate: AggregatesGeneration(result.Data),
+                },
+                //height: 350,
+                //groupable: true,
+                //sortable: true,
+                //pageable: {
+                //    refresh: true,
+                //    pageSizes: true,
+                //    buttonCount: 5
+                //},
+                resizable: true,
+                columns: ColumnGeneration(result.Data),
+                toolbar: ["excel", "pdf"],
+                excel: {
+                    fileName: "Profit And Loss.xlsx",
+                    filterable: true
+                },
+                pdf: {
+                    allPages: true,
+                    avoidLinks: true,
+                    paperSize: paperSize,
+                    margin: { top: "5cm", left: "1cm", right: "1cm", bottom: "1cm" },
+                    landscape: true,
+                    repeatHeaders: true,
+                    template: $("#page-template").html(),
+                    scale: 0.8,
+                    fileName: "Profit And Loss.pdf"
+                },
+                excelExport: function (e) { customeExcelExportEvent(e) },
+            }).data('kendoGrid');
+        } else {
+            $("#divGrid").empty().append("<div>No records available.</div>");
+        }
+    }
+
+    function generateModel(result) {
+        var model = {};
+        model.id = "account_id";
+        var fields = {};
+        for (var property in result) {
+            var propType = typeof result[property];
+            if (propType == "number") {
+                fields[property] = {
+                    type: "number",
+                    nullable: true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            } else if (propType == "boolean") {
+                fields[property] = {
+                    type: "boolean",
+                    nullable: true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            } else if (propType == "string") {
+                var parsedDate = kendo.parseDate(result[property]);
+                if (parsedDate) {
+                    fields[property] = {
+                        type: "date",
+                        nullable: true
+                        //validation: {
+                        //    required: true
+                        //}
+                    };
+                    //dateFields.push(property);
+                } else {
+                    fields[property] = {
+                        type: "string",
+                        nullable: true
+                        //validation: {
+                        //    required: true
+                        //}
+                    };
+                }
+            } else {
+                fields[property] = {
+                    type: "string",
+                    nullable: true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            }
+
+        }
+        model.fields = fields;
+
+        return model;
+    }
+
+    function ColumnGeneration(result) {
+        var GridColumnGeneration = [];
+        var resultVal = [];
+        $.each(result, function (index, value) {
+            $.each(result[index], function (gridTitle, element) {
+                var propType = typeof element;
+                if (propType == "number") {
+                    resultVal.push({ text: gridTitle, value: element, name1: value.name1 })
+                }
+            });
+        });
+
+        $.each(result[0], function (gridTitle, element) {
+            if (gridTitle != "account_id") {
+                var propType = typeof element;
+                var title = gridTitle.replaceAll("rpt_", "").replaceAll("_", " ");
+                var width = 150;
+                if (propType == "number") {
+
+                    var revenue = 0;
+                    var cob = 0;
+                    var expenses = 0; 
+
+                    var x = resultVal.filter(x => x.text == gridTitle);
+                    $.each(x, function (index, data) {
+                        if (data.name1 == "4. REVENUE") {
+                            revenue += data.value;
+                        } else if (data.name1 == "5. COB") {
+                            cob += data.value;
+                        } else if (data.name1 == "6. EXPENSES") {
+                            expenses += data.value;
+                        } 
+                    });
+
+                    var result = kendo.format('{0:n2}', revenue) + "<br/>" + kendo.format('{0:n2}', (expenses + cob)) + "<br/>" + kendo.format('{0:n2}', revenue - (expenses + cob)) + "<br/>";
+                    
+                    GridColumnGeneration.push({
+                        title: title,
+                        field: gridTitle,
+                        width: width,
+                        format: "{0:n2}",
+                        aggregates: ["sum"],
+                        groupFooterTemplate: "#=kendo.format('{0:n2}',sum)#",
+                        footerTemplate: result,
+                        //footerTemplate: "<label id='lbl_" + gridTitle+"'></label>",
+                        attributes: { style: "text-align: right;" },
+                        footerAttributes: { style: "text-align: right;" }
+                    });
+                } else if (gridTitle == "rpt_Account_Name") {
+                    GridColumnGeneration.push({
+                        title: title,
+                        field: gridTitle,
+                        width: 280,
+                        groupFooterTemplate: "TOTAL :",
+                        footerTemplate: "TOTAL REVENUE : <br/>TOTAL EXPENSES & COST OF REVENUE : <br/> TOTAL PROFIT AND LOSS : ",
+                        footerAttributes: { style: "text-align: right;" }
+                    });
+                } else if (gridTitle == "name1") {
+                    GridColumnGeneration.push({
+                        field: gridTitle,
+                        width: 250,
+                        hidden: true,
+                        groupHeaderTemplate: "#=value#"
+                    });
+                } else {
+                    GridColumnGeneration.push({
+                        title: title,
+                        field: gridTitle,
+                        width: width
+                    });
+                }
+            }
+        });
+        return GridColumnGeneration;
+    }
+
+
+    function AggregatesGeneration(result) {
+        var generate = [];
+        $.each(result[0], function (gridTitle, element) {
+            if (gridTitle != "account_id" && gridTitle != "name1" && gridTitle != "rpt_Account_Name") {
+                generate.push({ field: gridTitle, aggregate: "sum" });
+            }
+        });
+        return generate;
+    }
+
+    function customeExcelExportEvent(e) {
+        var sheet = GetBodyExportExcel(e)
+        sheet.frozenRows = 6;
+        sheet.mergedCells = ["A1:B1", "A2:B2", "A3:B3", "A4:B4", "A5:B5"];
+        //sheet.name = "Header"; 
+
+        var date = $("#EndingDate").val();
+        var currency = $("#CurrencyId").data("kendoDropDownList").text();
+        var coaLevel = $("#CoaLevel").data("kendoDropDownList").text();
+        var bu = $("#BusinessUnitId").data("kendoDropDownList").text();
+        var legal = $("#LegalEntityId").data("kendoDropDownList").text();
+
+        sheet.rows.splice(0, 0, { cells: [{ value: "Date", bold: true }, { value: date, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Currency", bold: true }, { value: currency, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "COA Level", bold: true }, { value: coaLevel, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Business Unit", bold: true }, { value: bu, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Legal Entity", bold: true }, { value: legal, bold: true }], type: "header", height: 20 });
+    } 
+    
+    function LoadPDF() {
+        var date = $("#EndingDate").val();
+        var currency = $("#CurrencyId").data("kendoDropDownList").text();
+        var coaLevel = $("#CoaLevel").data("kendoDropDownList").text();
+        var bu = $("#BusinessUnitId").data("kendoDropDownList").text();
+        var legal = $("#LegalEntityId").data("kendoDropDownList").text();
+
+        return "<table>"+
+                "<tr>"+
+                    "<td style='width:200px;'>Legal Entity</td>"+
+                    "<td>:</td>"+
+                    "<td>"+legal+"</td>"+
+                "</tr>"+
+                "<tr>"+
+                    "<td>Business Unit</td>"+
+                    "<td>:</td>"+
+                    "<td>"+bu+"</td>"+
+                "</tr>"+
+                "<tr>"+
+                    "<td>COA Level</td>"+
+                    "<td>:</td>"+
+                    "<td>"+coaLevel+"</td>"+
+                "</tr>"+
+                "<tr>"+ 
+                    "<td>Currency</td>"+
+                    "<td>:</td>"+
+                    "<td>"+currency+"</td>"+
+                "</tr>"+
+                "<tr>"+
+                    "<td>Date</td>"+
+                    "<td>:</td>"+
+                    "<td>"+date+"</td>"+
+                "</tr>"+ 
+            "</table>";
+    }
+</script>

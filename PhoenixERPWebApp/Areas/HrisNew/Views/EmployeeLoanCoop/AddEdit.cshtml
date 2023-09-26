@@ -1,0 +1,703 @@
+@model PhoenixERPWebApp.Models.EmployeeLoan
+@{
+    ViewData["Title"] = "Employee Loan Coop";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    DateTime? DateLoan = DateTime.Now;
+    DateTime? RepaymentStartDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        if (DateLoan >= Model.DateLoan)
+        {
+            DateLoan = Model.DateLoan;
+        }
+
+        if (RepaymentStartDate >= Model.RepaymentStartDate)
+        {
+            RepaymentStartDate = Model.RepaymentStartDate;
+        }
+    }
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="employeeloancoop" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Loan Co Ops</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="employeeloancoop" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="employeeloancoop" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Employee Loan Co Ops</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formEmployeeLoan" class="form-horizontal form-bordered" role="form">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                                <input type="hidden" asp-for="LoanCategoryId" />
+
+                                <div class="row" id="search">
+                                    <div class="col-lg-5 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label class="search-employee">Search Employee</label> :
+                                            @(Html.Kendo().AutoComplete()
+                                                        .Name("SearchEmployee")
+                                                        .DataTextField("Text")
+                                                        .Filter(FilterType.Contains)
+                                                        .HtmlAttributes(new { style = "width:100%" })
+                                                        .Events(ev => ev.Select("employeeInfoSelectEvent"))
+                                                        .DataSource(source =>
+                                                        {
+                                                            source
+                                                        .Read(read =>
+                                                        {
+                                                            read.Action("GetDDLEmployeeBasicInfoByName", "Dropdown", new { area = "HrisNew" }).Data("params_autocomplete");
+                                                        })
+                                                        .ServerFiltering(true);
+                                                        })
+
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="EmployeeBasicInfoId"></label><span class="req">*</span> :
+                                            @(Html.Kendo().TextBoxFor(x => x.EmployeeBasicInfoId)
+                                                        .HtmlAttributes(new
+                                                        {
+                                                            style = "width:100%",
+                                                            required = "required",
+                                                            @readonly = "readonly"
+                                                        }))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="infoEmployee.EmployeeName"></label> :
+                                            @(Html.Kendo().TextBoxFor(x => x.infoEmployee.EmployeeName)
+                                                        .HtmlAttributes(new
+                                                        {
+                                                            style = "width:100%",
+                                                            @readonly = "readonly"
+                                                        }))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="infoEmployee.JobTitle"></label> :
+                                            @(Html.Kendo().TextBoxFor(x => x.infoEmployee.JobTitle)
+                                                        .HtmlAttributes(new
+                                                        {
+                                                            style = "width:100%",
+                                                            @readonly = "readonly"
+                                                        }))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label asp-for="infoEmployee.Grade"></label> :
+                                            @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Grade)
+                                                        .HtmlAttributes(new
+                                                        {
+                                                            style = "width:100%",
+                                                            @readonly = "readonly"
+                                                        }))
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="InterestMonth"></label> <span class="req">*</span>  :
+                                        @*@(Html.Kendo().NumericTextBoxFor(m => m.InterestMonth)
+        .Spinners(false)
+        .Format("n")
+        .HtmlAttributes(new
+        {
+            style = "width:100%",
+            maxlength = 15,
+            @readonly = "readonly"
+        }))*@
+                                        @(Html.Kendo().TextBoxFor(m => m.InterestMonth).HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    required = "required",
+                                                    @readonly = "readonly"
+                                                }))
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="DateLoan"></label> <span class="req">*</span>  :
+                                        @(Html.Kendo().DatePickerFor(m => m.DateLoan)
+                                                    .Format("dd MMMM yyyy")
+                                                    .Min($"{DateLoan}")
+                                                    .HtmlAttributes(new
+                                                    {
+                                                        style = "width: 100%",
+                                                        placeholder = $"Input type a {Html.DisplayNameFor(m => m.DateLoan)}",
+                                                        required = "required",
+                                                        validationmessage = $"{Html.DisplayNameFor(m => m.DateLoan)} is required",
+                                                        onkeydown = "javascript:return false;"
+                                                    })
+                                        )
+                                    </div>
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="RepaymentStartDate"></label> <span class="req">*</span>  :
+                                        @(Html.Kendo().DatePickerFor(m => m.RepaymentStartDate)
+                                            .Start(CalendarView.Year)
+                                            .Depth(CalendarView.Year)
+                                            .Format("MMMM yyyy")
+                                            .Value(DateTime.Today)
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width: 100%",
+                                                placeholder = $"Input type a {Html.DisplayNameFor(m => m.RepaymentStartDate)}",
+                                                required = "required",
+                                                validationmessage = $"{Html.DisplayNameFor(m => m.RepaymentStartDate)} is required",
+                                                onkeydown = "javascript:return false;"
+                                            })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="Value"></label> <span class="req">*</span>  :
+                                        @if (Model.Id != null)
+                                        {
+                                            @(Html.Kendo().TextBoxFor(m => m.Value).HtmlAttributes(new
+                                                {
+                                            style = "width:100%",
+                                            required = "required",
+                                            @readonly = "readonly"
+                                        }))
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().NumericTextBoxFor(m => m.Value)
+                                            .Spinners(false)
+                                            .Format("n")
+                                            //.Events(x => x.Change("calculateInterestValue"))
+                                            .HtmlAttributes(new
+                                             {
+                                                 style = "width:100%",
+                                                 maxlength = 15,
+                                                 placeholder = $"Input type a {Html.DisplayNameFor(m => m.Value)}",
+                                                 required = "required",
+                                                 validationmessage = $"{Html.DisplayNameFor(m => m.Value)} is required"
+
+                                             }))
+                                        }
+                                    </div>
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="PayrollDeduction"></label> <span class="req">*</span>  :
+                                        @(Html.Kendo().NumericTextBoxFor(m => m.PayrollDeduction)
+                                           .Spinners(false)
+                                           .Format("# month").Min(1).Max(36)
+                                           //.Max(99)
+                                           .Events(x => x.Change("CalculateTotalInstallment"))
+                                           .HtmlAttributes(new
+                                           {
+                                               style = "width:100%",
+                                               maxlength = 2,
+                                               required = "required",
+                                               validationmessage = $"{Html.DisplayNameFor(m => m.PayrollDeduction)} is required"
+
+                                           }))
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="ValueInstallmentAmount"></label> <span class="req">*</span>  :
+                                        @if (Model.Id != null)
+                                        {
+                                            @(Html.Kendo().TextBoxFor(m => m.ValueInstallmentAmount).HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    required = "required",
+                                                    @readonly = "readonly"
+                                                }))
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().NumericTextBoxFor(m => m.ValueInstallmentAmount)
+                                            .Spinners(false)
+                                            .Format("n")
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                maxlength = 15,
+                                                @readonly = "readonly"
+                                            }))
+                                        }
+
+                                    </div>
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="ValueInterestAmount"></label> <span class="req">*</span>  :
+                                        @if (Model.Id != null)
+                                        {
+                                            @(Html.Kendo().TextBoxFor(m => m.ValueInterestAmount).HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    required = "required",
+                                                    @readonly = "readonly"
+                                                }))
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().NumericTextBoxFor(m => m.ValueInterestAmount)
+                                            .Spinners(false)
+                                            .Format("n")
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                maxlength = 15,
+                                                @readonly = "readonly"
+                                            }))
+                                        }
+
+                                    </div>
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="ValueTotalInstallment"></label> <span class="req">*</span>  :
+                                        @if (Model.Id != null)
+                                        {
+                                            @(Html.Kendo().TextBoxFor(m => m.ValueTotalInstallment).HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    required = "required",
+                                                    @readonly = "readonly"
+                                                }))
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().NumericTextBoxFor(m => m.ValueTotalInstallment)
+                                            .Spinners(false)
+                                            .Format("n")
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                maxlength = 15,
+                                                @readonly = "readonly"
+                                            }))
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 form-group m-form__group-sub"></div>
+                                    <div class="col-lg-4 form-group m-form__group-sub"></div>
+                                    <div class="col-lg-4 form-group m-form__group-sub">
+                                        <label asp-for="Remaining"></label> <span class="req">*</span>  :
+                                        @if (Model.Id != null)
+                                        {
+                                            @(Html.Kendo().TextBoxFor(m => m.Remaining).HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    required = "required",
+                                                    @readonly = "readonly"
+                                                }))
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().NumericTextBoxFor(m => m.Remaining)
+                                           .Spinners(false)
+                                           .Format("n")
+                                           .HtmlAttributes(new
+                                           {
+                                               style = "width:100%",
+                                               maxlength = 15,
+                                               @readonly = "readonly"
+                                           }))
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row">
+                                    <div class="col-lg-2">
+                                        <label>Log Remark </label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        @Html.TextAreaFor(x => x.LogDescription, new { style = "height:150px;width:100%" })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <partial name="_StatusLog" />
+                        <br />
+                        <partial name="_HistoryApproval" />
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (string.IsNullOrEmpty(Model.Id) || Model.Status == 0)
+                                    {
+                                        <button type="button" id="btn-save" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        <button type="button" id="btn-submit" class="btn btn-info">Submit</button>
+                                    }
+                                    else if (ViewBag.processApprove == true)
+                                    {
+                                        <button type="button" id="btnReject" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                        <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                    }
+  
+                                    <a asp-action="index" asp-controller="employeeloan" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if ('@Model.Id' != '') {
+            $("#PayrollDeduction").data("kendoNumericTextBox").readonly();
+           
+            $("#DateLoan").data("kendoDatePicker").readonly();
+            //$("#Value").data("kendoNumericTextBox").readonly();
+            $("#RepaymentStartDate").data("kendoDatePicker").readonly();
+            //$("#ValueInterestAmount").data("kendoNumericTextBox").readonly();
+            //$("#ValueInstallmentAmount").data("kendoNumericTextBox").readonly();
+            //$("#ValueTotalInstallment").data("kendoNumericTextBox").readonly();
+            $("#search").remove();
+            $('#Value').css('text-align', 'right');
+            $('#ValueInterestAmount').css('text-align', 'right');
+            $('#ValueInstallmentAmount').css('text-align', 'right');
+            $('#ValueTotalInstallment').css('text-align', 'right');
+            $('#Remaining').css('text-align', 'right');
+
+            $('#Value').val(formatDecimal($('#Value').val().replace(',','.')));
+            
+
+            if ( $('#ValueInstallmentAmount').val() !== "") {
+                $('#ValueInstallmentAmount').val(formatDecimal($('#ValueInstallmentAmount').val().replace(',','.')));
+            } else {
+                $('#ValueInstallmentAmount').val('0.00');
+            }
+
+            if ($('#ValueInterestAmount').val() !== "") {
+                $('#ValueInterestAmount').val(formatDecimal($('#ValueInterestAmount').val().replace(',', '.')));
+            } else {
+                $('#ValueInterestAmount').val('0.00');
+            }
+
+            if ($('#ValueTotalInstallment').val() !== "") {
+                $('#ValueTotalInstallment').val(formatDecimal($('#ValueTotalInstallment').val().replace(',', '.')));
+            } else {
+                $('#ValueTotalInstallment').val('0.00');
+            }
+            
+            $('#Remaining').val(formatDecimal($('#Remaining').val().replace(',','.')));
+           
+            $('#btn-save').prop('disabled', false);
+            $('#btn-submit').prop('disabled', false);
+
+            if ('@ViewBag.processApprove' == 'True' && '@Model.Status' == 2) {
+                $('#LogDescription').val('');
+            }
+        } else {
+            $('#Remaining').data("kendoNumericTextBox").value(0);
+            $("#Value").data("kendoNumericTextBox").readonly();
+            $('#Remaining').css('text-align', 'right');
+            $("#PayrollDeduction").data("kendoNumericTextBox").readonly();
+            $('#btn-save').prop('disabled', true);
+            $('#btn-submit').prop('disabled', true);
+        }
+
+        $('#Value').blur(function () {
+            CalculateTotalInstallment();
+        });
+
+        $('#btn-save').click(function () {
+            var LoanValue = '';
+            if ('@Model.Id' != '') {
+                var vala = $('#ValueInterestAmount').val().replace('.', ',');
+                var valb = $('#ValueInstallmentAmount').val().replace('.', ',');
+                var valc = $('#ValueTotalInstallment').val().replace('.', ',');
+                LoanValue = $('#Value').val();
+                $('#ValueInterestAmount').val(vala);
+                $('#ValueInstallmentAmount').val(valb);
+                $('#ValueTotalInstallment').val(valc);
+            } else {
+                LoanValue = $('#Value').data('kendoNumericTextBox').value();
+            }
+
+            if (LoanValue === 0) {
+                swal('Information', 'Ooops, You have not entered the loan value data!', 'info');
+                return false;
+            }
+           
+            callAction({ formId: "formEmployeeLoan", title: "save", type: "POST", url: '@Url.Action("Save", "EmployeeLoanCoop")' });
+        });
+
+        $('#btn-submit').click(function () {
+            var LoanValue = '';
+            if ('@Model.Id' != '') {
+                $('#Value').val('@Model.Value');
+                $('#ValueInterestAmount').val('@Model.ValueInterestAmount');
+                $('#ValueInstallmentAmount').val('@Model.ValueInstallmentAmount');
+                $('#ValueTotalInstallment').val('@Model.ValueTotalInstallment');
+                $('#Remaining').val('@Model.Remaining');
+                LoanValue = $('#Value').val();
+            } else {
+                LoanValue = $('#Value').data('kendoNumericTextBox').value();
+            }
+
+            if (LoanValue === 0) {
+                swal('Information', 'Ooops, You have not entered the loan value data!', 'info');
+                return false;
+            }
+            
+            callAction({ formId: "formEmployeeLoan", title: "submit", type: "POST", url: '@Url.Action("Submit", "EmployeeLoanCoop")' });
+        });
+
+        $('#btnApprove').click(function () {
+            $('#Value').val('@Model.Value');
+            $('#ValueInterestAmount').val('@Model.ValueInterestAmount');
+            $('#ValueInstallmentAmount').val('@Model.ValueInstallmentAmount');
+            $('#ValueTotalInstallment').val('@Model.ValueTotalInstallment');
+            $('#Remaining').val('@Model.Remaining');
+            callAction({ formId: "formEmployeeLoan", title: "approve", type: "PUT", url: '@Url.Action("Approve", "EmployeeLoanCoop")' });
+        });
+
+        $('#btnReject').click(function () {
+            $('#Value').val('@Model.Value');
+            $('#ValueInterestAmount').val('@Model.ValueInterestAmount');
+            $('#ValueInstallmentAmount').val('@Model.ValueInstallmentAmount');
+            $('#ValueTotalInstallment').val('@Model.ValueTotalInstallment');
+            $('#Remaining').val('@Model.Remaining');
+            callAction({ formId: "formEmployeeLoan", title: "reject", type: "PUT", url: '@Url.Action("Reject", "EmployeeLoanCoop")' });
+        });
+    });
+
+
+
+    function params_autocomplete() {
+        return {
+            name: $("#SearchEmployee").val()
+        };
+    }
+
+    function CalculateTotalInstallment() {
+        var value = $('#Value').data("kendoNumericTextBox").value();
+        //var tenor = $("#Tenor").data("kendoDropDownList").value();
+        var payrollDeduction = $("#PayrollDeduction").data("kendoNumericTextBox").value();
+        var interest = $('#InterestMonth').val();
+       
+        var installmentAmount = (value / payrollDeduction) + ((parseFloat(interest) * value) / 100);
+        var interestAmount = ((parseFloat(interest) * value * payrollDeduction) / 100);
+        var TotalInstallment = value + ((parseFloat(interest) * value * payrollDeduction) / 100);
+        //if (remainingBalance === 0) {
+        //    var remaining = remainingBalance - TotalInstallment;
+        //     $('#Remaining').data("kendoNumericTextBox").value(remaining); 
+        //}
+
+        $('#ValueTotalInstallment').data("kendoNumericTextBox").value(TotalInstallment);
+        $('#ValueInterestAmount').data("kendoNumericTextBox").value(interestAmount);
+        $('#ValueInstallmentAmount').data("kendoNumericTextBox").value(installmentAmount);
+        $('#Value').css('text-align', 'right');
+        $('#ValueInterestAmount').css('text-align', 'right');
+        $('#ValueInstallmentAmount').css('text-align', 'right');
+        $('#ValueTotalInstallment').css('text-align', 'right');
+
+        if ($("#EmployeeBasicInfoId").val() === "") {
+            $('#btn-save').prop('disabled', true);
+            $('#btn-submit').prop('disabled', true);
+        } else {
+            $('#btn-save').prop('disabled', false);
+            $('#btn-submit').prop('disabled', false);
+        }
+       
+    }
+
+    function formatNum(value) {
+        value = parseFloat(value);
+        var output = '' + addCommas(value.toFixed(2));
+        return value < 0 ? '(' + output.replace('-', '') + ')' : output;
+    }
+
+    function formatDecimal(total) {
+        var neg = false;
+        if (total < 0) {
+            neg = true;
+            total = Math.abs(total);
+        }
+        return (neg ? "-" : ' ') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+    }
+
+    function addCommas(nStr) {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1,$2');
+        }
+        return x1 + x2;
+    }
+
+    function calculateInterestValue() {
+        var value = $("#Value").data("kendoNumericTextBox").value();
+        var payrollDeduction = $("#PayrollDeduction").data("kendoNumericTextBox").value();
+        var interestperMonth = $("#InterestMonth").val();
+        var persentasePerTotalMonth = (payrollDeduction * interestperMonth);
+        var interest = (value * persentasePerTotalMonth)/100;
+        var total = value + interest;
+        //$("#InterestValue").data("kendoNumericTextBox").value(total);
+    }
+
+    function employeeInfoSelectEvent(e) {
+        var dataItem = this.dataItem(e.item.index());
+        if (dataItem === undefined) {
+            this.value("");
+            $("#EmployeeBasicInfoId").val("");
+            $("#infoEmployee_EmployeeName").val("");
+            $("#infoEmployee_JobTitle").val("");
+            $("#infoEmployee_Grade").val("");
+        } else {
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetEmployeeInfoById", "employeeinfo")',
+                data: { employeeId: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#EmployeeBasicInfoId").val(result.EmployeeId);
+                        $("#infoEmployee_EmployeeName").val(result.EmployeeName);
+                        $("#infoEmployee_JobTitle").val(result.JobTitle);
+                        $("#infoEmployee_Grade").val(result.Grade);
+                        
+                        $("#DateLoan").data("kendoDatePicker").readonly(false);
+                        $("#Value").data("kendoNumericTextBox").readonly(false);
+                        $("#PayrollDeduction").data("kendoNumericTextBox").readonly(false);
+                        $("#RepaymentStartDate").data("kendoDatePicker").readonly(false);
+                        $('#btn-save').prop('disabled', false);
+                        $('#btn-submit').prop('disabled', false);
+                        $.ajax({
+                            type: "GET",
+                            url: '@Url.Action("GetEmployeeLoanInfoById", "employeeinfo")',
+                            data: { employeeId: dataItem.Value, isCorporateloan:'0' },
+                            success: function (result2) {
+                                if (result2 != undefined) {
+                                    if (result2.LoanBalance > 0)
+                                    {
+                                        swal('Information', 'Ooops, this employee still has a loan coop!', 'info');
+                                        $("#EmployeeBasicInfoId").val("");
+                                        $("#infoEmployee_EmployeeName").val("");
+                                        $("#infoEmployee_JobTitle").val("");
+                                        $("#infoEmployee_Grade").val("");
+                                       
+                                        $("#DateLoan").data("kendoDatePicker").readonly();
+                                        $("#Value").data("kendoNumericTextBox").readonly();
+                                        $("#PayrollDeduction").data("kendoNumericTextBox").readonly();
+                                        $("#RepaymentStartDate").data("kendoDatePicker").readonly();
+                                        $("#ValueInterestAmount").data("kendoNumericTextBox").readonly();
+                                        $("#ValueInstallmentAmount").data("kendoNumericTextBox").readonly();
+                                        $("#ValueTotalInstallment").data("kendoNumericTextBox").readonly();
+                                        $('#btn-save').prop('disabled', true);
+                                        $('#btn-submit').prop('disabled', true);
+                                    }
+
+                                }
+                            }
+                        }); 
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+                }, 2e3));
+        }
+    }
+</script>

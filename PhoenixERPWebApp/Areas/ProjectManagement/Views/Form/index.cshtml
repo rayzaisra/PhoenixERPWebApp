@@ -1,0 +1,1001 @@
+@{
+    ViewData["Title"] = "Project Management";
+}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<div id="page_content_inner">
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">Home</h3>
+                <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                    <li class="m-nav__item m-nav__item--home">
+                        <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                            <i class="fa fa-home fa-fw"></i>
+                        </a>
+                    </li>
+                    <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                    <li class="m-nav__item">
+                        <a href="javascript:return;" class="m-nav__link">
+                            <span class="m-nav__link-text">Project Management</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @*<div class="m-portlet m-portlet--skin-dark m-portlet--bordered-semi">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon">
+                            <i class="flaticon-home"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            ERP Phoenix Media Modul
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                Welcome to Media Modul
+            </div>
+        </div>*@
+    <div class="m-content">
+        <div class="m-portlet__body">
+            <div class="row">
+                <div class="col-lg-4" onclick="goToTimesheet('week')" style="cursor: pointer;">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label"><a href="javascript:void(0)" onclick="goToTimesheet('week')">MY HOURS THIS WEEK</a></h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-hours-w"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3><span id="my-hours-this-week"></span></h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" onclick="goToTimesheet('month')" style="cursor: pointer;">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label"><a href="javascript:void(0)" onclick="goToTimesheet('month')">MY HOURS THIS MONTHS</a></h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-hours-m"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3><span id="my-hours-this-month"></span></h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" onclick="goToTimesheet('month-2')" style="cursor: pointer;">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label"><a href="javascript:void(0)" onclick="goToTimesheet('month-2')">MY BILLABLE HOURS</a></h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-bill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3><span id="my-billable-hours"></span></h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-4" onclick="goToTimesheet('month-1')" style="cursor: pointer;">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label"><a href="javascript:void(0)" onclick="goToTimesheet('month-1')">MY NON-BILLABLE HOURS</a></h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-nbill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3><span id="my-non-billable-hours"></span></h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" onclick="goToTimesheet('team-2')" style="cursor: pointer;display:none" id="teambillablehours">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label"><a href="javascript:void(0)" onclick="goToTimesheet('team-2')">TEAM'S BILLABLE HOURS</a></h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-team-bill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3><span id="team-billable-hours"></span></h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" onclick="goToTimesheet('team-1')" style="cursor: pointer;display:none" id="teamnonbillablehours">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label"><a href="javascript:void(0)" onclick="goToTimesheet('team-1')">TEAM'S NON-BILLABLE HOURS</a></h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-team-nbill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3><span id="team-non-billable-hours"></span></h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">TASK THIS WEEK</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">-->
+            @*<div id="chart-task-week-a"></div>*@
+            <!--<div class="col-md-8">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h6 class="card-label">Mine</h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="chart-task-week-m"></div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="col-md-8">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h6 class="card-label">All</h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="chart-task-week-a"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <br />
+            <div class="row">
+                <div class="col-lg-7" onclick="window.location.href = '/pm/pce'" style="cursor: pointer;display:none" id="revenueByUnit">
+                    <div class="card card-custom gutter-b" style="background-color:white!important;min-height:400px;">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">REVENUE BY UNITS</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                <div id="chart-revenue-byu"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    @*<br />
+                        <div class="card card-custom gutter-b" style="background-color:white!important">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h5 class="card-label">TYPE OF PROJECTS THIS MONTH</h5>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div id="chart-type-projects"></div>
+                                </div>
+
+                            </div>
+                        </div>*@
+                </div>
+
+                <div class="col-lg-5" id="taskmineall">
+                    <div class="card card-custom gutter-b" style="background-color:white!important;height:400px;">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">TASK THIS WEEK</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6" style="cursor: pointer" onclick="goToTimesheet('task-mine')">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h6 class="card-label">Mine</h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="chart-task-week-m"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="cursor: pointer" onclick="goToTimesheet('task-all')">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h6 class="card-label">All</h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="chart-task-week-a"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            @*<div class="col-lg-6">
+                    <div class="col-lg-12">
+                        <div class="card card-custom gutter-b" style="background-color:white!important">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h5 class="card-label">TASK THIS WEEK</h5>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div id="chart-task-week-a"></div>
+                                    <div class="col-md-6">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h6 class="card-label">Mine</h6>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="chart-task-week-m"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h6 class="card-label">All</h6>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="chart-task-week-a"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="col-lg-12">
+
+                    </div>
+                </div>*@
+            @*<br />
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card card-custom gutter-b" style="background-color:white!important">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h5 class="card-label">TASK THIS WEEK</h5>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-task-week-a"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            <br />
+            <div class="row">
+                <div class="col-lg-12" onclick="window.location.href = '/projectmanagement/job'" style="cursor: pointer;display:none" id="typeproject">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">TYPE OF PROJECTS THIS MONTH</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="col-lg-8">
+                                <div id="chart-type-projects"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">Most Updated Job</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered" id="tableListProjectThisWeek">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Project Name | Client</th>
+                                        <th>Deadline</th>
+                                        <th>Status by</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableListProjectThisWeek-body">
+                                    @*<tr>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;">1</td>
+                                            <td>Project for Cptive Inc</td>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;">Fry, 31.12</td>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;"><span class="m-badge m-badge--info m-badge--wide">New</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Captive Inc</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;">2</td>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;">Project for BRI</td>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;">Fry, 31.12</td>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;"><span class="m-badge m-badge--danger m-badge--wide">Hold</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>BRI</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;">3</td>
+                                            <td>Project for Sampoerna</td>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;">Fry, 31.12</td>
+                                            <td rowspan="2" style="vertical-align : middle;text-align:center;"><span class="m-badge m-badge--success m-badge--wide">Done</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sampoerna</td>
+                                        </tr>*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    @*@section Scripts{
+            <script src="~/app/js/my-script.js"></script>
+        }*@
+
+    <script>
+        $(function () {
+            getSectionSummary();
+        })
+
+
+        let getSectionSummary = function () {
+            let urlApi = $.helper.resolveApi("~notifycenter/GetDsNewPm");
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: urlApi,
+                success: function (res) {
+
+                    var datachart = [];
+                    var dataTypeProjectName = [];
+                    var dataTypeProjectCount = [];
+                    var dataRevenueName = [];
+                    var dataRevenueSum = [];
+                    var dataJobThisWeekName = [];
+                    var dataJobThisWeekCount = [];
+                    var dataDivisionThisWeekName = [];
+                    var dataDivisionThisWeekCount = [];
+                    var dataJobGrade = [];
+
+                    $('#my-hours-this-week').text(res.data.my_hours_this_week + ' h');
+                    $('#my-hours-this-month').text(res.data.my_hours_this_month + ' h');
+                    $('#my-billable-hours').text(res.data.my_billable_hours + ' h');
+                    $('#my-non-billable-hours').text(res.data.my_non_billable_hours + ' h');
+                    $('#team-billable-hours').text(res.data.team_billable_hours + ' h');
+                    $('#team-non-billable-hours').text(res.data.team_non_billable_hours + ' h');
+                    datachart.push(res.data.my_hours_this_week_percent);
+                    datachart.push(res.data.my_hours_this_month_percent);
+                    datachart.push(res.data.my_billable_hours_percent);
+                    datachart.push(res.data.my_non_billable_hours_percent);
+                    datachart.push(res.data.team_billable_hours_percent);
+                    datachart.push(res.data.team_non_billable_hours_percent);
+                    datachart.push(res.data.mine_job);
+                    datachart.push(res.data.mine_job_percent);
+                    datachart.push(res.data.div_job);
+                    datachart.push(res.data.div_job_percent);
+
+
+                    var htmlTBody = "";
+                    $.each(res.dataMostUpdateJob, function (x, r) {
+
+                        var tBody = '<tr>' +
+                            '<td>' + (x + 1) + '</td>' +
+                            '<td><a href="/projectmanagement/job/detail/' + r.job_number + '" > ' + r.projectName + '</a></td>' +
+                            '<td>' + r.deadline + '</td>' +
+                            '<td>' + r.status + '</td>' +
+                            '</tr>';
+                        htmlTBody += tBody;
+
+                    });
+
+                    $.each(res.dataProjectType, function (x, r) {
+                        dataTypeProjectName.push(r.job_type_name);
+                        dataTypeProjectCount.push(parseFloat(r.job_type_count));
+                    });
+
+                    $.each(res.dataRevenue, function (x, r) {
+                        dataRevenueName.push(r.division_name);
+                        dataRevenueSum.push(parseFloat(r.total_division_pce));
+                    });
+
+                    $.each(res.dataJobThisWeek, function (x, r) {
+                        dataJobThisWeekName.push(r.my_job_task_this_week);
+                        dataJobThisWeekCount.push(parseFloat(r.my_job_task_count_this_week));
+                    });
+
+                    $.each(res.dataDivisionThisWeek, function (x, r) {
+                        dataDivisionThisWeekName.push(r.section_division_job);
+                        dataDivisionThisWeekCount.push(parseFloat(r.section_division_job_count_this_week));
+                    });
+
+                    $.each(res.dataJobGrade, function (x, r) {
+                        //dataJobGrade.push(r.is_job_grade_id_e1);
+                        //dataJobGrade.push(parseFloat(r.is_show_revenue));
+
+                        if (r.is_job_grade_id_e1 == '1') {
+                            $('#teambillablehours').show();
+                            $('#teamnonbillablehours').show();
+                            $('#taskmineall').show();
+                            $('#typeproject').show();
+                        } else {
+                            $('#teambillablehours').hide();
+                            $('#teamnonbillablehours').hide();
+                            $('#taskmineall').hide();
+                            $('#typeproject').hide();
+                        }
+
+                        if (r.is_show_revenue == '1') {
+                            $('#revenueByUnit').show();
+                        } else {
+                            $('#revenueByUnit').hide();
+                        }
+                    });
+
+                    $('#tableListProjectThisWeek-body').empty();
+                    $('#tableListProjectThisWeek-body').append(htmlTBody);
+                    //drawSummary(data);
+
+                    generateChart(datachart, dataTypeProjectName, dataTypeProjectCount, dataRevenueName, dataRevenueSum, dataJobThisWeekName, dataJobThisWeekCount, dataDivisionThisWeekName, dataDivisionThisWeekCount);
+                },
+                error: function (e, t, s) {
+                    console.error('get info dashboard kanban getting error');
+                }
+            });
+        };
+
+        function generateChart(obj, obj2, obj3, obj4, obj5, obj6, obj7, obj8, obj9) {
+
+
+            var options = {
+                series: [obj[0]],
+                chart: {
+                    type: 'radialBar'
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '45%',
+                        },
+                    },
+                },
+                labels: ['Percent']
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart-hours-w"), options);
+            chart.render();
+
+            var options2 = {
+                series: [obj[1]],
+                chart: {
+                    type: 'radialBar'
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '45%',
+                        },
+                    },
+                },
+                labels: ['Percent']
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+
+            var chart2 = new ApexCharts(document.querySelector("#chart-hours-m"), options2);
+            chart2.render();
+
+            var options3 = {
+                series: [obj[2]],
+                chart: {
+                    type: 'radialBar'
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '45%',
+                        },
+                    },
+                },
+                labels: ['Percent']
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+
+            var chart3 = new ApexCharts(document.querySelector("#chart-bill-h"), options3);
+            chart3.render();
+
+            var options4 = {
+                series: [obj[3]],
+                chart: {
+                    type: 'radialBar'
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '45%',
+                        },
+                    },
+                },
+                labels: ['Percent']
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+
+            var chart4 = new ApexCharts(document.querySelector("#chart-nbill-h"), options4);
+            chart4.render();
+
+            var options5 = {
+                series: [obj[4]],
+                chart: {
+                    type: 'radialBar'
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '45%',
+                        },
+                    },
+                },
+                labels: ['Percent']
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+
+            var chart5 = new ApexCharts(document.querySelector("#chart-team-bill-h"), options5);
+            chart5.render();
+
+            var options6 = {
+                series: [obj[5]],
+                chart: {
+                    type: 'radialBar'
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '45%',
+                        },
+                    },
+                },
+                labels: ['Percent']
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+
+            var chart6 = new ApexCharts(document.querySelector("#chart-team-nbill-h"), options6);
+            chart6.render();
+
+
+            ////////////////////////////////////
+            var options7 = {
+                series: obj5,
+                chart: {
+                    type: 'donut',
+                },
+                labels: obj4,
+                tooltip: {
+                    enabled: true,
+                    custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+                        var value = addCommas(series[seriesIndex])
+                        return (
+                            '<div class="arrow_box">' +
+                            "<span>" +
+                            w.globals.labels[seriesIndex] +
+                            ": " +
+                            value +
+                            "</span>" +
+                            "</div>"
+                        );
+                    }
+                }
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+            var chart7 = new ApexCharts(document.querySelector('#chart-revenue-byu'), options7);
+            chart7.render();
+
+            /////////////
+            var options8 = {
+                height: 300,
+                width: "100%",
+
+                legend: {
+                    show: false,
+                    fontSize: "8px"
+                },
+                series: obj7,
+                labels: obj6,
+                chart: {
+                    type: 'donut',
+                },
+                plotOptions: {
+                    pie: {
+                        customScale: 0.8,
+                        donut: {
+                            size: '50%'
+                        }
+                    }
+                }
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+            var chart8 = new ApexCharts(document.querySelector('#chart-task-week-m'), options8);
+            chart8.render();
+
+            var options9 = {
+                height: 300,
+                width: "100%",
+
+                legend: {
+                    show: false,
+                    fontSize: "8px"
+                },
+                series: obj9,
+                labels: obj8,
+                chart: {
+                    type: 'donut',
+                },
+                plotOptions: {
+                    pie: {
+                        customScale: 0.8,
+                        donut: {
+                            size: '50%'
+                        },
+                        total: {
+                            show: false,
+                            showAlways: false,
+                            label: 'Total',
+                            fontSize: '22px',
+                            fontFamily: 'Helvetica, Arial, sans-serif',
+                            fontWeight: 600,
+                            color: '#373d3f',
+                            formatter: function (w) {
+                                return 0
+                            }
+                        }
+                    }
+                }
+                //responsive: [{
+                //    breakpoint: undefined,
+                //    options: {
+
+                //    }
+                //}]
+            };
+            var chart9 = new ApexCharts(document.querySelector('#chart-task-week-a'), options9);
+            chart9.render();
+
+            //var options9 = {
+            //    series: [obj[7], obj[9]],
+            //    labels: ['Mine Job : ' + obj[6] + ' job', 'All Division Job : ' + obj[8] + ' job'],
+            //    chart: {
+            //        type: 'radialBar',
+            //    },
+            //    plotOptions: {
+            //        radialBar: {
+            //            dataLabels: {
+            //                name: {
+            //                    fontSize: '22px',
+            //                },
+            //                value: {
+            //                    fontSize: '16px',
+            //                },
+            //                total: {
+            //                    show: true,
+            //                    label: 'Total Job Division ',
+            //                    formatter: function (w) {
+            //                        // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
+            //                        return  parseFloat(obj[8])
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    },
+            //    //responsive: [{
+            //    //    breakpoint: undefined,
+            //    //    options: {
+
+            //    //    }
+            //    //}]
+            //};
+            //var chart9 = new ApexCharts(document.querySelector('#chart-task-week-a'), options9);
+            //chart9.render();
+
+            ////////////////////////////////
+            //var options10 = {
+            //    series: [{
+            //        data: [5, 3, 1]
+            //    }],
+            //    chart: {
+            //        type: 'bar',
+            //        toolbar: {
+            //            show: false
+            //        }
+            //    },
+            //    plotOptions: {
+            //        bar: {
+            //            horizontal: true,
+            //        }
+            //    },
+            //    dataLabels: {
+            //        enabled: false
+            //    },
+            //    xaxis: {
+            //        categories: ['Ani', 'Budi', 'Charlie']
+            //    }
+            //};
+
+            //var chart10 = new ApexCharts(document.querySelector('#chart-team-members'), options10);
+            //chart10.render();
+
+            ////////////////////////////////////
+            var options11 = {
+                series: obj3,
+                chart: {
+                    type: 'donut',
+                },
+                labels: obj2,
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    showAlways: true,
+                                    show: true
+                                }
+                            }
+                        }
+                    }
+                }
+
+            };
+            var chart11 = new ApexCharts(document.querySelector('#chart-type-projects'), options11);
+            chart11.render();
+
+            /////////////////////
+            //var options12 = {
+            //    series: [{
+            //        data: [24, 20, 22]
+            //    }],
+            //    chart: {
+            //        type: 'bar',
+            //        toolbar: {
+            //            show: false
+            //        }
+            //    },
+            //    plotOptions: {
+            //        bar: {
+            //            horizontal: true,
+            //        }
+            //    },
+            //    dataLabels: {
+            //        enabled: false
+            //    },
+            //    xaxis: {
+            //        categories: ['Ani', 'Budi', 'Charlie']
+            //    }
+            //};
+
+            //var chart12 = new ApexCharts(document.querySelector('#chart-team-hour-w'), options12);
+            //chart12.render();
+        }
+
+        function goToTimesheet(e) {
+
+            let urlApi = $.helper.resolveApi("~notifycenter/Getlinktotimesheetgrid?type=" + e);
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: urlApi,
+                success: function (res) {
+
+                    window.location.href = res.link;
+                },
+                error: function (e, t, s) {
+                    console.error('get info dashboard kanban getting error');
+                }
+            });
+        }
+        function addCommas(nStr) {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+        function number_format(number, decimals, dec_point, thousands_sep) {
+            // *     example: number_format(1234.56, 2, ',', ' ');
+            // *     return: '1 234,56'
+            number = (number + '').replace(',', '').replace(' ', '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function (n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.round(n * k) / k;
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }
+    </script>

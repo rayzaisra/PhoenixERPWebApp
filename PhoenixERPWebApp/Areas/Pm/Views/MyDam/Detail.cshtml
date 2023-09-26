@@ -1,0 +1,404 @@
+﻿@model PhoenixERPWebApp.Models.Pm.MyDam.MyDam
+@{
+    ViewData["Title"] = "My Digital Asset Management File";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+    var mUserLogin = ViewBag.UserLogin as string;
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Master Outlet</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">My Digital Asset Management</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="indexApproval" asp-controller="MyDam" asp-area="pm" class="m-nav__link"><span class="m-nav__link-text">My Digital Asset Management Approval</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="detail" asp-controller="MyDam" asp-area="pm" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="detail" asp-controller="MyDam" asp-area="pm" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">@ViewBag.Header Digital Asset Management Approval</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formMyDamApproval" class="form-horizontal form-bordered" role="form" asp-action="Approve" asp-controller="MyDam" asp-area="pm">
+                        @*enctype="multipart/form-data"*@
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="Status" />
+                                <input type="hidden" asp-for="StatusDesc" />
+                                <div class="row m-row--col-separator-xl">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="FileName"></label>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.FileName)
+                                                .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" }))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="ParentId"></label>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.ParentId)
+                                                .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" }))
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Preview File</label>  :
+                                            <div id="listView"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="FilePath"></label> <a id="damlink" href="" target="_blank" style="width: 100%;">View Digital Asset Management</a>
+                                            @Html.TextAreaFor(x => x.FilePath, new { @class = "k-textbox", style = "width: 100%;", @readonly = "readonly" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="RequestBy"></label>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.RequestByName)
+                                                .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" }))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="RequestDate"></label>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.RequestDate)
+                                                .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" }))
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <br />
+                                <partial name="_StatusLog" />
+                                <br />
+                                <br />
+                                <partial name="_HistoryApproval" />
+                                <br />
+                                <div class="pull-right">
+                                    @if (Model.Status == 2 && ViewBag.processApprove)
+                                    {
+                                        <button type="button" id="btn-approve" class="btn btn-primary">Approve</button>
+                                        <button type="button" id="btn-reject" class="btn btn-danger">Reject</button>
+                                    }
+                                    <a asp-action="indexApproval" asp-controller="MyDam" asp-area="pm" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document" style="max-width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group detail-image">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="btnDownloadFile" class="btn btn-primary">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-kendo-tmpl" id="template">
+    <div class="img-frame-cap">
+        <img src="#:FilePath#" alt="#:FileName# image" class="center" width="150px" height="150px" />
+        <div class="caption">#:FileName#</div>
+    </div>
+</script>
+
+<script>
+    var selectedFiles;
+    var userLogin;
+    $(function () {
+        userLogin = '@mUserLogin';
+        $('#btn-reject').click(function () {
+            $('#StatusDesc').val('Rejected');
+            callAction({ formId: "formMyDamApproval", title: "reject", type: "POST" });
+        });
+
+        $('#btn-approve').click(function () {
+            $('#StatusDesc').val('Approved');
+            callAction({ formId: "formMyDamApproval", title: "approve", type: "POST" });
+        });
+
+        if ($('#ParentId').val() !== "") {
+             $("#damlink").attr("href", "/ProjectManagement/DigitalAssetManagement/Detail/" + $('#ParentId').val());
+        } else {
+            $("#damlink").hide();
+        }
+        console.log($('#FileName').val());
+        GenerateThumbnail($('#FileName').val());
+
+    })
+
+    function GenerateThumbnail(filename = null) {
+
+        var dataSource = null;
+        if (filename === null) {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@Url.Action("GetMyDAM", "MyDam")",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                    }
+                },
+                pageSize: 20
+            });
+        } else {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: '@Url.Action("GetMyDAMByFilename", "MyDam")?filename=' + filename,
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                    }
+                },
+                pageSize: 20
+            });
+        }
+
+        dataSource.filter({
+            field: 'FileName',
+            operator: 'eq',
+            value: filename
+        });
+        $("#listView").kendoListView({
+            dataSource: dataSource,
+            selectable: "multiple",
+            dataBound: onDataBound,
+            change: onChange,
+            template: kendo.template($("#template").html())
+        });
+
+        function onDataBound() {
+            $(".img-frame-cap").on("dblclick", function () {
+                var listView = $("#listView").data("kendoListView");
+                var idx = $(this).index();
+                var item = listView.dataSource.view()[idx];
+                $('.detail-image').empty();
+                $('.modal-title').empty();
+                var title = '';
+                title = '<span>' + item.FileName + '</span>';
+                var JobName = 'There is no job number attach to this file';
+                if (item.JobName !== null) {
+                    JobName = item.JobName;
+                }
+                var html = '';
+
+
+                    html = '<img src="' + item.FilePath + '" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" />' +
+                        '<hr />' +
+                        '<div class="form-group">' +
+                        '<label class="label-block">FileName</label>' + '&nbsp;' +
+                        '<label class="label-block"> : </label>' + '&nbsp;' +
+                        '<label class="label-block">' + item.FileName + '</label>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                        '<label class="label-block">Job Number</label>' + '&nbsp;' +
+                        '<label class="label-block"> : </label>' + '&nbsp;' +
+                        '<label class="label-block">' + JobName + '</label>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                        '<label class="label-block">Upload By</label>' + '&nbsp;' +
+                        '<label class="label-block"> : </label>' + '&nbsp;' +
+                        '<label class="label-block">' + item.CreatedBy + '</label>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                        '<label class="label-block">Upload Date</label>' + '&nbsp;' +
+                        '<label class="label-block"> : </label>' + '&nbsp;' +
+                        '<label class="label-block">' + moment(item.CreatedOn).format("DD-MMM-YYYY") + '</label>' +
+                        '</div>';
+
+
+                if (item.Status === 3 && item.RequestBy === userLogin) {
+                    $('#btnDownloadFile').show();
+                    $('#btnDownloadFile').removeAttr('onclick');
+                    $('#btnDownloadFile').attr('onClick', "downloadFile(\"" + item.FilePath + "\");");
+                } else {
+                    $('#btnDownloadFile').hide();
+                }
+
+                $('.detail-image').append(html);
+                $('.modal-title').append(title);
+                $('#modalRemark').modal('show');
+            });
+        }
+
+        function onChange(e) {
+            e.preventDefault();
+            var data = this.dataSource.view(),
+                selected = $.map(this.select(), function (item) {
+                    return data[$(item).index()]["Id"];
+                });
+            //console.log("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
+            selectedFiles = selected.join(",");
+
+        }
+
+        $("#listView").on("mousedown", function (e) {
+
+            // get item if the user clicked on an item template
+            var clickedItem = $(e.target).closest("div.product");
+            // prevent click event for item elements
+            clickedItem.on("click", function (e) {
+                e.stopPropagation();
+            });
+
+            if (clickedItem.length > 0) {
+                var listView = $("#listView").getKendoListView();
+
+                var selectedItems = listView.select();
+
+                if (clickedItem.hasClass("k-state-selected")) {
+                    // if item is already selected - remove it from collection
+                    selectedItems.splice($.inArray(clickedItem[0], selectedItems), 1);
+                } else {
+                    selectedItems.push(clickedItem);
+                }
+
+                // unbind "change" event to prevent multiple calls
+                listView.unbind("change");
+                listView.clearSelection();
+                listView.bind("change", onChange);
+                listView.select(selectedItems);
+
+            }
+        });
+    }
+</script>
+
+<style>
+    .product {
+        float: left;
+        height: 110px;
+        margin: 0;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+        .product img {
+            float: left;
+            width: 110px;
+            height: 110px;
+        }
+
+        .product h3 {
+            margin: 0;
+            padding: 10px 0 0 10px;
+            font-size: .9em;
+            overflow: hidden;
+            font-weight: normal;
+            float: left;
+            max-width: 100px;
+            text-transform: uppercase;
+        }
+
+
+
+    .img-frame-cap {
+        float: left;
+        border-radius: 10px;
+        padding: 8px 8px 5px 8px;
+        border: 1px solid #999;
+        margin-top: 10px;
+        margin-left: 20px;
+        width: 200px;
+        height: 200px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .caption {
+        text-align: left;
+        margin-top: 4px;
+        font-size: 12px;
+        word-wrap: break-word;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+    }
+</style>

@@ -1,0 +1,62 @@
+@{
+    ViewBag.ModalTitle = "LoanEmployee";
+    ViewBag.ModalId = "LoanEmployeeModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="LoanEmployeeFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="count_repayment">count_repayment</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_count_repayment" id="search_count_repayment"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="date_loan">date_loan</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_date_loan" id="search_date_loan"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="monthly_repayment">monthly_repayment</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_monthly_repayment" id="search_monthly_repayment"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="reason">reason</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_reason" id="search_reason"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="repayment_end_date">repayment_end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_repayment_end_date" id="search_repayment_end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="repayment_start_date">repayment_start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_repayment_start_date" id="search_repayment_start_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="value">value</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_value" id="search_value"   type="number">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnLoanEmployee.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnLoanEmployee.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

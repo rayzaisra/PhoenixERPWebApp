@@ -1,0 +1,545 @@
+﻿@model PhoenixERPWebApp.Models.TrainingBonding
+@{
+    ViewData["Title"] = "Training Bonding";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<style>
+    .label-required {
+        color: red;
+    }
+
+    table {
+        width: 100%;
+        border: 0px;
+    }
+
+        table tr td {
+            text-align: left;
+            padding: 5px;
+        }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Training Bonding</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Training</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Hrisnew/TrainingBonding")" class="m-nav__link">
+                        <span class="m-nav__link-text">Training Bonding</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__head" style="background:#fafafa">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    @if (!string.IsNullOrEmpty(Model.Id))
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.Status))
+                                        {
+                                            @if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatus.Open)
+                                            {
+                                                <span class="m-badge m-badge--danger m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.Open)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatus.WaitingBondingApproval)
+                                            {
+                                                <span class="m-badge m-badge--warning m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.WaitingBondingApproval)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatus.WaitingApproval)
+                                            {
+                                                <span class="m-badge m-badge--warning m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.WaitingApproval)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatus.Approved)
+                                            {
+                                                <span class="m-badge m-badge--success m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.Approved)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatus.Reject)
+                                            {
+                                                <span class="m-badge m-badge--danger m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.Reject)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatus.Training)
+                                            {
+                                                <span class="m-badge m-badge--dark m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.Training)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatus.SharingSeassion)
+                                            {
+                                                <span class="m-badge m-badge--info m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.SharingSeassion)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="m-badge m-badge--danger m-badge--wide" id="lblstatus">@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatus.Open)</span>
+                                            }
+
+
+                                        }
+                                    }
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <form id="form" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed" role="form">
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitId" />
+                        <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                        <input type="hidden" asp-for="Id" />
+                        <div class="alert m-alert--default" role="alert">
+                            Training Detail
+                        </div>
+                        <div class="row ">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training">Training</span> :</label>
+                                    @(Html.Kendo().TextBoxFor(m => m.TrainingName).HtmlAttributes(new { style = "width:100%", Readonly = "Readonly" }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training Type">Training Type</span> :</label>
+                                    @(Html.Kendo().TextBoxFor(m => m.TrainingType).HtmlAttributes(new { style = "width:100%", Readonly = "Readonly" }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Venue">Venue</span> :</label>
+                                    @(Html.Kendo().TextBoxFor(m => m.Venue).HtmlAttributes(new { style = "width:100%", Readonly = "Readonly" }))
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row ">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training Start">Training Start</span> :</label>
+                                    @(Html.Kendo().DatePickerFor(m => m.StartDate.Value.Date)
+                                                          .Format("dd MMMM yyyy")
+                                                          .HtmlAttributes(new
+                                                          {
+                                                              style = "width: 100%",
+                                                              Readonly = "Readonly"
+
+                                                          })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training End">Training End</span> :</label>
+                                    @(Html.Kendo().DatePickerFor(m => m.EndDate.Value.Date)
+                                                          .Format("dd MMMM yyyy")
+                                                          .HtmlAttributes(new
+                                                          {
+                                                              style = "width: 100%",
+                                                              Readonly = "Readonly"
+
+                                                          })
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="alert m-alert--default" role="alert">
+                            Employee Detail
+                        </div>
+                        <div class="row ">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Employee Name">Employee Name</span> :</label>
+                                    @(Html.Kendo().TextBoxFor(m => m.EmployeeBasicInfoName).HtmlAttributes(new { style = "width:100%", Readonly = "Readonly" }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Division">Division</span> :</label>
+                                    @(Html.Kendo().TextBoxFor(m => m.BusinessUnitName).HtmlAttributes(new { style = "width:100%", Readonly = "Readonly" }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Grade">Grade</span> :</label>
+                                    @(Html.Kendo().TextBoxFor(m => m.GradeName).HtmlAttributes(new { style = "width:100%", Readonly = "Readonly" }))
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="alert m-alert--default" role="alert">
+                                    List Document Bonding
+                                </div>
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.TrainingRequisitionDetail>()
+                                        .Name("grid")
+                                        .ToolBar(x =>
+                                        {
+
+                                            if (Model.isApprove == false)
+                                            {
+                                                x.ClientTemplateId("grid-toolbar-template");
+                                            }
+
+                                        })
+                                        .Columns(columns =>
+                                        {
+                                            if (Model.isApprove == false)
+                                            {
+                                                columns.Bound("").ClientTemplateId("btnAction-template").Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(60);
+                                            }
+
+                                            columns.Bound(p => p.EmployeeBasicInfoName).Title("Document Name").Width(100);
+                                            columns.Bound(p => p.JobTitleName).Title("Title").Width(100);
+                                            columns.Bound(p => p.JobGradeName).Title("Size").Width(100);
+                                            columns.Bound(p => p.DivisionName).Title("Actions").Width(100);
+
+                                        })
+                                        .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(10)
+                                            .Events(events => events.Error("errorHandler"))
+                                            .Model(model => { model.Id(p => p.Id); })
+                                            .Read(read => read.Action("ReadDetail", "TrainingRequisition").Data("GetTrainingRequisitionId"))
+                                        )
+                                        .NoRecords()
+                                )
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="Upload Doucment">Upload Document</label>
+                                    <div id="divFileUpload"></div>
+                                    <div style="width:100%">
+                                        <input type="hidden" asp-for="FileUpload" />
+                                        <a href='javascript: void(0);' id="linkInterviewDownloadFile" onclick='downloadFileUpload()'></a> &nbsp;
+                                        <a href='javascript: void(0);' id="linkInterviewRemoveFile" onclick='removeFileUpload()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <br />
+                        @if (Model.isApprove == true)
+                        {
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <center>
+                                        @if (ViewBag.processApprove == true)
+                                        {
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                            <button type="button" id="btnShow" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                        }
+                                        <a asp-action="" asp-controller="TrainingBonding" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    </center>
+                                </div>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="row">
+
+                                <div class="col-lg-12">
+                                    <center>
+                                        <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                        <a href="~/Hrisnew/TrainingRequisition" class="fakelink btn btn-secondary">Close</a>
+                                    </center>
+                                </div>
+
+                            </div>
+                        }
+
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                        <!--end::Form-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-container"></div>
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='deleteGridRowEmployeeList(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+</script>
+<script id="grid-toolbar-template" type="text/x-kendo-template">
+    <a class='k-button' href='javascript: void(0);' onclick='AddEmployee(this)'><span class='k-icon k-i-plus'></span>Add</a>
+</script>
+
+<script>
+    function FileUpload() {
+        $("#linkInterviewDownloadFile").empty();
+        $("#linkInterviewRemoveFile").empty();
+        $("#divFileUpload").empty().append("<input name='file' id='file' type='file'/>");
+
+        $("#file").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+     function removeFileUpload() {
+        FileUpload();
+    }
+
+    function downloadFileUpload() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#FileUpload").val() }});
+    }
+    //Untuk Mengatasi problem auto close dropdown modal bootstrap popup
+    (function ($, kendo) {
+        var _init = kendo.ui.Popup.fn.init;
+        var Popup = kendo.ui.Popup.extend({
+            init: function (element, options) {
+                // Only set appendTo if nothing was manually set in the options.
+                if (options.appendTo === undefined) {
+                    // Find the nearest parent bootstrap modal, if any.
+                    var parentModal = $(options.anchor).closest('.modal');
+
+                    // Found one!
+                    if (parentModal.length > 0) {
+                        options.appendTo = parentModal[0];
+                    }
+                }
+                // Call the base constructor.
+                _init.call(this, element, options);
+            }
+        });
+        kendo.ui.plugin(Popup);
+    }(window.kendo.jQuery, window.kendo));
+
+    function AddEmployee() {
+       ClearDataFilter();
+        $('#modal-choice-employee').modal('show');
+    }
+
+    function deleteGridRowEmployeeList(e) {
+        swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: !0
+        }).then(function (ok) {
+            if (ok.value) {
+                mApp.block("#m_blockui_list", {
+                    overlayColor: "#000000",
+                    type: "loader",
+                    state: "primary",
+                    message: "Processing..."
+                });
+
+                var item = dataItem(e);
+                $("#grid").data("kendoGrid").dataSource.remove(item);
+            }
+        }).catch(swal.noop);
+    }
+
+    function ClearDataFilter() {
+        $("#GroupId").data("kendoDropDownList").value("");
+        $("#SubgroupId").data("kendoDropDownList").value("");
+        $("#DivisionId").data("kendoDropDownList").value("");
+        $("#DepartementId").data("kendoDropDownList").value("");
+    }
+
+    function OnChange() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        var grid = $("#grid-choice-employee").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+
+        var group = $("#GroupId").data("kendoDropDownList");
+        var subgroup = $("#SubgroupId").data("kendoDropDownList");
+        var departement = $("#DepartementId").data("kendoDropDownList");
+        var division = $("#DivisionId").data("kendoDropDownList");
+
+        var groupid = group.value();
+        var subgroupid = subgroup.value();
+        var departementid = departement.value();
+        var divisionid = division.value();
+
+        $("#GroupId").val(group.text() === "All" ? "" : groupid);
+        $("#SubgroupId").val(subgroup.text() === "All" ? "" : subgroupid);
+        $("#DepartementId").val(departement.text() === "All" ? "" : departementid);
+        $("#DivisionId").val(division.text() === "All" ? "" : divisionid);
+
+       
+        
+        var grid = $("#grid-choice-employee").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+        mApp.unblock("#m_blockui_list");
+    };
+
+    $('#btn-save').click(function () {
+        if ($("#RequesterEmployeeBasicInfoId").val() == null || $("#BusinessUnitId").val() == null) {
+            swal('Warning', "Please Check Your Session", 'error');
+            setTimeout(
+                function () {
+                    //do something special
+                    window.location.href = '@Url.Action("Index", "TrainingBonding")';
+                }, 2000);
+        }
+        var dataList = {
+            Details: $("#grid").data("kendoGrid").dataSource.data()
+        };
+        callAction({ formId: "form", title: "Save", type: "POST" , url: '@Url.Action("Save", "TrainingBonding")', objects: dataList });
+    });
+
+     $('#btnApprove').click(function () {
+            callAction({ formId: "form", title: "Approve", type: "POST", url: '@Url.Action("Approve", "TrainingBonding")' });
+    });
+
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+    $('#btnReject').click(function () {
+            callAction({ formId: "form", title: "Reject", type: "POST", url: '@Url.Action("Reject", "TrainingBonding")'});
+        });
+
+    function ShowBonding() {
+
+        var rev = $('#TrainingCost').data("kendoNumericTextBox").value();
+        if (parseInt(rev) >= parseInt(15000000)) {
+            $("#bonding_detail_div").css({ display: "block" });
+        }
+
+    }
+    function GetTrainingRequisitionId() {
+        return {
+            Id: $("#Id").val()
+        };
+    }
+
+    function gridChoiceEmployee_params() {
+        var groupid = $("#GroupId").data("kendoDropDownList").value();
+        var subgroupid = $("#SubgroupId").data("kendoDropDownList").value();
+        var departementid = $("#DepartementId").data("kendoDropDownList").value();
+        var divisionid = $("#DivisionId").data("kendoDropDownList").value();
+
+
+        return {
+            Filter: {
+                FilterGroupId: groupid,
+                FilterSubgroupId: subgroupid,
+                FilterDivisionId: divisionid,
+                FilterDepartementId: departementid,
+            }
+        }
+    }
+    function filterGroups() {
+        return {
+            GroupId: $("#GroupId").data("kendoDropDownList").value()
+        };
+    }
+    function filterSubGroups() {
+        return {
+            subGroupId: $("#SubgroupId").data("kendoDropDownList").value()
+        };
+    }
+    function filterDivision() {
+        return {
+            divisionId: $("#DivisionId").data("kendoDropDownList").value()
+        };
+    }
+    function SaveSelectedEmployee() {
+        $("#grid").data('kendoGrid').dataSource.data([]);
+        var allSelected = $("#grid-choice-employee tr.k-state-selected");
+        var griddtlds = $("#grid").data('kendoGrid').dataSource;
+
+        if (allSelected.length < 1) {
+            swal('Warning', "At Lease Choose 1 employee, Please Choose more.", 'error');
+            return;
+        }
+        $.each(allSelected, function (e) {
+            var row = $(this);
+            var grid = row.closest(".k-grid").data("kendoGrid");
+            var dataItem = grid.dataItem(row);
+            griddtlds.add(dataItem)
+        });
+
+        $('#modal-choice-employee').modal('toggle');
+    }
+
+     $(document).ready(function () {
+        var FileUploadName = '@Model.FileUploadName';
+        if (FileUploadName == '') {
+            FileUpload();
+        } else {
+            $("#linkInterviewDownloadFile").text(FileUploadName);
+        }
+    });
+</script>

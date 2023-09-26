@@ -1,0 +1,52 @@
+@{
+    ViewBag.ModalTitle = "Travel";
+    ViewBag.ModalId = "TravelModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="TravelFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="actual_travel_budget">actual_travel_budget</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_actual_travel_budget" id="search_actual_travel_budget"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="expected_travel_budget">expected_travel_budget</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_expected_travel_budget" id="search_expected_travel_budget"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="purpose_of_visit">purpose_of_visit</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_purpose_of_visit" id="search_purpose_of_visit"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_description">travel_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_travel_description" id="search_travel_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_end_date">travel_end_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_travel_end_date" id="search_travel_end_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="travel_start_date">travel_start_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_travel_start_date" id="search_travel_start_date"   type="number">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnTravel.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnTravel.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

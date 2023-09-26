@@ -1,0 +1,612 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="1">
+      <MS_x0020_SQL Ref="2" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>MS SQL</Alias>
+        <ConnectionStringEncrypted>9DJp62F++u1iSZzcY1xgF9FA+wlOA8rda0slzOQYsWPDVPspyUq7WeFBJdxhFGJ75MjN68ldY9VGTCmA53giC5Bs0c9eStOkb1u9bOklYi/IVPcpTUujHUVczZxpJWEnxPJpCUZx2QlhRP2Yw0zjP4BU0atVQXv1a1zohOVw4mPZVsGMW2irheg=</ConnectionStringEncrypted>
+        <Name>MS SQL</Name>
+      </MS_x0020_SQL>
+    </Databases>
+    <DataSources isList="true" count="2">
+      <Mutation Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Mutation</Alias>
+        <Columns isList="true" count="7">
+          <value>t_date,System.DateTime</value>
+          <value>transaction_number,System.String</value>
+          <value>account_id,System.String</value>
+          <value>account_name,System.String</value>
+          <value>account_number,System.String</value>
+          <value>debit,System.Decimal</value>
+          <value>credit,System.Decimal</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Mutation</Name>
+        <NameInSource>MS SQL</NameInSource>
+        <Parameters isList="true" count="2">
+          <value>p_account_id,IIF_x0028_account_id_x003D__x003D__x0022__x0022__x002C__x0022__x0025__x0025__x0022__x002C_account_id_x0029_,12,50</value>
+          <value>p_legal_entity_id,legal_entity_id,12,50</value>
+        </Parameters>
+        <SqlCommand>DECLARE 
+@startDate Datetime2(7),
+@endDate Datetime2(7);
+
+SELECT TOP(1) 
+@startDate = r.start_date, 
+@endDate = r.end_date 
+FROM [fn].[financial_year] r WHERE r.legal_entity_id='9b3e97e5-dd0a-4cd6-bbcd-ab9e8c9c8035' 
+AND r.is_active=1 AND COALESCE(r.is_deleted,0)=0;
+
+
+SELECT 
+	CONVERT(DATE,ft.transaction_datetime) AS t_date,
+	ft.transaction_number ,
+	r.account_id,
+	a.account_name AS account_name,
+	a.account_number,
+	COALESCE(r.debit,0) AS debit,
+	COALESCE(r.credit,0) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+LEFT OUTER JOIN fn.account lv5 ON lv5.id = [fn].[get_parent_account](a.id,2)
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND 
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND ftt.transaction_type like '%mutation%' 
+AND r.legal_entity_id=@p_legal_entity_id
+AND r.account_id like COALESCE(@p_account_id,'%%') 
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+</SqlCommand>
+      </Mutation>
+      <BeginingBalance Ref="4" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>BeginingBalance</Alias>
+        <Columns isList="true" count="7">
+          <value>t_date,System.DateTime</value>
+          <value>transaction_number,System.String</value>
+          <value>account_id,System.String</value>
+          <value>account_name,System.String</value>
+          <value>account_number,System.String</value>
+          <value>debit,System.Decimal</value>
+          <value>credit,System.Decimal</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>BeginingBalance</Name>
+        <NameInSource>MS SQL</NameInSource>
+        <Parameters isList="true" count="2">
+          <value>p_account_id,IIF_x0028_account_id_x003D__x003D__x0022__x0022__x002C__x0022__x0025__x0025__x0022__x002C_account_id_x0029_,12,50</value>
+          <value>p_legal_entity_id,legal_entity_id,12,50</value>
+        </Parameters>
+        <SqlCommand>
+DECLARE 
+@startDate Datetime2(7),
+@endDate Datetime2(7);
+
+SELECT TOP(1) 
+@startDate = r.start_date, 
+@endDate = r.end_date 
+FROM [fn].[financial_year] r WHERE r.legal_entity_id='9b3e97e5-dd0a-4cd6-bbcd-ab9e8c9c8035' 
+AND r.is_active=1 AND COALESCE(r.is_deleted,0)=0;
+
+
+WITH BeginingBalance AS (
+SELECT  
+	r.t_date,
+	r.transaction_number ,
+	r.account_id ,
+	r.account_name,
+	r.account_number,
+	r.debit,
+	r.credit
+	FROM (
+SELECT 
+	CONVERT(DATE,ft.transaction_datetime) AS t_date,
+	ft.transaction_number ,
+	r.account_id ,
+	a.account_name,
+	a.account_number,
+	COALESCE(r.debit,0) AS debit,
+	COALESCE(r.credit,0) AS credit
+	FROM fn.financial_transaction_detail r
+LEFT OUTER JOIN fn.financial_transaction ft ON ft.id=r.financial_transaction_id
+LEFT OUTER JOIN fn.financial_transaction_type ftt ON ftt .id=ft.transaction_type_id
+LEFT OUTER JOIN fn.account a ON a.id=r.account_id
+LEFT OUTER JOIN fn.account lv5 ON lv5.id = [fn].[get_parent_account](a.id,2)
+WHERE 
+COALESCE(r.is_active,0)=1 AND COALESCE(r.is_deleted,0)=0  AND
+COALESCE(ft.is_active,0)=1 AND COALESCE(ft.is_locked,0)=1 AND COALESCE(ft.is_deleted,0)=0 
+AND ftt.transaction_type like '%BEGINNING BALANCE%' 
+AND r.account_id LIKE COALESCE(@p_account_id,'%%')
+AND r.legal_entity_id=@p_legal_entity_id
+AND ft.transaction_datetime &gt;= @startDate AND  ft.transaction_datetime &lt;= @endDate 
+) AS r
+)
+SELECT * FROM BeginingBalance</SqlCommand>
+      </BeginingBalance>
+    </DataSources>
+    <Relations isList="true" count="1">
+      <RGroup Ref="5" type="DataRelation" isKey="true">
+        <Alias>RGroup</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>account_id</value>
+        </ChildColumns>
+        <ChildSource isRef="3" />
+        <Dictionary isRef="1" />
+        <Name>RGroup</Name>
+        <NameInSource>Relation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>account_id</value>
+        </ParentColumns>
+        <ParentSource isRef="4" />
+      </RGroup>
+    </Relations>
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="2">
+      <value>,account_id,account_id,,System.String,,False,False,False,False</value>
+      <value>,legal_entity_id,legal_entity_id,,System.String,,False,False,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Key>cf7f1d53d4184038bcd1f966f9f8d58c</Key>
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="6" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="4">
+        <ReportTitleBand1 Ref="7" type="ReportTitleBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.2,7.72,0.4</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text20 Ref="8" type="Text" isKey="true">
+              <Border>Bottom;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,0,3.8,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,19</Font>
+              <Guid>48a5d11669dd401cacad4004d275f004</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text20</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>PT.NAVA</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text20>
+            <Text23 Ref="9" type="Text" isKey="true">
+              <Border>Bottom;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,3.7,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,19</Font>
+              <Guid>b36460288f954b408293231caea20e65</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text23</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>General Ledger</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text23>
+            <Text18 Ref="10" type="Text" isKey="true">
+              <Border>None;[102:77:38];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>5.8,0.3,1.7,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <Guid>e1208f60004d470b98157a6561637cfd</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text18</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>Date: {Today.ToString("Y")}</Text>
+              <TextBrush>[102:77:38]</TextBrush>
+              <TextFormat Ref="11" type="DateFormat" isKey="true">
+                <StringFormat>yyyy, MMMM</StringFormat>
+              </TextFormat>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+            </Text18>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Guid>a2d6da5978f74991b900aa43fbb9fcd2</Guid>
+          <Name>ReportTitleBand1</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+        </ReportTitleBand1>
+        <DataBand2 Ref="12" type="DataBand" isKey="true">
+          <Bookmark>{BeginingBalance.account_number}-{BeginingBalance.account_name}</Bookmark>
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,1,7.72,0.7</ClientRectangle>
+          <Components isList="true" count="9">
+            <Text14 Ref="13" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0,7.7,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>3f6beab896554fc58f657540042caee9</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text14</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>{BeginingBalance.account_number} - {BeginingBalance.account_name}</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text14>
+            <Text10 Ref="14" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>0,0.2,1,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>86ce7a86bd4c408894513d7c05fa25dd</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>Date</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text10>
+            <Text12 Ref="15" type="Text" isKey="true">
+              <Border>All;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>4.6,0.2,1.8,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>8115beedd36d48c389a4be35332c00f6</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text12</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <ShiftMode>DecreasingSize, OnlyInWidthOfComponent</ShiftMode>
+              <Text>Debit</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text12>
+            <Text1 Ref="16" type="Text" isKey="true">
+              <Border>All;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>1,0.2,1.4,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>9c4600ed350f410b9070da6a6ac92c53</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>No. Trans</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+            <Text2 Ref="17" type="Text" isKey="true">
+              <Border>All;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>2.4,0.2,2.2,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>de6184b010e84bb1b227cf4f85ec20cf</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>Description</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text2>
+            <Text13 Ref="18" type="Text" isKey="true">
+              <Border>All;[193:152:89];1;Solid;False;4;Black</Border>
+              <Brush>EmptyBrush</Brush>
+              <ClientRectangle>6.4,0.2,1.3,0.2</ClientRectangle>
+              <ComponentStyle>Header3</ComponentStyle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,9,Bold</Font>
+              <Guid>90b835dda9e84513a00c4d6b1df72fcc</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text13</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>Credit</Text>
+              <TextBrush>[193:152:89]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text13>
+            <Text11 Ref="19" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.6,0.4,1.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>168f63a3a24c492fbdc54d7d57c82c26</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text11</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>{BeginingBalance.debit}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text11>
+            <Text15 Ref="20" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.4,0.4,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>529b69bd80c040da93188503cb86ebab</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text15</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>{BeginingBalance.credit}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text15>
+            <Text16 Ref="21" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.4,0.4,2.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>64b9e7e999284ea0815eb599fe84e69e</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text16</Name>
+              <Page isRef="6" />
+              <Parent isRef="12" />
+              <Text>BEGINING BALANCE</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text16>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>BeginingBalance</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>DataBand2</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+          <PrintIfDetailEmpty>True</PrintIfDetailEmpty>
+          <Sort isList="true" count="0" />
+        </DataBand2>
+        <DataBand1 Ref="22" type="DataBand" isKey="true">
+          <Bookmark>{Mutation.account_name}</Bookmark>
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,2.1,7.72,0.2</ClientRectangle>
+          <Components isList="true" count="5">
+            <Text3 Ref="23" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="6" />
+              <Parent isRef="22" />
+              <Text>{Mutation.t_date}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="24" type="DateFormat" isKey="true">
+                <StringFormat>dd/MM/yyyy</StringFormat>
+              </TextFormat>
+              <Type>Expression</Type>
+            </Text3>
+            <Text4 Ref="25" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1,0,1.4,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="6" />
+              <Parent isRef="22" />
+              <Text>{Mutation.transaction_number}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text4>
+            <Text5 Ref="26" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.4,0,2.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="6" />
+              <Parent isRef="22" />
+              <Text>{Mutation.account_name}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text5>
+            <Text6 Ref="27" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.6,0,1.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="6" />
+              <Parent isRef="22" />
+              <Text>{Mutation.debit}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text6>
+            <Text7 Ref="28" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.4,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="6" />
+              <Parent isRef="22" />
+              <Text>{Mutation.credit}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text7>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName>Relation</DataRelationName>
+          <DataSourceName>Mutation</DataSourceName>
+          <Filters isList="true" count="0" />
+          <MasterComponent isRef="12" />
+          <Name>DataBand1</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+          <PrintIfDetailEmpty>True</PrintIfDetailEmpty>
+          <Sort isList="true" count="0" />
+        </DataBand1>
+        <FooterBand1 Ref="29" type="FooterBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,2.7,7.72,0.3</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text8 Ref="30" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.6,0,1.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>82b3a20693a94f219ad6c32fc6a491c7</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text8</Name>
+              <Page isRef="6" />
+              <Parent isRef="29" />
+              <Text>{((decimal)Sum(Mutation.debit) + (decimal)Sum(BeginingBalance.debit))}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text8>
+            <Text9 Ref="31" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.4,0,1.3,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>a3f37e722f4b4dd7b77d3c431c8d7c43</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text9</Name>
+              <Page isRef="6" />
+              <Parent isRef="29" />
+              <Text>{Sum(Mutation.credit)}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text9>
+            <Text17 Ref="32" type="Text" isKey="true">
+              <Border>All;[183:117:64];1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.4,0,2.2,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>5388b970605541a09c63030c00d6b3fe</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text17</Name>
+              <Page isRef="6" />
+              <Parent isRef="29" />
+              <Text>Total :  </Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text17>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>FooterBand1</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+        </FooterBand1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>ad292ef0a0d343f996f160b003403be2</Guid>
+      <Margins>0.39,0.39,0.39,0.39</Margins>
+      <Name>Page1</Name>
+      <PageHeight>11</PageHeight>
+      <PageWidth>8.5</PageWidth>
+      <PaperSize>Letter</PaperSize>
+      <Report isRef="0" />
+      <Watermark Ref="33" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PreviewSettings>268435455</PreviewSettings>
+  <PrinterSettings Ref="34" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>12/18/2018 11:37:02 PM</ReportChanged>
+  <ReportCreated>12/15/2018 7:46:14 PM</ReportCreated>
+  <ReportFile>C:\Users\MRDOTNET\Documents\Report ERP Test\General Ledger.mrt</ReportFile>
+  <ReportGuid>c0093efda68b4456a7ac6b2fefe8726f</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Inches</ReportUnit>
+  <ReportVersion>2018.3.5.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>

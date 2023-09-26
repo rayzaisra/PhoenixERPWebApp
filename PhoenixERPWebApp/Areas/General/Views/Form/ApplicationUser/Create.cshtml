@@ -1,0 +1,106 @@
+@{
+    ViewData["Title"] = "ApplicationUser";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="ApplicationUserFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="access_token">access_token</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_token" id="access_token"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="app_fullname">app_fullname</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="app_fullname" id="app_fullname" required maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="app_password">app_password</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="app_password" id="app_password" required maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="app_username">app_username</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="app_username" id="app_username" required maxlength="400" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="business_unit_id">business_unit_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="business_unit_id" id="business_unit_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="email">email</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="email" id="email"  maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="is_system_administrator">is_system_administrator</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="is_system_administrator" id="is_system_administrator"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="manager_id">manager_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="manager_id" id="manager_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="mime_type">mime_type</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="mime_type" id="mime_type"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="organization_id">organization_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="organization_id" id="organization_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="phone">phone</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="phone" id="phone"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="photo_base64">photo_base64</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="photo_base64" id="photo_base64"  maxlength="-1" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="primary_team">primary_team</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="primary_team" id="primary_team"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="thumbnail_base64">thumbnail_base64</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="thumbnail_base64" id="thumbnail_base64"  maxlength="-1" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="token_expiry">token_expiry</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="token_expiry" id="token_expiry"   type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/ApplicationUser" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/ApplicationUser.create.js"></script>
+}

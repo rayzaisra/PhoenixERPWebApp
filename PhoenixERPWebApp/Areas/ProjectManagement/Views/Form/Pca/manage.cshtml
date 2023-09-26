@@ -1,0 +1,304 @@
+@{
+    ViewData["Title"] = "PCA";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+@section Panelhead{
+
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <link href="~/assets/plugins/treegrid/jquery.treegrid.css" rel="stylesheet" />
+    <style>
+        #tablePca .xcount {
+            font-size: 11px;
+        }
+
+        .m-dropdown__wrapper {
+            z-index: 1000 !important;
+        }
+
+        .xcount {
+            text-align: right;
+            direction: rtl;
+            width: 100%;
+        }
+
+        .padd5 {
+            padding: 7px 5px 5px 7px !important;
+        }
+
+        .xcounttask {
+            text-align: right;
+            direction: rtl;
+            width: 100%;
+        }
+
+        .xrght {
+            width: 20px;
+            margin-top: 6px !important;
+        }
+
+            .xrght i {
+                padding-top: 10px !important;
+            }
+
+        .xtext {
+            width: 100%;
+        }
+
+        .tblnopadding tbody tr td {
+            padding: 0px !important;
+        }
+
+        .tblnopadding tfoot tr td {
+            padding: 0px !important;
+        }
+
+        .tblnopadding .xcategory {
+            width: 160px;
+        }
+
+        .tblnopadding .select2-results__options li.select2-results__option {
+            font-size: 10px !important;
+        }
+
+        .bigselect {
+            width: 400px !important;
+            font-size: 10px !important;
+        }
+
+        .tblnopadding .select2-results__options {
+            font-size: 10px !important;
+        }
+
+        .tblnopadding .select2-selection__rendered {
+            font-size: 10px !important;
+            min-height: 28px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .tblnopadding .select2-selection__clear {
+            z-index: 1000;
+        }
+    </style>
+    <form method="post" id="PcaFormCreate">
+
+        <div class="row m-row--col-separator-xl">
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job"></span> :</label>
+                    <select id="job_id" name="job_id" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Mother PCA"></span> :</label>
+                    <select id="mother_pca_id" name="mother_pca_id" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Rate Card"></span> :</label>
+                    <select id="rate_card_id" name="rate_card_id" style="width:100%"></select>
+                </div>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Currency"></span> :</label>
+                    <select id="currency" name="currency" style="width:100%"></select>
+                </div>
+
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="type"></span> :</label>
+                    <select id="type_of_expense_id" name="type_of_expense_id" class="form-control form-control-sm m-input m-input--square" style="width:100%"></select>
+                </div>
+
+                <div class="form-group refrence" style="display: none">
+                    <label><span class="translate" data-args="refrence"></span> :</label>
+                    <select id="refrence_id" name="pca_refrence" style="width:100%"></select>
+                </div>
+
+                @*<div class="form-group">
+                        <label><span class="translate" data-args="description"></span> :</label>
+                        <textarea class="form-control form-control-sm m-input m-input--square" required name="description" id="description"></textarea>
+                    </div>*@
+            </div>
+            <div class="col-lg-3">
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="mainservice_category"></span> :</label>
+                    <select id="mainservice_category" name="mainservice_category" class="form-control form-control-sm m-input m-input--square" style="width:100%">
+                        <option value="1105194186501656222">Production</option>
+                        <option value="2225194186501656576">Media</option>
+                        <option value="3335194186501656444">Others</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Term of Payment"></span> :</label>
+                    <div class="input-group">
+                        <input type="text" name="termofpayment1" id="termofpayment1" placeholder="I" class="form-control form-control-sm m-input m-input--square">
+                        <input type="text" name="termofpayment2" id="termofpayment2" placeholder="II" class="form-control form-control-sm m-input m-input--square">
+                        <input type="text" name="termofpayment3" id="termofpayment3" placeholder="III" class="form-control form-control-sm m-input m-input--square">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="shareservice"></span> :</label>
+                    <select id="shareservices_id" name="shareservices_id" class="form-control form-control-sm m-input m-input--square" style="width:100%">
+                        <option selected></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Code"></span> :</label>
+                    <input readonly class="form-control form-control-sm m-input m-input--square" required name="code" id="code" value="-" maxlength="50" type="text">
+                    <input type="hidden" value="@ViewBag.RecordID" id="pca_id" />
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="rev"></span> :</label>
+                    <input readonly class="form-control form-control-sm m-input m-input--square" required name="revision" id="revision" value="0" maxlength="50" type="text">
+                </div>
+                <div class="m-form__group-sub m--margin-bottom-20" style="text-align:right">
+                    <h6 id="company_name">Total Amount</h6>
+                    <h3 class="m--font-info"><span id="totalAmount">0</span></h3>
+                </div>
+            </div>
+        </div><hr />
+        <div style="">
+            <table id="tablePca" class="tblnopadding table table-bordered">
+                <thead>
+                    <tr>
+
+                        <th style="width:100px">Departement</th>
+
+                        <th>
+                            task
+
+                            <div id="dropdowntask" class="pull-right m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-left m-dropdown--align-push m-dropdown--mobile-full-width" m-dropdown-toggle="click" m-dropdown-persistent="1" aria-expanded="true">
+
+                                <a href="#" class=" m-dropdown__toggle">
+                                    <i class="fa fa-plus-circle fa-sm"></i>
+                                </a>
+                                <div class="m-dropdown__wrapper">
+                                    <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                    <div class="m-dropdown__inner">
+                                        <div class="m-dropdown__body">
+                                            <div class="m-dropdown__content">
+
+                                                <div id="jobtasklist"></div>
+
+                                                <div id="ratecardtasklist"></div>
+                                                <hr />
+                                                New Task :
+                                                <div>
+                                                    <input class="form-control form-control-sm m-input m-input--square" name="task_name" id="task_name" maxlength="200" type="text">
+                                                </div>
+                                                <div>
+                                                    <button type="button" onclick="fnPca.addnewtask()" class="btn btn-primary">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width:20px">Qty </th>
+                        <th style="width:20px">Unit </th>
+                        <th style="width:80px">Price </th>
+                        <th style="width:80px">PPN </th>
+                        <th style="width:80px">ASF </th>
+                        <th style="width:80px">PPH </th>
+
+                        <th style="width:80px">Cost </th>
+                        <th style="width:50px">% </th>
+                        <th style="width:80px">Margin</th>
+                        <th style="width:100px">Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr><td colspan="11" align="right">Sub Total</td><td><input id="subtotal" class="xcount form-control-sm m-input m-input--square " required type="text"></td></tr>
+                    <tr>
+                        <td colspan="7"></td>
+                        <td colspan="4" align="right">
+
+                            <select id="other_fee_name" name="other_fee_name">
+                                <option value="Retainer Fee">Retainer Fee</option>
+                                <option value="Agency Service Fee">Agency Service Fee</option>
+                            </select>
+
+                            <input id="other_fee_percentage" style="width:40px" class="xcount  form-control-sm m-input m-input--square">
+
+
+                        </td>
+                        <td><input id="other_fee" class="xcount form-control form-control-sm m-input m-input--square"></td>
+
+                    </tr>
+                    <tr><td colspan="11" align="right">VAT (10% x Sub Total)</td><td><input id="vat" class="xcount form-control form-control-sm m-input m-input--square"></td></tr>
+                    <tr><td colspan="11" align="right">Grand Total</td><td><input id="total" class="xcount form-control-sm m-input m-input--square " required type="text"></td></tr>
+
+                </tfoot>
+            </table>
+        </div>
+        <div class="row approval-disp" style="display:none;">
+                    <input type="hidden" id="template_approval_id" name="template_approval_id" />
+                    <div class="col-lg-12 m-form__group-sub">
+                        <div class="form-group">
+                            <label>
+                                <h5>Approval</h5>
+                            </label>
+                            <div class="m-section__content">
+                                <table class="table table-striped table-bordered table-hover table-checkable" id="PcaListApprover">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Title</th>
+                                            <th>Approver Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="no_data">
+                                            <td colspan="3">No Data</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <hr />
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+        @*<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>*@
+        <a href="~/ProjectManagement/Pca" class="fakelink btn btn-secondary">Close</a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <button type="button"  onclick="submitPca('apprv')" class="btn btn-warning submit-pce"><i class="fa fa-file-alt"></i> Submit (PCE) </button>
+        @*<button type="button" onclick="viewpce()" class="btn btn-warning submit-pce"><i class="fa fa-file-alt"></i> Submit (PCE) </button>*@
+        <button type="button" onclick="fnPca.showtaskbox()", style="display: none;" class="btn btn-success submit-rfq"><i class="fa fa-file-contract"></i> RFQ </button>
+        <button type="button" onclick="fnPca.showtaskbox()" style="display: none;" class="btn btn-primary submit-ca"><i class="fa fa-dollar-sign"></i> Cash Advance </button>
+
+
+    </form>
+    @Html.Partial("Pca/_task")
+    @Html.Partial("Pca/_ratecard")
+}
+@section Panelscript{
+    <script>
+        var job_id = '@Context.Request.Query["job_id"]';
+        
+        var RecordID = "@ViewBag.RecordID";
+    </script>
+    <script src="~/approval/gmApproval.js"></script>
+    <script src="~/assets/plugins/treegrid/jquery.treegrid.js"></script>
+    <script src="~/assets/plugins/treegrid/jquery.treegrid.bootstrap3.js"></script>
+    <script src="~/assets/plugins/jquery.mask/jquery.mask.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Pca/manage.js"></script>
+}
+

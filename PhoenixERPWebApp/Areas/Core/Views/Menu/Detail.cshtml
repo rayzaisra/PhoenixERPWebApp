@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+
+<!-- Modal -->
+<div class="modal fade" id="m_modal_menu" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLongTitle">Setup Menu</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-menu" class="m-form">
+                    <input hidden name="id" value="@ViewBag.RecordID" />
+                    <input hidden name="parent_menu_id" value="@ViewBag.ParentID" />
+                    <input hidden name="application_module_id" value="@ViewBag.ModuleID" />
+                    <div class="form-group">
+                        @if (!ViewBag.IsGroup)
+                        {
+                            <input hidden name="is_group" value="false" />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group form-group-sm m-form__group">
+                                        <label>Menu Name</label>
+                                        <input id="menu_name" name="menu_name" type="text" class="form-control form-control-sm m-input" placeholder="Enter Menu Name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group form-group-sm m-form__group">
+                                        <label>Action</label>
+                                        <input id="action_url" name="action_url" type="text" class="form-control form-control-sm m-input" placeholder="Enter Action Url">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Category :</label>
+                                        <select id="application_menu_category_id" name="application_menu_category_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                @if (String.IsNullOrEmpty(ViewBag.ParentID) || ViewBag.MyParentIsGroup )
+                                {
+                                    <div class="col-lg-6">
+                                        <div class="form-group form-group-sm m-form__group">
+                                            <label>Icon Class</label>
+                                            <input id="icon_class" name="icon_class" type="text" class="form-control form-control-sm m-input" placeholder="fa fa-home">
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <input hidden name="is_group" value="true" />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group form-group-sm m-form__group">
+                                        <label>Group Name</label>
+                                        <input id="menu_name" name="menu_name" type="text" class="form-control form-control-sm m-input" placeholder="Enter Menu Name">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-save" type="button" class="btn btn-sm btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Areas/Core/Scripts/Menu.Detail.js?@DateTime.Now" asp-append-version="true"></script>

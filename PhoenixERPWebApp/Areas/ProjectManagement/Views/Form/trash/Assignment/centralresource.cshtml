@@ -1,0 +1,211 @@
+﻿
+@{
+    ViewData["Title"] = "Central Resources Assignment";
+}
+<div id="page_content_inner">
+    <div class="md-card uk-margin-medium-bottom">
+        <div class="md-card-content ">
+            <ul class="uk-breadcrumb" style="float:right">
+                <li><a href="~/">Home</a></li>
+                <li><a href="~/projectmanagement">PM</a></li>
+                <li><span>@ViewBag.Title</span></li>
+            </ul>
+            <div style="float:left;font-size:30px;font-weight:bold;font-family:'Roboto'">@ViewBag.Title</div>
+            <div style="clear:both"></div>
+            <hr />
+            <div class="uk-grid">
+                <div class="uk-width-1-3">
+                    <div class="uk-input-group">
+                        <label for="campaignname">Campaign Name</label>
+                        <input type="text" id="campaignname" name="campaignname" class="md-input label-fixed" data-uk-modal="{ center:true, target:'#ModalSearchCampaign',modal: false }" />
+                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-search"></i></span>
+                    </div>
+                </div>
+                <div class="uk-width-1-3">
+                    <div class="uk-input-group">
+                        <label for="jobnumber">Job Number</label>
+                        <input type="text" id="jobnumber" name="jobnumber" class="md-input label-fixed" />
+                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-search"></i></span>
+                    </div>
+                </div>
+                <div class="uk-width-1-3">
+                    <label for="centralresource">Central Resource</label>
+                    <input type="text" id="centralresource" name="centralresource" class="md-input label-fixed" data-uk-modal="{ center:true, target:'#ModalSearchCR',modal: false }" />
+                </div>
+            </div>
+
+            <br />
+            <div class="uk-grid">
+                <div class="uk-small-width-1-2">
+                    <div class="uk-input-group">
+                        <label for="jobname">Job Name</label>
+                        <input type="text" id="jobname" name="jobname" class="md-input label-fixed" />
+                    </div>
+                    <div class="uk-input-group">
+                        <label for="account">Account Management</label><br />
+                        <span id="account"></span>
+                    </div>
+                </div>
+                <div class="uk-small-width-1-2">
+                    <div class="uk-grid">
+                        <div class="uk-width-2-3">
+                            <label for="uk_dp_start">Deadline</label>
+                            <input class="md-input label-fixed" type="text" id="Deadline" disabled="disabled">
+                        </div>
+                        <div class="uk-width-1-3">
+                            <input class="md-input" type="text" id="DeadlineTime" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="uk-grid">
+                        <div class="uk-width-2-3">
+                            <label for="uk_dp_start">Final Delivery</label>
+                            <input class="md-input label-fixed" type="text" id="FinalDelivery" disabled="disabled">
+                        </div>
+                        <div class="uk-width-1-3">
+                            <input class="md-input" type="text" id="FinalDeliveryTime" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="md-btn md-btn-primary"> Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="uk-modal" id="ModalSearchCR">
+    <div class="uk-modal-dialog" style="width: 650px;margin-left:auto;margin-right:auto;">
+        <div class="uk-modal-header">
+            <h3 class="uk-modal-title">Search Central Resource</h3>
+        </div>
+        <div class="uk-modal-content">
+            <div class="uk-grid">
+                <div class="uk-width-1-3">
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="c1" data-md-icheck onchange="checkAll(this)" /> Strategy Planning
+                            <ul id="1">
+                                <li><input type="checkbox" data-md-icheck value="Amat" /> Amat</li>
+                                <li><input type="checkbox" data-md-icheck value="Budi" /> Budi</li>
+                                <li><input type="checkbox" data-md-icheck value="Cici" /> Cici</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="c2" data-md-icheck onchange="checkAll(this,2)" /> Public Relation
+                            <ul id="2">
+                                <li><input type="checkbox" data-md-icheck value="Oni" /> Oni</li>
+                                <li><input type="checkbox" data-md-icheck value="Udin" /> Udin</li>
+                                <li><input type="checkbox" data-md-icheck value="Mamat" /> Mamat</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="uk-width-1-3">
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="c3" data-md-icheck onchange="checkAll(this,3)" /> Creative
+                            <ul id="3">
+                                <li><input type="checkbox" data-md-icheck value="Alfa" /> Alfa</li>
+                                <li><input type="checkbox" data-md-icheck value="Rahmat" /> Rahmat</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="c4" data-md-icheck onchange="checkAll(this,4)" /> Trade Marketing
+                            <ul id="4">
+                                <li><input type="checkbox" data-md-icheck value="Wahyu" /> Wahyu</li>
+                                <li><input type="checkbox" data-md-icheck value="Rifqi" /> Rifqi</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="uk-width-1-3">
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="c5" data-md-icheck onchange="checkAll(this,5)" /> Digital
+                            <ul id="5">
+                                <li><input type="checkbox" id="51" data-md-icheck value="Anto" /> Anto</li>
+                                <li><input type="checkbox" id="52" data-md-icheck value="Hanif" /> Hanif</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="c6" data-md-icheck onchange="checkAll(this,6)" /> Activation
+                            <ul id="6">
+                                <li><input type="checkbox" data-md-icheck value="Erik" /> Erik</li>
+                                <li><input type="checkbox" data-md-icheck value="Ulum" /> Ulum</li>
+                                <li><input type="checkbox" data-md-icheck value="Asep" /> Asep</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="uk-modal-footer">
+            <button class="uk-button uk-button-primary" onclick="getCR()">Add</button>
+        </div>
+    </div>
+</div>
+
+<div class="uk-modal" id="ModalSearchCampaign">
+    <div class="uk-modal-dialog" style="width: 550px;margin-left:auto;margin-right:auto;">
+        <div class="uk-modal-header">
+            <h3 class="uk-modal-title">Search Campaign</h3>
+        </div>
+        <div class="uk-modal-content">
+            <table id="tableEmployee" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th width="12%">Action</th>
+                        <th>Campaign Name</th>
+                        <th>Account Management</th>
+                        <th>Job Name</th>
+                        <th>Job Number</th>
+                        <th>Deadline</th>
+                        <th>Deadline Time</th>
+                        <th>Final Delivery</th>
+                        <th>Final Delivery Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><button onclick="setData(2);"><i class="uk-icon-plus"></i></button></td>
+                        <td id="nama1">Dancow Siap Sekolah Ramadhan 2017</td>
+                        <td>Oni Marbun,Ucok,Nina,Layla</td>
+                        <td>DSS Community Ramadhan</td>
+                        <td>NES.17060078</td>
+                        <td>15/May/2017</td>
+                        <td>11:00</td>
+                        <td>30/June/2017</td>
+                        <td>14:00</td>
+                    </tr>
+                    <tr>
+                        <td><button onclick="setData(0);"><i class="uk-icon-plus"></i></button></td>
+                        <td>Promina Siap Sekolah</td>
+                        <td>Udin Marbun,Budi,Imam,Aisyah</td>
+                        <td>PSS Community</td>
+                        <td>NES.17060378</td>
+                        <td>15/April/2017</td>
+                        <td>13:00</td>
+                        <td>30/Juli/2017</td>
+                        <td>10:00</td>
+                    </tr>
+                    <tr>
+                        <td><button onclick="setData(1);"><i class="uk-icon-plus"></i></button></td>
+                        <td>Prenagen Siap Hamil</td>
+                        <td>Cintya,Mamat,Fahmi</td>
+                        <td>PSH Community</td>
+                        <td>NES.170600199</td>
+                        <td>15/May/2017</td>
+                        <td>08:00</td>
+                        <td>30/June/2017</td>
+                        <td>19:00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Script {
+    <script src="~/assets/js/Areas/ProjectManagement/Assignment/CentralResource.js?r=@ViewBag.NOW"></script>
+}

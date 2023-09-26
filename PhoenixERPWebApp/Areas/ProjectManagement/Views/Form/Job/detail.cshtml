@@ -1,0 +1,152 @@
+@{
+    ViewData["Title"] = "Job Detail";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+
+
+
+@section Panelhead{
+    <div class="btn-group">
+        <button class="btn btn-primmary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-tools"></i> Manage
+        </button>
+        <div class="dropdown-menu">
+            @*<a href="@Url.Content("~/pm/pca/addedit")" class="fakelink dropdown-item">
+            Create PCA/PCE
+        </a>*@
+            @*<a href="@Url.Content("~/ProjectManagement/pca/manage?job_id="+ViewBag.RecordID)" class="fakelink dropdown-item">
+            Create PCA/PCE
+        </a>*@
+            <a href="@Url.Content("~/ProjectManagement/job/assignmember/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Assign PM & Member
+            </a>
+
+            <a href="@Url.Content("~/ProjectManagement/job/task/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Assign Task & Subtask
+            </a>
+
+            <a href="@Url.Content("~/ProjectManagement/job/kanban/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Kanban
+            </a>
+            <a href="@Url.Content("~/ProjectManagement/status?job_id="+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Set Status
+            </a>
+            <a href="@Url.Content("~/ProjectManagement/job/task_timeline/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Job Timeline
+            </a>
+
+        </div>
+    </div>
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <style>
+        #damtabs {
+            margin-bottom: 0px;
+        }
+
+        .nopadding {
+            padding: 0px !important;
+        }
+
+        .portbody {
+            background-color: gainsboro;
+            word-wrap: break-word;
+            padding: 5px !important;
+        }
+
+        .tab-content {
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .tab-content .tab-pane {
+                padding: 10px;
+            }
+
+        .nav-tabs {
+            margin-bottom: 0;
+        }
+    </style>
+    <div id="jobdetailcontent" style="display:none">
+        <form action="#" method="post" id="JobDetailForm">
+            <input value="@ViewBag.RecordID" type="hidden" name="id" id="jobnumberid" />
+            <div class="row m-row--col-separator-xl">
+                <div class="col-lg-4">
+                    <div class="m-form__group-sub m--margin-bottom-30">
+                        <h3 id="company_name"></h3>
+                        <span id="brand_name"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Campaign Name</h5>
+                    <h6 id="campaign_name">-</h6>
+                    <hr />
+                    <h5>Job Name</h5>
+                    <h6 id="job_name">-</h6>
+                    <hr />
+                    <h5>Job Number</h5>
+                    <h6 id="job_number">-</h6>
+                    <hr />
+                </div>
+
+                <div class="col-lg-4">
+
+                    <h5>Start Date</h5>
+                    <h6 id="start_job">-</h6>
+                    <hr />
+                    <h5>Final Delivery</h5>
+                    <h6 id="final_delivery">-</h6>
+                    <hr />
+                    <h5>Job Type</h5>
+                    <h6 id="job_type_name">-</h6>
+                    <hr />
+                </div>
+            </div>
+            <hr />
+
+            @Html.Partial("job/jobdetail")
+            <hr />
+            <h3>List File</h3>
+            <div class="m-row--col-separator-xl">
+                <div class="col-md-12" id="table-listfilejob">
+                </div>
+            </div>
+            <hr />
+            @Html.Partial("job/jobcomment")
+
+            <hr />
+
+            <hr />
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <a href="~/projectmanagement/job" class="fakelink btn btn-secondary">back</a>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    <div id="jobdetailinit" style="display:block">
+        <div class="m-loader m-loader--lg" style="width:100%; display: inline-block;"></div>
+    </div>
+    <div id="jobdetailfailed" style="display:none">
+        <center><h3>Data not found</h3></center>
+    </div>
+}
+
+@section Panelscript{
+    <script>
+        function directLink(obj) {
+    window.open('https://web-phoenix.azurewebsites.net/pm/pca/addedit', '_blank');
+}
+    </script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Job/detail.js" asp-append-version="true"></script>
+}

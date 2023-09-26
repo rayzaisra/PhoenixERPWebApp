@@ -1,0 +1,422 @@
+@model PhoenixERPWebApp.Models.PdrApprailsalM1Header
+@{
+    if (Model.IsApprove == true)
+    {
+        ViewData["Title"] = "KPI Apprisal Form Approval";
+    }
+    else
+    {
+        ViewData["Title"] = "KPI Apprisal Form";
+    }
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml"; 
+} 
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="indexapproval" asp-controller="PDRApprailsal" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">KPI Apprisal Approval</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="index" asp-controller="PDRApprailsal" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">KPI Apprisal</span></a>
+                    }
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="addedit" asp-controller="PDRApprailsal" asp-area="hrisnew" asp-route-Id="@Model.Id" asp-route-isApprove="true" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="PDRApprailsal" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="PDRApprailsal" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">KPI Apprisal Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formPDRApprailsal" class="form-horizontal form-bordered" role="form">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" /> 
+
+                                <partial name="_AssignEmploye" />
+                                <br/>
+                                
+                                <div class="row" id="data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                    <span class="m-accordion__item-title">Request Detail</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                                    <div class="m-accordion__item-content">
+                            
+                                                        <div class="row">
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ReviewStart"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.ReviewStart)
+                                                                        .Format("dd MMMM yyyy")
+                                                                        .Events(evt=>evt.Change("review_change"))
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width: 100%",
+                                                                            onkeydown = "javascript:return false;",
+                                                                            //placeholder = $"Input type a {Html.DisplayNameFor(m => m.ReviewStart)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.ReviewStart)} is required"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ReviewEnd"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.ReviewEnd)
+                                                                        .Format("dd MMMM yyyy")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width: 100%",
+                                                                            onkeydown = "javascript:return false;",
+                                                                            //placeholder = $"Input type a {Html.DisplayNameFor(m => m.ReviewEnd)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.ReviewEnd)} is required"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="row" id="divAppraisalM1">        
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <h5 style="margin-bottom:10px">Objectives List</h5>
+                                                            </div>
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.PdrApprailsalM1>()
+                                                                        .Name("gridPdrApprailsalM1")
+                                                                        //.ToolBar(toolbar =>
+                                                                        //{
+                                                                        //    if (ViewBag.isRequestor == true)
+                                                                        //    {
+                                                                        //        toolbar.Create();
+                                                                        //    }
+                                                                        //})
+                                                                        .Columns(columns =>
+                                                                        {
+                                                                            if (ViewBag.isRequestor == true)
+                                                                            {
+                                                                                columns.Command(
+                                                                                    command =>
+                                                                                    {
+                                                                                        command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                                        //command.Destroy().Text(" ");
+                                                                                    }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                            }
+                                                                            columns.Bound(p => p.PdrObjectiveSettingItem).Width(150);
+                                                                            columns.Bound(p => p.Target).Width(150);
+                                                                            columns.Bound(p => p.Achievement).Width(150);
+                                                                            columns.Bound(p => p.Weight).Width(150).EditorTemplateName("HrisNew/PDRApprailsal/Weight").Width(150).ClientFooterTemplate("#=kendo.format('{0:N2}', calculateWeight())#");
+                                                                            columns.Bound(p => p.RatingScore).Width(150).EditorTemplateName("HrisNew/PDRApprailsal/Rating").Width(150).ClientFooterTemplate("Total Performance Score");
+                                                                            columns.Bound(p => p.WeightedScore).EditorTemplateName("DecimalReadOnly").Width(150).ClientFooterTemplate("#=kendo.format('{0:N2}', calculateWeightedScore())#");
+                                                                        })
+                                                                        .NoRecords()
+                                                                        .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                        .Resizable(rsz => rsz.Columns(true))
+                                                                        .DataSource(dataSource => dataSource
+                                                                            .Ajax()
+                                                                            .PageSize(20)
+                                                                            //.Aggregates(aggregates =>
+                                                                            //{
+                                                                            //    aggregates.Add(p => p.Weight).Sum();
+                                                                            //    aggregates.Add(p => p.WeightedScore).Sum();
+                                                                            //})
+                                                                            .Events(events => events.Error("errorHandler"))
+                                                                            .Model(model =>
+                                                                            {
+                                                                                model.Id(p => p.Id);
+                                                                                model.Field(p => p.PdrObjectiveSettingItem).Editable(false);
+                                                                                model.Field(p => p.Target).Editable(false);
+                                                                            })
+                                                                            .Read(read => read.Action("ReadPdrApprailsalM1", "PDRApprailsal").Data("grid_params"))
+                                                                            //.Create(create => create.Action("CreatePdrApprailsalM1", "PDRApprailsal"))
+                                                                            .Update(update => update.Action("UpdatePdrApprailsalM1", "PDRApprailsal"))
+                                                                        //.Destroy(destroy => destroy.Action("DestroyPdrApprailsalM1", "PDRApprailsal"))
+                                                                        )
+                                                                        .Events(e => e.Save("savePdrApprailsalM1Event"))
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <b>Note as guidance : </b> <br />
+                                                                    <b>1</b> = not achieved (<=80%)<br />
+                                                                    <b>2</b> = Partially achieved (81% - 90%)<br />
+                                                                    <b>3</b> = achieved (91% - 110%)<br />
+                                                                    <b>4</b> = partially exceeded (111% - 120%)<br />
+                                                                    <b>5</b> = exceeded (>=121%)
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <partial name="_HistoryApproval" />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                    {
+                                        @if ((Model.Status ?? 0) == PhoenixERPWebApp.Models.StatusTransaction.Draft)
+                                        {
+                                            <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        }
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+
+                                    @if (Model.IsApprove == true)
+                                    {
+                                        @if (ViewBag.processApprove == true)
+                                        {
+                                            <button type="button" id="btnShow"  class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                            @*<button type="button" id="btnReject" class="btn btn-danger edit"><span class="fa fa-ban"></span> Reject</button>*@
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                        }
+                                        <a asp-action="Indexapproval" asp-controller="PDRApprailsal" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="index" asp-controller="PDRApprailsal" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if ('@Model.Status' != '') {
+            if ('@ViewBag.isRequestor' == "False") {
+                $("#ReviewStart").data("kendoDatePicker").readonly();
+                $("#ReviewEnd").data("kendoDatePicker").readonly();  
+                $("#RemarkRejected").removeAttr("readonly"); 
+                $("#search").remove();
+            }
+        }
+    });
+
+    function grid_params() {
+        return {
+            PdrApprailsalM1HeaderId: '@Model.Id',
+            employeeId: $("#EmployeeId").val(),
+            startReview: $("#ReviewStart").val(),
+        };
+    }
+    
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+     $('#btnApprove').click(function () {
+         $("#RemarkRejected").removeAttr("required", "required");
+         callAction({ formId: "formPDRApprailsal", title: "approve", type: "POST", url: '@Url.Action("approve", "PDRApprailsal")', objects: result()});
+    });
+
+    $('#btnReject').click(function () {
+        callAction({ formId: "formPDRApprailsal", title: "reject", type: "POST", url: '@Url.Action("reject", "PDRApprailsal")', objects: result()});
+    });
+
+    $('#btnSubmit').click(function () {
+        if (!isValid()) return;
+        callAction({ formId: "formPDRApprailsal", title: "submit", type: "POST", url: '@Url.Action("submit", "PDRApprailsal")', objects: result() });
+    });
+
+    $('#btnSave').click(function () {
+        if (!isValid()) return;
+        callAction({ formId: "formPDRApprailsal", title: "save", type: "POST", url: '@Url.Action("save", "PDRApprailsal")', objects: result()  });
+    });
+    
+    function isValid() {
+        var valid = $("#formPDRApprailsal").validate().form();
+        if (valid) {
+            //var grade = $("#infoEmployee_Grade").val();
+            //if (grade == "M1" || grade == "E1" || grade == "E2" || grade == "E3" || grade == "BOD") {
+                var pdrApprailsalM1 = $("#gridPdrApprailsalM1").data("kendoGrid").dataSource.data();
+                if (pdrApprailsalM1.length == 0) {
+                    swal('Warning', "Please input objectives list", 'warning');
+                    return false;
+                }
+            //}             
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function result() { 
+        var gridPdrApprailsalM1 = $("#gridPdrApprailsalM1").data("kendoGrid");         
+        gridPdrApprailsalM1.saveRow(); 
+
+        var dataList = { 
+            PdrApprailsalM1s: gridPdrApprailsalM1.dataSource.data()
+        }
+
+        return dataList;
+    } 
+    
+    function weight_change(e) {
+        var weight = parseFloat(this.value());
+        var rating = $("#RatingScore").data("kendoDropDownList").value();
+        if (rating == "") rating = "0";
+        var weightScore = (parseFloat(rating) * (weight / 100));
+        $("#WeightedScore").data("kendoNumericTextBox").value(weightScore);
+    }
+
+    function rating_change(e) {
+        var rating = parseFloat(this.value());
+        var weight = $("#Weight").data("kendoDropDownList").value(); //$("#Weight").data("kendoNumericTextBox").value();
+        if (weight == "") weight = "0";
+        var weightScore = (rating * (parseFloat(weight) / 100));
+        $("#WeightedScore").data("kendoNumericTextBox").value(weightScore);
+    }
+
+    function savePdrApprailsalM1Event(e) {
+        var WeightedScore = $("#WeightedScore").data("kendoNumericTextBox").value();
+        var RatingScoreValue = $("#RatingScore").data("kendoDropDownList").value(); 
+        var Weight = $("#Weight").data("kendoDropDownList").value();
+
+        e.model.set("WeightedScore", WeightedScore);
+        e.model.set("RatingScore", RatingScoreValue); 
+        e.model.set("Weight", Weight);
+    }
+
+    function calculateWeight() {
+        var data = $("#gridPdrApprailsalM1").data("kendoGrid").dataSource.data();
+        var total = 0;
+        for (var i = 0; i < data.length; i++) {
+            total += data[i].Weight;
+        }
+        return total;
+    }
+
+    function calculateWeightedScore() {
+        var data = $("#gridPdrApprailsalM1").data("kendoGrid").dataSource.data();
+        var total = 0;
+        for (var i = 0; i < data.length; i++) {
+            total += data[i].WeightedScore;
+        }
+        return total;
+    }
+
+    function review_change(e) {
+        //$("#ReviewStart").val(this.value());
+        $("#gridPdrApprailsalM1").data('kendoGrid').dataSource.read();      
+    }
+</script>

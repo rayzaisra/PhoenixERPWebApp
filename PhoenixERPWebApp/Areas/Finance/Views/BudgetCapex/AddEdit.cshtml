@@ -1,0 +1,868 @@
+@model PhoenixERPWebApp.Models.BudgetMasterHeader
+@{
+    ViewData["Title"] = "Budget Capex";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<style>
+    .modal .modal-content .modal-header {
+        padding: 15px !important;
+    }
+    .modal .modal-content .modal-footer {
+        padding: 15px !important;
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Budget Capex</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                       <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="budgetcapex" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Budget Capex</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="budgetcapex" asp-area="finance"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="budgetcapex" asp-area="finance"  asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">@ViewBag.Header Budget Capex</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formbudgetcapex" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="budgetcapex" asp-area="Finance">
+                        @*enctype="multipart/form-data"*@
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" /> 
+                                <input type="hidden" asp-for="CreatedOn" /> 
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" /> 
+                                @*<input type="hidden" asp-for="Version" />*@ 
+                                <input type="hidden" asp-for="IsOwner" />
+
+                                <div class="row m-row--col-separator-xl">
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                            <label asp-for="BudgetYear"></label> <span class="req">*</span> :
+                                            @(Html.Kendo().DropDownListFor(m => m.BudgetYear)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Filter(FilterType.Contains)
+                                                .Events(evt=>evt.Select("Year_SelectEvent"))
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetYearList", "Dropdown", new { area = "Finance" });
+                                                    });
+                                                })
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BudgetYear)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.BudgetYear)} is required"
+                                                })
+                                            )
+                                        </div>                                        
+                                        <div class="form-group">
+                                            <label asp-for="PeriodeFrom"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DatePickerFor(m=>m.PeriodeFrom)
+                                            .Format("dd MMMM yyyy")
+                                            .HtmlAttributes(new {
+                                                style = "width: 100%",
+                                                onkeydown = "javascript:return false;",
+                                                placeholder = $"Input type a {Html.DisplayNameFor(m => m.PeriodeFrom)}",
+                                                required = "required",
+                                                validationmessage = $"{Html.DisplayNameFor(m => m.PeriodeFrom)} is required",
+                                                @readonly = "readonly"
+                                            }))
+                                        </div> 
+                                        <div class="form-group">
+                                            <label asp-for="CurrencyId"></label> <span class="req">*</span> : 
+                                            @(Html.Kendo().DropDownListFor(m => m.CurrencyId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Filter(FilterType.Contains)
+                                                .Events(evt => evt.Select("currency_select"))
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetDDLCurrency", "DropDown", new { area = "Finance" });
+                                                    });
+                                                })
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.CurrencyId)}")
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%;",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.CurrencyId)} is required"
+                                                })
+                                            ) 
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                             <label asp-for="BudgetName"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.BudgetName)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.BudgetName)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.BudgetName)} is required" 
+                                                }
+                                             ))
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label asp-for="PeriodeTo"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DatePickerFor(m=>m.PeriodeTo)
+                                            .Format("dd MMMM yyyy")
+                                            .HtmlAttributes(new {
+                                                style = "width: 100%",
+                                                onkeydown = "javascript:return false;",
+                                                placeholder = $"Input type a {Html.DisplayNameFor(m => m.PeriodeTo)}",
+                                                required = "required",
+                                                validationmessage = $"{Html.DisplayNameFor(m => m.PeriodeTo)} is required",
+                                                @readonly="readonly"
+                                            }))
+                                        </div>                                        
+                                        <div class="form-group">
+                                            <label asp-for="ExchangeRate"></label> <span class="req">*</span> : &nbsp; <a href="javascript:void(0);" onclick="window.open('@Url.RouteUrl(new { action = "Index", controller = "Currency", area="Finance" })?isView=true', '_blank','toolbar=yes,scrollbars=yes,resizable=yes,top=150,left=280,width=800,height=400');" id="linkCurrency" style="text-decoration:underline !important;">View</a>
+                                            @Html.Kendo().NumericTextBoxFor(m => m.ExchangeRate).Spinners(false).HtmlAttributes(new { @placeholder = $"Input type a {Html.DisplayNameFor(m => m.ExchangeRate)}", @required = "required", @style = "width:100%" })
+                                        </div>                                       
+                                    </div>
+                                    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label asp-for="CreatedByName"></label> :
+                                            @Html.Kendo().TextBoxFor(m => m.CreatedByName).HtmlAttributes(new { @readonly = "readonly", style = "width:100%", @placeholder ="auto generated by system" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Version"></label> :
+                                            @Html.Kendo().NumericTextBoxFor(m => m.Version).Spinners(false).Format("N0").HtmlAttributes(new { @readonly = "readonly", @placeholder = $"Input type a {Html.DisplayNameFor(m => m.Version)}", @style = "width:100%" })
+                                        </div> 
+                                         @*<div class="form-group">
+                                            <label>Create Date</label>  :
+                                            @(Html.Kendo().DatePickerFor(m => m.CreatedOn)
+                                               .HtmlAttributes(new
+                                               {
+                                                   style = "width:100%",
+                                                   @readonly = "readonly",
+                                                   placeholder = $"Auto generated by system",
+                                                   onkeydown = "javascript:return false;"
+                                               })
+                                               .Format("dd MMMM yyyy"))
+                                        </div>*@
+                                        <div class="form-group">
+                                            <label asp-for="Status"></label> : 
+                                            @(Html.Kendo().DropDownListFor(m => m.Status)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetDDLStatusBudget", "DropDown", new { area = "Finance" });
+                                                    });
+                                                })
+                                                //.OptionLabel($"Choose a {Html.DisplayNameFor(m => m.Status)}")
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%;",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.Status)} is required"
+                                                })
+                                            ) 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div> 
+                        <br/>
+                        <div class="form-group m-form__group row m-row--no-padding">
+                            <div class="col-lg-12 m-row--no-padding" id="m_blockui_list"> 
+                                <div class="alert m-alert--default" role="alert">
+                                    Budget Capex Detail List
+                                </div>
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.VwBudgetMaster>()
+                                    .Name("grid-detail")
+                                    //.ToolBar(x => {
+                                    //    if (Model.IsOwner != true)
+                                    //    {
+                                    //        x.ClientTemplateId("grid-toolbar-template");
+                                    //    }
+                                    //})
+                                    .Columns(columns =>
+                                    {
+                                        //if (ViewBag.isRequestor == true)
+                                        //{ 
+                                        columns.Bound("").ClientTemplateId("btnAction-template").Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(60);
+                                        //}
+
+                                        columns.Bound(p => p.AccountName).Width(250);
+                                        columns.Bound(p => p.HrisDivision).Width(190);
+                                        columns.Bound(p => p.BudgetOwnerName).Width(180);
+                                        columns.Bound(p => p.TotalBudget).Width(160).ClientFooterTemplate("#=kendo.toString(sum, '\\#\\#,\\#')#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButton(data) #").Width(150);
+                                        columns.Bound(p => p.BudgetId).Title("Budget CAPEX ID").Width(180);
+                                        columns.Bound(p => p.BudgetCode).Width(180);
+                                        columns.Bound(p => p.BudgetName).Width(250);
+                                        columns.Bound(p => p.Version).Width(100);
+                                        //columns.Bound(p => p.CostSharingAllocationId).Width(230);
+                                        //columns.Bound(p => p.CostSharingAllocationName).Width(300);
+                                        //columns.Bound(p => p.MasterMonthlyBudgetSpreadId).Width(280);
+                                        //columns.Bound(p => p.MasterMonthlyBudgetName).Width(300);
+                                        //columns.Bound(p => p.AccountId).Width(150);
+                                        //columns.Bound(p => p.CoaLv3).Width(300);
+                                        //columns.Bound(p => p.CoaLv5).Width(300);
+                                    })
+                                    //.Pageable(pageable => pageable
+                                    //    .Refresh(true)
+                                    //    .PageSizes(true)
+                                    //    .ButtonCount(5))
+                                    //.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                    //.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                    //    .Extra(false)
+                                    //    .Operators(operators => operators
+                                    //    .ForString(str => str.Clear()
+                                    //        .Contains("Contains")
+                                    //        .StartsWith("Start sWith")
+                                    //        .EndsWith("End sWith")
+                                    //    )))
+                                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                    //.Resizable(rsz => rsz.Columns(true))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(model => { model.Id(p => p.BudgetId); })
+                                        .Aggregates(aggregates =>
+                                        {
+                                            aggregates.Add(p => p.TotalBudget).Sum();
+                                        })
+                                        .Read(read => read.Action("ReadBudgetMaster", "BudgetCapex").Data("gridBudgetMaster_params"))
+                                    )
+                                    .NoRecords()
+                                )
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                     @if (ViewBag.requestor)
+                                     {
+                                        <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                     }
+                                    <a asp-action="index" asp-controller="budgetcapex" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                        <partial name="_Details" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="grid-toolbar-template" type="text/x-kendo-template">
+    <a class='k-button' href='javascript: void(0);' onclick='AddDetail(this)'><span class='k-icon k-i-plus'></span>Add Details</a>
+</script>
+
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:green'><i class='fa fa-edit'></i></span></a>
+    @*#if("@Model.IsOwner" == "False"){#
+    #if(TotalBudget==0){#
+    <a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+    #}}#*@
+</script>
+
+<script>
+    var costSharingAllocationId = "0";
+    $(document).ready(function () {
+        if ("@Model.CurrencyId" == "@PhoenixERPWebApp.Models.CurrencyIDR.CurrencyId") {
+            $("#ExchangeRate").data("kendoNumericTextBox").readonly();
+            $('#ExchangeRate').data("kendoNumericTextBox").value(1);
+        } 
+         
+        if ($("#CreatedBy").val()!="") {
+            $("#CurrencyId").data("kendoDropDownList").readonly();
+            $("#BudgetYear").data("kendoDropDownList").readonly();
+        } else {
+            $("#Status").data("kendoDropDownList").readonly();
+        }
+
+        if ("@ViewBag.requestor" == "False") {
+            $("#BudgetName").attr("readonly", "readonly");
+            $("#Status").data("kendoDropDownList").readonly();
+        }
+    });
+
+     function Year_SelectEvent(e) {
+         if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded",
+                async: false,
+                data: { year: dataItem.Value },
+                url: "@Url.Action("GetDate", "FinancialYear")",
+                success: function (result) {
+                    if (result != null) {
+                        $("#PeriodeFrom").data("kendoDatePicker").value(result.startDate);
+                        $("#PeriodeTo").data("kendoDatePicker").value(result.endDate); 
+                    }
+                }
+            });
+        }
+    }
+    
+    function currency_select(e) {
+        if (e.dataItem) {
+            if (e.dataItem.Value == "@PhoenixERPWebApp.Models.CurrencyIDR.CurrencyId") {
+                $("#ExchangeRate").data("kendoNumericTextBox").readonly();
+                $('#ExchangeRate').data("kendoNumericTextBox").value(1);
+            } else {
+                $("#ExchangeRate").data("kendoNumericTextBox").readonly(false);
+                $('#ExchangeRate').data("kendoNumericTextBox").value(0);
+            }
+        }
+    }
+
+    function gridBudgetMaster_params() {
+        return {
+            budgetMasterHeaderId: $("#Id").val()
+        }
+    }
+    
+    function gridBudgetDetail_params() {
+        return {
+            budgetMasterId: $("#BudgetMaster_Id").val(),
+            costSharingAllocationId: costSharingAllocationId
+        }
+    }
+
+    function RequiredDetail() {
+        $("#BudgetMaster_MasterBudgetCodeId").attr("required", "required");
+        $("#BudgetMaster_MasterMonthlyBudgetSpreadId").attr("required", "required");
+        $("#BudgetMaster_CostSharingAllocationId").attr("required", "required");
+        $("#BudgetMaster_BugetOwnerId").attr("required", "required");
+        $("#BudgetMaster_TotalBudget").attr("required", "required");
+    }
+
+    function RequiredDetailRemove() {
+        $("#BudgetMaster_MasterBudgetCodeId").removeAttr("required");
+        $("#BudgetMaster_MasterMonthlyBudgetSpreadId").removeAttr("required");
+        $("#BudgetMaster_CostSharingAllocationId").removeAttr("required");
+        $("#BudgetMaster_BugetOwnerId").removeAttr("required");
+        $("#BudgetMaster_TotalBudget").removeAttr("required");
+    }
+
+    function AddDetail(e) {
+        RequiredDetailRemove();
+        var valid = $("#formbudgetcapex").validate().form();
+        if (valid) {
+            costSharingAllocationId = "";
+            ClearDetail()
+            $("#BudgetMaster_Status").val("@PhoenixERPWebApp.Models.StatusTransactionName.Draft");
+            ReadonlyDetail(false, true);
+            $('#modalDetails').modal('show');
+        }
+    }
+
+    function editGridRow(e) {
+        RequiredDetailRemove();
+        var valid = $("#formbudgetcapex").validate().form();
+        if (valid) {             
+            var item = dataItem(e);
+            costSharingAllocationId = $("#BudgetMaster_CostSharingAllocationId").data("kendoDropDownList").value(); 
+            ClearDetail();
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded",
+                async: false,
+                data: { masterBudgetCodeId: item.MasterBudgetCodeId,  id: item.BudgetId },
+                url: "@Url.Action("GetBudgetMasterById", "BudgetCapex")",
+                success: function (result) {
+                    if (result != null) {
+                        $("#BudgetMaster_BudgetMasterHeaderId").val(result.BudgetMasterHeaderId);
+                        $("#BudgetMaster_Id").val(result.Id);
+                        $("#BudgetMaster_TotalAcrBudget").val(result.TotalAcrBudget);
+                        $("#BudgetMaster_TotalRealBudgetAcr").val(result.TotalRealBudgetAcr);
+                        $("#BudgetMaster_TotalBudgetUsed").val(result.TotalBudgetUsed);
+                        $("#BudgetMaster_TotalBudgetBalance").val(result.TotalBudgetBalance);
+                        $("#BudgetMaster_TotalBudgetBalanceAcr").val(result.TotalBudgetBalanceAcr);
+                        $("#BudgetMaster_TotalBudgetBalanceReal").val(result.TotalBudgetBalanceReal);
+                        $("#BudgetMaster_CreatedBy").val(result.CreatedBy);
+                        $("#BudgetMaster_CreatedOn").val(result.CreatedOn);
+                        $("#BudgetMaster_ModifiedBy").val(result.ModifiedBy);
+                        $("#BudgetMaster_ModifiedOn").val(result.ModifiedOn);
+                        
+                        $("#BudgetMaster_PercentageSpreadMonth1").data("kendoNumericTextBox").value(result.PercentageSpreadMonth1);
+                        $("#BudgetMaster_PercentageSpreadMonth2").data("kendoNumericTextBox").value(result.PercentageSpreadMonth2);
+                        $("#BudgetMaster_PercentageSpreadMonth3").data("kendoNumericTextBox").value(result.PercentageSpreadMonth3);
+                        $("#BudgetMaster_PercentageSpreadMonth4").data("kendoNumericTextBox").value(result.PercentageSpreadMonth4);
+                        $("#BudgetMaster_PercentageSpreadMonth5").data("kendoNumericTextBox").value(result.PercentageSpreadMonth5);
+                        $("#BudgetMaster_PercentageSpreadMonth6").data("kendoNumericTextBox").value(result.PercentageSpreadMonth6);
+                        $("#BudgetMaster_PercentageSpreadMonth7").data("kendoNumericTextBox").value(result.PercentageSpreadMonth7);
+                        $("#BudgetMaster_PercentageSpreadMonth8").data("kendoNumericTextBox").value(result.PercentageSpreadMonth8);
+                        $("#BudgetMaster_PercentageSpreadMonth9").data("kendoNumericTextBox").value(result.PercentageSpreadMonth9);
+                        $("#BudgetMaster_PercentageSpreadMonth10").data("kendoNumericTextBox").value(result.PercentageSpreadMonth10);
+                        $("#BudgetMaster_PercentageSpreadMonth11").data("kendoNumericTextBox").value(result.PercentageSpreadMonth11);
+                        $("#BudgetMaster_PercentageSpreadMonth12").data("kendoNumericTextBox").value(result.PercentageSpreadMonth12);
+                        $("#BudgetMaster_TotalPercentageSpreadMonth").data("kendoNumericTextBox").value(result.TotalPercentageSpreadMonth);
+                        $("#BudgetMaster_Version").data("kendoNumericTextBox").value(result.Version);
+                            
+                        $("#BudgetMaster_HrisDivisionId").val(result.HrisDivisionId);
+                        $("#BudgetMaster_HrisDivisionName").val(result.HrisDivisionName);
+                        $("#BudgetMaster_AccountId").val(result.AccountId);
+                        $("#BudgetMaster_CodeRec").val(result.CodeRec);
+                        $("#BudgetMaster_AccountCOALv3").val(result.AccountCOALv3);
+                        $("#BudgetMaster_AccountCOALv5").val(result.AccountCOALv5);
+                        $("#BudgetMaster_Status").val(result.Status);
+
+                        //yang di isi
+                        $("#BudgetMaster_MasterBudgetCodeId").data("kendoDropDownList").value(result.MasterBudgetCodeId);
+                        $("#BudgetMaster_MasterMonthlyBudgetSpreadId").data("kendoDropDownList").value(result.MasterMonthlyBudgetSpreadId);
+                        $("#BudgetMaster_CostSharingAllocationId").data("kendoDropDownList").value(result.CostSharingAllocationId);
+                        $("#BudgetMaster_BugetOwnerId").data("kendoDropDownList").value(result.BugetOwnerId);
+                        $("#BudgetMaster_TotalBudget").data("kendoNumericTextBox").value(result.TotalBudget);
+
+                        //validasi
+                        var isOwner = "@ViewBag.requestorId" == result.BugetOwnerId;
+                        $("#IsOwner").val(isOwner);
+                        //var readonly = isOwner || ("@ViewBag.requestorId" != result.BugetOwnerId && result.TotalBudget != 0);
+                        var isCurrentApproval = result.IsCurrentApproval;
+                        ReadonlyDetail(!isOwner, isCurrentApproval); 
+                    }
+                }
+            });
+
+            $('#modalDetails').modal('show'); 
+        }
+    }
+
+    function ReadonlyDetail(readonly, isCurrentApproval) { 
+        $("#BudgetMaster_TotalBudget").attr("readonly", readonly); 
+
+        if ($("#BudgetMaster_Status").val() == "@PhoenixERPWebApp.Models.StatusTransactionName.Approved"){
+            $("#btn-save-detail").css("display", "none");
+            $("#btn-reject-detail").css("display", "none");
+            $("#btn-approve-detail").css("display", "none"); 
+        } else if ($("#BudgetMaster_Status").val() == "@PhoenixERPWebApp.Models.StatusTransactionName.WaitingApproval") {
+            if (isCurrentApproval == true){
+                $("#btn-save-detail").css("display", "none");
+                $("#btn-reject-detail").css("display", "block");
+                $("#btn-approve-detail").css("display", "block"); 
+            } else {
+                $("#btn-save-detail").css("display", "none");
+                $("#btn-reject-detail").css("display", "none");
+                $("#btn-approve-detail").css("display", "none"); 
+            }
+        } else {
+            $("#btn-save-detail").css("display", "block");
+            $("#btn-reject-detail").css("display", "none");
+            $("#btn-approve-detail").css("display", "none");  
+        }
+
+        if($("#BudgetMaster_Status").val() != "@PhoenixERPWebApp.Models.StatusTransactionName.Draft"){
+            $("#BudgetMaster_MasterMonthlyBudgetSpreadId").data("kendoDropDownList").readonly();
+            $("#BudgetMaster_CostSharingAllocationId").data("kendoDropDownList").readonly();
+            $("#approval_data_detail").css("display", "block");
+            $("#gridApprovalHistoryList").data("kendoGrid").dataSource.read(); 
+        } else {
+            $("#approval_data_detail").css("display", "none");
+        }
+
+        $("#grid-BudgetMasterDetail").data("kendoGrid").dataSource.read();
+        $("#gridstatuslogHistoryList").data("kendoGrid").dataSource.read();   
+    }
+
+    function ClearDetail() {
+        $("#BudgetMaster_BudgetMasterHeaderId").val("");
+        $("#BudgetMaster_Id").val("");
+        $("#BudgetMaster_TotalAcrBudget").val(0);
+        $("#BudgetMaster_TotalRealBudgetAcr").val(0);
+        $("#BudgetMaster_TotalBudgetUsed").val(0);
+        $("#BudgetMaster_TotalBudgetBalanceAcr").val(0);
+        $("#BudgetMaster_TotalBudgetBalanceReal").val(0);
+        $("#BudgetMaster_TotalBudgetBalance").val(0);
+        $("#BudgetMaster_CreatedBy").val("");
+        $("#BudgetMaster_CreatedOn").val("");
+        $("#BudgetMaster_ModifiedBy").val("");
+        $("#BudgetMaster_ModifiedOn").val("");
+
+        $("#BudgetMaster_MasterBudgetCodeId").data("kendoDropDownList").value("");
+        $("#BudgetMaster_MasterMonthlyBudgetSpreadId").data("kendoDropDownList").value("");
+        $("#BudgetMaster_CostSharingAllocationId").data("kendoDropDownList").value("");
+        $("#BudgetMaster_BugetOwnerId").data("kendoDropDownList").value("");
+        $("#BudgetMaster_TotalBudget").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_Version").data("kendoNumericTextBox").value(0);
+
+        $("#BudgetMaster_PercentageSpreadMonth1").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth2").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth3").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth4").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth5").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth6").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth7").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth8").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth9").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth10").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth11").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_PercentageSpreadMonth12").data("kendoNumericTextBox").value(0);
+        $("#BudgetMaster_TotalPercentageSpreadMonth").data("kendoNumericTextBox").value(0);
+
+        $("#BudgetMaster_HrisDivisionId").val("");
+        $("#BudgetMaster_HrisDivisionName").val("");
+        $("#BudgetMaster_AccountId").val("");
+        $("#BudgetMaster_CodeRec").val("");
+        $("#BudgetMaster_AccountCOALv3").val("");
+        $("#BudgetMaster_AccountCOALv5").val("");
+        $("#BudgetMaster_RemarksProcess").val("");
+    }
+
+    function deleteGridRow(e) {        
+        deleteRow(e, '@Url.Action("DeleteDetail", "BudgetCapex")');
+    }
+
+    function processDetail(type) { 
+        RequiredDetail();
+        $("#BudgetMaster_RemarksProcess").removeAttr("required");
+        var valid = $("#formbudgetcapex").validate().form();
+        if (valid) {  
+            var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid"); 
+            var dataList = {
+                BudgetMasterDetail: gridDetail.dataSource.data()
+            }
+
+            if (type == 1) {
+                if ($("#BudgetMaster_TotalBudget").data("kendoNumericTextBox").value() == 0 && "@Model.IsOwner" == "True") {
+                    swal('Warning', "the total budget must be more than 0", 'warning');
+                    return false;
+                } 
+                callAction({ formId: "formbudgetcapex", title: "submit", type: "POST", url: '@Url.Action("SaveDetail", "BudgetCapex")', objects: dataList });
+            } else if (type == 2) {
+                $("#BudgetMaster_RemarksProcess").attr("required", "required");
+                callAction({ formId: "formbudgetcapex", title: "reject", type: "PUT", url: '@Url.Action("RejectDetail", "BudgetCapex")', objects: dataList });
+            } else if (type == 3) {
+                callAction({ formId: "formbudgetcapex", title: "approve", type: "PUT", url: '@Url.Action("ApproveDetail", "BudgetCapex")', objects: dataList });
+            }
+        }
+    }
+
+    $('#btn-save').click(function () {
+        RequiredDetailRemove();
+        $("#BudgetMaster_RemarksProcess").removeAttr("required");
+        if (!isValid()) return; 
+        callAction({ formId: "formbudgetcapex", title: "save", type: "POST", url: '@Url.Action("Save", "BudgetCapex")' });
+    });
+
+    function isValid() {
+        var valid = $("#formbudgetcapex").validate().form();
+        if (valid) {
+            //var grid = $("#grid-detail").data("kendoGrid").dataSource.data();
+            //if (grid.length == 0) {
+            //    swal('Warning', "Please input budget capex detail", 'warning');
+            //    return false;
+            //}
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function masterBudgetCode_selectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            if (dataItem.Value!=""){
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    data: { budgetCodeId: dataItem.Value },
+                    url: "@Url.Action("GetMasterBudgetCode", "BudgetCapex")",
+                    success: function (result) {
+                        if (result != null) {
+                            $("#BudgetMaster_HrisDivisionId").val(result.HrisDivisionId);
+                            $("#BudgetMaster_HrisDivisionName").val(result.HrisDivisionName);
+                            $("#BudgetMaster_AccountId").val(result.AccountId);
+                            $("#BudgetMaster_CodeRec").val(result.CodeRec);
+                            $("#BudgetMaster_AccountCOALv3").val(result.AccountCOALv3);
+                            $("#BudgetMaster_AccountCOALv5").val(result.AccountCOALv5);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    function costSharingAllocation_selectEvent(e) {
+         if (e.dataItem) {
+             var dataItem = e.dataItem;
+             costSharingAllocationId = dataItem.Value;             
+             $("#grid-BudgetMasterDetail").data("kendoGrid").dataSource.fetch(function () {
+                 totalBudget_changeEvent();
+             });
+        }
+    }
+
+    function masterMonthlyBudgetSpread_selectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            if (dataItem.Value != "") {
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    data: { id: dataItem.Value },
+                    url: "@Url.Action("Get", "MasterMonthlyBudgetSpread")",
+                    success: function (result) {
+                        if (result != null) {
+                            $("#BudgetMaster_PercentageSpreadMonth1").data("kendoNumericTextBox").value(result.PercentageMonth1);
+                            $("#BudgetMaster_PercentageSpreadMonth2").data("kendoNumericTextBox").value(result.PercentageMonth2);
+                            $("#BudgetMaster_PercentageSpreadMonth3").data("kendoNumericTextBox").value(result.PercentageMonth3);
+                            $("#BudgetMaster_PercentageSpreadMonth4").data("kendoNumericTextBox").value(result.PercentageMonth4);
+                            $("#BudgetMaster_PercentageSpreadMonth5").data("kendoNumericTextBox").value(result.PercentageMonth5);
+                            $("#BudgetMaster_PercentageSpreadMonth6").data("kendoNumericTextBox").value(result.PercentageMonth6);
+                            $("#BudgetMaster_PercentageSpreadMonth7").data("kendoNumericTextBox").value(result.PercentageMonth7);
+                            $("#BudgetMaster_PercentageSpreadMonth8").data("kendoNumericTextBox").value(result.PercentageMonth8);
+                            $("#BudgetMaster_PercentageSpreadMonth9").data("kendoNumericTextBox").value(result.PercentageMonth9);
+                            $("#BudgetMaster_PercentageSpreadMonth10").data("kendoNumericTextBox").value(result.PercentageMonth10);
+                            $("#BudgetMaster_PercentageSpreadMonth11").data("kendoNumericTextBox").value(result.PercentageMonth11);
+                            $("#BudgetMaster_PercentageSpreadMonth12").data("kendoNumericTextBox").value(result.PercentageMonth12);
+                            $("#BudgetMaster_TotalPercentageSpreadMonth").data("kendoNumericTextBox").value(result.TotalBudgetSpread);
+                            totalBudget_changeEvent();
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    function calculate_change(e) {
+        var percent1 = $("#BudgetMaster_PercentageSpreadMonth1").data("kendoNumericTextBox").value();
+        var percent2 = $("#BudgetMaster_PercentageSpreadMonth2").data("kendoNumericTextBox").value();
+        var percent3 = $("#BudgetMaster_PercentageSpreadMonth3").data("kendoNumericTextBox").value();
+        var percent4 = $("#BudgetMaster_PercentageSpreadMonth4").data("kendoNumericTextBox").value();
+        var percent5 = $("#BudgetMaster_PercentageSpreadMonth5").data("kendoNumericTextBox").value();
+        var percent6 = $("#BudgetMaster_PercentageSpreadMonth6").data("kendoNumericTextBox").value();
+        var percent7 = $("#BudgetMaster_PercentageSpreadMonth7").data("kendoNumericTextBox").value();
+        var percent8 = $("#BudgetMaster_PercentageSpreadMonth8").data("kendoNumericTextBox").value();
+        var percent9 = $("#BudgetMaster_PercentageSpreadMonth9").data("kendoNumericTextBox").value();
+        var percent10 = $("#BudgetMaster_PercentageSpreadMonth10").data("kendoNumericTextBox").value();
+        var percent11 = $("#BudgetMaster_PercentageSpreadMonth11").data("kendoNumericTextBox").value();
+        var percent12 = $("#BudgetMaster_PercentageSpreadMonth12").data("kendoNumericTextBox").value();
+        var total = percent1 + percent2 + percent3 + percent4 + percent5 + percent6 + percent7 + percent8 + percent9 + percent10 + percent11 + percent12;
+        $("#BudgetMaster_TotalPercentageSpreadMonth").data("kendoNumericTextBox").value(Math.round(total));
+    }
+
+    function totalBudget_changeEvent() {
+        var totalBudget = $("#BudgetMaster_TotalBudget").data("kendoNumericTextBox").value();
+        var percent1 = $("#BudgetMaster_PercentageSpreadMonth1").data("kendoNumericTextBox").value();
+        var percent2 = $("#BudgetMaster_PercentageSpreadMonth2").data("kendoNumericTextBox").value();
+        var percent3 = $("#BudgetMaster_PercentageSpreadMonth3").data("kendoNumericTextBox").value();
+        var percent4 = $("#BudgetMaster_PercentageSpreadMonth4").data("kendoNumericTextBox").value();
+        var percent5 = $("#BudgetMaster_PercentageSpreadMonth5").data("kendoNumericTextBox").value();
+        var percent6 = $("#BudgetMaster_PercentageSpreadMonth6").data("kendoNumericTextBox").value();
+        var percent7 = $("#BudgetMaster_PercentageSpreadMonth7").data("kendoNumericTextBox").value();
+        var percent8 = $("#BudgetMaster_PercentageSpreadMonth8").data("kendoNumericTextBox").value();
+        var percent9 = $("#BudgetMaster_PercentageSpreadMonth9").data("kendoNumericTextBox").value();
+        var percent10 = $("#BudgetMaster_PercentageSpreadMonth10").data("kendoNumericTextBox").value();
+        var percent11 = $("#BudgetMaster_PercentageSpreadMonth11").data("kendoNumericTextBox").value();
+        var percent12 = $("#BudgetMaster_PercentageSpreadMonth12").data("kendoNumericTextBox").value();
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid"); 
+
+        $.each(gridDetail.dataSource.view(), function (key, data) { 
+            var result = data;
+            result.Budget01 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent1 / 100);
+            result.Budget02 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent2 / 100);
+            result.Budget03 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent3 / 100);
+            result.Budget04 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent4 / 100);
+            result.Budget05 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent5 / 100);
+            result.Budget06 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent6 / 100);
+            result.Budget07 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent7 / 100);
+            result.Budget08 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent8 / 100);
+            result.Budget09 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent9 / 100);
+            result.Budget10 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent10 / 100);
+            result.Budget11 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent11 / 100);
+            result.Budget12 = (totalBudget * (data.CostSharingAllocationPercent / 100)) * (percent12 / 100);
+            gridDetail.dataSource.remove(data);
+            gridDetail.dataSource.add(result); 
+        }); 
+    }
+
+    function budget1() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid"); 
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget01; });
+        return result;
+    }
+
+    function budget2() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget02; });
+        return result;
+    }
+
+    function budget3() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget03; });
+        return result;
+    }
+
+    function budget4() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget04; });
+        return result;
+    }
+
+    function budget5() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget05; });
+        return result;
+    }
+
+    function budget6() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget06; });
+        return result;
+    }
+
+    function budget7() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget07; });
+        return result;
+    }
+
+    function budget8() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget08; });
+        return result;
+    }
+
+    function budget9() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget09; });
+        return result;
+    }
+
+    function budget10() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget10; });
+        return result;
+    }
+
+    function budget11() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget11; });
+        return result;
+    }
+
+    function budget12() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) { result += data.Budget12; });
+        return result;
+    }
+
+    function totalBudget(data) {
+        //console.log(data);
+        var result = (data.Budget01 + data.Budget02 + data.Budget03 + data.Budget04 + data.Budget05 + data.Budget06 +
+            data.Budget07 + data.Budget08 + data.Budget09 + data.Budget10 + data.Budget11 + data.Budget12);
+        return result;
+    }
+
+    function total() {
+        var result = 0;
+        var gridDetail = $("#grid-BudgetMasterDetail").data("kendoGrid");
+        $.each(gridDetail.dataSource.view(), function (key, data) {
+            result += (data.Budget01 + data.Budget02 + data.Budget03 + data.Budget04 + data.Budget05 + data.Budget06 +
+                data.Budget07 + data.Budget08 + data.Budget09 + data.Budget10 + data.Budget11 + data.Budget12);
+        });
+        return result;
+    }
+
+    function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Draft") buttonType = "m-badge--info";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.WaitingApproval") buttonType = " m-badge--warning";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Rejected") buttonType = " m-badge--danger";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Approved") buttonType = " m-badge--success";
+        return "<center><a href='javascript: void(0);' onclick='View(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+</script>

@@ -1,0 +1,58 @@
+@{
+    ViewBag.ModalTitle = "PaDetail";
+    ViewBag.ModalId = "PaDetailModalSearch";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="PaDetailFormSearch" method="post">
+    
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="brand">Brand</span></label>
+                <input class="md-input" name="search_brand" id="search_brand"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="category">Category</span></label>
+                <input class="md-input" name="search_category" id="search_category"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="channel">Channel</span></label>
+                <input class="md-input" name="search_channel" id="search_channel"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="item">Item</span></label>
+                <input class="md-input" name="search_item" id="search_item"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="job_pa_id">Job Pa Id</span></label>
+                <input class="md-input" name="search_job_pa_id" id="search_job_pa_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="price_per_quantity">Price Per Quantity</span></label>
+                <input class="md-input" name="search_price_per_quantity" id="search_price_per_quantity"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="quantity">Quantity</span></label>
+                <input class="md-input" name="search_quantity" id="search_quantity"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="remarks">Remarks</span></label>
+                <input class="md-input" name="search_remarks" id="search_remarks"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="services">Services</span></label>
+                <input class="md-input" name="search_services" id="search_services"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="sub_brand">Sub Brand</span></label>
+                <input class="md-input" name="search_sub_brand" id="search_sub_brand"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="sub_task">Sub Task</span></label>
+                <input class="md-input" name="search_sub_task" id="search_sub_task"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task">Task</span></label>
+                <input class="md-input" name="search_task" id="search_task"   maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_name">Task Name</span></label>
+                <input class="md-input" name="search_task_name" id="search_task_name"   maxlength="250" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" onclick="fnPaDetail.initsearch()" class="md-btn md-btn-primary"><i class="uk-icon-search"></i> Search</button>
+        <button type="button" onclick="fnPaDetail.initsearch('reset')" class="md-btn md-btn-success"><i class="uk-icon-times-circle"></i> Reset</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

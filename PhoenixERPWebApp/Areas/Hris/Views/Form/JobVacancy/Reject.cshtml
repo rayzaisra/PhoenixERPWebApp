@@ -1,0 +1,28 @@
+@{
+    ViewBag.ModalTitle = "Reject JobVacancy Form";
+    ViewBag.ModalId = "JobVacancyApprovedModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="JobVacancyApprovedFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="Reason">Reason</span> :</label>
+               <textarea name="reject_reason" id="reject_reason" class="form-control form-control-sm m-input m-input--square">
+    
+               </textarea>
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" class="btn btn-danger" onclick="RejectData()"><span class="translate" data-args="Reject">Reject</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+        </div>
+
+    </div>
+</form>

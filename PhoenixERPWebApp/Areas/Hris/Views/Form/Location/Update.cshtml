@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Location";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="LocationFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="client_brief_id">client_brief_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="client_brief_id" id="client_brief_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="lattitude">lattitude</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="lattitude" id="lattitude" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="location_name">location_name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="location_name" id="location_name" required maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="longitude">longitude</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="longitude" id="longitude" required  type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Location" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Location.update.js"></script>
+}

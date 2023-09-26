@@ -1,0 +1,292 @@
+@model PhoenixERPWebApp.Models.Termination
+@{
+    ViewData["Title"] = "Exit Interview Form";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<small class="">Should be attached by User</small>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="exitinterview" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Exit Interview Form</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="addedit" asp-controller="exitinterview" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text">Process</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Exit Interview Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formTermination" class="form-horizontal form-bordered" role="form">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                        <input type="hidden" asp-for="LastDayDate" />
+                        <input type="hidden" asp-for="EffectiveResignDate" />
+                        <input type="hidden" asp-for="ResignLetter" />
+                        <input type="hidden" asp-for="EndOfContract" />
+                        <input type="hidden" asp-for="Penalty" />
+                        <input type="hidden" asp-for="TrainingBonding" />
+                        <input type="hidden" asp-for="Reason" />
+                        <input type="hidden" asp-for="TerminationType" />
+                        <input type="hidden" asp-for="TerminationDate" />
+                        <input type="hidden" asp-for="MedicalCertificate" />
+                        <input type="hidden" asp-for="DateOfSick" />
+                        <input type="hidden" asp-for="SalaryCalculation" />
+                        <input type="hidden" asp-for="FaulsNoticeDate" />
+                        <input type="hidden" asp-for="InterviewWarningDate" />
+                        <input type="hidden" asp-for="FaultCategoryId" />
+                        <input type="hidden" asp-for="InterviewWarningFile" />
+                        <input type="hidden" asp-for="StatementOfPoliceReport" />
+                        <input type="hidden" asp-for="WarningLetter" />
+                        <input type="hidden" asp-for="WarningLetterDate" />
+                        <input type="hidden" asp-for="Status" />
+                        <input type="hidden" asp-for="StatusInterview" />
+                        <input type="hidden" asp-for="StatusChecklist" />
+                        <input type="hidden" asp-for="RequestDate" />
+                        <input type="hidden" asp-for="Requestor" />
+                        @*<input type="hidden" asp-for="TerminationInterviewDate" />*@
+                        <input type="hidden" asp-for="Notes" />
+                        <input type="hidden" asp-for="ExitInterviewFiles" />
+                        <input type="hidden" asp-for="ReplacementStatus" />
+                        <input type="hidden" asp-for="IsInterview" />
+                        <input type="hidden" asp-for="IsChecklist" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="IsHcProcess" />
+                        <input type="hidden" asp-for="IsHcApprove" />
+
+                        <partial name="_AssignEmploye" />
+                        <br />
+
+                        <div class="row" id="question_data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="question_Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="question_Detail_head" data-toggle="collapse" href="#question_Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Questions</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="question_Detail_body" role="tabpanel" aria-labelledby="question_Detail_head" data-parent="#question_Detail">
+                                            <div class="m-accordion__item-content">
+                                                @foreach (var category in Model.CategoryExitInterviews.OrderBy(x => x.No))
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-lg-12 header-bold" style="margin-top:15px;"> <label>@category.Name</label></div>
+
+                                                        @if (Model.ExitInterviews.Where(x => x.CategoryExitInterviewId == category.Id && x.Type == PhoenixERPWebApp.Models.InputType.Radiobutton).Count() > 0)
+                                                        {
+                                                            <div class="col-lg-12">
+                                                                <div class="table-responsive">
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr style="background-color:ghostwhite">
+                                                                                <td class="m-widget11">Description</td>
+                                                                                <td class="m-widget11 table-center-item">@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyDisagree)</td>
+                                                                                <td class="m-widget11 table-center-item">@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Disagree)</td>
+                                                                                <td class="m-widget11 table-center-item">@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Agree)</td>
+                                                                                <td class="m-widget11 table-center-item">@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyAgree)</td>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @foreach (var item in Model.ExitInterviews.Where(x => x.CategoryExitInterviewId == category.Id).OrderBy(x => x.Type).ThenBy(x => x.No))
+                                                                            {
+                                                                                @if (item.Type == PhoenixERPWebApp.Models.InputType.Radiobutton)
+                                                                                {
+                                                                                    var id1 = $"{item.ExitInterviewItemId}-1";
+                                                                                    var id2 = $"{item.ExitInterviewItemId}-2";
+                                                                                    var id3 = $"{item.ExitInterviewItemId}-3";
+                                                                                    var id4 = $"{item.ExitInterviewItemId}-4";
+
+                                                                                    var isStronglyDisagree = @PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyDisagree).ToLower().Replace(" ", "") == (item.Result ?? "").ToLower().Replace(" ", "");
+                                                                                    var isDisagree = @PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Disagree).ToLower().Replace(" ", "") == (item.Result ?? "").ToLower().Replace(" ", "");
+                                                                                    var isAgree = @PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Agree).ToLower().Replace(" ", "") == (item.Result ?? "").ToLower().Replace(" ", "");
+                                                                                    var isStronglyAgree = @PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyAgree).ToLower().Replace(" ", "") == (item.Result ?? "").ToLower().Replace(" ", "");
+
+
+                                                                                    <tr>
+                                                                                        <td> @item.TextItem </td>
+                                                                                        <td class="table-center-item">
+                                                                                            @if (isStronglyDisagree)
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id1" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyDisagree)" class="k-radio" checked><label class="k-radio-label" for="@id1"></label>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id1" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyDisagree)" class="k-radio"><label class="k-radio-label" for="@id1"></label>
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td class="table-center-item">
+                                                                                            @if (isDisagree)
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id2" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Disagree)" class="k-radio" checked><label class="k-radio-label" for="@id2"></label>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id2" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Disagree)" class="k-radio"><label class="k-radio-label" for="@id2"></label>
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td class="table-center-item">
+                                                                                            @if (isAgree)
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id3" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Agree)" class="k-radio" checked><label class="k-radio-label" for="@id3"></label>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id3" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.Agree)" class="k-radio"><label class="k-radio-label" for="@id3"></label>
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td class="table-center-item">
+                                                                                            @if (isStronglyAgree)
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id4" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyAgree)" class="k-radio" checked><label class="k-radio-label" for="@id4"></label>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <input type="radio" name="@item.ExitInterviewItemId" id="@id4" value="@PhoenixERPWebApp.Models.Survey.SurveyName(PhoenixERPWebApp.Models.Survey.StronglyAgree)" class="k-radio"><label class="k-radio-label" for="@id4"></label>
+                                                                                            }
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                        @foreach (var item in Model.ExitInterviews.Where(x => x.CategoryExitInterviewId == category.Id).OrderBy(x => x.Type).ThenBy(x => x.No))
+                                                        {
+                                                            @if (item.Type == PhoenixERPWebApp.Models.InputType.Checkbox)
+                                                            {
+                                                                bool isChecked = false;
+                                                                if (!string.IsNullOrEmpty(item.Result)) { isChecked = Convert.ToBoolean(item.Result); }
+                                                                <div class="col-lg-4">
+                                                                    @if (isChecked == true)
+                                                                    {
+                                                                        <input type="checkbox" id="@item.ExitInterviewItemId" name="@item.ExitInterviewItemId" class="k-checkbox" checked>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="checkbox" id="@item.ExitInterviewItemId" name="@item.ExitInterviewItemId" class="k-checkbox">
+                                                                    }
+                                                                    <label class="k-checkbox-label" for="@item.ExitInterviewItemId">@item.TextItem</label>
+
+                                                                </div>
+                                                            }
+
+                                                            @if (item.Type == PhoenixERPWebApp.Models.InputType.TextArea)
+                                                            {
+                                                                <div class="col-lg-12 header-bold" style="margin-top:10px;"> <label>@item.TextItem</label></div>
+                                                                <div class="col-lg-12">
+                                                                    <textarea rows="5" cols="80" name="@item.ExitInterviewItemId">@(item.Result ?? "")</textarea>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        @*<partial name="_StatusLog" />
+                        <br />
+                        <partial name="_HistoryApproval" />
+                        <hr />*@
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (Model.StatusInterview != PhoenixERPWebApp.Models.TerminationInterviewStatus.Approved)
+                                    {
+                                        <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+                                    <a asp-action="index" asp-controller="exitinterview" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+    });
+    
+    $('#btnSave').click(function () {
+        callAction({ formId:"formTermination", title: "save", type:"POST", url: '@Url.Action("save", "exitinterview")'});
+    });
+
+    $('#btnSubmit').click(function () {
+        callAction({ formId:"formTermination", title: "submit", type:"POST", url: '@Url.Action("submit", "exitinterview")'});
+    });
+
+</script>

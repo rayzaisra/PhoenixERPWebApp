@@ -1,0 +1,149 @@
+@{
+    ViewData["Title"] = "Chart";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+@section Panelhead{
+    @*<a href="@Url.Content("~/Hris/JobTitle/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>*@
+}
+
+@section Paneltools{
+    @*<a  data-target="#JobTitleModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>*@
+}
+@section Panelbody{
+    @*<link rel="stylesheet" href="~/assets/css/Areas/Hris/chart.css" media="all">*@
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/assets/plugins/getorgchart/getorgchart.css" rel="stylesheet" />
+    <style type="text/css">
+        html, body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #people {
+            width: 100%;
+            height: 100%;
+        }
+
+        .get-org-chart rect.get-box {
+            fill: #ffffff;
+            stroke: #D9D9D9;
+        }
+
+        .get-org-chart .get-text.get-text-0 {
+            fill: #262626;
+        }
+
+        .get-org-chart .get-text.get-text-1 {
+            fill: #262626;
+        }
+
+        .get-org-chart .get-text.get-text-2 {
+            fill: #788687;
+        }
+
+        .get-green.get-org-chart {
+            background-color: #f2f2f2;
+        }
+
+        .more-info {
+            fill: #18879B;
+        }
+
+        .btn path {
+            fill: #F8F8F8;
+            stroke: #D9D9D9;
+        }
+
+        .btn {
+            cursor: pointer;
+        }
+
+            .btn circle {
+                fill: #555555;
+            }
+
+            .btn line {
+                stroke-width: 3px;
+                stroke: #ffffff;
+            }
+    </style>
+    <form action="#" method="post">
+        <div class="md_border_content" style="height:560px">
+            <div class="uk-grid uk-grid-small uk-margin-small-bottom uk-grid uk-grid-small uk-margin-small-bottom-divider md_margin_bottom"
+                 data-uk-grid uk-grid-small uk-margin-small-bottom-margin="">
+                <div class="uk-width-medium-1-2 uk-row-first">
+
+                    <div class="md-card-toolbar" style="text-align:left; padding: 0px !important">
+                        <h1 class="md-card-toolbar-heading-text md_header_text">
+                            Organization Chart
+                        </h1>
+                    </div>
+                </div>
+                <div class="uk-width-medium-1-2" style="border-left: 0px !important">
+                    <!-- Content Right -->
+                </div>
+            </div>
+            <div class="row " style="text-align: right">
+                <div class="col-lg-6">
+                    <!-- Content Left -->
+                </div>
+                <div class="col-lg-6">
+                    @*<a class="btn btn-primary"
+                       href="employee_profil.html">
+                        <i class="fas fa-sitemap"></i>
+                        &nbsp;MPP View
+                    </a>*@
+                    <a class="btn btn-success"
+                       id="page_print">
+                        <i class="fa fa-print"></i>
+                        &nbsp;Export
+                    </a>
+                </div>
+            </div>
+            <div class="row " style="text-align: left">
+                <div class="col-lg-12">
+
+                    <span id="organization_name"></span>
+                </div>
+            </div>
+            <br />
+            <br />
+
+            <div class="row" style="text-align:left;height:450px">
+                <div class="col-lg-2">
+
+                    <div class="form-group">
+                        <label for="Group">Group</label>
+                        <select id="group" name="group" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subgroup">Sub Group</label>
+                        <select id="subgroup" name="subgourp" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="division">Division</label>
+                        <select id="division" name="division" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="departement">Department</label>
+                        <select id="departement" name="departement" class="form-control"></select>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-10" id="ChartGrafik">
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+}
+@section Panelscript{
+    <script src="~/assets/plugins/getorgchart/getorgchart.js"></script>
+    <script src="~/assets/js/Areas/Hris/Form/Chart.js"></script>
+}

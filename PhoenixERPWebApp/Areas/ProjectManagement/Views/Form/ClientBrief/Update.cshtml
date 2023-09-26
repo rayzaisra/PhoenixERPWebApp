@@ -1,0 +1,211 @@
+@{
+    ViewData["Title"] = "Client Brief";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+@section Panelhead{
+    <h3>Client Brief</h3>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    
+    <script>
+        var RecordId = "@ViewBag.RecordID";
+
+    </script>
+    <style>
+        .option .description,
+        .option .title {
+            display: block;
+            white-space: nowrap;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-sx {
+            font-size: 0.45rem !important;
+        }
+
+        .contenttitle {
+            font-weight: bold;
+            font-size: 16px;
+            border: none !important;
+        }
+
+        .option .title {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .option .description {
+            color: #808080;
+            font-size: 10px;
+        }
+
+        #clientbrieftabs {
+            margin-bottom: 0px
+        }
+
+        .tab-content {
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+    </style>
+    <div class="m-form__group-sub m--margin-bottom-20" style="float:left">
+        <h6 id="company_name">Campaign Name</h6>
+        <h3 class="m--font-info"><span id="campaign_name2">-</span></h3>
+    </div>
+    <div class="m-form__group-sub m--margin-bottom-20" style="text-align:right">
+        <h6 id="company_name">Campaign Code</h6>
+        <h3 class="m--font-info"><span id="campaign_id">-</span></h3>
+    </div>
+    <div style="clear:both"></div>
+    <ul id="clientbrieftabs" class="nav nav-tabs nav-fill" data-tabs="tabs">
+        <li class="nav-item "><a class="nav-link active" href="#ClientBriefDetail" data-toggle="tab">Detail</a></li>
+        <li class="nav-item"><a class="nav-link " href="#ClientBriefJob" data-toggle="tab">Job</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="ClientBriefDetail">
+            <form action="#" method="post" id="ClientBriefFormUpdate">
+
+                <div class="row">
+                    <input type="hidden" id="id" name="id" >
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Campaign Name">Campaign</span> <span class="req">*</span> :</label>
+                            <input type="text" required id="campaign_name" name="campaign_name" class="form-control form-control-sm m-input m-input--square">
+                        </div>
+
+                        @*<div class="col-lg-6">
+                                <input type="hidden" name="id" value="@ViewBag.RecordID" />
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Brand">Brand</span> :</label>
+                                    <select required id="external_brand_id" name="external_brand_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                </div>
+
+                            </div>*@
+
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Client Name">Client Name</span> <span class="req">*</span> :</label>
+                            <select required id="client_id" name="client_id" class="form-control form-control-sm m-input m-input--square"></select>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Business Unit">Bussiness Unit</span> <span class="req">*</span> :</label>
+                            <select required id="business_unit_id" name="business_unit_id" class="form-control form-control-sm m-input m-input--square"></select>
+                        </div>
+
+
+                        <!--
+                        <div class="form-group">
+                            <label><span class="translate" data-args="account_management_id">account_management_id</span> :</label>
+                            <select required id="account_management_id" name="account_management_id[]" multiple class="form-control form-control-sm m-input m-input--square"></select>
+                        </div>
+                        -->
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Business Type">Business Type</span> <span class="req">*</span> :</label>
+                            <select required id="bussiness_type_id" name="bussiness_type_id" class="form-control form-control-sm m-input m-input--square"></select>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Campaign Type">Campaign Type</span> <span class="req">*</span> :</label>
+                            <select required id="campaign_type_id" name="campaign_type_id" class="form-control form-control-sm m-input m-input--square"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Start Campaign">Start Campaign</span> <span class="req">*</span> :</label>
+                            <div class="input-group date form_datetime form_datetime bs-datetime">
+                                <input type="text" size="16" name="start_campaign" id="start_campaign" data-date-format="yyyy-mm-dd" class="datepicker form-control form-control-sm " onchange="startcampaignvalidation();">
+                                <span class="input-group-addon">
+                                    <button class="btn default date-set btn-sm" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Deadline">Deadline</span> <span class="req">*</span> :</label>
+                            <div class="input-group date form_datetime form_datetime bs-datetime">
+                                <input type="text" size="16" name="deadline" id="deadline" data-date-format="yyyy-mm-dd" class="datepicker form-control form-control-sm " onchange="deadlinevalidation();">
+                                <span class="input-group-addon">
+                                    <button class="btn default date-set btn-sm" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <label id="deadlinelabel"></label>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Final Delivery">Final Delivery</span> <span class="req">*</span> :</label>
+                            <div class="input-group date form_datetime form_datetime bs-datetime">
+                                <input type="text" size="16" name="final_delivery" id="final_delivery" data-date-format="yyyy-mm-dd" class="datepicker form-control form-control-sm " onchange="finaldeliveryvalidation();">
+                                <span class="input-group-addon">
+                                    <button class="btn default date-set btn-sm" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <label id="finaldeliverylabel"></label>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 border-success">
+
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style="width:100%">
+                                    <div class="row m-row--col-separator-xl" id="contentref">
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="button" onclick="fnclientbriefupdate.addcontent('')" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> <span class="translate" data-args="add_content">add Content</span></button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                        <a href="~/ProjectManagement/clientbrief" class="fakelink btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane" id="ClientBriefJob">
+            <form action="#" method="post" id="ClientBriefFormList">
+
+
+                <button type="button" onclick="fnclientbriefjob.add()" class="btn btn-circle btn-outline btn-sm"><i class="fa fa-plus"></i> <span class="translate" data-args="app-add">Add</span></button>
+                <table class="table table-striped table-bordered table-hover table-checkable" id="JobList">
+                </table>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <a href="~/ProjectManagement/clientbrief" class="fakelink btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </form>
+            @Html.Partial("ClientBrief/jobcreate")
+            @Html.Partial("ClientBrief/jobupdate")
+        </div>
+    </div>
+}
+
+@section Panelscript{
+    <script>$("#JobCreateModal").removeAttr("tabindex");</script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/ClientBrief/update.js"></script>
+}

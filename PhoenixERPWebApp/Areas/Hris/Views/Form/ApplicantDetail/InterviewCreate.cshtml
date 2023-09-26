@@ -1,0 +1,270 @@
+@{
+    ViewBag.ModalTitle = "Interview  Invitation";
+    ViewBag.ModalId = "InterviewModalCreate";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<style>
+    .m-margin__top-25 {
+        margin-top: 30px !important;
+    }
+
+    #mapid {
+        height: 480px;
+        width: 100%;
+    }
+</style>
+<script>
+    $('#xbreadcrumb').hide();
+</script>
+<link rel="stylesheet" href="~/assets/plugins/leaflet/leaflet.css">
+<link rel="stylesheet" href="~/assets/plugins/leaflet/MarkerCluster.Default.css">
+<form id="InterviewFormCreate" method="post">
+    <input type="hidden" name="candidate_recruitment_id" id="candidate_recruitment_id" value="@ViewBag.RecordID" />
+    <input type="hidden" name="job_vacancy_id" id="job_vacancy_id" value="@ViewBag.RecordIDSec" />
+    <input type="hidden" name="applicant_progress_id" id="applicant_progress_id" />
+    <input type="hidden" name="applicant_move_stage_id" id="applicant_move_stage_id" />
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label for="date_birth">Date of Interview <span style="color:red">*</span></label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control" data-date-format="yyyy-mm-dd" id="date_interview" name="date_interview" required>
+                    <span class="input-group-btn">
+                        <button class="btn default" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Interviewer">Interviewer</span> :</label>
+                <input name="interviewer" id="interviewer" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="To">To</span> :</label>
+                <input name="interview_to" id="interview_to" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Subject">Subject</span> :</label>
+                <input name="subject" id="subject" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Action">Action</span> :</label>
+                <select name="action_plan" id="action_plan" class="form-control" onchange="changeinterview(this.value)">
+                    <option value="1st Interview">Invite 1st Interview</option>
+                    <option value="nextstage Interview">Invite Nextstage Interview</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="col-lg-4">
+            <div class="form-inline">
+                @*<label><span class="translate" data-args="Time">Start Time</span> :</label>*@
+                <label><span>Start Time</span> </label>
+                <div class="form-group">
+                    <input name="time_from_hour" id="time_from_hour" class="form-control" type="number">
+                    <input name="time_from_minutes" id="time_from_minutes" class="form-control" type="number">
+                </div>
+                <label><span>End Time</span> </label>
+                <div class="form-group">
+                    <input name="time_to_hour" id="time_to_hour" class="form-control" type="number">
+                    <input name="time_to_minutes" id="time_to_minutes" class="form-control" type="number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label><span class="translate .m-margin__top-5" data-args="From">From</span> :</label>
+                <input name="interview_from" id="interview_from" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Location">Location</span> :</label>
+                <select name="master_location_id" id="master_location_id" class="form-control" onchange="getDataLocation(this.value)">
+                </select>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Location">Location</span> :</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">Lat</span>
+                    </div>
+                    <input name="map_lat" id="map_lat" class="form-control" type="text" readonly>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">Long</span>
+                    </div>
+                    <input name="map_long" id="map_long" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary m-margin__top-25" id="sendInvitation"><span class="translate" data-args="Send Invitation Again">Send Invitation Again</span></button>
+                <button type="button" class="btn btn-primary m-margin__top-25" id="insert_tempalte"><span class="translate" data-args="Insert Template">Insert Template</span></button>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <div id="mapid"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label><span class="translate" data-args="Content">Content</span> :</label>
+                <textarea name="content" id="content" class="form-control col-lg-12" rows="15"></textarea>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" class="btn btn-primary" onclick="submitEducationDate()"><span class="translate" data-args="Save">Save</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+        </div>
+
+    </div>
+</form>
+<script type="text/javascript">
+
+    $(function () {
+        $("#insert_tempalte").click(function (e) {
+            e.preventDefault();
+            InsertTemplateEmail();
+        })
+
+        $("#sendInvitation").click(function (e) {
+            e.preventDefault();
+            var mailTo = $('#interview_to').val();
+            var mailSubject = $('#subject').val();
+            var mailFrom = $('#interview_from').val();
+            var mailBody = $('#content').val();
+
+            if (mailTo === "") {
+                DangerNotif("The destination email is empty, please fill the 'To : ' field");
+                return false;
+            }
+
+            if (mailSubject === "") {
+                DangerNotif("The subject email is empty, please fill the 'Subject : ' field");
+                return false;
+            }
+
+            if (mailFrom === "") {
+                DangerNotif("The sender email is empty, please fill the 'From : ' field");
+                return false;
+            }
+
+            if (mailBody === "") {
+                DangerNotif("The body email is empty, please fill the 'Content : ' field");
+                return false;
+            }
+
+            let model = {
+                MailTo: mailTo,
+                MailSubject: mailSubject,
+                MailFrom: mailFrom,
+                MailBody: mailBody,
+
+            };
+            let urlApi = $.helper.resolveApi("~ManageTransApproval/SendEmailInvitation");
+
+            $.ajax({
+                type: 'POST',
+                url: urlApi,
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(model),
+                success: function (result) {
+                    mApp.unblock("#m_blockui_list");
+                    SuccessNotif("Email Send Succesfully");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            });
+        })
+
+        function markerOnClick(e) {
+            var title = this.options.title
+            console.log(this.options);
+            alert(title);
+            //--------nanti diganti kalau butuh on marker click
+
+        }
+
+        //var mymap = L.map('mapid').setView([-7.614, 108.5600833], 10);
+        // L.marker([-7.614, 108.5600833]).addTo(mymap);
+    });
+
+
+
+    function LoadMapId(lat, long) {
+        var container = L.DomUtil.get('mapid');
+        if (container != null) {
+            container._leaflet_id = null;
+        }
+
+        var mymap = L.map('mapid').setView([lat, long], 10);
+
+        L.marker([lat, long]).addTo(mymap);
+
+        var LeafIcon = L.Icon.extend({
+
+        });
+
+        var greenIcon = new LeafIcon({ iconUrl: WEB + '/assets/img/marker.png' });
+
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(mymap);
+
+        //ambil titik (nantinya di bungkus ajax)
+        //if (markers !== undefined) {
+        //    mymap.removeLayer(markers);
+        //}
+
+        markers = new L.markerClusterGroup();
+        //var resp = itemmarker;
+        //$.each(resp, function (index, item) {
+
+        //    var icondata = greenIcon;
+        //    var marker = L.marker([item.lintang, item.bujur], { icon: icondata, title: item.nama }).on('click', markerOnClick);
+        //    markers.addLayer(marker);
+        //});
+
+
+        mymap.addLayer(markers);
+
+    }
+    function getDataLocation(id) {
+        if (id === null || id === undefined || id === "") {
+
+            $("#map_lat").val("");
+            $("#map_long").val("");
+            LoadMapId("", "");
+        } else {
+            ajaxGet(API + "/Hris/MasterLocation/Get/" + id, {}, function (response) {
+                response = parseJson(response);
+                //console.log(response);
+                $("#map_lat").val(response.data.map_lat);
+                $("#map_long").val(response.data.map_long);
+                LoadMapId(response.data.map_lat, response.data.map_long);
+            });
+        }
+
+    }
+
+    function InsertTemplateEmail() {
+        $("#content").html("Dear Khaerudin" +
+            "As a result of your application, we would like to invite you to attend an interview on"
+            + "Thursday, October 18th, at 5: 00 pm"
+            + "at our office in Graha Mas Fatmawati Jl.Fatmawati Blok A No 51A RT2 / RT5 Kebayoran Bayu, Kota Jakarta Selatan 12410"
+            + "You will have an interview with our HRD, Mrs.Ria Damyari.The interview will last about 30 minutes.Please bring your working credential / portfolio to the interview."
+            + "Regards Nava Plus HRD Recruitment");
+    }
+
+</script>
+<script src="~/assets/plugins/leaflet/leaflet.js"></script>
+<script src="~/assets/plugins/leaflet/leaflet.markercluster.js"></script>

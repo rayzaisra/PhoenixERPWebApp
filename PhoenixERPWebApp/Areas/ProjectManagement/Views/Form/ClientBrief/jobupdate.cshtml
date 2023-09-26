@@ -1,0 +1,91 @@
+@{
+    ViewBag.ModalTitle = "Job";
+    ViewBag.ModalId = "JobUpdateModal";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<form id="JobUpdateForm" method="post">
+    <div class="row ">
+        <div class="col-lg-6">
+            <input name="id" id="id" type="hidden">
+            <div class="form-group">
+                <label><span class="translate" data-args="Brand">Brand</span> <span class="req">*</span> :</label>
+                <select required id="bbrand_id" name="brand_id" class="form-control form-control-sm m-input m-input--square"></select>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Legal Entity">Legal Entity</span> <span class="req">*</span> :</label>
+                <select required id="llegal_entity_id" name="legal_entity_id" class="form-control form-control-sm m-input m-input--square"></select>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Job Name">Job Name</span> <span class="req">*</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="job_name" id="job_name" required type="text">
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Job Description">Job Description</span> <span class="req">*</span>:</label>
+                <textarea class="form-control form-control-sm m-input m-input--square" name="job_description" id="job_description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Team">Team</span> <span class="req">*</span> :</label>
+                <select required id="tteam_id" name="team_id" class="form-control form-control-sm m-input m-input--square"></select>
+            </div>
+           
+
+
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label><span class="translate" data-args="Type">Type</span> <span class="req">*</span> :</label>
+                <select required id="jjob_type" name="job_type" class="form-control form-control-sm m-input m-input--square"></select>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Main Service Category">Main Service Category</span> <span class="req">*</span> :</label>
+                <select required id="mmain_service_category" name="main_service_category" class="form-control form-control-sm m-input m-input--square"></select>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Start Job">Start Job</span> <span class="req">*</span> :</label>
+                <div class="input-group date form_datetime form_datetime bs-datetime">
+                    <input type="text" size="16" name="start_job" id="start_job" data-date-format="yyyy-mm-dd" class="datepicker form-control form-control-sm " onchange="startjobvalidation('JobUpdateForm');">
+                    <span class="input-group-addon">
+                        <button class="btn default date-set btn-sm" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+                <label id="startjoblabel"></label>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Deadline">Deadline</span> <span class="req">*</span> :</label>
+                <div class="input-group date form_datetime form_datetime bs-datetime">
+                    <input type="text" size="16" name="deadline" id="deadline" data-date-format="yyyy-mm-dd" class="datepicker form-control form-control-sm " onchange="deadlinejobvalidation('JobUpdateForm');">
+                    <span class="input-group-addon">
+                        <button class="btn default date-set btn-sm" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+                <label id="deadlinejoblabel"></label>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Final Delivery">Final Delivery</span> <span class="req">*</span> :</label>
+                <div class="input-group date form_datetime form_datetime bs-datetime">
+                    <input type="text" size="16" name="final_delivery" id="final_delivery" data-date-format="yyyy-mm-dd" class="datepicker form-control form-control-sm " onchange="finaldeliveryjobvalidation('JobUpdateForm');">
+                    <span class="input-group-addon">
+                        <button class="btn default date-set btn-sm" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+                <label id="finaldeliveryjoblabel"></label>
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-savejob" class="btn btn-primary">Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary" id="modal-button">Close</button>
+        </div>
+
+    </div>
+</form>
+ 

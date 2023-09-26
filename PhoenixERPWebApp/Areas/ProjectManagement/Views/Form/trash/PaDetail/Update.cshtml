@@ -1,0 +1,57 @@
+@{
+    ViewBag.ModalTitle = "PaDetail";
+    ViewBag.ModalId = "PaDetailModalUpdate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="PaDetailFormUpdate" method="POST">
+<input value="" type="hidden" name="id" />
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="brand">Brand</span> </label>
+                <input class="md-input" name="brand" id="brand"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="category">Category</span> </label>
+                <input class="md-input" name="category" id="category"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="channel">Channel</span> </label>
+                <input class="md-input" name="channel" id="channel"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="item">Item</span> </label>
+                <input class="md-input" name="item" id="item"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="job_pa_id">Job Pa Id</span> </label>
+                <input class="md-input" name="job_pa_id" id="job_pa_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="price_per_quantity">Price Per Quantity</span> </label>
+                <input class="md-input" name="price_per_quantity" id="price_per_quantity"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="quantity">Quantity</span> </label>
+                <input class="md-input" name="quantity" id="quantity"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="remarks">Remarks</span> </label>
+                <input class="md-input" name="remarks" id="remarks"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="services">Services</span> </label>
+                <input class="md-input" name="services" id="services"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="sub_brand">Sub Brand</span> </label>
+                <input class="md-input" name="sub_brand" id="sub_brand"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="sub_task">Sub Task</span> </label>
+                <input class="md-input" name="sub_task" id="sub_task"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task">Task</span> </label>
+                <input class="md-input" name="task" id="task"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_name">Task Name</span> </label>
+                <input class="md-input" name="task_name" id="task_name"  maxlength="250" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

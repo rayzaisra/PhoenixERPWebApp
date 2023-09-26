@@ -1,0 +1,236 @@
+﻿@model PhoenixERPWebApp.Models.BankReceived
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+</style>
+
+<div class="modal fade" id="modal-choice-ar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create Bank Received From AR</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBodyARList">
+                <form id="formVendor" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+                    <div class="m-form__group">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Client</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.pop_ClientId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value") 
+                                            .Filter(FilterType.Contains)
+                                            .OptionLabel($"Choose a Client")
+                                            .Popup(x => x.AppendTo("#modalBodyARList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLClient", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Currency</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.pop_CurrencyId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .OptionLabel($"Choose a Currency")
+                                            .Popup(x => x.AppendTo("#modalBodyARList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Legal Entity</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.pop_legalEntityId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .OptionLabel($"Choose a Legal Entity")
+                                            .Popup(x => x.AppendTo("#modalBodyARList"))
+                                            .HtmlAttributes(new { style = "width:100%;"})
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Bussiness Unit</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.pop_BussinessUnitId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .OptionLabel($"Choose a Bussiness Unit")
+                                            .Popup(x => x.AppendTo("#modalBodyARList"))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false)
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>AR Number</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @(Html.Kendo().DropDownListFor(i => i.pop_ARNumber)
+                                              .DataTextField("Text")
+                                              .DataValueField("Value")
+                                              .Filter(FilterType.Contains) 
+                                              .OptionLabel("Choose an AR Number") 
+                                              .Popup(x => x.AppendTo("#modalBodyARList"))
+                                              .HtmlAttributes(new { style = "width:100%;" })
+                                              .DataSource(source => source
+                                                  .Custom()
+                                                  .Transport(transport => transport
+                                                  .Read(read =>
+                                                  {
+                                                      read.Action("GetArNumber", "Dropdown", new { area = "Finance" }).Data("arNumber_params");
+                                                  }))
+                                                  .ServerFiltering(false)
+                                              )
+                                              .AutoBind(false)) 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <button class="btn btn-primary" type="button" onclick="bindARList()">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group m-form__group row m-row--no-padding">
+                                    <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.AccountReceivable> ()
+                                              .Name("grid-choice-ar")
+                                              .Columns(columns =>
+                                              {
+                                                  columns.Select().ClientHeaderTemplate(" ").Width(40).HtmlAttributes(new { style = "text-align:center;" });
+                                                  columns.Bound(p => p.AccountReceivableNumber).Width(150);
+                                                  columns.Bound(p => p.TransactionDate).Width(150); 
+                                                  columns.Bound(p => p.BusinessUnitName).Width(200);
+                                                  columns.Bound(p => p.LegalEntity).Width(200);
+                                                  columns.Bound(p => p.ClientName).Width(200);
+                                                  columns.Bound(p => p.ClientBrand).Width(200);
+                                                  columns.Bound(p => p.CurrencyName).Width(120);
+                                                  columns.Bound(p => p.Amount).ClientTemplate("#if(CurrencySymbol!=null && Amount!=null){# #=CurrencySymbol# #}# #if(Amount!=null){# #=kendo.format('{0:n2}', Amount)# #}#").Width(150).HtmlAttributes(new { style = "text-align:right;" });
+                                              })
+                                               .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                               .Resizable(rsz => rsz.Columns(true))
+                                              .AutoBind(false)
+                                              .DataSource(dataSource => dataSource
+                                                  .Ajax()
+                                                  .Events(events => events.Error("errorHandler"))
+                                                  .Model(model => { model.Id(p => p.Id); })
+                                                  .Read(read => read.Action("ReadARPosted", "BankReceived").Data("gridChoicePce_params"))
+                                              )
+                                              .NoRecords()
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="SaveSelectedAR()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function gridChoicePce_params() {
+        return {
+            Filter: {
+                PaymentRequestId: $("#Id").val(),
+                FilterLegalEntity: $("#pop_legalEntityId").data("kendoDropDownList").value(), 
+                FilterBusinessUnitId: $("#pop_BussinessUnitId").data("kendoDropDownList").value(), 
+                VendorId: $("#pop_ClientId").data("kendoDropDownList").value(),
+                CurrencyId: $("#pop_CurrencyId").data("kendoDropDownList").value(),
+                FilterARNumber: $("#pop_ARNumber").val()
+            }
+        }
+    }
+
+    function arNumber_params() {
+        return {
+            bankReceivedId : $("#Id").val()
+            }
+    }
+</script>

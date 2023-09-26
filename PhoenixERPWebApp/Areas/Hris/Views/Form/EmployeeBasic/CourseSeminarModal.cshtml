@@ -1,0 +1,105 @@
+@{
+    ViewBag.ModalTitle = "Employee Basic Course Seminar Modal";
+    ViewBag.ModalId = "EmployeeBasicCourseSeminarModal";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<form id="EmployeeBasicFormCourseSeminar" name="EmployeeBasicFormCourseSeminar" method="post">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="course_name">Course Name *</label>
+                <input name="course_name" id="course_name" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label for="course_address">Course Address *</label>
+                <input name="course_address" id="course_address" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="no_certification">No Cert *</label>
+                <input name="no_certification" id="no_certification" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label for="expired_certification">Expired Cert</label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control" id="expired_certification" name="expired_certification">
+                    <span class="input-group-btn">
+                        <button class="btn default" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="filemaster_id">Upload Cert</label>
+                <input id="filemaster_id" type="text" name="filemaster_id" class="form-control" />
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="course_institute_id">Institute Name *</label>
+                <select id="course_institute_id" name="course_institute_id" class="form-control" required></select>
+            </div>
+            <div class="form-group" id="course_institution_other">
+
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="start_training">Start *</label>
+                        @*<div class="input-group">
+                        <input type="text" class="form-control" id="start_training" name="start_training">
+                        <span class="input-group-btn">
+                            <button class="btn default" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>*@
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="start_training" name="start_training">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="end_training">End *</label>
+                        @*<div class="input-group">
+                        <input type="text" class="form-control" id="end_training" name="end_training">
+                        <span class="input-group-btn">
+                            <button class="btn default" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>*@
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="end_training" name="end_training">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="course_description">Remarks </label>
+                <textarea id="course_description" name="course_description" class="form-control" rows="5"></textarea>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" id="btn-save" class="btn btn-primary" onclick="CheckAndAddRowCourseSeminar()">Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+        </div>
+
+    </div>
+
+</form>
+<script src="~/assets/js/Areas/Hris/Form/EmployeeBasic.courseseminar.js"></script>

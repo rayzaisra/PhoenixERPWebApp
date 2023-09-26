@@ -1,0 +1,208 @@
+﻿<input hidden id="detail-id" value="@ViewBag.RecordID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Job Closing</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-file-invoice-dollar"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance View</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Company/JobClosing")" class="m-nav__link">
+                        <span class="m-nav__link-text">List Of Job</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Job Closing</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__body">
+                    <form id="form-client" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                        <div class="m-form__group-sub m--margin-bottom-30">
+                            <h3>PT. Nestle Indonesia, Tbk.</h3>
+                            Bear Brand Chinese New Year
+                        </div>
+                        <input hidden name="id" value="" />
+
+                        <div class="row">
+                            <!-- Begin: Input Job ID -->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label class="">Job ID :</label>
+                                    <input type="text" id="job_id" name="job_id" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                           placeholder="Enter Job ID">
+                                </div>
+                            </div>
+                            <!-- End: Input Job ID -->
+                            <!-- Begin: Input Brand -->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label class="">Brand :</label>
+                                    <input type="text" id="job_id" name="job_id" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                           placeholder="Enter Brand">
+                                </div>
+                            </div>
+                            <!-- End: Input Brand -->
+                            <!-- Begin: Job Name-->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label class="">Job Name :</label>
+                                    <input type="text" id="job_name" name="job_name" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                           placeholder="Enter Job Name">
+                                </div>
+                            </div>
+                            <!-- End: Job Name -->
+                            <!-- Begin: Divisi / Business Unit -->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Divisi / Business Unit :</label>
+                                    <select id="bussines_unit" name="bussines_unit" class="form-control form-control-sm m-input m--margin-bottom-30"></select>
+                                </div>
+                            </div>
+                            <!-- End: Divisi / Business Unit -->
+                        </div>
+
+                        <div class="row">
+                            <!-- Begin: Current Status -->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Current Status :</label>
+                                    <input id="current_status" name="current_status" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                           placeholder="Enter Current Status">
+                                </div>
+                            </div>
+                            <!-- End: Current Status -->
+                            <!-- Begin: Product -->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Product :</label>
+                                    <input id="product" name="product" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                           placeholder="Enter Product">
+                                </div>
+                            </div>
+                            <!-- End: Product-->
+                            <!-- Begin: Aging up to day -->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Aging Up To Day :</label>
+                                    <input id="aging_up_to_day" name="aging_up_to_day" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                           placeholder="Enter Aging Up To Day">
+                                </div>
+                            </div>
+                            <!-- End: Aging up to day -->
+                            <!-- Begin: Currency -->
+                            <div class="col-lg-3 m-form__group-sub">
+                                <label>Currency</label>
+                                <div class="input-group input-group-sm ">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Rp
+                                        </button>
+                                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
+                                            <a class="dropdown-item" href="#">Dollars</a>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                                </div>
+                            </div>
+                            <!-- End: Currency -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Client Info :</label>
+                                    <textarea class="form-control m--margin-bottom-30 m-input" id="exampleTextarea" rows="5"
+                                              placeholder="Enter Client info"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Job Description :</label>
+                                    <textarea class="form-control m--margin-bottom-30 m-input" id="exampleTextarea" rows="5"
+                                              placeholder="Enter Job Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Approval :</label>
+                                    <div class="m-radio-inline">
+                                        <label class="m-radio m-radio--solid">
+                                            <input type="radio" name="approval" value="true"> Approval
+                                            <span></span>
+                                        </label>
+                                        <label class="m-radio m-radio--solid">
+                                            <input type="radio" name="approval" checked="" value="false"> Rejected
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Notes :</label>
+                                    <textarea class="form-control m--margin-bottom-30 m-input" id="exampleTextarea" rows="5"
+                                              placeholder="Enter Notes"></textarea>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="m-form__group-sub">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-success m-btn m-btn--icon">
+                                            <span>
+                                                <i class="la la-search"></i>
+                                                <span>Preview</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="btn btn-info m-btn m-btn--icon">
+                                            <span>
+                                                <i class="la la-print"></i>
+                                                <span>Print</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/Areas/Core/Scripts/Lookup/City.Lookup.js" asp-append-version="true"></script>
+    <script src="~/Areas/Core/Scripts/Lookup/Country.Lookup.js" asp-append-version="true"></script>
+}

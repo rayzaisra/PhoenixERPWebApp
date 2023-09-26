@@ -1,0 +1,1539 @@
+@model PhoenixERPWebApp.Models.EmployeeBasicInfo
+@{
+    ViewData["Title"] = "Employee Basic";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="employeebasic" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Basic Info</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="employeebasic" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="employeebasic" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Employee Basic</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formEmployeeBasic" class="form-bordered" role="form">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="ParamColumn" />
+                        <input type="hidden" asp-for="ParamValue" />
+                        <fieldset>
+                            <legend>Detail Employee Information</legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Photo</label>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <div style="width:100%">
+                                                    <a class="thumbnail" href="#">
+                                                        <img class="profile-pic" id="img-employee-nava" width="100px;" height="100px;">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+								
+                            </div>
+                            <div class="row">
+                              
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                       <br/>
+                                        <div id="divPhoto"></div>
+                                        <div style="width:100%">
+                                            <input type="hidden" asp-for="Photo" />
+                                            <a href='javascript: void(0);' id="linkPhotoDownloadFile" onclick='downloadPhoto()'></a> &nbsp;
+                                            <a href='javascript: void(0);' id="linkPhotoRemoveFile" onclick='removePhoto()' title='Delete'><span style='color:red'><i class='fa fa-times'></i></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+
+                                    <div class="form-group">
+                                        <label asp-for="EmployeeCode"></label><span class="req">*</span> :
+                                        @(Html.Kendo().TextBoxFor(x => x.EmployeeCode).HtmlAttributes(new { style = "width:100%", required = "required", @maxlength = 50 }))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="FirstName"></label><span class="req">*</span> :
+                                        @(Html.Kendo().TextBoxFor(x => x.FirstName).HtmlAttributes(new { style = "width:100%", required = "required", @maxlength = 50 }))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="LastName"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.LastName).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.PhoneNumber).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+                                        @*@(Html.Kendo().NumericTextBox<int>().Name("PhoneNumber").Decimals(0).Spinners(false).HtmlAttributes(new { style = "width: 100%", title = "Phone Number" }))*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MobileNumber">Mobile Number</label><span class="req">*</span> :
+                                        @(Html.Kendo().TextBoxFor(x => x.MobileNumber).HtmlAttributes(new { style = "width:100%", required = "required", @maxlength = 50 }))
+                                        @*@(Html.Kendo().NumericTextBox<int>().Name("MobileNumber").Decimals(0).Spinners(false).HtmlAttributes(new { style = "width: 100%", title = "Phone Number" }))*@
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label asp-for="NickName"></label> :
+                                        @(Html.Kendo().TextBoxFor(x => x.NickName).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Gender"></label><span class="req">*</span> :<br />
+                                        <span style="margin-right:15px">@(Html.Kendo().RadioButtonFor(m => m.Gender).Label("Male").Value("Male"))</span>
+                                        @(Html.Kendo().RadioButtonFor(m => m.Gender).Label("Female").Value("Female"))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="DateBirth"></label><span class="req">*</span> :
+                                        @(Html.Kendo().DatePickerFor(m => m.DateBirth)
+												.Format("dd MMM yyyy")
+												.HtmlAttributes(new
+												{
+													style = "width:50%",
+													@class = "form-control form-control-sm m-input",
+													required = "required"
+												}))
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Email"></label><span class="req">*</span> :
+                                        @(Html.Kendo().TextBoxFor(x => x.Email).HtmlAttributes(new { style = "width:100%", required = "required", @maxlength = 50 }))
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <hr />
+                        <div class="container">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#PersonalInfo" role="tab" data-toggle="tab">Personal Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#FamilyInfo" role="tab" data-toggle="tab">Family Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#EmergencyContacts" role="tab" data-toggle="tab">Emergency Contacts</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#EducationInfo" role="tab" data-toggle="tab">Education Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#EmployementHistory" role="tab" data-toggle="tab">Employement History</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#Course" role="tab" data-toggle="tab">Course / Seminar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#JobInfo" role="tab" data-toggle="tab">Job Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#Payroll" role="tab" data-toggle="tab">Payroll</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#EmployeeChecklist" role="tab" data-toggle="tab">Employee Checklist</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#EmployeeHistory" role="tab" data-toggle="tab">Employee History</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#EmployeeContractSign" role="tab" data-toggle="tab">Contract Sign</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="PersonalInfo">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label asp-for="NationalityId"></label><span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.NationalityId)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.NationalityId)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;",
+																required = "required",
+																validationmessage = $"{Html.DisplayNameFor(m => m.NationalityId)} is required"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetDDLNationality", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="KitasNumber"></label> :
+                                                @(Html.Kendo().TextBoxFor(x => x.KitasNumber).HtmlAttributes(new { style = "width:100%" }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="KitasExpiry"></label> :
+                                                @(Html.Kendo().DatePickerFor(m => m.KitasExpiry)
+																.Format("dd MMM yyyy")
+																.HtmlAttributes(new
+																{
+																	style = "width:50%",
+																	@class = "form-control form-control-sm m-input",
+																}))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="ReligionId"></label><span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.ReligionId)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.ReligionId)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;",
+																required = "required",
+																validationmessage = $"{Html.DisplayNameFor(m => m.ReligionId)} is required"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetDDLReligion", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="MarriedStatusId"></label><span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.MarriedStatusId)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.MarriedStatusId)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;",
+																required = "required",
+																validationmessage = $"{Html.DisplayNameFor(m => m.MarriedStatusId)} is required"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetDDLMarriedStatus", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Blood"></label> :
+                                                @(Html.Kendo().DropDownListFor(x => x.Blood)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.BindTo(new List<SelectListItem>() {
+																new SelectListItem() { Text = "Choose a Blood Type", Value = "" },
+																new SelectListItem() { Text = "A", Value = "A" },
+																new SelectListItem() { Text = "AB", Value = "AB" },
+																new SelectListItem() { Text = "B", Value = "B"},
+																new SelectListItem() { Text = "O", Value = "O"}
+															})
+															.HtmlAttributes(new { style = "width: 100%", required = "required" })
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="PostCode"></label><span class="req">*</span> :
+                                                @(Html.Kendo().TextBoxFor(x => x.PostCode).HtmlAttributes(new { style = "width:100%", required = "required" }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="AddressIdentityCard"></label><span class="req">*</span> :
+                                                @Html.TextAreaFor(x => x.AddressIdentityCard, new { @class = "k-textbox", @maxlength = 2000, style = "width: 100%;padding:0.5em", required = "required" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="HomeAddress"></label><span class="req">*</span> :
+                                                @Html.TextAreaFor(x => x.HomeAddress, new { @class = "k-textbox", @maxlength = 2000, style = "width: 100%;padding:0.5em", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label asp-for="LastEducation"></label><span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.LastEducation)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.LastEducation)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;",
+																required = "required",
+																validationmessage = $"{Html.DisplayNameFor(m => m.LastEducation)} is required"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetDDLeducationlevel", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="PassportNumber"></label>
+                                                @(Html.Kendo().TextBoxFor(x => x.PassportNumber).HtmlAttributes(new { style = "width:100%" }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="PassportExpiry"></label> :
+                                                @(Html.Kendo().DatePickerFor(m => m.PassportExpiry)
+															.Format("dd MMM yyyy")
+															.HtmlAttributes(new
+															{
+																style = "width:50%",
+																@class = "form-control form-control-sm m-input",
+															}))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="NpwpNumber"></label> :
+                                                @(Html.Kendo().TextBoxFor(x => x.NpwpNumber).HtmlAttributes(new { style = "width:100%" }))
+                                            </div>
+                                            @*<div class="form-group">
+                        <label asp-for="NpwpExpiry"></label> :
+                        @(Html.Kendo().DatePickerFor(m => m.NpwpExpiry)
+                                    .Format("dd MMM yyyy")
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:50%",
+                                        @class = "form-control form-control-sm m-input",
+                                    }))
+                    </div>*@
+                                            <div class="form-group">
+                                                <label asp-for="IdentityCard"></label><span class="req">*</span> :
+                                                @(Html.Kendo().TextBoxFor(x => x.IdentityCard).HtmlAttributes(new { style = "width:100%", required = "required" }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="KkNo"></label><span class="req">*</span> :
+                                                @(Html.Kendo().TextBoxFor(x => x.KkNo).HtmlAttributes(new { style = "width:100%", required = "required" }))
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="FamilyInfo">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Family>()
+                                                    .Name("gridFamily")
+                                                    .ToolBar(toolbar => toolbar.Create())
+                                                    .Columns(columns =>
+                                                    {
+                                                        columns.Command(command =>
+                                                        {
+                                                            command.Edit().Text(" ").UpdateText("Save");
+                                                            command.Destroy().Text(" ");
+                                                        }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                        columns.Bound(p => p.fName).Width(200);
+                                                        columns.Bound(p => p.fPhoneNo).Width(150);
+                                                        columns.Bound(p => p.fFamilyStatus).Width(150);
+                                                        columns.Bound(p => p.fGender).Width(100);
+                                                        columns.Bound(p => p.fAddress).Width(300);
+                                                        columns.Bound(p => p.fReligionId).Hidden();
+                                                        columns.Bound(p => p.fReligion).Hidden();
+
+                                                    })
+                                                    .NoRecords()
+                                                    .Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Family")).DisplayDeleteConfirmation(false))
+                                                    .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                    .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                        .Extra(false)
+                                                        .Operators(operators => operators
+                                                        .ForString(str => str.Clear()
+                                                            .Contains("Contains")
+                                                            .StartsWith("Start sWith")
+                                                            .EndsWith("End sWith")
+                                                        )))
+                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                    .Resizable(rsz => rsz.Columns(true))
+                                                    .DataSource(dataSource => dataSource
+                                                        .Ajax()
+                                                        .PageSize(10)
+                                                        .Events(events => events.Error("errorHandler"))
+                                                        .Model(model =>
+                                                        {
+                                                            model.Id(p => p.Id);
+                                                        })
+                                                        .Read(read => read.Action("ReadFamily", "employeebasic").Data("grid_params"))
+                                                        .Create(create => create.Action("CreateFamily", "employeebasic"))
+                                                        .Update(update => update.Action("UpdateFamily", "employeebasic"))
+                                                        .Destroy(destroy => destroy.Action("DestroyFamily", "employeebasic"))
+                                                    )
+                                                    //.AutoBind(false)
+                                                    //.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+                                                    .Events(e => e.Save("saveFamilyEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="EmergencyContacts">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeEmergencyContact>()
+														.Name("gridEmergencyContact")
+														.ToolBar(toolbar => toolbar.Create())
+														.Columns(columns =>
+														{
+															columns.Command(command =>
+															{
+																command.Edit().Text(" ").UpdateText("Save");
+																command.Destroy().Text(" ");
+															}).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+															columns.Bound(p => p.FamilyStatus).Width(200);
+															columns.Bound(p => p.EmergencyFullName).Width(200);
+															columns.Bound(p => p.EmergencyPhoneNo).Width(200);
+															columns.Bound(p => p.EmergencyOtherNo).Width(200);
+															columns.Bound(p => p.EmergencyAddress).Width(200);
+														})
+														.NoRecords()
+														.Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Emergency Contact")).DisplayDeleteConfirmation(false))
+														.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+														.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+															.Extra(false)
+															.Operators(operators => operators
+															.ForString(str => str.Clear()
+																.Contains("Contains")
+																.StartsWith("Start sWith")
+																.EndsWith("End sWith")
+															)))
+														.Scrollable(s => s.Enabled(true).Height("auto"))
+														.Resizable(rsz => rsz.Columns(true))
+														.DataSource(dataSource => dataSource
+															.Ajax()
+															.PageSize(10)
+															.Events(events => events.Error("errorHandler"))
+															.Model(model =>
+															{
+																model.Id(p => p.Id);
+															})
+															.Read(read => read.Action("ReadEmployeeEmergencyContact", "employeebasic").Data("grid_params"))
+															.Create(create => create.Action("CreateEmployeeEmergencyContact", "employeebasic"))
+															.Update(update => update.Action("UpdateEmployeeEmergencyContact", "employeebasic"))
+															.Destroy(destroy => destroy.Action("DestroyEmployeeEmergencyContact", "employeebasic"))
+														)
+													//.AutoBind(false)
+													//.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+													.Events(e => e.Save("emergencyContactSaveEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="EducationInfo">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Education>()
+														.Name("gridEducation")
+														.ToolBar(toolbar => toolbar.Create())
+														.Columns(columns =>
+														{
+															columns.Command(command =>
+															{
+																command.Edit().Text(" ").UpdateText("Save");
+																command.Destroy().Text(" ");
+															}).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+															columns.Bound(p => p.Institution).Width(150);
+															columns.Bound(p => p.EMajors).Width(100);
+															columns.Bound(p => p.EAddress).Width(300);
+															columns.Bound(p => p.EStartEducation).Width(100);
+															columns.Bound(p => p.EEndEducation).Width(100);
+														})
+														.NoRecords()
+														.Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Education")).DisplayDeleteConfirmation(false))
+														.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+														.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+															.Extra(false)
+															.Operators(operators => operators
+															.ForString(str => str.Clear()
+																.Contains("Contains")
+																.StartsWith("Start sWith")
+																.EndsWith("End sWith")
+															)))
+														.Scrollable(s => s.Enabled(true).Height("auto"))
+														.Resizable(rsz => rsz.Columns(true))
+														.DataSource(dataSource => dataSource
+															.Ajax()
+															.PageSize(10)
+															.Events(events => events.Error("errorHandler"))
+															.Model(model =>
+															{
+																model.Id(p => p.Id);
+															})
+															.Read(read => read.Action("ReadEducation", "employeebasic").Data("grid_params"))
+															.Create(create => create.Action("CreateEducation", "employeebasic"))
+															.Update(update => update.Action("UpdateEducation", "employeebasic"))
+															.Destroy(destroy => destroy.Action("DestroyEducation", "employeebasic"))
+														)
+														//.AutoBind(false)
+														//.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+														.Events(e => e.Save("educaionSaveEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="EmployementHistory">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeExperience>()
+														.Name("gridEmployeeExperience")
+														.ToolBar(toolbar => toolbar.Create())
+														.Columns(columns =>
+														{
+															columns.Command(command =>
+															{
+																command.Edit().Text(" ").UpdateText("Save");
+																command.Destroy().Text(" ");
+															}).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+															columns.Bound(p => p.CompanyName).Width(180);
+															columns.Bound(p => p.EmplyeeExperiencePhone).Width(150);
+															columns.Bound(p => p.EmplyeeExperienceStartDate).Width(130);
+															columns.Bound(p => p.EmplyeeExperienceEndDate).Width(100);
+															columns.Bound(p => p.EmplyeeExperienceAddress).Width(300);
+															columns.Bound(p => p.Position).Width(120);
+														})
+														.NoRecords()
+														.Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Employeement History")).DisplayDeleteConfirmation(false))
+														.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+														.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+															.Extra(false)
+															.Operators(operators => operators
+															.ForString(str => str.Clear()
+																.Contains("Contains")
+																.StartsWith("Start sWith")
+																.EndsWith("End sWith")
+															)))
+														.Scrollable(s => s.Enabled(true).Height("auto"))
+														.Resizable(rsz => rsz.Columns(true))
+														.DataSource(dataSource => dataSource
+															.Ajax()
+															.PageSize(10)
+															.Events(events => events.Error("errorHandler"))
+															.Model(model =>
+															{
+																model.Id(p => p.Id);
+															})
+															.Read(read => read.Action("ReadEmployeeExperience", "employeebasic").Data("grid_params"))
+															.Create(create => create.Action("CreateEmployeeExperience", "employeebasic"))
+															.Update(update => update.Action("UpdateEmployeeExperience", "employeebasic"))
+															.Destroy(destroy => destroy.Action("DestroyEmployeeExperience", "employeebasic"))
+														)
+													//.AutoBind(false)
+													//.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+													//.Events(e => e.Save("saveFamilyEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="Course">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeTraining>()
+														.Name("gridEmployeeTraining")
+														.ToolBar(toolbar => toolbar.Create())
+														.Columns(columns =>
+														{
+															columns.Command(command =>
+															{
+																command.Edit().Text(" ").UpdateText("Save");
+																command.Destroy().Text(" ");
+															}).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+															columns.Bound(p => p.NameTraining).Width(150);
+															columns.Bound(p => p.EmployeeTrainingInstitution).Width(185);
+															columns.Bound(p => p.StartTraining).Width(120);
+															columns.Bound(p => p.EndTraining).Width(110);
+															columns.Bound(p => p.EmployeeTrainingAddress).Width(300);
+														})
+														.NoRecords()
+														.Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Course")).DisplayDeleteConfirmation(false))
+														.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+														.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+															.Extra(false)
+															.Operators(operators => operators
+															.ForString(str => str.Clear()
+																.Contains("Contains")
+																.StartsWith("Start sWith")
+																.EndsWith("End sWith")
+															)))
+														.Scrollable(s => s.Enabled(true).Height("auto"))
+														.Resizable(rsz => rsz.Columns(true))
+														.DataSource(dataSource => dataSource
+															.Ajax()
+															.PageSize(10)
+															.Events(events => events.Error("errorHandler"))
+															.Model(model =>
+															{
+																model.Id(p => p.Id);
+															})
+															.Read(read => read.Action("ReadEmployeeTraining", "employeebasic").Data("grid_params"))
+															.Create(create => create.Action("CreateEmployeeTraining", "employeebasic"))
+															.Update(update => update.Action("UpdateEmployeeTraining", "employeebasic"))
+															.Destroy(destroy => destroy.Action("DestroyEmployeeTraining", "employeebasic"))
+														)
+													//.AutoBind(false)
+													//.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+													.Events(e => e.Save("employeeTrainingSaveEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="JobInfo">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label asp-for="JoinDate"></label> :
+                                                @(Html.Kendo().DatePickerFor(m => m.JoinDate)
+															.Format("dd MMM yyyy")
+															.HtmlAttributes(new
+															{
+																style = "width:50%",
+																@class = "form-control form-control-sm m-input",
+															}))
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" asp-for="JobTitleId" />
+                                                <input type="hidden" id="BusinessUnitSubgroupId" />
+
+                                                <div class="form-group">
+                                                    <label asp-for="BusinessUnitJobLevelId"></label> <span class="req">*</span> :
+
+                                                    @(Html.Kendo().DropDownListFor(m => m.BusinessUnitJobLevelId)
+																.DataTextField("Text")
+																.DataValueField("Id")
+																.OptionLabel($"choose a {Html.DisplayNameFor(m => m.BusinessUnitJobLevelId)}")
+																.HtmlAttributes(new
+																{
+																	style = "width:100%;",
+																	required = "required",
+																	validationmessage = $"{Html.DisplayNameFor(m => m.BusinessUnitJobLevelId)} is required"
+																})
+																.Template(@"#=data.BusinessUnitGroup# => #=data.BusinessUnitSubgroup# => #=data.BusinessUnitDivision# => #=data.BusinessUnitDepartement# == (#=data.Text#) (Remarks : #=data.Remarks#)")
+																.Height(400)
+																.Filter(FilterType.Contains)
+																.DataSource(source => source
+																	.Custom()
+																	.Transport(transport => transport
+																		.Read(read =>
+																		{
+																			read.Action("GetDDLJobLevelJobTitle", "employeebasic", new { area = "hrisnew" });
+																		}))
+																.ServerFiltering(false))
+																.Events(evt => evt.Change("BusinessUnitJobLevelIdOnChange"))
+													)
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label asp-for="ReportsTo"></label> :
+                                                @(Html.Kendo().DropDownListFor(m => m.ReportsTo)
+															.DataTextField("Text")
+															.DataValueField("Id")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.ReportsTo)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;"
+															})
+															.Template(@"#=data.BusinessUnitGroup# => #=data.BusinessUnitSubgroup# => #=data.BusinessUnitDivision# => #=data.BusinessUnitDepartement# => #=data.Text# (Remarks : #=data.Remarks#)")
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetDDLJobLevelJobTitle", "employeebasic", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="JobGradeId"></label> <span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.JobGradeId)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.JobGradeId)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;",
+																required = "required",
+																validationmessage = $"{Html.DisplayNameFor(m => m.JobGradeId)} is required"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetDDLJobGrades", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="LegalEntityId"></label> <span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;",
+																required = "required",
+																validationmessage = $"{Html.DisplayNameFor(m => m.LegalEntityId)} is required"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetLegalEntity", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label asp-for="MasterWorkingTimeId"></label> :
+                                                @(Html.Kendo().DropDownListFor(m => m.MasterWorkingTimeId)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.MasterWorkingTimeId)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetWorkingHour", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="EmployementStatusId"></label> <span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.EmployementStatusId)
+													.DataTextField("Text")
+													.DataValueField("Value")
+													.OptionLabel($"choose a {Html.DisplayNameFor(m => m.EmployementStatusId)}")
+													.HtmlAttributes(new
+													{
+														style = "width:100%;",
+														required = "required",
+														validationmessage = $"{Html.DisplayNameFor(m => m.EmployementStatusId)} is required"
+													})
+													.Height(400)
+													.Filter(FilterType.Contains)
+													.DataSource(source => source
+														.Custom()
+														.Transport(transport => transport
+															.Read(read =>
+															{
+																read.Action("GetDDLEmployementStatus", "Dropdown", new { area = "hrisnew" });
+															}))
+													.ServerFiltering(false))
+													.Events(ev => ev.Change("EmployementStatusOnChange"))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BusinessUnitId">Division</label> <span class="req">*</span>:
+                                                @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+													.DataTextField("Text")
+													.DataValueField("Value")
+													.OptionLabel($"choose a {Html.DisplayNameFor(m => m.BusinessUnitId)}")
+													.HtmlAttributes(new
+													{
+														style = "width:100%;",
+														required = "required",
+														validationmessage = $"{Html.DisplayNameFor(m => m.BusinessUnitId)} is required"
+													})
+													.Height(400)
+													.Filter(FilterType.Contains)
+													.DataSource(source => source
+														.Custom()
+														.Transport(transport => transport
+															.Read(read =>
+															{
+																read.Action("GetDivision", "Dropdown", new { area = "hrisnew" }).Data("filterDivision");
+															}))
+													.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BusinessUnitDepartementId">Department</label> :
+                                                @(Html.Kendo().DropDownListFor(m => m.BusinessUnitDepartementId)
+														.DataTextField("Text")
+														.DataValueField("Value")
+														.OptionLabel($"choose a department")
+														.HtmlAttributes(new
+														{
+															style = "width:100%;",
+															//required = "required",
+															//validationmessage = $"{Html.DisplayNameFor(m => m.BusinessUnitDepartementId)} is required"
+														})
+														.Height(400)
+														.Filter(FilterType.Contains)
+														.DataSource(source => source
+															.Custom()
+															.Transport(transport => transport
+																.Read(read =>
+																{
+																	read.Action("GetDDLDepartments", "Dropdown", new { area = "hrisnew" });
+																}))
+														.ServerFiltering(false)
+														)
+													//.Enable(false)
+													//.CascadeFrom("BusinessUnitId")
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="LocationId"></label> <span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(m => m.LocationId)
+													.DataTextField("Text")
+													.DataValueField("Value")
+													.OptionLabel($"choose a {Html.DisplayNameFor(m => m.LocationId)}")
+													.HtmlAttributes(new
+													{
+														style = "width:100%;",
+														required = "required",
+														validationmessage = $"{Html.DisplayNameFor(m => m.LocationId)} is required"
+													})
+													.Height(400)
+													.Filter(FilterType.Contains)
+													.DataSource(source => source
+														.Custom()
+														.Transport(transport => transport
+															.Read(read =>
+															{
+																read.Action("GetDDLLocations", "Dropdown", new { area = "hrisnew" });
+															}))
+													.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="EmployementStatusEndDate"></label> <span id="spanEmpSstEndDate" class="req"></span>:
+                                                @(Html.Kendo().DatePickerFor(m => m.EmployementStatusEndDate)
+													.Format("dd MMM yyyy")
+													.HtmlAttributes(new
+													{
+														style = "width:50%",
+														@class = "form-control form-control-sm m-input", @readonly = true
+													}))
+                                            </div>
+                                            <div class="form-group">
+                                                @(Html.Kendo().CheckBoxFor(m=>m.IsTerminated).HtmlAttributes(new { @onclick= "return false"}))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="Payroll">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label asp-for="PtkpSettingId"></label> :
+                                                @(Html.Kendo().DropDownListFor(m => m.PtkpSettingId)
+															.DataTextField("Text")
+															.DataValueField("Value")
+															.OptionLabel($"choose a {Html.DisplayNameFor(m => m.PtkpSettingId)}")
+															.HtmlAttributes(new
+															{
+																style = "width:100%;"
+																//required = "required",
+																//validationmessage = $"{Html.DisplayNameFor(m => m.PtkpSettingId)} is required"
+															})
+															.Height(400)
+															.Filter(FilterType.Contains)
+															.DataSource(source => source
+																.Custom()
+																.Transport(transport => transport
+																	.Read(read =>
+																	{
+																		read.Action("GetDDLPTKPSetting", "Dropdown", new { area = "hrisnew" });
+																	}))
+															.ServerFiltering(false))
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="BpjsTk"></label> :
+                                                @(Html.Kendo().TextBoxFor(x => x.BpjsTk).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="BankAddress"></label> :
+                                                @Html.TextAreaFor(x => x.BankAddress, new { @class = "k-textbox", @maxlength = 2000, style = "width: 100%;padding:0.5em" })
+                                                @*<label asp-for="BankAddress"></label> :
+                        @(Html.Kendo().TextBoxFor(x => x.BankAddress).HtmlAttributes(new { style = "width:100%", @maxlength = 150 }))*@
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="BankCity"></label> :
+                                                @(Html.Kendo().TextBoxFor(x => x.BankCity).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="AccountName"></label> :
+                                                @(Html.Kendo().TextBoxFor(x => x.AccountName).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="AccountNo"></label> <span class="req">*</span> :
+                                                @(Html.Kendo().TextBoxFor(x => x.AccountNo).HtmlAttributes(new { style = "width:100%", required = "required", @maxlength = 50 }))
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label asp-for="BpjsHealthy"></label> :
+                                                @(Html.Kendo().TextBoxFor(x => x.BpjsHealthy).HtmlAttributes(new { style = "width:100%", @maxlength = 50 }))
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="PayrollMethods"></label> :
+                                                @(Html.Kendo().DropDownListFor(x => x.PayrollMethods)
+													.DataTextField("Text")
+													.DataValueField("Value")
+													.BindTo(new List<SelectListItem>() {
+															new SelectListItem() { Text = "Choose a Payroll Method", Value = "" },
+															new SelectListItem() { Text = "Nett", Value = "Nett" },
+															new SelectListItem() { Text = "Gross", Value = "Gross" },
+															new SelectListItem() { Text = "GrossUp", Value = "Gross Up"}
+													})
+													.HtmlAttributes(new { style = "width: 100%" })
+												)
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label asp-for="BankId"></label> <span class="req">*</span> :
+                                                @(Html.Kendo().DropDownListFor(x => x.BankId)
+													.DataTextField("Text")
+													.DataValueField("Value")
+													.BindTo(new List<SelectListItem>() {
+														new SelectListItem() { Text = "Choose a Bank", Value = "" },
+														new SelectListItem() { Text = "BCA", Value = "BCA" },
+														new SelectListItem() { Text = "BNI", Value = "BNI" },
+														new SelectListItem() { Text = "Mandiri", Value = "Mandiri"},
+														new SelectListItem() { Text = "CIMB", Value = "CIMB"},
+														new SelectListItem() { Text = "OCBC NISP", Value = "OCBC NISP"},
+													})
+													.HtmlAttributes(new { style = "width: 100%", required = "required", validationmessage = $"{Html.DisplayNameFor(m => m.BankId)} is required" })
+												)
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="BankBranch"></label> <span class="req">*</span> :
+                                                @(Html.Kendo().TextBoxFor(x => x.BankBranch).HtmlAttributes(new { style = "width:100%", @maxlength = 50, required = "required", validationmessage = $"{Html.DisplayNameFor(m => m.BankBranch)} is required" }))
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="EmployeeChecklist">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeChecklist>()
+                                                        .Name("gridEmployeeChecklist")
+                                                        .ToolBar(toolbar => toolbar.Create())
+                                                        .Columns(columns =>
+                                                        {
+                                                            columns.Command(command =>
+                                                            {
+                                                                command.Edit().Text(" ").UpdateText("Save");
+                                                                command.Destroy().Text(" ");
+                                                            }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                            columns.Bound(p => p.EchkEmployeeChecklistCategory).Width(150);
+                                                            columns.Bound(p => p.EchkChecklistitem).Width(200);
+                                                            columns.Bound(p => p.EchkDescription).Width(300);
+                                                            //columns.Bound(p => p.EchkWhentoalert).Width(110);
+                                                        })
+                                                        .NoRecords()
+                                                        .Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Employee Checklist")).DisplayDeleteConfirmation(false))
+                                                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                            .Extra(false)
+                                                            .Operators(operators => operators
+                                                            .ForString(str => str.Clear()
+                                                                .Contains("Contains")
+                                                                .StartsWith("Start sWith")
+                                                                .EndsWith("End sWith")
+                                                            )))
+                                                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                        .Resizable(rsz => rsz.Columns(true))
+                                                        .DataSource(dataSource => dataSource
+                                                            .Ajax()
+                                                            .PageSize(10)
+                                                            .Events(events => events.Error("errorHandler"))
+                                                            .Model(model =>
+                                                            {
+                                                                model.Id(p => p.Id);
+                                                            })
+                                                            .Read(read => read.Action("ReadEmployeeChecklist", "employeebasic").Data("grid_params"))
+                                                            .Create(create => create.Action("CreateEmployeeChecklist", "employeebasic"))
+                                                            .Update(update => update.Action("UpdateEmployeeChecklist", "employeebasic"))
+                                                            .Destroy(destroy => destroy.Action("DestroyEmployeeChecklist", "employeebasic"))
+                                                        )
+                                                    //.AutoBind(false)
+                                                    //.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+                                                    .Events(e => e.Save("employeeChecklistSaveEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="EmployeeHistory">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.HrisNew.Transaction.Recruitment.EmployeeHistory>()
+                                                        .Name("gridEmployeehistory")
+                                                        .Columns(columns =>
+                                                        {
+                                                            //columns.Command(command =>
+                                                            //{
+                                                            //    command.Edit().Text(" ").UpdateText("Save");
+                                                            //    command.Destroy().Text(" ");
+                                                            //}).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                            columns.Bound(p => p.Date).Width(150);
+                                                            columns.Bound(p => p.Id).Title("Reff Number").ClientTemplate("#= Link(data) #").Width(200);
+                                                            columns.Bound(p => p.Category).Width(200);
+                                                            columns.Bound(p => p.Status).Width(300);
+                                                            columns.Bound(p => p.Remarks).Width(300);
+                                                            columns.Bound(p => p.FileId).ClientTemplate("#if (FileId != '') {# <a href='javascript: void(0);' onclick='downloadFile(this)' title='Download' class='download'><span style='color:green'><i class='fa fa-download'></i></span></a>#}#").Title("File")
+                           .HtmlAttributes(new { style = "text-align:center;" })
+                           .HeaderHtmlAttributes(new { style = "text-align:center;" })
+                           .Width(90);
+                                                            //columns.Bound(p => p.EchkWhentoalert).Width(110);
+                                                        })
+                                                         .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                        .Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Employee History")).DisplayDeleteConfirmation(false))
+                                                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                            .Extra(false)
+                                                            .Operators(operators => operators
+                                                            .ForString(str => str.Clear()
+                                                                .Contains("Contains")
+                                                                .StartsWith("Start sWith")
+                                                                .EndsWith("End sWith")
+                                                            )))
+                                                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                        .Resizable(rsz => rsz.Columns(true))
+                                                        .DataSource(dataSource => dataSource
+                                                            .Ajax()
+                                                            .PageSize(10)
+                                                            .Events(events => events.Error("errorHandler"))
+                                                            .Model(model =>
+                                                            {
+                                                                model.Id(p => p.Id);
+                                                            })
+                                                            .Read(read => read.Action("ReadEmployeeHistory", "employeebasic").Data("grid_params"))
+                                                        //.Create(create => create.Action("CreateEmployeeHistory", "employeebasic"))
+                                                        //.Update(update => update.Action("UpdateEmployeeHistory", "employeebasic"))
+                                                        //.Destroy(destroy => destroy.Action("DestroyEmployeeHistory", "employeebasic"))
+                                                        )
+                                            //.AutoBind(false)
+                                            //.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+                                            //.Events(e => e.Save("employeeChecklistSaveEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="EmployeeContractSign">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeContractSign>()
+                                                        .Name("gridEmployeeContractSign")
+                                                        .Columns(columns =>
+                                                        {
+                                                            //columns.Command(command =>
+                                                            //{
+                                                            //    command.Edit().Text(" ").UpdateText("Save");
+                                                            //    command.Destroy().Text(" ");
+                                                            //}).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                            columns.Bound(p => p.StartDate).Width(150);
+                                                            columns.Bound(p => p.EndDate).Width(200);
+                                                            columns.Bound(p => p.Ptpp).Width(300);
+                                                            columns.Bound(p => p.ContractType).Width(300);
+                                                            columns.Bound(p => p.FileId).ClientTemplate("#if (FileId != '') {# <a href='javascript: void(0);' onclick='downloadFile(this)' title='Download' class='download'><span style='color:green'><i class='fa fa-download'></i></span></a>#}#").Title("File")
+                           .HtmlAttributes(new { style = "text-align:center;" })
+                           .HeaderHtmlAttributes(new { style = "text-align:center;" })
+                           .Width(90);
+                                                            //columns.Bound(p => p.EchkWhentoalert).Width(110);
+                                                        })
+                                                        .NoRecords()
+                                                        .Editable(editable => editable.Mode(GridEditMode.PopUp).Window(wd => wd.Title("Contract Sign")).DisplayDeleteConfirmation(false))
+                                                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                            .Extra(false)
+                                                            .Operators(operators => operators
+                                                            .ForString(str => str.Clear()
+                                                                .Contains("Contains")
+                                                                .StartsWith("Start sWith")
+                                                                .EndsWith("End sWith")
+                                                            )))
+                                                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                        .Resizable(rsz => rsz.Columns(true))
+                                                        .DataSource(dataSource => dataSource
+                                                            .Ajax()
+                                                            .PageSize(10)
+                                                            .Events(events => events.Error("errorHandler"))
+                                                            .Model(model =>
+                                                            {
+                                                                model.Id(p => p.FileId);
+                                                            })
+                                                            .Read(read => read.Action("ReadContractSign", "employeebasic").Data("grid_params"))
+                                                        //.Create(create => create.Action("CreateEmployeeHistory", "employeebasic"))
+                                                        //.Update(update => update.Action("UpdateEmployeeHistory", "employeebasic"))
+                                                        //.Destroy(destroy => destroy.Action("DestroyEmployeeHistory", "employeebasic"))
+                                                        )
+                                            //.AutoBind(false)
+                                            //.Messages(msg => msg.Commands(c => { c.Create("Add Item"); c.Update(" "); c.Cancel(" "); c.Canceledit(" "); }))
+                                            //.Events(e => e.Save("employeeChecklistSaveEvent"))//e.DataBound("dataBoundEvent"))
+											)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="valmsg" style="visibility:hidden;position:relative;padding-left:5px;">
+                                <p style="color:red;font-style:italic">Please complete mandatory field (<span class="req">*</span>) on tab Personal Info, Job Info and Payroll</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary edit"><span class="fa fa-save"></span> Save</button>
+                                    <a asp-action="index" asp-controller="employeebasic" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script id="btnDownload-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='downloadFile(this)' title='Download' class='download'><span style='color:green'><i class='fa fa-download'></i></span></a>
+    #if(this.FileId !=''){ #
+
+    #}#
+</script>*@
+<script>
+    $(document).ready(function () {
+        if ('@Model.IsReadOnly' === "1") {
+            $('form :input').prop('disabled', true);
+            var dropDownDOMelements = $(".k-dropdown");
+            var dropDowns = [];
+
+            dropDownDOMelements.each(function (ddl) {
+                var currentAriaOwnsAttribute = $(this)[0].attributes[7].nodeValue;
+                var currentDropDownListName = currentAriaOwnsAttribute.substring(0, currentAriaOwnsAttribute.length - 8);
+
+                var currentDropDownList = $('#' + currentDropDownListName).data("kendoDropDownList").enable(false);
+
+            })
+            $('.fakelink').hide();
+            $('#btn-save').hide();
+            $('.k-button').hide();
+        }
+       
+
+		var photoFileName = '@Model.PhotoFileName';
+        if (photoFileName == '') {
+            SetPhotoUpload();
+		} else {
+            getImageEmployeeProfile();
+            $("#linkPhotoDownloadFile").text(photoFileName);
+        }
+
+		if ( $('#BusinessUnitJobLevelId').data("kendoDropDownList").value() !== "") {
+            $('#BusinessUnitJobLevelId').data("kendoDropDownList").trigger("change");
+        }
+
+	});
+
+    var loadFile = function (event) {
+        var output = document.getElementById('img-employee-nava');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+
+
+
+	 let getImageEmployeeProfile = function () {
+
+        let urlApi = $.helper.resolveApi("~odrive/GetImageEmployeeProfile");
+        var id = '@Model.PhotoFileName';
+
+       mApp.blockPage({
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        }),
+        $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: urlApi,
+        data: {id: id},
+        success: function (data) {
+            console.log(data);
+            if (data.webUrl !== null) {
+                $("#img-employee-nava").attr("src",data.webUrl);
+            }
+        },
+        error: function (e, t, s) {
+                //swal(
+                //    'Information',
+                //    'Ooops, something went wrong !',
+                //    'info'
+                //);
+            console.log(e);
+            }
+        }).then(setTimeout(function () {
+            mApp.unblockPage();
+        }, 2e3));
+    };
+
+	function grid_params() {
+		var empid = $("#Id").val();
+		return {
+			employeeId: empid
+		}
+	}
+    function filterDivision() {
+    	var subGroupid = $("#BusinessUnitSubgroupId").val();
+    	return {
+    		subGroupId: subGroupid
+    	};
+    }
+
+    function filterDepartment() {
+    	//var divisi = $("#BusinessUnitId").data("kendoDropDownList").value();
+    	//if (divisi == "")
+    	//	divisi = "noselected";
+    	//return {
+    	//	divisionId: divisi
+    	//};
+        var id = '';
+        //var id = $("#BusinessUnitDepartementId").data("kendoDropDownList").value();
+
+    	if (id == "")
+    		id = "noselected";
+    	return {
+    		id: id
+    	};
+    }
+
+    function BusinessUnitJobLevelIdOnChange(e) {
+    	//get detail from bussiness uni job level
+    	var bujoblvlid = e.sender.value();
+    	mApp.block("#m_blockui_list", {
+    		overlayColor: "#000000",
+    		type: "loader",
+    		state: "primary",
+    		message: "Processing..."
+    	});
+     
+    	$.ajax({
+    		type: "GET",
+    		url: '@Url.Action("GetJobLevelJobTitleDetail", "employeebasic")',
+    		data: { id : bujoblvlid },
+    		success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+    				$("#JobTitleId").val(result.JobTitleId);
+    				$("#BusinessUnitSubgroupId").val(result.BusinessUnitSubgroupId);
+    				$("#ReportsTo").data("kendoDropDownList").value(result.ParentId);
+                    $("#JobGradeId").data("kendoDropDownList").value(result.JobGradeId);
+
+                    $("#BusinessUnitDepartementId").data("kendoDropDownList").value(result.BusinessUnitDepartementId);
+
+    				$("#BusinessUnitId").data("kendoDropDownList").dataSource.read();
+                    $("#BusinessUnitId").data("kendoDropDownList").value(result.BusinessUnitDivisionId);
+
+    				//$("#BusinessUnitDepartementId").data("kendoDropDownList").dataSource.read();
+    				//$("#BusinessUnitDepartementId").data("kendoDropDownList").value(result.BusinessUnitDepartementId);
+    				//$("#InterestMonth").data("kendoNumericTextBox").value(result.InterestMonth);
+
+    			}
+    			mApp.unblock("#m_blockui_list");
+    		},
+    		error: function (e, t, s) {
+    			console.log(e)
+    			mApp.unblock("#m_blockui_list");
+    		}
+    	}).then(setTimeout(function () {
+    		mApp.unblock("#m_blockui_list");
+    	}, 2e3));
+    }
+
+	function saveFamilyEvent(e) {
+		var fFamilyStatus = $("#FamilyStatusId").data("kendoDropDownList").text();
+		var fReligionId = $("#fReligion").data("kendoDropDownList").value();
+        var fReligion = $("#fReligion").data("kendoDropDownList").value();
+		//$('#InventoryDetail_Status').data("kendoDropDownList").value(item.Status);
+
+		e.model.set("fFamilyStatus", fFamilyStatus);
+		e.model.set("fReligionId", fReligionId);
+        e.model.set("fReligion", fReligion);
+
+	}
+
+	function emergencyContactSaveEvent(e) {
+		var fFamilyStatus = $("#EmergencyFamilyStatusId").data("kendoDropDownList").text();
+		e.model.set("FamilyStatus", fFamilyStatus);
+	}
+
+	function educaionSaveEvent(e) {
+		var EEducationLevel = $("#EEducationLevelId").data("kendoDropDownList").text();
+		var Institution = $("#EInstitutionId").data("kendoDropDownList").text();
+
+		e.model.set("EEducationLevel", EEducationLevel);
+		e.model.set("Institution", Institution);
+	}
+
+	function employeeTrainingSaveEvent(e) {
+		var EmployeeTrainingInstitution = $("#EmployeeTrainingInstitutionId").data("kendoDropDownList").text();
+		e.model.set("EmployeeTrainingInstitution", EmployeeTrainingInstitution);
+	}
+
+    function employeeChecklistSaveEvent(e) {
+        var checklistName = "";
+        var categValue = $("#EchkEmployeeChecklistCategoryArrayId").data("kendoMultiSelect").value();
+        console.log(categValue);
+        $("#EchkEmployeeChecklistCategoryArrayId option:selected").each(function () {
+            var $this = $(this);
+            if ($this.length) {
+                var selText = $this.text();
+                checklistName += selText + ";";
+            }
+        });
+        console.log(checklistName);
+        //var EchkEmployeeChecklistCategory = checklistName
+        e.model.set("EchkEmployeeChecklistCategoryId", categValue);
+        e.model.set("EchkEmployeeChecklistCategory", checklistName);
+		e.model.set("EchkBusinessUnitPicId", "");
+	}
+
+	function getGrid() {
+		return {
+			Families: $("#gridFamily").data("kendoGrid").dataSource.data(),
+			EmployeeEmergencyContacts: $("#gridEmergencyContact").data("kendoGrid").dataSource.data(),
+			Educations: $("#gridEducation").data("kendoGrid").dataSource.data(),
+			EmployeeExperiences: $("#gridEmployeeExperience").data("kendoGrid").dataSource.data(),
+			EmployeeTrainings: $("#gridEmployeeTraining").data("kendoGrid").dataSource.data(),
+            EmployeeChecklists: $("#gridEmployeeChecklist").data("kendoGrid").dataSource.data()
+            //EmployeeHistorys: $("#gridEmployeeHistory").data("kendoGrid").dataSource.data()
+		}
+	}
+
+	function removePhoto() {
+		SetPhotoUpload();
+	}
+
+	function downloadPhoto() {
+		downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#Photo").val() } });
+	}
+
+    function downloadFile(e) {
+        var item = dataItem(e);
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: item.FileId }});
+    }
+
+	function SetPhotoUpload() {
+		$("#linkPhotoDownloadFile").empty();
+		$("#linkPhotoRemoveFile").empty();
+        $("#divPhoto").empty().append("<input name='filePhoto' id='filePhoto' type='file' onchange='loadFile(event)' />");
+
+		$("#filePhoto").kendoUpload({
+			multiple: false,
+			validation: {
+				maxFileSize: 5000000,
+				allowedExtensions: [".jpg", ".png", ".gif", ".doc", ".pdf", ".docx", ".xlsx"]
+            },
+            remove: onRemove
+		});
+    }
+
+    function onRemove(e) {
+        $('#img-employee-nava').attr('src', '');
+        // An array with information about the removed files
+        var files = e.files;
+    }
+
+	$('#btn-save').click(function () {
+		var isvalid = $("#formEmployeeBasic").validate().form();
+		if (!isvalid) {
+			$("#valmsg").css("visibility", "visible");
+		} else {
+			$("#valmsg").css("visibility", "hidden");
+			callActionFile(
+			{
+				formId: "formEmployeeBasic",
+				title: "save", type: "POST",
+				url: '@Url.Action("Save", "employeebasic")',
+				objects: getGrid()
+			});
+		}
+
+
+	});
+
+
+	function EmployementStatusOnChange(e) {
+		var empSts = e.sender.text();
+		var empStatusval = e.sender.value();
+		var datepicker = $("#EmployementStatusEndDate").data("kendoDatePicker");
+
+		if (empSts.toLowerCase().includes("contract") || empSts.toLowerCase().includes("kontrak") || empSts.toLowerCase().includes("probation")) {
+			$("#spanEmpSstEndDate").text("*");
+			datepicker.readonly(false);
+			//$("#EmployementStatusId)").data("kendoDropDownList").val();
+		} else {
+			$("#spanEmpSstEndDate").text("");
+			datepicker.readonly(true);
+		}
+    }
+
+    function Detail(e) {
+        var item = dataItem(e);
+        if (item.Category === "Promotion") {
+            window.open('/hrisnew/Promotion/AddEdit?Id='+item.Id, '_blank');
+        } else if (item.Category === "Demotion") {
+            window.open('/hrisnew/demotion/AddEdit?Id=' + item.Id, '_blank');
+        } else if (item.Category === "Sanction") {
+            window.open('/hrisnew/sanction/AddEdit?Id=' + item.Id, '_blank');
+        } else if (item.Category === "Retired") {
+            window.open('/hrisnew/Retired/AddEdit?Id=' + item.Id, '_blank');
+        } else if (item.Category === "PDR") {
+            window.open('/hrisnew/pdrperformance/AddEdit?Id=' + item.Id, '_blank');
+        } else if (item.Category === "KPI") {
+            window.open('/hrisnew/PDRApprailsal/AddEdit?Id=' + item.Id, '_blank');
+        }
+       
+    }
+
+    function Link(data) {
+        return "<center><a href='javascript: void(0);' onclick='Detail(this)' title='Detail' class='edit' target='_blank'>" + data.Id + "</a></center>";
+
+    }
+
+	//education
+	//function InstitutionOnChange(e) {
+	//	//EInstitutionId
+	//	var textinstitution = e.sender.text();
+	//	if (textinstitution.toLowerCase().includes("other")) {
+	//		$("#OtherInstitution").removeAttr("disabled");
+	//	}
+	//}
+</script>
+<style type="text/css">
+    .profile-pic {
+        /*position: absolute;*/
+        height: 120px;
+        width: 120px;
+        /*left: 50%;*/
+        /*top: 140px;*/
+        z-index: 1001;
+    }
+
+        .profile-pic img {
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+            box-shadow: 0px 0px 5px 0px #c1c1c1;
+        }
+</style>

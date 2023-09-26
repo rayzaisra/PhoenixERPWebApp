@@ -1,0 +1,211 @@
+﻿@model PhoenixERPWebApp.Models.Finance.CashAdvance
+<div class="row">
+    <div class="col-lg-4 col-sm-6 col-xs-12 m-form__group-sub">
+        <div class="form-group">
+            <label>Job ID-Name</label> :
+            @(Html.Kendo().ComboBoxFor(x => x.JobId)
+                .DataTextField("Text")
+                .DataValueField("Value") 
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.JobId)}")
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Filter(FilterType.Contains)
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLJobNotExistsInPCAandJobId", "Dropdown", new { area = "Finance" }).Data("job_params");
+                    }))
+                    .ServerFiltering(true)
+                ))
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-12 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="ClientId"></label> :
+            @(Html.Kendo().ComboBoxFor(x => x.ClientId)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Suggest(true)
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.ClientId)}")
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLClientInv", "Dropdown", new { area = "Finance" });
+                    }))
+                    .ServerFiltering(true)
+                )
+            )
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-12 m-form__group-sub">
+        <div class="form-group"> 
+            <label asp-for="ClientBrandId"></label> :
+            @(Html.Kendo().ComboBoxFor(x => x.ClientBrandId)
+                .DataTextField("Text")
+                .DataValueField("Value") 
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Filter(FilterType.Contains)
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.ClientBrandId)}")
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLBrand", "Dropdown", new { area = "finance" });
+                    }))
+                    .ServerFiltering(true)
+                ))
+        </div>
+    </div>
+</div>
+
+<div class="row">                        
+    <div class="col-lg-4 col-sm-6 col-xs-12 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="LegalEntityId"></label> :
+            @(Html.Kendo().ComboBoxFor(x => x.LegalEntityId)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Filter(FilterType.Contains)
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                    }))
+                    .ServerFiltering(true)
+                ))
+        </div>
+    </div>
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="MainserviceCategoryId"></label> :
+            @(Html.Kendo().ComboBoxFor(x => x.MainserviceCategoryId)
+                .DataTextField("Text")
+                .DataValueField("Value") 
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.MainserviceCategoryId)}")
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Filter(FilterType.Contains)
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLMainserviceCategory", "Dropdown", new { area = "Pm" });
+                    }))
+                    .ServerFiltering(true)
+                ))
+        </div>
+    </div>
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="BusinessUnitId"></label> :
+            @(Html.Kendo().ComboBoxFor(x => x.BusinessUnitId)
+                .DataTextField("Text")
+                .DataValueField("Value") 
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.BusinessUnitId)}")
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Filter(FilterType.Contains)
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                    }))
+                    .ServerFiltering(true)
+                ))
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="PcaId"></label> :
+            @(Html.Kendo().TextBoxFor(m => m.PcaId).HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" }))
+        </div>
+    </div>
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="PceId"></label> :
+            @(Html.Kendo().TextBoxFor(m => m.PceId).HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" }))
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-12 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="PceTypeId"></label> : 
+            @(Html.Kendo().ComboBoxFor(X => X.PceTypeId)
+                .DataTextField("Text")
+                .DataValueField("Value") 
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Filter(FilterType.Contains)
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.PceTypeId)}")
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetDDLTypeOfExpense", "Dropdown", new { area = "Pm" });
+                    }))
+                    .ServerFiltering(true)
+                ))
+        </div>
+    </div>                        
+</div>
+<div class="row">
+    <div class="col-lg-4 col-sm-6 col-xs-12 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="ShareServiceId"></label> :  
+            @(Html.Kendo().ComboBoxFor(X => X.ShareServiceId)
+                .DataTextField("Text")
+                .DataValueField("Value") 
+                .Placeholder($"Choose a {Html.DisplayNameFor(m => m.ShareServiceId)}")
+                .HtmlAttributes(new { style = "width: 100%", @readonly = "readonly" })
+                .Filter(FilterType.Contains)
+                .DataSource(source => source
+                    .Custom()
+                    .Transport(transport => transport
+                    .Read(read =>
+                    {
+                        read.Action("GetAllDDLShareservices", "Dropdown", new { area = "finance" });
+                    }))
+                    .ServerFiltering(true)
+                ))
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-12 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="AffiliationId"></label> :
+            @(Html.Kendo().DropDownListFor(m => m.AffiliationId)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetAffiliation", "Dropdown", new { area = "Finance" });
+                    });
+                })
+                .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+            )
+        </div>
+    </div>
+</div> 
+<script>
+	   function job_params() {
+        return {
+            status: "@Model.Status",
+            jobId : "@Model.JobId"
+        };
+    }
+</script>

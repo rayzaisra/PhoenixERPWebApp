@@ -1,0 +1,55 @@
+@{
+    Layout = "";
+}
+<style>
+    /*.k-tooltip {
+        max-width: 500px !important;
+    }*/
+    
+    .swal2-container{
+        z-index:10005 !important;
+    }
+
+    .modal{
+        z-index:10005 !important;
+    } 
+</style>
+<form enctype="multipart/form-data" id="formUpload">
+    <div class="k-edit-form-container" style="padding:0!important; width:98% !important; padding-top:20px !important; padding-bottom:10px !important;">
+
+        <div class="editor-label">
+            <label>Attachment</label> <span class="req">*</span>  :
+        </div>
+        <div class="editor-field">
+            @(Html.Kendo().Upload().Name("upload").Multiple(false).Validation(validation => validation.AllowedExtensions(ViewBag.AllowedExtensions).MaxFileSize(ViewBag.FileSizeByte)).HtmlAttributes(new { @required = "required" }))
+            <span class="k-invalid-msg" data-for="upload"></span>
+        </div>
+        <div class="editor-label" style="width:100%">
+            <i>Allowed file extension(s) @ViewBag.FormatExtensions and max file size @ViewBag.FileSizeKB KB.</i>
+        </div>
+        <div class="k-edit-buttons k-state-default">
+            <a role="button" class="k-button k-button-icontext" href="#" style="float: right;" onclick="windowClose()"><span class="ti-arrow-circle-left"></span>&nbsp;Back to list</a>
+            <a role="button" class="k-button k-button-icontext k-primary" href="#" style="float: right;" onclick="windowUpload()"><span class="k-icon k-i-check"></span>Submit</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    function windowUpload() { 
+        callActionFile({ formId: "formUpload", title: "upload", type: "POST", url: '@Url.Action("upload", "Currency")', callback: callbackUpload });
+    }
+
+    function callbackUpload(result) {
+        if (result != null) {
+            if (result.success) {  
+                $('#grid').data('kendoGrid').dataSource.read();
+                windowClose(); 
+            }
+        }
+    }
+    
+    function windowClose() {
+        $("#window").data("kendoWindow").close();
+    }
+
+</script>

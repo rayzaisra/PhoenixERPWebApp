@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Compensation";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="CompensationFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="compensation_id">compensation_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="compensation_id" id="compensation_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="date_compensation">date_compensation</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="date_compensation" id="date_compensation" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_compensation">end_compensation</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_compensation" id="end_compensation"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="type">type</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="type" id="type"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="value">value</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="value" id="value" required  type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Compensation" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Compensation.update.js"></script>
+}

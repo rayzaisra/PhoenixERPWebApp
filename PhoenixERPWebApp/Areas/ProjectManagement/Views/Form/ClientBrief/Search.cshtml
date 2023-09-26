@@ -1,0 +1,73 @@
+@{
+    ViewBag.ModalTitle = "ClientBrief";
+    ViewBag.ModalId = "ClientBriefModalSearch";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="ClientBriefFormSearch" method="post">
+    
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="assigment_id">Assigment Id</span></label>
+                <input class="md-input" name="search_assigment_id" id="search_assigment_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="business_unit_id">Business Unit Id</span></label>
+                <input class="md-input" name="search_business_unit_id" id="search_business_unit_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="bussiness_type_id">Bussiness Type Id</span></label>
+                <input class="md-input" name="search_bussiness_type_id" id="search_bussiness_type_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="campaign_id">Campaign Id</span></label>
+                <input class="md-input" name="search_campaign_id" id="search_campaign_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="campaign_progress_id">Campaign Progress Id</span></label>
+                <input class="md-input" name="search_campaign_progress_id" id="search_campaign_progress_id"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="campaign_status_id">Campaign Status Id</span></label>
+                <input class="md-input" name="search_campaign_status_id" id="search_campaign_status_id"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="campaign_type_id">Campaign Type Id</span></label>
+                <input class="md-input" name="search_campaign_type_id" id="search_campaign_type_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="client_brief_file_id">Client Brief File Id</span></label>
+                <input class="md-input" name="search_client_brief_file_id" id="search_client_brief_file_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="deadline">Deadline</span></label>
+                <input class="md-input" name="search_deadline" id="search_deadline"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="external_brand_id">External Brand Id</span></label>
+                <input class="md-input" name="search_external_brand_id" id="search_external_brand_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="final_delivery">Final Delivery</span></label>
+                <input class="md-input" name="search_final_delivery" id="search_final_delivery"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="finish_campaign">Finish Campaign</span></label>
+                <input class="md-input" name="search_finish_campaign" id="search_finish_campaign"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="job_category_id">Job Category Id</span></label>
+                <input class="md-input" name="search_job_category_id" id="search_job_category_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="job_pe_id">Job Pe Id</span></label>
+                <input class="md-input" name="search_job_pe_id" id="search_job_pe_id"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="nationality_id">Nationality Id</span></label>
+                <input class="md-input" name="search_nationality_id" id="search_nationality_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="proposal_file_id">Proposal File Id</span></label>
+                <input class="md-input" name="search_proposal_file_id" id="search_proposal_file_id"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="responsible_person">Responsible Person</span></label>
+                <input class="md-input" name="search_responsible_person" id="search_responsible_person"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="start_campaign">Start Campaign</span></label>
+                <input class="md-input" name="search_start_campaign" id="search_start_campaign"   type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" onclick="fnClientBrief.initsearch()" class="md-btn md-btn-primary"><i class="uk-icon-search"></i> Search</button>
+        <button type="button" onclick="fnClientBrief.initsearch('reset')" class="md-btn md-btn-success"><i class="uk-icon-times-circle"></i> Reset</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

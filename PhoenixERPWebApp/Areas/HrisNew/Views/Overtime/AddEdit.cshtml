@@ -1,0 +1,275 @@
+@model PhoenixERPWebApp.Models.Overtime
+@{
+    if (Model.IsApprove == true)
+    {
+        ViewData["Title"] = "Overtime Request Form Approval";
+    }
+    else
+    {
+        ViewData["Title"] = "Overtime Request Form";
+    }
+
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    DateTime? OvertimeDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        OvertimeDate = Model.OvertimeDate;
+        //if (OvertimeDate >= Model.OvertimeDate)
+        //{
+        //    OvertimeDate = Model.OvertimeDate;
+        //}
+    }
+
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="indexapproval" asp-controller="overtime" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Overtime Approval</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="index" asp-controller="overtime" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Overtime</span></a>
+                    }
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="addedit" asp-controller="overtime" asp-area="hrisnew" asp-route-Id="@Model.Id" asp-route-isApprove="true" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="overtime" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="overtime" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Overtime Request Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formOvertime" class="form-horizontal form-bordered" role="form">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                        <input type="hidden" asp-for="IsApprove" />
+
+                        <partial name="_RequestEmploye" />
+                        <br/>
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="OvertimeDate"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().DatePickerFor(m => m.OvertimeDate)
+                                        .Format("dd MMM yyyy")
+                                        .Min($"{OvertimeDate}")
+                                        .Value($"{OvertimeDate}")
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @class = "form-control form-control-sm m-input",
+                                            required = "required",
+                                            placeholder = $"Choose a {Html.DisplayNameFor(m => m.OvertimeDate)}",
+                                            onkeydown = "javascript:return false;"
+                                        })
+                                    )
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="HourOvertime"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().TimePickerFor(x => x.HourOvertime)
+                                        .Format("{0:HH:mm}")
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @class = "form-control form-control-sm m-input",
+                                            required = "required",
+                                            placeholder = $"Choose an {Html.DisplayNameFor(m => m.HourOvertime)}",
+                                            onkeydown = "javascript:return false;"
+                                        })
+                                    )
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="ReasonOvertime"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().EditorFor(x => x.ReasonOvertime)
+                                        .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                        .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                        .Placeholder($"Type your {Html.DisplayNameFor(m => m.ReasonOvertime)} here")
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <partial name="_HistoryApproval" />
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                    {
+                                        @if ((Model.Status ?? 0) == PhoenixERPWebApp.Models.StatusTransaction.Draft)
+                                        {
+                                            <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        }
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+
+                                    @if (Model.IsApprove == true)
+                                    {
+                                        @if (ViewBag.processApprove == true)
+                                        {
+                                            <button type="button" id="btnShow" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                            @*<button type="button" id="btnReject" class="btn btn-danger edit"><span class="fa fa-ban"></span> Reject</button>*@
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                        }
+                                        <a asp-action="Indexapproval" asp-controller="overtime" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="index" asp-controller="overtime" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if ('@Model.Status' != '') {
+            if ('@Model.IsApprove' == "True" || !('@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Draft')) {// || '@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Rejected')) {
+                $('.k-editor-toolbar').hide();
+                $($("#ReasonOvertime").data().kendoEditor.body).attr("contentEditable", false);
+                $($("#ReasonOvertime").data().kendoEditor.body).css("background-color", "#F8F9FA");
+
+                $("#OvertimeDate").data("kendoDatePicker").readonly();
+                $("#HourOvertime").data("kendoTimePicker").readonly();
+            }
+        }
+
+        var grade = $("#requestEmployee_Grade").val();
+        if (grade == "M1") {
+            swal('Warning', "Specifically for grade m1 cannot make request", 'warning')
+                .then(function (ok) {
+                    if (ok.value) {
+                        window.location.href = "@Url.Action("Index")"
+                    }
+                });
+        }
+    });
+
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+    $('#btnApprove').click(function () {
+        $("#RemarkRejected").removeAttr("required", "required");
+        callAction({ formId:"formOvertime", title: "approve", type:"POST", url: '@Url.Action("approve", "overtime")'});
+    });
+
+    $('#btnReject').click(function () {
+        callAction({ formId:"formOvertime", title: "reject", type:"POST", url: '@Url.Action("reject", "overtime")'});
+    });
+
+    $('#btnSubmit').click(function () {
+        callAction({ formId:"formOvertime", title: "submit", type:"POST", url: '@Url.Action("submit", "overtime")'});
+    });
+
+    $('#btnSave').click(function () {
+        callAction({ formId:"formOvertime", title: "save", type:"POST", url: '@Url.Action("save", "overtime")'});
+    });
+</script>

@@ -1,0 +1,165 @@
+@{
+    ViewData["Title"] = "Home Page HRIS";
+}
+<link href="~/assets/plugins/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
+<style>
+    .break-word {
+        word-wrap: break-word;
+    }
+
+    .fc-day-grid-event > .fc-content {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .fc-event-main {
+        overflow: hidden;
+    }
+
+    .fc-event-title {
+        text-overflow: ellipsis;
+    }
+</style>
+<div id="page_content_inner">
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">Home</h3>
+                <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                    <li class="m-nav__item m-nav__item--home">
+                        <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                            <i class="fa fa-home fa-fw"></i>
+                        </a>
+                    </li>
+                    <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                    <li class="m-nav__item">
+                        <a href="javascript:return;" class="m-nav__link">
+                            <span class="m-nav__link-text">Hris</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet m-portlet--skin-dark m-portlet--bordered-semi" style="margin-right:.9375rem">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="flaticon-home"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        ERP Phoenix HRIS Modul
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            <p>Welcome to HRIS Modul</p><br />
+            <div class="card" style="width: 250px;">
+                <div class="card-body">
+                    <h5 class="card-title">Clock-In And Out</h5>
+                    <p class="card-text">You Can Create an Attendance here : </p>
+                    <a class="btn btn-default" asp-action="Attendance" asp-controller="Attendance" asp-area="hrisnew">
+                        <i class="la la-clock-o la-5x"></i><span>Clock-In & Out</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet m-portlet--skin-white m-portlet--bordered-semi" style="padding:25px">
+        <div id="m_calendar"></div>
+    </div>
+
+
+</div>
+<script src="~/assets/plugins/fullcalendar/dist/fullcalendar.min.js"></script>
+<script>
+    var CalendarBasic = {
+        init: function () {
+            var e = moment().startOf("day"),
+                t = e.format("YYYY-MM"),
+                i = e.clone().subtract(1,
+                    "day").format("YYYY-MM-DD"),
+                n = e.format("YYYY-MM-DD"),
+                r = e.clone().add(1, "day").format("YYYY-MM-DD"); $("#m_calendar").fullCalendar({
+                    isRTL: mUtil.isRTL(),
+                    header: {
+                        left: "prev,next today",
+                        center: "title",
+                        right: "month,agendaWeek,agendaDay,listWeek"
+                    },
+                    editable: !0,
+                    eventLimit: !0,
+                    navLinks: !0,
+                    events: function (start, end, timezone, callback) {
+                        $.ajax({
+                            url: $.helper.resolveApi("~notifycenter/GetDsHris"),
+                            type: "GET",
+                            dataType: "JSON",
+
+                            success: function (result) {
+                                var events = [];
+
+                                $.each(result, function (i, data) {
+
+                                    events.push(
+                                        {
+                                            title: data.title,
+                                            description: data.description,
+                                            start: data.start,
+                                            end: data.end,
+                                            //backgroundColor: "#9501fc",
+                                            //borderColor: "#fc0101",
+                                            className: data.className
+                                        });
+
+                                });
+
+                                callback(events);
+                            }
+                        });
+                    },
+                    eventRender: function (e,
+                        t) {
+
+                        //var limit = 10;
+                        //if (e.title.length > limit) {
+                        //    t.find('.fc-event-title').text(e.title.substr(0, limit) + '...').parent().attr('title', e.title);
+                        //}
+                        if (e.description !== '') {
+                            var ValueArray = e.description.split("::");
+
+                            var nDesc = "Subject : " + ValueArray[0] + " \n\n" +
+                                "Notes : " + ValueArray[1] + " \n\n" +
+                                "Lokasi : " + ValueArray[2] + " \n\n" +
+                                "Peserta : " + ValueArray[3] + " \n\n";
+
+                            var Subject = "Subject : " + ValueArray[0];
+                            var Notes = "Notes : " + ValueArray[1];
+                            var Lokasi = "Lokasi : " + ValueArray[2];
+                            var Peserta = "Peserta : " + ValueArray[3];
+
+                            t.hasClass("fc-day-grid-event") ? (t.data("content",
+                                nDesc),
+                                t.data("placement",
+                                    "top"),
+                                mApp.initPopover(t)) : t.hasClass("fc-time-grid-event") ? t.find(".fc-title").append('<div class="fc-description"><p>' + Subject + '</p><p>' + Notes + '</p><p>' + Lokasi + '</p><p>' + Peserta + '</p></div>') : 0 !== t.find(".fc-list-item-title").lenght && t.find(".fc-list-item-title").append('<div class="fc-description"><p>' + Subject + "</p><p>" + Notes + "</p><p>" + Lokasi + "</p><p>" + Peserta + "</p></div>")
+                        } else {
+                            t.hasClass("fc-day-grid-event") ? (t.data("content",
+                                e.description),
+                                t.data("placement",
+                                    "top"),
+                                mApp.initPopover(t)) : t.hasClass("fc-time-grid-event") ? t.find(".fc-title").append('<div class="fc-description"><p>' + e.description + '</p></div>') : 0 !== t.find(".fc-list-item-title").lenght && t.find(".fc-list-item-title").append('<div class="fc-description"><p>' + e.description + "</p></div>")
+                        }
+
+                    }
+                })
+        }
+    };
+    $(document).ready(function () {
+        CalendarBasic.init()
+
+
+    });
+</script>

@@ -1,0 +1,37 @@
+@{
+    ViewBag.ModalTitle = "BscCategory";
+    ViewBag.ModalId = "BscCategoryModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="BscCategoryFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="bsc_category">bsc_category</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_bsc_category" id="search_bsc_category"  maxlength="255" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bsc_description">bsc_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_bsc_description" id="search_bsc_description"  maxlength="255" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="status_id">status_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_status_id" id="search_status_id"   type="number">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnBscCategory.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnBscCategory.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

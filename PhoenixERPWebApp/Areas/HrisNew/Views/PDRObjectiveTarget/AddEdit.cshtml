@@ -1,0 +1,272 @@
+@model PhoenixERPWebApp.Models.PdrObjectiveTarget
+@{ 
+    ViewData["Title"] = "PDR Objective Target"; 
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml"; 
+} 
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item"> 
+                    <a asp-action="index" asp-controller="PdrObjectiveTarget" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">PDR Appraisal</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="PdrObjectiveTarget" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="PdrObjectiveTarget" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">PDR Objective Target</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formPdrObjectiveTarget" class="form-horizontal form-bordered" role="form">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" /> 
+
+                                <partial name="_AssignEmploye" />
+                                <br/>
+                                
+                                <div class="row" id="data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="Detail_head" data-toggle="collapse" href="#Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                    <span class="m-accordion__item-title">Request Detail</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="Detail_body" role="tabpanel" aria-labelledby="Detail_head" data-parent="#Detail">
+                                                    <div class="m-accordion__item-content">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Year"></label> <span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(x => x.Year)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.Year)}")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source => source
+                                                                            .Custom()
+                                                                            .Transport(transport => transport
+                                                                            .Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLYear", "Dropdown", new { area = "HrisNew" });
+                                                                            }))
+                                                                            .ServerFiltering(false)
+                                                                        )
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @*<div class="row">
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ReviewStart"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.ReviewStart)
+                                                                        .Format("dd MMMM yyyy")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width: 100%",
+                                                                            onkeydown = "javascript:return false;",
+                                                                            //placeholder = $"Input type a {Html.DisplayNameFor(m => m.ReviewStart)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.ReviewStart)} is required"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="ReviewEnd"></label> <span class="req">*</span>  :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.ReviewEnd)
+                                                                        .Format("dd MMMM yyyy")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width: 100%",
+                                                                            onkeydown = "javascript:return false;",
+                                                                            //placeholder = $"Input type a {Html.DisplayNameFor(m => m.ReviewEnd)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.ReviewEnd)} is required"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                        </div>*@ 
+                                                        <div class="row" id="divAppraisalM1">        
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <h5 style="margin-bottom:10px">Objectives List</h5>
+                                                            </div>
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.PdrObjectiveTargetDetail>()
+                                                                        .Name("gridPdrObjectiveTargetDetail")
+                                                                        .ToolBar(toolbar =>
+                                                                        { 
+                                                                            toolbar.Create(); 
+                                                                        })
+                                                                        .Columns(columns =>
+                                                                        { 
+                                                                            columns.Command(
+                                                                            command =>
+                                                                            {
+                                                                                command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                                command.Destroy().Text(" ");
+                                                                            }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                            columns.Bound(p => p.PdrObjectiveSettingId).EditorTemplateName("HrisNew/PdrObjectiveTarget/PdrObjectiveSettingId").ClientTemplate("#=PdrObjectiveSettingItem#").Width(150);
+                                                                            columns.Bound(p => p.Target).Width(150);                                                                            
+                                                                        })
+                                                                        .NoRecords()
+                                                                        .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                        .Resizable(rsz => rsz.Columns(true))
+                                                                        .DataSource(dataSource => dataSource
+                                                                            .Ajax()
+                                                                            .PageSize(20) 
+                                                                            .Events(events => events.Error("errorHandler"))
+                                                                            .Model(model => { model.Id(p => p.Id); })
+                                                                            .Read(read => read.Action("ReadPdrObjectiveTargetDetail", "PdrObjectiveTarget").Data("grid_params"))
+                                                                            .Create(create => create.Action("CreatePdrObjectiveTargetDetail", "PdrObjectiveTarget"))
+                                                                            .Update(update => update.Action("UpdatePdrObjectiveTargetDetail", "PdrObjectiveTarget"))
+                                                                            .Destroy(destroy => destroy.Action("DestroyPdrObjectiveTargetDetail", "PdrObjectiveTarget"))
+                                                                        )
+                                                                        .Events(e => e.Save("savePdrObjectiveTargetDetailEvent"))
+                                                                    )
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right"> 
+                                    <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                    <a asp-action="index" asp-controller="PdrObjectiveTarget" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script> 
+    function grid_params() {
+        return {
+            PdrObjectiveTargetId: '@Model.Id'
+        };
+    }
+    
+    $('#btnSave').click(function () {
+        if (!isValid()) return;
+        callAction({ formId: "formPdrObjectiveTarget", title: "save", type: "POST", url: '@Url.Action("save", "PdrObjectiveTarget")', objects: result()  });
+    });
+    
+    function isValid() {
+        var valid = $("#formPdrObjectiveTarget").validate().form();
+        if (valid) { 
+            var PdrObjectiveTargetDetail = $("#gridPdrObjectiveTargetDetail").data("kendoGrid").dataSource.data();
+            if (PdrObjectiveTargetDetail.length == 0) {
+                swal('Warning', "Please input objectives list", 'warning');
+                return false;
+            }            
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    function result() { 
+        var gridPdrObjectiveTargetDetail = $("#gridPdrObjectiveTargetDetail").data("kendoGrid");         
+        gridPdrObjectiveTargetDetail.saveRow(); 
+
+        var dataList = { 
+            PdrObjectiveTargetDetails: gridPdrObjectiveTargetDetail.dataSource.data()
+        }
+
+        return dataList;
+    } 
+    
+    function savePdrObjectiveTargetDetailEvent(e) { 
+        var PdrObjectiveSetting = $("#PdrObjectiveSettingId").data("kendoDropDownList").value();
+        var PdrObjectiveSettingItem = $("#PdrObjectiveSettingId").data("kendoDropDownList").text();          
+        e.model.set("PdrObjectiveSettingId", PdrObjectiveSetting);
+        e.model.set("PdrObjectiveSettingItem", PdrObjectiveSettingItem); 
+    }
+</script>

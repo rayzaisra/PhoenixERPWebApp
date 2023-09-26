@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "AuditTrail";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="AuditTrailFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="application_entity_id">application_entity_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="application_entity_id" id="application_entity_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="application_user_id">application_user_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="application_user_id" id="application_user_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="app_fullname">app_fullname</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="app_fullname" id="app_fullname"  maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="app_username">app_username</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="app_username" id="app_username"  maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="new_record">new_record</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="new_record" id="new_record"  maxlength="-1" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="new_view">new_view</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="new_view" id="new_view"  maxlength="-1" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="old_record">old_record</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="old_record" id="old_record"  maxlength="-1" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="old_view">old_view</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="old_view" id="old_view"  maxlength="-1" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="organization_id">organization_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="organization_id" id="organization_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="organization_name">organization_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="organization_name" id="organization_name"  maxlength="450" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="record_id">record_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="record_id" id="record_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="user_action">user_action</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="user_action" id="user_action" required maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/AuditTrail" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/AuditTrail.update.js"></script>
+}

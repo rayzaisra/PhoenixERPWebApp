@@ -1,0 +1,939 @@
+@model PhoenixERPWebApp.Models.EmployeeHealthInsurance
+@{
+    ViewData["Title"] = "Employee Health Insurance";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="employeehealthinsurance" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Health Insurance</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Employee Health Insurance</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formEmployeeHealthInsurance" class="form-horizontal form-bordered" role="form">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                                <div class="row">
+                                    <div class="col-lg-5 m-form__group-sub">
+                                        <div class="form-group">
+                                            <label class="search-employee">Search Employee </label>:
+                                            @(Html.Kendo().AutoComplete()
+                                                .Name("SearchEmployee")
+                                                .DataTextField("Text")
+                                                .Filter(FilterType.Contains)
+                                                //.MinLength(3)
+                                                .HtmlAttributes(new { style = "width:100%"})
+                                                .Events(ev => ev.Select("employeeInfoSelectEvent"))
+                                                .DataSource(source => {
+                                                    source
+                                                        .Read(read =>
+                                                        {
+                                                            read.Action("GetDDLEmployeeBasicInfoByName", "Dropdown", new { area = "HrisNew" }).Data("params_autocomplete");
+                                                        })
+                                                        .ServerFiltering(true);
+                                                })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form_data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="form_Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="form_Detail_head" data-toggle="collapse" href="#form_Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                    <span class="m-accordion__item-title">Form</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="form_Detail_body" role="tabpanel" aria-labelledby="form_Detail_head" data-parent="#form_Detail">
+                                                    <div class="m-accordion__item-content">
+                                                        <div class="row">
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.EmployeeId"></label> <span class="req">*</span> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.EmployeeBasicInfoId)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            required = "required",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.EmployeeName"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.EmployeeName)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.JobTitle"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.JobTitle)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.Grade"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Grade)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.DateEmployed"></label> :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.infoEmployee.DateEmployed)
+                                                                        .Format("dd MMM yyyy")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                                <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.EmployementStatus"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.EmployementStatus)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">      
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.DateBirth"></label> :
+                                                                        @(Html.Kendo().DatePickerFor(m => m.infoEmployee.DateBirth)
+                                                                        .Format("dd MMM yyyy")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.Age"></label> :      
+                                                                        @(Html.Kendo().NumericTextBoxFor(m => m.infoEmployee.Age)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.Phone"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Phone)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                                <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.Email"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Email)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>      
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="infoEmployee.MarriedStatusName"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.MarriedStatusName)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @readonly = "readonly",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                        }))
+                                                                </div>
+                                                            </div>      
+                                                        </div>     
+                                                        <div class="row ">
+                                                            <div class="col-lg-12">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeHealthInsuranceFamily>()
+                                                                    .Name("gridFamily")
+                                                                    .ToolBar(toolbar => toolbar.Create())
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        columns.Command(command =>
+                                                                        {
+                                                                            command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                            command.Destroy().Text(" ");
+                                                                        }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        //columns.Bound("").Title("#").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                                                                        columns.Bound(p => p.FamilyId).EditorTemplateName("HrisNew/EmployeeHealthInsurance/FamilyDropdown").ClientTemplate("#=FamilyName#").Width(200);
+                                                                        columns.Bound(p => p.FamilyStatus).EditorTemplateName("StringReadOnly").Width(200);
+                                                                        columns.Bound(p => p.Gender).EditorTemplateName("StringReadOnly").Width(200);
+                                                                        columns.Bound(p => p.DateBirth).EditorTemplateName("DateReadOnly").Width(200);
+                                                                    })
+                                                                    .NoRecords()
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                    .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                    .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                        .Extra(false)
+                                                                        .Operators(operators => operators
+                                                                        .ForString(str => str.Clear()
+                                                                            .Contains("Contains")
+                                                                            .StartsWith("Start sWith")
+                                                                            .EndsWith("End sWith")
+                                                                        )))
+                                                                    .Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                    .Resizable(rsz => rsz.Columns(true))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(10)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model => {
+                                                                            model.Id(p => p.Id);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadFamily", "employeehealthinsurance").Data("grid_params"))
+                                                                        .Create(create => create.Action("CreateFamily", "employeehealthinsurance"))
+                                                                        .Update(update => update.Action("UpdateFamily", "employeehealthinsurance"))
+                                                                        .Destroy(destroy => destroy.Action("DestroyFamily", "employeehealthinsurance"))
+                                                                    )
+                                                                .AutoBind(false)
+                                                                .Events(e => e.Save("saveFamilyEvent"))//e.DataBound("dataBoundEvent"))
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top:20px">
+                                                                <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Endorsement"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Endorsement)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Endorsement)}",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            required = "required"
+                                                                        }
+                                                                    ))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="EffectiveDate"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.EffectiveDate)
+                                                                        .Format("dd MMM yyyy")
+                                                                        //.Min($"{EndDate}")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            required = "required",
+                                                                            placeholder = $"Choose a {Html.DisplayNameFor(m => m.EffectiveDate)}",
+                                                                            onkeydown = "javascript:return false;"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="PlanNumber"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.PlanNumber)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.PlanNumber)}",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            required = "required"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="InsuranceCompanyId"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(m => m.InsuranceCompanyId)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        //.OptionLabel($"Choose a {Html.DisplayNameFor(m => m.InsuranceCompanyId)}")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Height(400)
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source => source
+                                                                            .Custom()
+                                                                            .Transport(transport => transport
+                                                                            .Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLInsuranceCompany", "Dropdown",  new { area = "HrisNew" });
+                                                                            }))
+                                                                            .ServerFiltering(false))
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Remarks"></label> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Remarks)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Remarks)}",
+                                                                            @class = "form-control form-control-sm m-input"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <br/>
+                                <div class="row" id="coverage_data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="coverage_Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="coverage_Detail_head" data-toggle="collapse" href="#coverage_Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                    <span class="m-accordion__item-title">coverage</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="coverage_Detail_body" role="tabpanel" aria-labelledby="coverage_Detail_head" data-parent="#coverage_Detail">
+                                                    <div class="m-accordion__item-content">                                                                            
+                                                        <div class="row">
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Inpatient"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(m=>m.Inpatient)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Height(400)
+                                                                        .Events(x=>x.Select("inpatient_select"))
+                                                                        .BindTo(new List<SelectListItem>() {
+                                                                            new SelectListItem() { Text = "Yes", Value = "Yes"},
+                                                                            new SelectListItem() { Text = "No", Value = "No"},
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Outpatient"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(m=>m.Outpatient)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Height(400)
+                                                                        .Events(x => x.Select("outpatient_select"))
+                                                                        .BindTo(new List<SelectListItem>() {
+                                                                            new SelectListItem() { Text = "Yes", Value = "Yes"},
+                                                                            new SelectListItem() { Text = "No", Value = "No"},
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Dental"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(m=>m.Dental)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Height(400)
+                                                                        .Events(x => x.Select("dental_select"))
+                                                                        .BindTo(new List<SelectListItem>() {
+                                                                            new SelectListItem() { Text = "Yes", Value = "Yes"},
+                                                                            new SelectListItem() { Text = "No", Value = "No"},
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Maternity"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(m=>m.Maternity)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Height(400)
+                                                                        .Events(x => x.Select("maternity_select"))
+                                                                        .BindTo(new List<SelectListItem>() {
+                                                                            new SelectListItem() { Text = "Yes", Value = "Yes"},
+                                                                            new SelectListItem() { Text = "No", Value = "No"},
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Optical"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(m=>m.Optical)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Height(400)
+                                                                        .Events(x => x.Select("optical_select"))
+                                                                        .BindTo(new List<SelectListItem>() {
+                                                                            new SelectListItem() { Text = "Yes", Value = "Yes"},
+                                                                            new SelectListItem() { Text = "No", Value = "No"},
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                            <div class="row">
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="InpatientPremi"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().NumericTextBoxFor(m => m.InpatientPremi)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("'Rp.'##,###.##")
+                                                                        .Events(x=>x.Change("premi_change"))
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            maxlength = 12,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.InpatientPremi)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.InpatientPremi)} is required"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                                <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="OutpatientPremi"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().NumericTextBoxFor(m => m.OutpatientPremi)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("'Rp.'##,###.##")
+                                                                        .Events(x => x.Change("premi_change"))
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            maxlength = 12,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.OutpatientPremi)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.OutpatientPremi)} is required"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="DentalPremi"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().NumericTextBoxFor(m => m.DentalPremi)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("'Rp.'##,###.##")
+                                                                        .Events(x => x.Change("premi_change"))
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            maxlength = 12,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.DentalPremi)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.DentalPremi)} is required"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="MaternityPremi"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().NumericTextBoxFor(m => m.MaternityPremi)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("'Rp.'##,###.##")
+                                                                        .Events(x => x.Change("premi_change"))
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            maxlength = 12,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.MaternityPremi)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.MaternityPremi)} is required"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="OpticalPremi"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().NumericTextBoxFor(m => m.OpticalPremi)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("'Rp.'##,###.##")
+                                                                        .Events(x => x.Change("premi_change"))
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            maxlength = 12,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.OpticalPremi)}",
+                                                                            required = "required",
+                                                                            validationmessage = $"{Html.DisplayNameFor(m => m.OpticalPremi)} is required"
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">     
+                                                            <div class="col-lg-9"></div>
+                                                            <div class="col-lg-3 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    Total Premium:
+                                                                    @(Html.Kendo().NumericTextBox()
+                                                                        .Name("TotalPremi")
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("'Rp.'##,###.##")
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            @readonly = "readonly",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row" id="mutation_data_detail">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="mutation_Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="mutation_Detail_head" data-toggle="collapse" href="#mutation_Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                    <span class="m-accordion__item-title">Mutation</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="mutation_Detail_body" role="tabpanel" aria-labelledby="mutation_Detail_head" data-parent="#mutation_Detail">
+                                                    <div class="m-accordion__item-content">                                                                                                                                                   
+                                                        <div class="row">
+                                                            <div class="col-lg-4 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="TotalMutation"></label> :
+                                                                    @(Html.Kendo().NumericTextBoxFor(m => m.TotalMutation)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("'Rp.'##,###.##")
+                                                                        .HtmlAttributes(new {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            maxlength = 12,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.TotalMutation)}"
+                                                                        }))
+                                                                </div>
+                                                            </div>                                                                            
+                                                            <div class="col-lg-4 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="MutationDate"></label> :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.MutationDate)
+                                                                        .Format("dd MMM yyyy")
+                                                                        //.Min($"{EndDate}")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input", 
+                                                                            placeholder = $"Choose a {Html.DisplayNameFor(m => m.MutationDate)}",
+                                                                            onkeydown = "javascript:return false;"
+                                                                        })
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                            
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btnSubmit" class="btn btn-primary" style="display:none;"><span class="fa fa-paper-plane"></span> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var employeeId = 0;
+
+    $('#btnSubmit').click(function () {
+        var gridFamily = $("#gridFamily").data("kendoGrid");
+        var dataList = {
+            EmployeeHealthInsuranceFamilys: gridFamily.dataSource.data(),
+        }
+        var valid = $("#formEmployeeHealthInsurance").validate().form();
+        if (valid) {
+            @*if (gridFamily.dataSource.data().length == 0) {
+                swal('Warning', "Family cannot be empty.", 'warning');
+            } else {
+                gridFamily.saveRow();
+                callAction({ formId: "formEmployeeHealthInsurance", title: "save", type: "POST", url: '@Url.Action("submit", "employeehealthinsurance")', objects: dataList });
+            }*@
+             callAction({ formId: "formEmployeeHealthInsurance", title: "save", type: "POST", url: '@Url.Action("submit", "employeehealthinsurance")', objects: dataList });
+        }
+    });
+
+     function params_autocomplete() {
+         return {
+            name: $("#SearchEmployee").val()
+        };
+    }
+
+    function family_params() {
+        return {
+            employeeId: employeeId
+        };
+    }
+
+    function grid_params() {
+        return {
+            employeeId :$("#EmployeeBasicInfoId").val()
+        }
+    }
+
+    function saveFamilyEvent(e) {
+        e.model.set("FamilyStatus", $("#FamilyStatus").val());
+        e.model.set("Gender", $("#Gender").val());
+        e.model.set("DateBirth", $("#DateBirth").data("kendoDatePicker").value());
+        e.model.set("FamilyId", $("#FamilyId").data("kendoDropDownList").value());
+        e.model.set("FamilyName", $("#FamilyId").data("kendoDropDownList").text());
+    }
+
+    function family_select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetFamily", "employeehealthinsurance")',
+                data: { familyId: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#FamilyStatus").val(result.FamilyStatus);
+                        $("#Gender").val(result.Gender);
+                        $("#DateBirth").data("kendoDatePicker").value(result.DateBirth);
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+                }, 2e3));
+        }
+    }
+
+    function inpatient_select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            if (dataItem.Value == "No") {
+                $("#InpatientPremi").data("kendoNumericTextBox").value(0);
+                $("#InpatientPremi").data("kendoNumericTextBox").readonly();
+            } else {
+                $("#InpatientPremi").data("kendoNumericTextBox").readonly(false);
+            }
+
+            premi_change();
+        }
+    }
+
+    function outpatient_select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            if (dataItem.Value == "No") {
+                $("#OutpatientPremi").data("kendoNumericTextBox").value(0);
+                $("#OutpatientPremi").data("kendoNumericTextBox").readonly();
+            } else {
+                $("#OutpatientPremi").data("kendoNumericTextBox").readonly(false);
+            }
+            premi_change();
+        }
+    }
+
+    function dental_select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            if (dataItem.Value == "No") {
+                $("#DentalPremi").data("kendoNumericTextBox").value(0);
+                $("#DentalPremi").data("kendoNumericTextBox").readonly();
+            } else {
+                $("#DentalPremi").data("kendoNumericTextBox").readonly(false);
+            }
+            premi_change();
+        }
+    }
+
+    function maternity_select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            if (dataItem.Value == "No") {
+                $("#MaternityPremi").data("kendoNumericTextBox").value(0);
+                $("#MaternityPremi").data("kendoNumericTextBox").readonly();
+            } else {
+                $("#MaternityPremi").data("kendoNumericTextBox").readonly(false);
+            }
+            premi_change();
+        }
+    }
+
+    function optical_select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            if (dataItem.Value == "No") {
+                $("#OpticalPremi").data("kendoNumericTextBox").value(0);
+                $("#OpticalPremi").data("kendoNumericTextBox").readonly();
+            } else {
+                $("#OpticalPremi").data("kendoNumericTextBox").readonly(false);
+            }
+            premi_change();
+        }
+    }
+
+    function premi_change() {
+        var InpatientPremi = $("#InpatientPremi").data("kendoNumericTextBox").value();
+        var OutpatientPremi= $("#OutpatientPremi").data("kendoNumericTextBox").value();
+        var DentalPremi= $("#DentalPremi").data("kendoNumericTextBox").value();
+        var MaternityPremi= $("#MaternityPremi").data("kendoNumericTextBox").value();
+        var OpticalPremi = $("#OpticalPremi").data("kendoNumericTextBox").value();
+
+        if (InpatientPremi == undefined) InpatientPremi = 0;
+        if (OutpatientPremi == undefined) OutpatientPremi = 0;
+        if (DentalPremi == undefined) DentalPremi = 0;
+        if (MaternityPremi == undefined) MaternityPremi = 0;
+        if (OpticalPremi == undefined) OpticalPremi = 0;
+
+        var total = InpatientPremi + OutpatientPremi + DentalPremi + MaternityPremi + OpticalPremi;
+
+        $("#TotalPremi").data("kendoNumericTextBox").value(total);
+    }
+
+
+    function employeeInfoSelectEvent(e) {
+        var dataItem = this.dataItem(e.item.index());
+        if (dataItem === undefined) {
+            this.value("");
+            ClearAsignEmployee();
+            $("#btnSubmit").css("display", "none");
+        } else {
+            $("#btnSubmit").css("display", "block");
+            employeeId = dataItem.Value;
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("AddEdit", "employeehealthinsurance")',
+                data: { employeeId: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#EmployeeBasicInfoId").val(result.infoEmployee.EmployeeId);
+                        $("#Endorsement").val(result.Endorsement);
+                        $("#EffectiveDate").data("kendoDatePicker").value(result.EffectiveDate);
+                        $("#PlanNumber").val(result.PlanNumber);
+                        $("#InsuranceCompanyId").data("kendoDropDownList").value(result.InsuranceCompanyId);
+                        $("#Remarks").val(result.Remarks);
+                        $("#Inpatient").data("kendoDropDownList").value(result.Inpatient);
+                        $("#Outpatient").data("kendoDropDownList").value(result.Outpatient);
+                        $("#Dental").data("kendoDropDownList").value(result.Dental);
+                        $("#Maternity").data("kendoDropDownList").value(result.Maternity);
+                        $("#Optical").data("kendoDropDownList").value(result.Optical);
+
+                        $("#InpatientPremi").data("kendoNumericTextBox").value(result.InpatientPremi);
+                        $("#OutpatientPremi").data("kendoNumericTextBox").value(result.OutpatientPremi);
+                        $("#DentalPremi").data("kendoNumericTextBox").value(result.DentalPremi);
+                        $("#MaternityPremi").data("kendoNumericTextBox").value(result.MaternityPremi);
+                        $("#OpticalPremi").data("kendoNumericTextBox").value(result.OpticalPremi);
+
+                        var total = result.InpatientPremi + result.OutpatientPremi + result.DentalPremi + result.MaternityPremi + result.OpticalPremi;
+                        if (total == undefined) total = 0;
+                        $("#TotalPremi").data("kendoNumericTextBox").value(total);
+
+                        $("#TotalMutation").data("kendoNumericTextBox").value(result.TotalMutation);
+                        $("#MutationDate").data("kendoDatePicker").value(result.MutationDate);
+
+                        $("#CreatedBy").val(result.CreatedBy);
+                        $("#CreatedOn").val(result.CreatedOn);
+                        $("#ModifiedBy").val(result.ModifiedBy);
+                        $("#ModifiedOn").val(result.ModifiedOn);
+                        $("#ApprovedBy").val(result.ApprovedBy);
+                        $("#ApprovedOn").val(result.ApprovedOn);
+                        $("#IsActive").val(result.IsActive);
+                        $("#IsLocked").val(result.IsLocked);
+                        $("#IsDefault").val(result.IsDefault);
+                        $("#IsDeleted").val(result.IsDeleted);
+                        $("#OwnerId").val(result.OwnerId);
+                        $("#DeletedBy").val(result.DeletedBy);
+                        $("#DeletedOn").val(result.DeletedOn);
+                        $("#BusinessUnitDivisionId").val(result.BusinessUnitDivisionId);
+                        $("#BusinessUnitDepartementId").val(result.BusinessUnitDepartementId);
+
+                        $("#infoEmployee_EmployeeName").val(result.infoEmployee.EmployeeName);
+                        $("#infoEmployee_JobTitle").val(result.infoEmployee.JobTitle);
+                        $("#infoEmployee_Grade").val(result.infoEmployee.Grade);
+                        $("#infoEmployee_EmployementStatus").val(result.infoEmployee.EmployementStatus);
+                        $("#infoEmployee_Phone").val(result.infoEmployee.Phone);
+                        $("#infoEmployee_DateBirth").data("kendoDatePicker").value(result.infoEmployee.DateBirth);
+                        $("#infoEmployee_Age").data("kendoNumericTextBox").value(result.infoEmployee.Age);
+                        $("#infoEmployee_Email").val(result.infoEmployee.Email);
+                        $("#infoEmployee_DateEmployed").data("kendoDatePicker").value(result.infoEmployee.DateEmployed);
+                        $("#infoEmployee_EmployeeContractDocument").val(result.infoEmployee.EmployeeContractDocument);
+                        $("#infoEmployee_MarriedStatusName").val(result.infoEmployee.MarriedStatusName);
+                        $("#gridFamily").data("kendoGrid").dataSource.read();
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+                }, 2e3));
+        }
+    }
+
+    function ClearAsignEmployee() {
+        $("#EmployeeBasicInfoId").val("");
+        $("#infoEmployee_EmployeeName").val("");
+        $("#infoEmployee_JobTitle").val("");
+        $("#infoEmployee_Grade").val("");
+        $("#infoEmployee_EmployementStatus").val("");
+        $("#infoEmployee_Phone").val("");
+        $("#infoEmployee_DateBirth").data("kendoDatePicker").value("");
+        $("#infoEmployee_Age").data("kendoNumericTextBox").value("");
+        $("#infoEmployee_Email").val("");
+        $("#infoEmployee_DateEmployed").data("kendoDatePicker").value("");
+        $("#infoEmployee_MarriedStatusName").val("");
+    }
+</script>

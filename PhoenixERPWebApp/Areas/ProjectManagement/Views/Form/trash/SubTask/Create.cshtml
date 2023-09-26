@@ -1,0 +1,52 @@
+@{
+    ViewBag.ModalTitle = "SubTask";
+    ViewBag.ModalId = "SubTaskModalCreate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="SubTaskFormCreate" method="post">
+    
+
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="attachment">Attachment</span> </label>
+                <input class="md-input" name="attachment" id="attachment"  maxlength="2147483647" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="description">Description</span> </label>
+                <input class="md-input" name="description" id="description"  maxlength="2147483647" type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="due_date"><span class="translate"  data-args="due_date">Due Date</span></label>
+                                        <input class="md-input" type="text" name="due_date" id="due_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="hour"><span class="translate"  data-args="hour">Hour</span></label>
+                                        <input class="md-input" type="text" name="hour" id="hour" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="percentage">Percentage</span> </label>
+                <input class="md-input" name="percentage" id="percentage"   type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="start_date"><span class="translate"  data-args="start_date">Start Date</span></label>
+                                        <input class="md-input" type="text" name="start_date" id="start_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="sub_task">Sub Task</span> </label>
+                <input class="md-input" name="sub_task" id="sub_task"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_id">Task Id</span> </label>
+                <input class="md-input" name="task_id" id="task_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_status_id">Task Status Id</span> </label>
+                <input class="md-input" name="task_status_id" id="task_status_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="user_id">User Id</span> </label>
+                <input class="md-input" name="user_id" id="user_id"  maxlength="50" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

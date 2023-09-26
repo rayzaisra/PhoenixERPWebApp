@@ -1,0 +1,28 @@
+@*@{
+    ViewBag.ModalTitle = "Sub Salary Component";
+    ViewBag.ModalId = "SubSalaryComponentModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="SubSalaryComponentModalSearch" method="post">
+    
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="code">Code</span></label>
+                <input class="md-input" name="search_code" id="search_code"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="salary_component">Salary Component</span></label>
+                <input class="md-input" name="search_salary_component" id="search_salary_component"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="type">Type</span></label>
+                <input class="md-input" name="search_type" id="search_type"   maxlength="50" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" onclick="fnSubSalaryComponent.initsearch()" class="md-btn md-btn-primary"><i class="uk-icon-search"></i> Search</button>
+        <button type="button" onclick="fnSubSalaryComponent.initsearch('reset')" class="md-btn md-btn-success"><i class="uk-icon-times-circle"></i> Reset</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>*@

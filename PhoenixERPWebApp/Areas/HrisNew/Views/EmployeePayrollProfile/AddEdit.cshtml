@@ -1,0 +1,894 @@
+@model PhoenixERPWebApp.Models.InfoEmployee
+@{
+    ViewData["Title"] = "Employee Payroll Profile";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="employeepayrollprofile" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Payroll Profile</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="addedit" asp-controller="employeepayrollprofile" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <h3 class="m-portlet__head-text m--font-success">Employee Payroll Profile</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);"><div class="tooltip-arrow arrow" style="left: 48px;"></div><div class="tooltip-inner">Fullscreen</div></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formemployeepayrollprofile" class="form-horizontal form-bordered" role="form">
+                        <div class="row" id="info_data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="info_Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="info_Detail_head" data-toggle="collapse" href="#info_Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Summary Info</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="info_Detail_body" role="tabpanel" aria-labelledby="info_Detail_head" data-parent="#info_Detail">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="EmployeeId"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.EmployeeId)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    placeholder = $"Auto generated by system"
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="EmployeeName"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.EmployeeName)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Gender"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.Gender)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Grade"></label> :
+                                                            <input type="hidden" asp-for="GradeId" />
+                                                            @(Html.Kendo().TextBoxFor(m => m.Grade)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="LegalEntityName"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.LegalEntityName)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Division"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.Division)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Mobile"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.Mobile)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Email"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.Email)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Phone"></label> :
+                                                            @(Html.Kendo().TextBoxFor(m => m.Phone)
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @readonly = "readonly",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                }))
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="PtkpSettingId"></label> :
+                                                            @(Html.Kendo().DropDownListFor(x => x.PtkpSettingId)
+                                                               .DataTextField("Text")
+                                                               .DataValueField("Value")
+                                                               .OptionLabel($"Choose a PTKP Setting")
+                                                               .HtmlAttributes(new { style = "width:100%;" })
+                                                               .Filter(FilterType.Contains)
+                                                               .Events(evt => evt.Select("PTKP_Select"))
+                                                               .DataSource(source => source
+                                                                   .Custom()
+                                                                   .Transport(transport => transport
+                                                                   .Read(read =>
+                                                                   {
+                                                                       read.Action("GetDDLPTKPSetting", "Dropdown", new { area = "HrisNew" });
+                                                                   }))
+                                                                   .ServerFiltering(false)
+                                                               )
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Pph21" id="pph21"><a href="#">Pph 21</a></label> :
+                                                            @*@(Html.Kendo().TextBoxFor(m => m.Pph21)
+                    .HtmlAttributes(new
+                    {
+                        style = "width:100%",
+                        @readonly = "readonly",
+                        @class = "form-control form-control-sm m-input",
+                    }))*@
+                                                            @(Html.Kendo().NumericTextBoxFor(m => m.Pph21)
+                                                .Spinners(false)
+                                                .Format("n2")
+
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%;text-align:right",
+                                                    maxlength = 15,
+                                                    @readonly = "readonly"
+                                                }))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" id="component_data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="component_Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="component_Detail_head" data-toggle="collapse" href="#component_Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Component</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="component_Detail_body" role="tabpanel" aria-labelledby="component_Detail_head" data-parent="#component_Detail">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row" style="display:none;">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Load From Group</label> :
+                                                            @(Html.Kendo().DropDownList()
+                                                                .Name("LoadGroup")
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .OptionLabel($"Choose a Group")
+                                                                .HtmlAttributes(new { style = "width:100%;" })
+                                                                .Filter(FilterType.Contains)
+                                                                .DataSource(source => source
+                                                                    .Custom()
+                                                                    .Transport(transport => transport
+                                                                    .Read(read =>
+                                                                    {
+                                                                        read.Action("GetDDLEmployeePayrollGroup", "Dropdown", new { area = "HrisNew" });
+                                                                    }))
+                                                                    .ServerFiltering(false)
+                                                                )
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    @if (ViewBag.IsAllowOpenEncryptEmployeePayroll)
+                                                    {
+                                                        <div class="col-lg-8 m-form__group-sub">
+                                                            <div class="form-group">
+                                                                <button type="button" id="btn-load" class="btn btn-primary">Load</button>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                                <div class="row">
+                                                    @if (ViewBag.IsAllowOpenEncryptEmployeePayroll)
+                                                    {
+                                                        <div class="col-lg-8 m-form__group-sub">
+                                                            <div class="form-group">
+                                                                <button type="button" id="btn-historyPayroll" class="btn btn-primary">Payroll History</button>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>
+
+                                                <div class="row ">
+                                                    <div class="col-lg-12">
+                                                        <label><h5>Additional</h5></label>
+                                                        @if (ViewBag.IsAllowOpenEncryptEmployeePayroll)
+                                                        {
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeSubcomponentAdditional>()
+                                                                .Name("gridAdditional")
+                                                                .ToolBar(toolbar => toolbar.Create())
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Command(command =>
+                                                                    {
+                                                                        command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                        command.Destroy().Text(" ");
+                                                                    }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                    columns.Bound(p => p.AdditionalSalaryComponent).EditorTemplateName("HrisNew/EmployeePayroll/AdditionalSalaryComponent").ClientTemplate("#=AdditionalSalaryComponentName#").Width(200);
+                                                                    columns.Bound(p => p.AdditionalComponentId).EditorTemplateName("HrisNew/EmployeePayroll/AdditionalComponentId").ClientTemplate("#=AdditionalComponentTypeName#").Width(200);
+                                                                    columns.Bound(p => p.AdditionalPercent).Width(200).EditorTemplateName("HrisNew/EmployeePayroll/AdditionalPercent").ClientFooterTemplate("TOTAL").HtmlAttributes(new { style = "text-align:right" });
+                                                                    columns.Bound(p => p.AdditionalAmount).Width(200).ClientFooterTemplate("#=kendo.format('{0:N2}', calculateAdditionalAmount())#").HtmlAttributes(new { style= "text-align:right" });
+                                                                })
+                                                                //.NoRecords()
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                    .Extra(false)
+                                                                    .Operators(operators => operators
+                                                                    .ForString(str => str.Clear()
+                                                                        .Contains("Contains")
+                                                                        .StartsWith("Start sWith")
+                                                                        .EndsWith("End sWith")
+                                                                    )))
+                                                                //.Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .PageSize(10)
+                                                                    //.Aggregates(aggregates =>
+                                                                    //{
+                                                                    //    aggregates.Add(p => p.AdditionalAmount).Sum();
+                                                                    //})
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model => { model.Id(p => p.Id); })
+                                                                    .Read(read => read.Action("ReadAdditional", "employeepayrollprofile").Data("grid_params"))
+                                                                    .Create(create => create.Action("CreateAdditional", "employeepayrollprofile"))
+                                                                    .Update(update => update.Action("UpdateAdditional", "employeepayrollprofile"))
+                                                                    .Destroy(destroy => destroy.Action("DestroyAdditional", "employeepayrollprofile"))
+                                                                )
+                                                                .Events(e => e.Save("saveAdditionalEvent"))//e.DataBound("dataBoundEvent"))
+                                                            )
+                                                        }
+                                                        else
+                                                        {
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeSubcomponentAdditional>()
+                                                                .Name("gridAdditional")
+                                                                //.ToolBar(toolbar => toolbar.Create())
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Bound(p => p.AdditionalSalaryComponent).EditorTemplateName("HrisNew/EmployeePayroll/AdditionalSalaryComponent").ClientTemplate("#=AdditionalSalaryComponentName#").Width(200);
+                                                                    columns.Bound(p => p.AdditionalComponentId).EditorTemplateName("HrisNew/EmployeePayroll/AdditionalComponentId").ClientTemplate("#=AdditionalComponentTypeName#").Width(200);
+                                                                    columns.Bound(p => p.EncryptAmount).Title("Percent Value(%)").Width(200).ClientFooterTemplate("TOTAL");
+                                                                    columns.Bound(p => p.EncryptAmount).Title("Amount").Width(200).ClientFooterTemplate("#=kendo.format('{0:N2}', EncryptAmount())#");
+                                                                })
+                                                                //.NoRecords()
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                    .Extra(false)
+                                                                    .Operators(operators => operators
+                                                                    .ForString(str => str.Clear()
+                                                                        .Contains("Contains")
+                                                                        .StartsWith("Start sWith")
+                                                                        .EndsWith("End sWith")
+                                                                    )))
+                                                                //.Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .PageSize(10)
+                                                                    //.Aggregates(aggregates =>
+                                                                    //{
+                                                                    //    aggregates.Add(p => p.AdditionalAmount).Sum();
+                                                                    //})
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model => { model.Id(p => p.Id); })
+                                                                    .Read(read => read.Action("ReadAdditional", "employeepayrollprofile").Data("grid_params"))
+                                                                )
+                                                                .Events(e => e.Save("saveAdditionalEvent"))//e.DataBound("dataBoundEvent"))
+                                                            )
+                                                        }
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row " style="margin-top:20px;">
+                                                    <div class="col-lg-12">
+                                                        <label><h5>Deduction</h5></label>
+                                                        @if (ViewBag.IsAllowOpenEncryptEmployeePayroll)
+                                                        {
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeSubcomponentDeduction>()
+                                                                .Name("gridDeducation")
+                                                                .ToolBar(toolbar => toolbar.Create())
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Command(command =>
+                                                                    {
+                                                                        command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                        command.Destroy().Text(" ");
+                                                                    }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                    columns.Bound(p => p.SalaryComponent).EditorTemplateName("HrisNew/EmployeePayroll/DeductionSalaryComponent").ClientTemplate("#=SalaryComponentName#").Width(200);
+                                                                    columns.Bound(p => p.ComponentId).EditorTemplateName("HrisNew/EmployeePayroll/DeductionComponentId").ClientTemplate("#=ComponentTypeName#").Width(200);
+                                                                    columns.Bound(p => p.Percent).EditorTemplateName("HrisNew/EmployeePayroll/DeductionPercent").Width(200).ClientFooterTemplate("TOTAL").HtmlAttributes(new { style = "text-align:right" });
+                                                                    columns.Bound(p => p.Amount).Width(200).ClientFooterTemplate("#=kendo.format('{0:N2}', calculateAmount())#").HtmlAttributes(new { style = "text-align:right" });
+                                                                })
+                                                                //.NoRecords()
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                    .Extra(false)
+                                                                    .Operators(operators => operators
+                                                                    .ForString(str => str.Clear()
+                                                                        .Contains("Contains")
+                                                                        .StartsWith("Start sWith")
+                                                                        .EndsWith("End sWith")
+                                                                    )))
+                                                                //.Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .PageSize(10)
+                                                                    //.Aggregates(aggregates =>
+                                                                    //{
+                                                                    //    aggregates.Add(p => p.Amount).Sum();
+                                                                    //})
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model => { model.Id(p => p.Id); })
+                                                                    .Read(read => read.Action("ReadDeduction", "employeepayrollprofile").Data("grid_params"))
+                                                                    .Create(update => update.Action("CreateDeduction", "employeepayrollprofile"))
+                                                                    .Update(update => update.Action("UpdateDeduction", "employeepayrollprofile"))
+                                                                    .Destroy(update => update.Action("DestroyDeduction", "employeepayrollprofile"))
+                                                                )
+                                                                .Events(e => e.Save("saveDeducationEvent")
+                                                                //.Edit("editDeductionEvent")
+                                                                )//e.DataBound("dataBoundEvent"))
+                                                            )
+                                                        }
+                                                        else
+                                                        {
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeSubcomponentDeduction>()
+                                                                .Name("gridDeducation")
+                                                                //.ToolBar(toolbar => toolbar.Create())
+                                                                .Columns(columns =>
+                                                                {
+
+                                                                    columns.Bound(p => p.SalaryComponent).EditorTemplateName("HrisNew/EmployeePayroll/DeductionSalaryComponent").ClientTemplate("#=SalaryComponentName#").Width(200);
+                                                                    columns.Bound(p => p.ComponentId).EditorTemplateName("HrisNew/EmployeePayroll/DeductionComponentId").ClientTemplate("#=ComponentTypeName#").Width(200);
+                                                                    columns.Bound(p => p.EncryptAmount).Title("Percent Value(%)").EditorTemplateName("HrisNew/EmployeePayroll/DeductionPercent").Width(200).ClientFooterTemplate("TOTAL");
+                                                                    columns.Bound(p => p.EncryptAmount).Title("Amount").Width(200).ClientFooterTemplate("#=kendo.format('{0:N2}', EncryptAmount())#");
+                                                                })
+                                                                //.NoRecords()
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                    .Extra(false)
+                                                                    .Operators(operators => operators
+                                                                    .ForString(str => str.Clear()
+                                                                        .Contains("Contains")
+                                                                        .StartsWith("Start sWith")
+                                                                        .EndsWith("End sWith")
+                                                                    )))
+                                                                //.Scrollable(s => s.Enabled(true).Height("auto"))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .PageSize(10)
+                                                                    //.Aggregates(aggregates =>
+                                                                    //{
+                                                                    //    aggregates.Add(p => p.Amount).Sum();
+                                                                    //})
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model => { model.Id(p => p.Id); })
+                                                                    .Read(read => read.Action("ReadDeduction", "employeepayrollprofile").Data("grid_params"))
+
+                                                                )
+
+                                                            )
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top:20px;">
+                                                    <div class="col-lg-12">
+                                                        <label><h5>Nett Salary</h5></label>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="row" style="margin-top:0px;">
+                                                    <div class="col-lg-4 m-form__group-sub"></div>
+                                                    <div class="col-lg-4 m-form__group-sub"></div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            @*<label asp-for="NetSalary"></label> :*@
+                                                            @(Html.Kendo().NumericTextBoxFor(m => m.NetSalary)
+                                                .Spinners(false)
+                                                .Format("n2")
+
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%;text-align:right",
+                                                    maxlength = 15,
+                                                    @readonly = "readonly"
+                                                }))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.IsAllowOpenEncryptEmployeePayroll)
+                                    {
+                                        <button type="button" id="btn-save" class="btn btn-primary"><span class="fa fa-save"></span> Save</button>
+                                    }
+                                    <a asp-action="index" asp-controller="employeepayrollprofile" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_PayrollHistory" />
+<style>
+    .k-grid-footer tr.k-footer-template td {
+        border-style: solid;
+        border-width: 1px 0 0 0;
+        text-align: right;
+    }
+</style>
+<script>
+    var AddAmount = 0;
+    var DedAmount = 0;
+  
+
+
+    $('#btn-historyPayroll').click(function () {
+        $('#modalPayrollHistory').modal('show');
+    });
+
+    function EncryptAmount() {
+        return '**********';
+    }
+
+
+    $('#btn-save').click(function () {
+        ////var grid = $('#gridSalary').data('kendoGrid');
+        ////var tr = $(e.target).closest('tr');
+        ////var validated = $(tr).kendoValidator().data('kendoValidator').validate();
+        //var validated = $("#gridSalary").data("kendoGrid").saveRow();
+        //if (validated) {
+        //    alert("errr");
+        //}
+
+        var gridAdditional = $("#gridAdditional").data("kendoGrid");
+        var gridDeducation = $("#gridDeducation").data("kendoGrid");
+
+        gridAdditional.saveRow();
+        gridDeducation.saveRow();
+
+        var dataList = {
+            EmployeeSubcomponentAdditionals: gridAdditional.dataSource.data(),
+            EmployeeSubcomponentDeductions: gridDeducation.dataSource.data()
+         }
+        callAction({ formId: "formemployeepayrollprofile", title: "save", type: "POST", url: '@Url.Action("save", "employeepayrollprofile")', objects: dataList });
+    });
+
+    $("#btn-load").click(function () {
+        $('#gridAdditional').data('kendoGrid').dataSource.read();
+        $('#gridDeducation').data('kendoGrid').dataSource.read();
+    });
+
+    function saveAdditionalEvent(e) {
+        var percent = $("#AdditionalPercent").data("kendoNumericTextBox").value();
+        var amount = $("#AdditionalAmount").data("kendoNumericTextBox").value();
+        var salaryComponentValue = $("#AdditionalSalaryComponent").data("kendoDropDownList").value();
+        var salaryComponentName = $("#AdditionalSalaryComponent").data("kendoDropDownList").text();
+        var ComponentTypeValue = $("#AdditionalComponentId").data("kendoDropDownList").value();
+        var ComponentTypeName = $("#AdditionalComponentId").data("kendoDropDownList").text();
+
+        e.model.set("AdditionalPercent", percent);
+        e.model.set("AdditionalAmount", amount);
+        e.model.set("AdditionalSalaryComponent", salaryComponentValue);
+        e.model.set("AdditionalSalaryComponentName", salaryComponentName);
+        e.model.set("AdditionalComponentId", ComponentTypeValue);
+        e.model.set("AdditionalComponentTypeName", ComponentTypeName);
+
+        var data = $("#gridDeducation").data("kendoGrid").dataSource.data();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].SalaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeDeduction.BPJS") {
+                var newAmount = calculateBasicSalary() * (data[i].Percent / 100);
+                data[i].set("Amount", newAmount);
+            }
+        }
+
+        var dataAdd = $("#gridAdditional").data("kendoGrid").dataSource.data();
+        for (var i = 0; i < dataAdd.length; i++) {
+            if (dataAdd[i].AdditionalSalaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeAdditional.BPJS") {
+                var newAmount = calculateBasicSalary() * (dataAdd[i].AdditionalPercent / 100);
+                dataAdd[i].set("AdditionalAmount", newAmount);
+            }
+        }
+    }
+
+    function saveDeducationEvent(e) {
+        var percent = $("#Percent").data("kendoNumericTextBox").value();
+        var amount = $("#Amount").data("kendoNumericTextBox").value();
+        var salaryComponentValue = $("#SalaryComponent").data("kendoDropDownList").value();
+        var salaryComponentName = $("#SalaryComponent").data("kendoDropDownList").text();
+        var ComponentTypeValue = $("#ComponentId").data("kendoDropDownList").value();
+        var ComponentTypeName = $("#ComponentId").data("kendoDropDownList").text();
+
+        e.model.set("Percent", percent);
+        e.model.set("Amount", amount);
+        e.model.set("SalaryComponent", salaryComponentValue);
+        e.model.set("SalaryComponentName", salaryComponentName);
+        e.model.set("ComponentId", ComponentTypeValue);
+        e.model.set("ComponentTypeName", ComponentTypeName);
+    }
+
+    function editDeductionEvent(e) {
+        var isReadonly = e.model.SalaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeDeduction.BPJS";
+        $("#Amount").data("kendoNumericTextBox").readonly(isReadonly);
+    }
+
+    function PTKP_Select(e) {
+        if (e.dataItem) {
+            var value = e.dataItem.Value;
+            var employeeId = '@Model.EmployeeId';
+             $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("getPph21", "employeepayrollprofile")',
+                    data: { id: value, employeeId: employeeId},
+                 success: function (result) {
+                        if (result != undefined) {
+                            $('#Pph21').data("kendoNumericTextBox").value(result.result);
+                        }
+                        mApp.unblock("#m_blockui_list");
+                    },
+                    error: function (e, t, s) {
+                        console.log(e)
+                        mApp.unblock("#m_blockui_list");
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblock("#m_blockui_list");
+                }, 2e3));
+        }
+
+    }
+
+    function ComponentTypeAdditional_Select(e) {
+        if (e.dataItem) {
+            console.log(e.dataItem);
+            var dataItem = e.dataItem;
+            var salaryComponent = $("#AdditionalSalaryComponent").val();
+
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $("#AdditionalPercent").data("kendoNumericTextBox").value(0);
+            $("#AdditionalAmount").data("kendoNumericTextBox").value(0);
+
+            if (salaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeAdditional.Allowance") {
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("getallowancecomponent", "employeepayrollprofile")',
+                    data: { id: dataItem.Value, employeeId: '@Model.EmployeeId'},
+                    success: function (result) {
+                        console.log('in ajax');
+                        if (result != undefined) {
+                            $("#AdditionalAmount").data("kendoNumericTextBox").value(result.Value);
+                            $("#AdditionalPercent").data("kendoNumericTextBox").value(result.Percent);
+                        }
+                        mApp.unblock("#m_blockui_list");
+                    },
+                    error: function (e, t, s) {
+                        console.log(e)
+                        mApp.unblock("#m_blockui_list");
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblock("#m_blockui_list");
+                }, 2e3));
+            }
+            else if (salaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeAdditional.BPJS") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("getbpjscomponent", "employeepayrollprofile")',
+                    data: { id: dataItem.Value },
+                    success: function (result) {
+                        if (result != undefined) {
+                            $("#AdditionalPercent").data("kendoNumericTextBox").value(result.Value);
+                            //$("#AdditionalAmount").data("kendoNumericTextBox").value(result.MaxLimit);
+                            var AdditionalAmount = calculateAdditionalAmount() * (result.Value / 100);
+                            $("#AdditionalAmount").data("kendoNumericTextBox").value(AdditionalAmount);
+                        }
+                        mApp.unblock("#m_blockui_list");
+                    },
+                    error: function (e, t, s) {
+                        console.log(e)
+                        mApp.unblock("#m_blockui_list");
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblock("#m_blockui_list");
+                }, 2e3));
+            }
+            else {
+                mApp.unblock("#m_blockui_list");
+            }
+        }
+    }
+
+    function ComponentTypeDeduction_Select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            var salaryComponent = $("#SalaryComponent").val();
+
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $("#Percent").data("kendoNumericTextBox").value(0);
+            $("#Amount").data("kendoNumericTextBox").value(0);
+
+             if (salaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeDeduction.BPJS") {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("getbpjscomponent", "employeepayrollprofile")',
+                    data: { id: dataItem.Value },
+                    success: function (result) {
+                        if (result != undefined) {
+                            $("#Percent").data("kendoNumericTextBox").value(result.Value);
+                            //$("#Amount").data("kendoNumericTextBox").value(result.MaxLimit);
+                            var AdditionalAmount = calculateBasicSalary() * (result.Value / 100);
+
+                            $("#Amount").data("kendoNumericTextBox").value(AdditionalAmount);
+                        }
+                        mApp.unblock("#m_blockui_list");
+                    },
+                    error: function (e, t, s) {
+                        console.log(e)
+                        mApp.unblock("#m_blockui_list");
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblock("#m_blockui_list");
+                }, 2e3));
+            } else {
+                mApp.unblock("#m_blockui_list");
+            }
+        }
+    }
+
+    function deductionSalaryComponent_selectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            var isReadonly = dataItem.Value == "@PhoenixERPWebApp.Models.SalaryComponentTypeDeduction.BPJS";
+            $("#Amount").data("kendoNumericTextBox").readonly(isReadonly);
+        }
+    }
+
+    function grid_params() {
+        return {
+            employeeId: "@Model.EmployeeId",
+            employeePayrollGroupId: $("#LoadGroup").val()
+        }
+    }
+
+    function ComponentTypeAdditional_params() {
+        return {
+            salaryComponentId: $("#AdditionalSalaryComponent").val(),
+            gradeId: $("#GradeId").val()
+        }
+    }
+
+    function ComponentTypeDeduction_params() {
+        return {
+            salaryComponentId: $("#SalaryComponent").val()
+        }
+    }
+
+    function calculateAdditionalAmount() {
+        var data = $("#gridAdditional").data("kendoGrid").dataSource.data();
+        var total = 0;
+        for (var i = 0; i < data.length; i++) {
+            total += parseFloat(data[i].AdditionalAmount);
+        }
+        AddAmount = total;
+        var net = AddAmount - DedAmount;
+        $('#NetSalary').data('kendoNumericTextBox').value(net);
+        return total;
+    }
+
+    function calculateAmount() {
+        var data = $("#gridDeducation").data("kendoGrid").dataSource.data();
+        var total = 0;
+        for (var i = 0; i < data.length; i++) {
+            total += parseFloat(data[i].Amount);
+        }
+        DedAmount = total;
+        var net = AddAmount - DedAmount;
+        $('#NetSalary').data('kendoNumericTextBox').value(net);
+        return total;
+    }
+
+    function calculateBasicSalary() {
+        var data = $("#gridAdditional").data("kendoGrid").dataSource.data();
+        var total = 0;
+        for (var i = 0; i < data.length; i++) {
+
+            //basic salary id
+            if (data[i].AdditionalComponentId === "ab4cf509-88ee-4c35-8083-67e305a22719") {
+                total += parseFloat(data[i].AdditionalAmount);
+            }
+
+            //timesleep allowance id
+            if (data[i].AdditionalComponentId === "563e6fb7-dae5-4d9c-be68-1b28f26bb1b7") {
+                total += parseFloat(data[i].AdditionalAmount);
+            }
+
+        }
+        if (total > 8754600) {
+            total = 8754600;
+        }
+
+        return total;
+    }
+
+    function deductionPercent_changeEvent(e) {
+        var salaryComponent = $("#SalaryComponent").data("kendoDropDownList").value();
+        if (salaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeDeduction.BPJS") {
+            var gridAdditional = $("#gridAdditional").data("kendoGrid");
+            gridAdditional.saveRow();
+            //var AdditionalAmount = calculateAdditionalAmount() * (this.value() / 100);
+            var AdditionalAmount = calculateBasicSalary() * (this.value() / 100);
+
+            $("#Amount").data("kendoNumericTextBox").value(AdditionalAmount);
+        }
+    }
+
+    function additionalPercent_changeEvent(e) {
+        var salaryComponent = $("#AdditionalSalaryComponent").data("kendoDropDownList").value();
+        if (salaryComponent == "@PhoenixERPWebApp.Models.SalaryComponentTypeAdditional.BPJS") {
+            //var gridAdditional = $("#gridAdditional").data("kendoGrid");
+            //gridAdditional.saveRow();
+            //var AdditionalAmount = calculateAdditionalAmount() * (this.value() / 100);
+            var AdditionalAmount = calculateBasicSalary() * (this.value() / 100);
+
+            $("#AdditionalAmount").data("kendoNumericTextBox").value(AdditionalAmount);
+        }
+
+    }
+
+    $("#pph21").on("click", function () {
+        window.location.href = '@Url.Action("addedit", "employeebasic")?Id=' + '@Model.EmployeeId' +'&paramcol=&paramval=';
+    });
+</script>

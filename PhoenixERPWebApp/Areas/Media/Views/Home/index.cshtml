@@ -1,0 +1,636 @@
+@{
+    ViewData["Title"] = "Media";
+}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<div id="page_content_inner">
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">Home</h3>
+                <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                    <li class="m-nav__item m-nav__item--home">
+                        <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                            <i class="fa fa-home fa-fw"></i>
+                        </a>
+                    </li>
+                    <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                    <li class="m-nav__item">
+                        <a href="javascript:return;" class="m-nav__link">
+                            <span class="m-nav__link-text">Media</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @*<div class="m-portlet m-portlet--skin-dark m-portlet--bordered-semi">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="flaticon-home"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        ERP Phoenix Media Modul
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            Welcome to Media Modul
+        </div>
+    </div>*@
+    <div class="m-content">
+        <div class="m-portlet__body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">MY HOURS THIS WEEK</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-hours-w"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3>21:15 h</h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">MY HOURS THIS MONTHS</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-hours-m"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3>21:15 h</h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">MY BILLABLE HOURS</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-bill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3>21:15 h</h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">MY NON-BILLABLE HOURS</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-nbill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3>21:15 h</h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">TEAM'S BILLABLE HOURS</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-team-bill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3>21:15 h</h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">TEAM'S NON-BILLABLE HOURS</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div id="chart-team-nbill-h"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <h4>Duration</h4>
+                                    <hr />
+                                    <h3>21:15 h</h3>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">REVENUE BY UNITS</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="chart-revenue-byu"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="col-lg-12">
+                        <div class="card card-custom gutter-b" style="background-color:white!important">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h5 class="card-label">TASK THIS WEEK</h5>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h6 class="card-label">Mine</h6>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="chart-task-week-m"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h6 class="card-label">All</h6>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="chart-task-week-a"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="col-lg-12">
+                        <div class="card card-custom gutter-b" style="background-color:white!important">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h5 class="card-label">TEAM MEMBERS</h5>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-team-members"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">TYPE OF PROJECTS THIS MONTH</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="chart-type-projects"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card card-custom gutter-b" style="background-color:white!important">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">MY TEAM'S HOURS THIS WEEK</h5>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="chart-team-hour-w"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-custom gutter-b" style="background-color:white!important">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h5 class="card-label">NEW PROJECTS THIS WEEK</h5>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered" id="tableListProjectThisWeek">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Project Name | Client</th>
+                                    <th>Deadline</th>
+                                    <th>Status by</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;">1</td>
+                                    <td>Project for Cptive Inc</td>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;">Fry, 31.12</td>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;"><span class="m-badge m-badge--info m-badge--wide">New</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Captive Inc</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;">2</td>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;">Project for BRI</td>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;">Fry, 31.12</td>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;"><span class="m-badge m-badge--danger m-badge--wide">Hold</span></td>
+                                </tr>
+                                <tr>
+                                    <td>BRI</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;">3</td>
+                                    <td>Project for Sampoerna</td>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;">Fry, 31.12</td>
+                                    <td rowspan="2" style="vertical-align : middle;text-align:center;"><span class="m-badge m-badge--success m-badge--wide">Done</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Sampoerna</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+           
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+<script>
+    var options = {
+        series: [69],
+        chart: {
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '45%',
+                },
+            },
+        },
+        labels: ['Percent']
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart-hours-w"), options);
+    chart.render();
+
+    var options2 = {
+        series: [80],
+        chart: {
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '45%',
+                },
+            },
+        },
+        labels: ['Percent']
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+
+    var chart2 = new ApexCharts(document.querySelector("#chart-hours-m"), options2);
+    chart2.render();
+
+    var options3 = {
+        series: [75],
+        chart: {
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '45%',
+                },
+            },
+        },
+        labels: ['Percent']
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+
+    var chart3 = new ApexCharts(document.querySelector("#chart-bill-h"), options3);
+    chart3.render();
+
+    var options4 = {
+        series: [30],
+        chart: {
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '45%',
+                },
+            },
+        },
+        labels: ['Percent']
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+
+    var chart4 = new ApexCharts(document.querySelector("#chart-nbill-h"), options4);
+    chart4.render();
+
+    var options5 = {
+        series: [53],
+        chart: {
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '45%',
+                },
+            },
+        },
+        labels: ['Percent']
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+
+    var chart5 = new ApexCharts(document.querySelector("#chart-team-bill-h"), options5);
+    chart5.render();
+
+    var options6 = {
+        series: [32],
+        chart: {
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '45%',
+                },
+            },
+        },
+        labels: ['Percent']
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+
+    var chart6 = new ApexCharts(document.querySelector("#chart-team-nbill-h"), options6);
+    chart6.render();
+
+
+    ////////////////////////////////////
+    var options7 = {
+        series: [44, 55, 41, 17, 15, 12, 5, 20, 39],
+        chart: {
+            type: 'donut',
+        },
+         //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+    var chart7 = new ApexCharts(document.querySelector('#chart-revenue-byu'), options7);
+    chart7.render();
+
+    /////////////
+    var options8 = {
+        series: [44, 55, 41],
+        chart: {
+            type: 'donut',
+        },
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+    var chart8 = new ApexCharts(document.querySelector('#chart-task-week-m'), options8);
+    chart8.render();
+
+    var options9 = {
+        series: [ 12, 5, 20, 39],
+        chart: {
+            type: 'donut',
+        },
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+    var chart9 = new ApexCharts(document.querySelector('#chart-task-week-a'), options9);
+    chart9.render();
+
+    ////////////////////////////////
+    var options10 = {
+        series: [{
+            data: [5, 3, 1]
+        }],
+        chart: {
+            type: 'bar',
+            toolbar: {
+                show:false
+            }
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        xaxis: {
+            categories: ['Ani', 'Budi', 'Charlie']
+        }
+    };
+
+    var chart10 = new ApexCharts(document.querySelector('#chart-team-members'), options10);
+    chart10.render();
+
+    ////////////////////////////////////
+    var options11 = {
+        series: [66, 33, 23, 45, 5, 12, 7, 20, 39],
+        chart: {
+            type: 'donut',
+        },
+        //responsive: [{
+        //    breakpoint: undefined,
+        //    options: {
+
+        //    }
+        //}]
+    };
+    var chart11 = new ApexCharts(document.querySelector('#chart-type-projects'), options11);
+    chart11.render();
+
+    /////////////////////
+    var options12 = {
+        series: [{
+            data: [24, 20, 22]
+        }],
+        chart: {
+            type: 'bar',
+            toolbar: {
+                show: false
+            }
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        xaxis: {
+            categories: ['Ani', 'Budi', 'Charlie']
+        }
+    };
+
+    var chart12 = new ApexCharts(document.querySelector('#chart-team-hour-w'), options12);
+    chart12.render();
+
+</script>

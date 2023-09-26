@@ -1,0 +1,293 @@
+﻿@model PhoenixERPWebApp.Models.InfoEmployee
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: ##f4516c;
+    }
+</style>
+<div class="modal fade" id="modalPayrollHistory" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Payroll History
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row ">
+                    @foreach (var item in Model.EmployeeHistoryPayroll.Header)
+                    {
+                        <div class="col-lg-2 m-form__group-sub">
+                            <div class="form-group">
+                                <label>Periode : </label>
+                                @item.month_name @item.year
+                            </div>
+                        </div>
+                        if (Model.EmployeeHistoryPayroll.Detail.Where(x => x.month == item.month && x.year == item.year).Count() > 0)
+                        {
+                            var detail = Model.EmployeeHistoryPayroll.Detail.Where(x => x.month == item.month && x.year == item.year).FirstOrDefault();
+                            <div class="col-lg-2 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Name Employee : </label>
+                                    @detail.name_employee
+                                </div>
+                            </div>
+                            <div class="col-lg-2 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Legal Entity : </label>
+                                    @detail.Legal_Entity
+                                </div>
+                            </div>
+                            <div class="col-lg-2 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Division : </label>
+                                    @detail.Division
+                                </div>
+                            </div>
+                            <div class="col-lg-2 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Join Date : </label>
+                                    @detail.Join_Date
+                                </div>
+                            </div>
+                            <div class="col-lg-2 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Status PPh21 : </label>
+                                    @detail.Status_Pph21
+                                </div>
+                            </div>
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th>Payroll Type</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Basic Salary</td>
+                                        <td style="text-align:right">
+                                            @detail.Basic_Salary
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Bonus
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Bonus
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            THR
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.THR
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Jaminan Pensiun BPJS
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Jaminan_Pensiun_BPJS
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            JAMSOSTEK BPJS TK
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Jamsostek_BPJS_TK_addition
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Overtime
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Overtime
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            Phone Allowance
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Phone_Allowance
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tambahan Rapel
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Tambahan_Rapel
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Housing Allowance
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.housing_allowance
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            Timeslip Allowance
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Timesleep_Allowance
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Transportation Allowance
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Transportation_Allowance
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tunjangan Jabatan
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Tunjangan_Jabatan
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Job Allowance
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.job_allowance
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Gaji Kotor
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Gaji_Kotor
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Potongan JAMSOSTEK BPJS Ketenagakerjaan
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Jamsostek_BPJS_TK_deduction
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Iuran Sukarela Koperasi Nava
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Iuran_sukarela_Koperasi_Nava
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Iuran Wajib Koperasi Nava
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Iuran_Wajib_Koperasi_Nava
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Potongan JAMSOSTEK
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Potongan_Jamsostek
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Potongan Pinjaman Koperasi
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Potongan_Pinjaman_Koperasi
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Potongan Jaminan Pensiun
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Pot_Jaminan_Pensiun_BPJS
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Potongan BPJS 2 Persen
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.potongan_bpjs_2_persen
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Potongan BPJS 6 Persen
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.potongan_bpjs_6_persen
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Potongan Lain-Lain
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.potongan_lain_lain
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Loan
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Loan
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            PPH 21
+                                        </td>
+                                        <td style="text-align:right">
+                                            @detail.Pph_21
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>
+                                            Total
+                                        </th>
+                                        <th style="text-align:right">
+                                            @detail.THP
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,249 @@
+@{
+    ViewData["Title"] = "Chart Mpp";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    @*<a href="@Url.Content("~/Hris/JobTitle/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>*@
+}
+
+@section Paneltools{
+    @*<a  data-target="#JobTitleModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>*@
+}
+@section Panelbody{
+    <link rel="stylesheet" href="~/assets/css/Areas/Hris/chart.css" media="all">
+    <form action="#" method="post">
+        <div class="md_border_content">
+            <div class="uk-grid uk-grid-small uk-margin-small-bottom uk-grid uk-grid-small uk-margin-small-bottom-divider md_margin_bottom"
+                 data-uk-grid uk-grid-small uk-margin-small-bottom-margin="">
+                <div class="uk-width-medium-1-2 uk-row-first">
+
+                    <div class="md-card-toolbar" style="text-align:left; padding: 0px !important">
+                        <h1 class="md-card-toolbar-heading-text md_header_text">
+                            Organization Chart
+                        </h1>
+                    </div>
+                </div>
+                <div class="uk-width-medium-1-2" style="border-left: 0px !important">
+                    <!-- Content Right -->
+                </div>
+            </div>
+            <div class="row " style="text-align: right">
+                <div class="col-lg-6">
+                    <!-- Content Left -->
+                </div>
+                <div class="col-lg-6">
+                    <a class="btn btn-primary"
+                       href="employee_profil.html">
+                        <i class="fas fa-sitemap"></i>
+                        &nbsp;MPP View
+                    </a>
+                    <a class="btn btn-success"
+                       id="page_print">
+                        <i class="fa fa-print"></i>
+                        &nbsp;Export
+                    </a>
+                </div>
+            </div>
+
+            <div class="row " style="text-align: left">
+                <div class="col-lg-2">
+
+                    <div class="form-group">
+                        <label for="blood">Group</label>
+                        <select id="group" class="form-control">
+                            <option value="Nava">Nava</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sub_group">Sub Group</label>
+                        <select id="sub_group" class="form-control">
+                            <option value="IRIS">IRIS</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="select_demo_1">Division</label>
+                        <select id="select_demo_1" class="form-control">
+                            <option value="CREATIVE">CREATIVE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="select_demo_1">Department</label>
+                        <select id="select_demo_1" class="form-control">
+                            <option value="-Select-">-Select-</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-lg-10">
+                    <h3>Creative Pathfinder</h3>
+                    <ol class="organizational-chart uk-margin-large-bottom uk-margin-large-top">
+                        <li>
+                            <div class="col-lg-4">
+                                <h5 style="padding-top:10px;line-height:0px !important">DIRECTOR OF OPERATION</h5>
+                                <hr class="padding-hr">
+
+                                <div class="col-lg-12">
+                                    <div class="row bold underline">
+                                        <div class="col-lg-6">BUDGETED</div>
+                                        <div class="col-lg-6">ACCTUAL</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                        <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ol>
+                                <li>
+                                    <div class="col-lg-4">
+                                        <h4 style="padding-top:10px;line-height:0px !important">
+                                            EXECUTIVE
+                                            CREATIVE
+                                            DIRECTOR
+                                        </h4>
+
+                                        <hr class="padding-hr">
+
+                                        <div class="col-lg-12">
+                                            <div class="row bold underline">
+                                                <div class="col-lg-6">BUDGETED</div>
+                                                <div class="col-lg-6">ACCTUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                            <ol>
+                                <li>
+                                    <div class="col-lg-4">
+                                        <h4 style="padding-top:10px;line-height:0px !important">
+                                            BRAND & DESIGN
+                                            DIRECTOR
+                                        </h4>
+                                        <hr class="padding-hr">
+                                        <div class="col-lg-12">
+                                            <div class="row bold underline">
+                                                <div class="col-lg-6">BUDGETED</div>
+                                                <div class="col-lg-6">ACCTUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                            <ol>
+
+                                <li>
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-top:10px;line-height:0px !important">
+                                            GRAPHIC
+                                            DESIGNER
+                                        </h4>
+                                        <hr class="padding-hr">
+
+                                        <div class="col-lg-12">
+                                            <div class="row bold underline">
+                                                <div class="col-lg-6">BUDGETED</div>
+                                                <div class="col-lg-6">ACCTUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 margin-bottom-10">
+                                            <div class="row">
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-top:10px;line-height:0px !important">
+                                            GRAPHIC
+                                            DESIGNER
+                                        </h4>
+                                        <hr class="padding-hr">
+
+                                        <div class="col-lg-12">
+                                            <div class="row bold underline">
+                                                <div class="col-lg-6">BUDGETED</div>
+                                                <div class="col-lg-6">ACCTUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-top:10px;line-height:0px !important">
+                                            GRAPHIC
+                                            DESIGNER
+                                        </h4>
+                                        <hr class="padding-hr">
+
+                                        <div class="col-lg-12">
+                                            <div class="row bold underline">
+                                                <div class="col-lg-6">BUDGETED</div>
+                                                <div class="col-lg-6">ACCTUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="col-lg-12">
+                                        <h4 style="padding-top:10px;line-height:0px !important">
+                                            GRAPHIC
+                                            DESIGNER
+                                        </h4>
+                                        <hr class="padding-hr">
+
+                                        <div class="col-lg-12">
+                                            <div class="row bold underline">
+                                                <div class="col-lg-6">BUDGETED</div>
+                                                <div class="col-lg-6">ACCTUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                                <div class="col-lg-6 btn btn-sm btn-primary">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+    </form>
+}
+@section Panelscript{
+    @*<script src="~/assets/js/Areas/Hris/Form/JobTitle.js"></script>*@
+}

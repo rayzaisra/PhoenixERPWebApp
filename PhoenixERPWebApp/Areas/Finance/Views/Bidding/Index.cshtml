@@ -1,0 +1,305 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Biding List</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Procurement & Expenses</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/RequestForQuotation")" class="m-nav__link">
+                        <span class="m-nav__link-text">Biding List</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div class="input-group input-group-sm">
+                                <a href="@Url.Content("~/Finance/RequestForQuotation/Detail")" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="col-lg-6">
+                            @(Html.Kendo().DropDownList()
+                                .Name("rfqType")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .BindTo(new List<SelectListItem>() {
+                                new SelectListItem() {
+                                Text = "Internal",
+                                Value = "internal"
+                                },
+                                new SelectListItem() {
+                                Text = "Project",
+                                Value = "project"
+                                }
+                                })
+                                    .Events(e =>
+                                    {
+                                        e.Change("onFilterMode");
+                                    })
+                                .SelectedIndex(0)
+                                .HtmlAttributes(new { style = "width: 100%" })
+                            )
+                            
+                        </div>
+                        <div class="col-lg-6">
+                            @(Html.Kendo().DropDownList()
+                                .Name("Filter")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .Events(e =>
+                                {
+                                    e.Change("onSelectStatus");
+                                })
+                                .BindTo(new List<SelectListItem>() {
+                                    new SelectListItem() {
+                                    Text = PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.GetRFQStatus(PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.VendorBiding),
+                                    Value = PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.VendorBiding
+                                    }
+                                })
+                                .HtmlAttributes(new { style = "width: 100%" })
+                            )
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon"
+                                   aria-describedby="tooltip_d4ny9s36oh">
+                                    <i class="la la-expand"></i>
+                                </a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top"
+                                     role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true"
+                                     x-placement="top" style="position: absolute; will-change: transform;
+                                        visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">
+                                    <div class="tooltip-arrow arrow" style="left: 48px;"></div>
+                                    <div class="tooltip-inner">Fullscreen</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.Transaction.RequestforQuotationList>()
+                    .Name("grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound("").ClientTemplateId("btnAction-template")
+                        .Title("Action").HtmlAttributes(new { style = "text-align:center;" })
+                        .HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                        columns.Bound("").ClientTemplate("#= LinktoInv(data) #").Title("RFQ Number").Width(200);
+                        columns.Bound(p => p.RequestforQuotationDate).Title("RFQ Date").Width(150).Format("{0:dd  MMM  yyyy}");
+                        columns.Bound(p => p.RequestforQuotationCategory).Title("Category").Width(150);
+                        columns.Bound(p => p.IsPreferedVendorName).Width(100).Title("Tender");
+                        columns.Bound(p => p.RequestorName).Width(200).Title("Requestor");
+                        columns.Bound(p => p.BusinessUnitName).Width(200).Title("Division");
+                        columns.Bound("").ClientTemplate("#= GetStatusButton(data) #").Title("Status").Width(150);
+                        columns.Bound(p => p.RfqStatusId).Hidden();
+
+                    })
+                        .Pageable(pageable => pageable
+                        .Refresh(true)
+                        .PageSizes(true)
+                        .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                        .Extra(false)
+                        .Operators(operators => operators
+                        .ForString(str => str.Clear()
+                        .Contains("Contains")
+                        .StartsWith("Start sWith")
+                        .EndsWith("End sWith")
+                        ))) 
+                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords() 
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(10)
+                        .Events(events => events.Error("errorHandler"))
+                        .Model(model => { model.Id(p => p.Id); })
+                        .Read(read => read.Action("ReadWithStatus", "RequestForQuotation").Data("GetIsPreferedVendor"))
+                        )
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:green'><i class='fa fa-edit'></i></span></a>
+    <a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+</script>
+<script>
+     function onFilterMode() {
+         if ($("#rfqType").val() != "") {
+
+             $('#grid').data("kendoGrid").dataSource.read();
+         }
+    };
+    function GetIsPreferedVendor() {
+        return {
+            mode: $("#rfqType").data("kendoDropDownList").value(),
+            RfqStatusId: @PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.VendorBiding,
+        };
+    }
+    function GetStatusButton(data) {
+        var button = "";
+        if (data.RfqStatusId == 1) {
+            button = "<center><a href='javascript: void(0);' onclick='#' class='m-badge m-badge--info m-badge--wide'>@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.GetRFQStatus(@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.Open)</a></center>";
+        } else if (data.RfqStatusId == 2) {
+
+            button = "<center><a href='javascript: void(0);' onclick='#' class='m-badge m-badge--warning m-badge--wide'>@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.GetRFQStatus(@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.OnProgress)</a></center>";
+        } else if (data.RfqStatusId == 3) {
+
+            button = "<center><a href='javascript: void(0);' onclick='#' class='m-badge m-badge--danger m-badge--wide'>@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.GetRFQStatus(@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.VendorBiding)</a></center>";
+        } else if (data.RfqStatusId == 4) {
+
+            button = "<center><a href='javascript: void(0);' onclick='#' class='m-badge m-badge--success m-badge--wide'>@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.GetRFQStatus(@PhoenixERPWebApp.Models.Enum.RequestForQuotationStatus.PO)</a></center>";
+        }
+        return button;
+    }
+    function LinktoInv(data) {
+
+        return "<center><a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'>" + data.RequestforQuotationNumber +"</a></center>";
+    }
+    function CheckList(data) {
+        var datasemua = "";
+        var datapo = "";
+        var datatax = "";
+        var datado = "";
+        var datagr = "";
+        var datacontract = "";
+        if (data.PoCheckList == 1) {
+            datapo = '<span>PO Done</span><br>';
+        } else {
+            datapo = "<span>PO Not Avalible</span><br>";
+        }
+
+        if (data.TaxCheckList == 1) {
+            datatax = "<span>Tax Done</span><br>";
+        } else {
+            datatax = "<span>Tax Not Avalible</span><br>";
+        }
+
+        if (data.DoCheckList == 1) {
+            datado =  "<span>Delivery Order Done</span><br>";
+        } else {
+            datado =  "<span>Delivery Order Not Avalible</span><br>";
+        }
+
+        if (data.GrCheckList == 1) {
+            datagr = "<span>Good Received Done</span><br>";
+        } else {
+            datagr =  "<span>Good Received Not Avalible</span><br>";
+        }
+
+        if (data.ContractCheckList == 1) {
+            datacontract = "<span>Contract Done</span><br>";
+        } else {
+            datacontract = "<span>Contract Not Avalible</span><br>";
+        }
+        datasemua = datapo + " " + datatax + " " + datado + " " + datagr + " " + datacontract;
+        return datasemua;
+
+    }
+    var refresh = false;
+    function InvoiceReceivedStatusParam() {
+
+        if ($("#Filter").val() == "") {
+            return { status: $("#Filter").val() };
+        } else {
+            refresh = true;
+            counter = 1;
+            return { status: $("#Filter").val() };
+        }
+
+
+    }
+    function onSelectStatus() {
+        $('#grid').data("kendoGrid").dataSource.read();
+    };
+
+    function editGridRow(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "RequestForQuotation")?Id=' + item.Id;
+    }
+
+    function deleteGridRow(e) {
+        deleteRow(e, '@Url.Action("Delete", "RequestForQuotation")');
+    }
+
+    var counter = 1;
+
+    function onDataBound(e) {
+        counter = 1;
+    }
+
+    function renderNumber(data) {
+          return "<center>" + counter++ + "</center>";
+    }
+
+    function createTAP(e) {
+        var item = dataItem(e);
+        console.log(item);
+        @*window.location.href = '@Url.Action("Detail", "TemporaryAcountPayable")?Id=' + item.Id;*@
+    }
+
+    (function ($) {
+        'use strict';
+          var param = (function (param) {
+                param.saveUrl = "@Url.Action("Save", "InvoiceReceived")";
+                param.submitUrl = "@Url.Action("Submit", "InvoiceReceived")";
+                param.getClientData = "@Url.Action("GetClientData", "InvoiceReceived")"
+                return param;
+            })(param || {});
+          var pageFunction = (function (pageFunction) {
+            pageFunction.init = function () {
+                //initialize
+            };
+
+           pageFunction.processtatus = function () {
+               callActionFile({ formId: "form", title: "Process", type: "POST", url: param.submitUrl });
+            };
+
+            return pageFunction;
+        })(pageFunction || {});
+
+    $(document).ready(function () {
+        $("#status_selebrity").click(function (e) {
+            alert("Handler for .click() called.");
+        });
+
+    });
+    }(jQuery));
+</script>
+

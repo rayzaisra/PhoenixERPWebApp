@@ -1,0 +1,38 @@
+
+@{
+    ViewBag.ModalTitle = "Task List";
+    ViewBag.ModalId = "taskbox";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<form id="TaskForm" method="post">
+    
+    <table id="taskTable" class="table tree tblnopadding">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Category</th>
+                <th style="width:50px">Remarks</th>
+                <th style="width:50px">Brand</th>
+                <th style="width:50px">Sub brand</th>
+                <th style="width:20px">qty</th>
+                <th style="width:80px">Price</th>
+                <th style="width:80px">Total</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <hr />
+    <div class="row">
+        <div class="col-lg-6 showrfqn">
+            <button type="button" onclick="savetaskdetil()" id="btn-save" class="btn btn-primary">Save</button>
+            <button type="button" id="taskclose" class="btn btn-secondary" data-dismiss="modal">Close</a>
+        </div>
+        <div class="col-lg-6 showrfq" style="display:none">
+            <button type="button" onclick="saverequest('rfq')" class="btn btn-success"><i class="fa fa-file-contract"></i> RFQ </button>
+            <button type="button" onclick="saverequest('ca')" class="btn btn-primary"><i class="fa fa-dollar-sign"></i> Cash Advance </button>
+
+        </div>
+    </div>
+</form>
+ 

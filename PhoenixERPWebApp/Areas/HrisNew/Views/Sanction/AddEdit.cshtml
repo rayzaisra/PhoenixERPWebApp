@@ -1,0 +1,406 @@
+@model PhoenixERPWebApp.Models.Termination
+@{
+    if (Model.IsApprove == true)
+    {
+        ViewData["Title"] = "Sanction Request Form Approval";
+    }
+    else
+    {
+        ViewData["Title"] = "Sanction Request Form";
+    }
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    //DateTime? FaulsNoticeDate = DateTime.Now;
+    DateTime? InterviewWarningDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        //if (FaulsNoticeDate >= Model.FaulsNoticeDate)
+        //{
+        //    FaulsNoticeDate = Model.FaulsNoticeDate;
+        //}
+
+        if (InterviewWarningDate >= Model.InterviewWarningDate)
+        {
+            InterviewWarningDate = Model.InterviewWarningDate;
+        }
+    }
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="indexapproval" asp-controller="sanction" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Sanction Request Approval</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="index" asp-controller="sanction" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Sanction Request</span></a>
+                    }
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="addedit" asp-controller="sanction" asp-area="hrisnew" asp-route-Id="@Model.Id" asp-route-isApprove="true" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="sanction" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="sanction" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Sanction Request Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formTermination" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="Requestor" />
+                                                
+                        <partial name="_RequestEmploye" /> 
+                        <br/>
+                        <partial name="_AssignEmploye" />
+                        <br/> 
+                        
+                        <div class="row" id="sanction_data_detail">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="sanction_Detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head show" role="tab" id="sanction_Detail_head" data-toggle="collapse" href="#sanction_Detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Sanction Information</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="sanction_Detail_body" role="tabpanel" aria-labelledby="sanction_Detail_head" data-parent="#sanction_Detail">
+                                            <div class="m-accordion__item-content">                            
+                                                <div class="row">                                                
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="FaulsNoticeDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.FaulsNoticeDate)
+                                                                .Format("dd MMM yyyy")
+                                                                //.Min($"{FaulsNoticeDate}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose a {Html.DisplayNameFor(m => m.FaulsNoticeDate)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="InterviewWarningDate"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DatePickerFor(m => m.InterviewWarningDate)
+                                                                .Format("dd MMM yyyy")
+                                                                .Min($"{InterviewWarningDate}")
+                                                                .HtmlAttributes(new
+                                                                {
+                                                                    style = "width:100%",
+                                                                    @class = "form-control form-control-sm m-input",
+                                                                    required = "required",
+                                                                    placeholder = $"Choose an {Html.DisplayNameFor(m => m.InterviewWarningDate)}",
+                                                                    onkeydown = "javascript:return false;"
+                                                                })
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="FaultCategoryId"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().DropDownListFor(x => x.FaultCategoryId)
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.FaultCategoryId)}")
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                .Filter(FilterType.Contains)
+                                                                .DataSource(source => source
+                                                                    .Custom()
+                                                                    .Transport(transport => transport
+                                                                    .Read(read =>
+                                                                    {
+                                                                        read.Action("GetDDLFaultCategory", "Dropdown", new { area = "HrisNew" });
+                                                                    }))
+                                                                    .ServerFiltering(false)
+                                                                )
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                                <div class="row">    
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="InterviewWarningFile"></label> <span class="req">*</span> :
+                                                             <div id="divInterviewFile"></div>
+                                                             <div style="width:100%">
+                                                                 <input type="hidden" asp-for="InterviewWarningFile" />
+                                                                 <a href='javascript: void(0);' id="linkInterviewDownloadFile" onclick='downloadInterviewFile()'></a> &nbsp;
+                                                                 <a href='javascript: void(0);' id="linkInterviewRemoveFile" onclick='removeInterviewFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="StatementOfPoliceReport"></label>:
+                                                             <div id="divPoliceFile"></div>
+                                                             <div style="width:100%">
+                                                                 <input type="hidden" asp-for="StatementOfPoliceReport" />
+                                                                 <a href='javascript: void(0);' id="linkPoliceDownloadFile" onclick='downloadPoliceFile()'></a> &nbsp;
+                                                                 <a href='javascript: void(0);' id="linkPoliceRemoveFile" onclick='removePoliceFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    @*<div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            @(Html.Kendo().CheckBoxFor(x => x.IsTerminate))
+                                                        </div>
+                                                    </div>*@
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label asp-for="Reason"></label> <span class="req">*</span> :
+                                                            @(Html.Kendo().EditorFor(x => x.Reason)
+                                                                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                                .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                                .Placeholder($"Type your {Html.DisplayNameFor(m => m.Reason)} here")
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                                
+                        <partial name="_HistoryApproval" />
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                    {
+                                        @if ((Model.Status ?? 0) == PhoenixERPWebApp.Models.StatusTransaction.Draft)
+                                        {
+                                            <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        }
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+
+                                    @if (Model.IsApprove == true)
+                                    {
+                                        @if (ViewBag.processApprove == true)
+                                        {
+                                            <button type="button" id="btnShow" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                            @*<button type="button" id="btnReject" class="btn btn-danger edit"><span class="fa fa-ban"></span> Reject</button>*@
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                        }
+                                        <a asp-action="Indexapproval" asp-controller="sanction" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="index" asp-controller="sanction" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>          
+
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>         
+    $(document).ready(function () {
+        var InterviewFileName = '@Model.InterviewWarningFileName';
+        if (InterviewFileName == '') {
+            InterviewFile();
+        } else {
+            $("#linkInterviewDownloadFile").text(InterviewFileName);
+        }
+        
+        var PoliceFileName = '@Model.StatementOfPoliceReportName';
+        if (PoliceFileName == '') {
+            PoliceFile();
+        } else {
+            $("#linkPoliceDownloadFile").text(PoliceFileName);
+        }
+
+        if ('@Model.Status' != '') {
+            if ('@Model.IsApprove' == "True" || !('@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Draft')) {// || '@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Rejected')) {
+                $('.k-editor-toolbar').hide();
+                $($("#Reason").data().kendoEditor.body).attr("contentEditable", false);
+                $($("#Reason").data().kendoEditor.body).css("background-color", "#F8F9FA");
+
+                $("#FaulsNoticeDate").data("kendoDatePicker").readonly();
+                $("#InterviewWarningDate").data("kendoDatePicker").readonly();
+                $("#FaultCategoryId").data("kendoDropDownList").readonly();
+                $("#linkInterviewRemoveFile").empty();
+                $("#linkPoliceRemoveFile").empty();
+                //$("#IsTerminate").attr("disabled", true);
+                $("#search").remove();
+            }
+        }
+    });
+
+
+    function removeInterviewFile() {
+        InterviewFile();
+    }
+
+    function downloadInterviewFile() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#InterviewWarningFile").val() }});
+    }
+
+    function InterviewFile() {
+        $("#linkInterviewDownloadFile").empty();
+        $("#linkInterviewRemoveFile").empty();
+        $("#divInterviewFile").empty().append("<input name='fileInterview' id='fileInterview' type='file' required/>");
+
+        $("#fileInterview").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+    
+    function removePoliceFile() {
+        PoliceFile();
+    }
+
+    function downloadPoliceFile() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#StatementOfPoliceReport").val() }});
+    }
+
+    function PoliceFile() {
+        $("#linkPoliceDownloadFile").empty();
+        $("#linkPoliceRemoveFile").empty();
+        $("#divPoliceFile").empty().append("<input name='filePolice' id='filePolice' type='file'/>");
+
+        $("#filePolice").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+    $('#btnApprove').click(function () {
+        $("#RemarkRejected").removeAttr("required", "required");
+        callActionFile({ formId: "formTermination", title: "approval request", type:"POST", url: '@Url.Action("approve", "sanction")'});
+    });
+
+    $('#btnReject').click(function () {
+        callActionFile({ formId: "formTermination", title: "cancel request", type:"POST", url: '@Url.Action("reject", "sanction")'});
+    });
+
+
+    $('#btnSubmit').click(function () {
+        callActionFile({ formId: "formTermination", title: "submit", type:"POST", url: '@Url.Action("submit", "sanction")'});
+    });    
+    
+    $('#btnSave').click(function () {
+        callActionFile({ formId: "formTermination", title: "save", type:"POST", url: '@Url.Action("save", "sanction")'});
+    });
+</script>

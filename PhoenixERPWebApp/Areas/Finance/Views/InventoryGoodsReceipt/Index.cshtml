@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "Good Receipt List";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+} 
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Goods and Bast Service Receipt</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Procurement & Expenses</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a  asp-action="Index" asp-controller="InventoryGoodsReceipt" asp-area="Finance" class="m-nav__link">
+                        <span class="m-nav__link-text">Goods and Bast Service Receipt</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div> 
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div class="input-group input-group-sm">
+                                <a asp-action="Detail" asp-controller="InventoryGoodsReceipt" asp-area="Finance" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12"> 
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.InventoryGoodsReceipt>()
+                        .Name("grid")
+                        .Columns(columns =>
+                        {
+                           columns.Bound("").Title("#").Width(35).Filterable(false)
+                            .HtmlAttributes(new { style = "text-align:center;", @class = "row-number" })
+                            .HeaderHtmlAttributes(new { style = "text-align:center;" }); 
+                            columns.Bound(p => p.GoodsReceiptNumber).ClientTemplate("#= LinktoInv(data) #").Title("Goods and Bast Service Receipt number").Width(280);
+                            columns.Bound(p => p.PurchaseOrderNumber).Width(200);
+                            columns.Bound(p => p.JobIdAndName).Width(250).Title("Job ID - Name"); 
+                            columns.Bound(p => p.VendorName).Width(250);
+                            columns.Bound(p => p.Status).Width(150);
+                        })
+                        .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model =>
+                            {
+                                model.Id(p => p.Id);
+                            })
+                            .Read(read => read.Action("Read", "InventoryGoodsReceipt"))
+                        )
+                        .Events(x => x.DataBound("dataBoundEvent"))
+                        .NoRecords()
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                            .Extra(false)
+                            .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                                .Contains("Contains")
+                                .StartsWith("Start sWith")
+                                .EndsWith("End sWith")
+                            )))
+                    )
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function LinktoInv(data) {
+        return "<center><a href='javascript: void(0);' onclick='View(this)' title='Edit' class='edit'>" + data.GoodsReceiptNumber + "</a></center>";
+    }
+
+    function View(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "InventoryGoodsReceipt")?Id=' + item.Id;
+    }
+
+</script>
+

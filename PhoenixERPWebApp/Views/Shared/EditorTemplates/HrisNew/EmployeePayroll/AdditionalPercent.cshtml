@@ -1,0 +1,2 @@
+﻿@model decimal?
+@Html.Kendo().NumericTextBoxFor(x => x).Min(0).Max(100).Format("n2").HtmlAttributes(new { style = "width:100%;", required = "required" }).Events(x => x.Change("additionalPercent_changeEvent"))

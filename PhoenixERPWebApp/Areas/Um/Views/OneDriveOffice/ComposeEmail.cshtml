@@ -1,0 +1,218 @@
+﻿@{
+    ViewData["Title"] = "One Drive Office 365";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://simditor.tower.im/assets/styles/simditor.css" />
+<style>
+    .table th, .table td {
+        padding: .75rem;
+        vertical-align: middle;
+        border-top: 1px solid #f4f5f8;
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Otlook Email</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">System</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Um/OneDriveOffice/listemail")" class="m-nav__link">
+                        <span class="m-nav__link-text">Outlook Email</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Compose Email</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <h3>NEW MESSAGE</h3>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <button class="btn btn-sm btn-info btn-sent-email"><i class="la la-send"></i> SEND</button>
+
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">
+                                    <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <table class="table table-condensed">
+                        <tbody>
+                            <tr>
+                                <td style="width:75px"><i class="la la-user"></i> TO</td>
+                                <td style="padding-top:0 !important; margin-top:0 !important">
+                                    <table style="border:0;width:65%" class="tbl-add-to">
+                                        <tbody>
+                                            <tr style="border:0">
+                                                <td style="border:0">
+                                                    <input class="form-control form-control-sm in-to" type="email">
+                                                </td>
+                                                <td style="border:0">
+                                                    <button class="btn btn-sm btn-default btn-add-to"><i class="la la-plus-circle"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:75px">Subject</td>
+                                <td style="padding-top:0 !important; margin-top:0 !important">
+                                    <table style="border:0;width:65%">
+                                        <tbody>
+                                            <tr style="border:0">
+                                                <td style="border:0">
+                                                    <input class="form-control form-control-sm in-subject">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:75px">Attachment</td>
+                                <td style="padding-top:0 !important; margin-top:0 !important">
+                                    <table style="border:0;width:65%">
+                                        <tbody>
+                                            <tr style="border:0">
+                                                <td style="border:0">
+                                                    <input class="form-control form-control-sm in-attachment" type="file" multiple>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:80px">Template</td>
+                                <td style="padding-top:0 !important; margin-top:0 !important">
+                                    <table style="border:0;width:65%">
+                                        <tbody>
+                                            <tr style="border:0">
+                                                <td style="border:0">
+                                                    <select id="ddlTemplate" class="form-control-sm" style="width:100%"></select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="background:transparent">
+                                    <div class="col-md-12" style="padding:25px;">
+                                        <textarea id="editor" placeholder="write content email here" autofocus contenteditable='true'></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button class="btn btn-sm btn-info btn-sent-email float-right"><i class="la la-send"></i> SEND</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_FormUpload" />
+@section Scripts{
+    <script src="~/Areas/Um/Scripts/olmail.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://simditor.tower.im/assets/scripts/module.js"></script>
+    <script type="text/javascript" src="https://simditor.tower.im/assets/scripts/uploader.js"></script>
+    <script type="text/javascript" src="https://simditor.tower.im/assets/scripts/hotkeys.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simditor/2.3.28/lib/simditor.js" integrity="sha256-RZKH5rrnAzXvlsaLhSw86OG4vcA3WUSLNi4syHI49b8=" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $('#summernote').summernote();
+            $('.btn-add-to').on('click', function () {
+                addTo();
+            });
+            var editor = new Simditor({
+                textarea: $('#editor')
+            });
+            var dt = sessionStorage.getItem('uniquePage');
+            dt = JSON.parse(dt);
+            if (dt !== null) {
+                if (dt.isAdd) {
+                    $('.btn-sent-email').on('click', function () {
+                        sentEmail();
+                    });
+                }
+                else {
+                    $('.btn-sent-email').hide();
+                }
+            }
+
+            bindTemplateEmail();
+            $('#ddlTemplate').select2({ allowClear: true });
+            $('#ddlTemplate').on('select2:select', function (e) {
+                bindBodyEmail(e.params.data.id);
+            });
+
+        });
+
+        (function () {
+            $(function () {
+                var $preview, editor, mobileToolbar, toolbar;
+                Simditor.locale = 'en-US';
+                toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent', 'alignment'];
+                mobileToolbar = ["bold", "underline", "strikethrough", "color", "ul", "ol"];
+                editor = new Simditor({
+                    textarea: $('#editor'),
+                    placeholder: 'write content email here',
+                    toolbar: toolbar,
+                    pasteImage: true,
+                    upload: location.search === '?upload' ? {
+                        url: '/upload'
+                    } : false
+                });
+                $preview = $('#preview');
+                if ($preview.length > 0) {
+                    return editor.on('valuechanged', function (e) {
+                        return $preview.html(editor.getValue());
+                    });
+                }
+            });
+
+        }).call(this);
+    </script>
+
+}
+
+

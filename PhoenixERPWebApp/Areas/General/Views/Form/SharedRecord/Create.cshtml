@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "SharedRecord";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="SharedRecordFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="application_entity_id">application_entity_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="application_entity_id" id="application_entity_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="can_read">can_read</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="can_read" id="can_read"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="can_write">can_write</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="can_write" id="can_write"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="record_id">record_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="record_id" id="record_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="shared_to">shared_to</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="shared_to" id="shared_to"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/SharedRecord" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/SharedRecord.create.js"></script>
+}

@@ -1,0 +1,572 @@
+@{
+    ViewData["Title"] = "Summary Payroll By Legal Entity";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Summary Payroll By Legal Entity</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="summarypayroll" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Summary Payroll By Legal Entity</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div> 
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formPayroll" class="form-horizontal form-bordered" role="form">
+                        <div class="row">
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Month</label> <span class="req">*</span> :
+                                    @(Html.Kendo().DropDownList()
+                                        .Name("Month")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a Month")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLMonth", "Dropdown", new { area = "HrisNew" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        )
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Year</label> <span class="req">*</span> :
+                                    @(Html.Kendo().DropDownList()
+                                        .Name("Year")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a Year")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLYear", "Dropdown", new { area = "HrisNew" });
+                                            }))
+                                            .ServerFiltering(false)
+                                        )
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Legal Entity</label> :
+                                    @(Html.Kendo().DropDownList()
+                                        .Name("LegalEntityId")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($"Choose a Legal Entity")
+                                        .HtmlAttributes(new { style = "width:100%;"})
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Division</label>  :
+                                    @(Html.Kendo().DropDownList()
+                                        .Name("DivisionId")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDivision", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($"Choose a division")
+                                        .HtmlAttributes(new { style = "width:100%;" })
+                                    )
+                                </div>
+                            </div>
+                          
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <button type="button" id="btnGenerate" class="btn btn-primary edit" style="height:45px; margin-top:8px;"><span class="fa fa-plus"></span> Generate</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+                    <div id="gridPayroll">No records available.</div>
+                    @*<div id="gridPayroll2" style="display:none"></div>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<style>
+    .k-grid-footer tr.k-footer-template td {
+        border-style: solid;
+        border-width: 1px 0 0 0;
+        text-align: right;
+    }
+</style>
+<script>
+    $('#btnGenerate').click(function () {
+        var valid = $("#formPayroll").validate().form();
+        if (valid) {
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            var month = $("#Month").data("kendoDropDownList").value();
+            var year = $("#Year").data("kendoDropDownList").value();
+            var legalEntityId = $("#LegalEntityId").data("kendoDropDownList").value();
+            var divisionId = $('#DivisionId').data("kendoDropDownList").value();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetGenerateList", "SummaryPayroll")',
+                data: { month: month, year: year, legalEntityId: legalEntityId, divisionId: divisionId},
+                dataType: 'json',
+                aync: false,
+                success: function (result) {
+                    if (result.success) {
+                        generateGrid(result);
+                        //generateGrid2(result);
+                    } else {
+                        swal('Error', result.message, 'error');
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    var errorMessage = e.responseJSON.errorMessage;
+                    if (errorMessage === "" || errorMessage === undefined) {
+                        errorMessage = "Ooops, something went wrong !";
+                    }
+                    //console.log(errorMessage);
+                    console.log(errorMessage);
+                    mApp.unblock("#m_blockui_list");
+                }
+            });
+        }
+    });
+
+    function generateGrid2(result) {
+        if (result.Data != null) {
+            var model = generateModel(result.Data[0]);
+            var month = $("#Month").data("kendoDropDownList").text();
+            var year = $("#Year").data("kendoDropDownList").value();
+            var legalEntity = $("#LegalEntityId").data("kendoDropDownList").text();
+
+            $("#gridPayroll2").empty().kendoGrid({
+                dataSource: {
+                    toolbar: ["excel"]
+                    ,data: result.Data,
+                    excel: {
+                        fileName: "List Employee.xlsx"
+                    }
+                    ,model: {
+                        id: "employee_basic_info_id",
+                        fields: [{ employee_basic_info_id: { type: "string", nullable: true } },
+                            { rpt_employee_code: { type: "string", nullable: true } },
+                            { rpt_Employee_Name: { type: "string", nullable: true } },
+                            { rpt_Legal_Entity_Name: { type: "string", nullable: true } },
+                            { rpt_Division: { type: "string", nullable: true } },
+                            { rpt_Join_Date: { type: "string", nullable: true } },
+                            { rpt_Status_Pph21: { type: "string", nullable: true } },
+                            { rpt_bank_id: { type: "string", nullable: true } },
+                            { rpt_Account_No: { type: "string", nullable: true } }] 
+                    },
+                    pageSize: 10,
+                    //aggregate: [
+                    //    { field: "rpt_employee_code" },
+                    //    { field: "rpt_Employee_Name"},
+                    //    { field: "rpt_Legal_Entity_Name"},
+                    //    { field: "rpt_bank_id" },
+                    //    { field: "rpt_Account_No" }
+                    //]
+                    //aggregate: aggrSum(result.Data)
+                },
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                resizable: true,
+                columns: [
+                    { title: "Employee Code", field: "rpt_employee_code", width: 200 },
+                    { title: "Employee Name", field: "rpt_Employee_Name", width: 200 },
+                    { title: "Legal Entity", field: "rpt_Legal_Entity_Name", width: 200 },
+                    { title: "Division", field: "rpt_Division", width: 200 },
+                    { title: "Join Date", field: "rpt_Join_Date", width: 200 },
+                    { title: "Status Pph21", field: "rpt_Status_Pph21", width: 200 },
+                    { title: "Nama Bank", field: "rpt_bank_id", width: 200 },
+                    { title: "Nomor Rekening", field: "rpt_Account_No", width: 200 },
+
+                ],
+            }).data('kendoGrid');
+        }
+
+    }
+
+    function generateGrid(result) {
+
+        if (result.Data != null) {
+            var model = generateModel(result.Data[0]);
+            var month = $("#Month").data("kendoDropDownList").text();
+            var year = $("#Year").data("kendoDropDownList").value();
+            var legalEntity = $("#LegalEntityId").data("kendoDropDownList").text();
+
+            $("#gridPayroll").empty().kendoGrid({
+                toolbar: [{ name: "excel" }
+                //    , {
+                //    name:"custom" , text:"list"
+                //}
+                ],
+                excel: {
+                    fileName: "Summary Payroll - " + legalEntity + " - " + month + " " + year + ".xlsx",
+                    proxyURL: "@Url.Action("ExportExcel", "SummaryPayroll")",
+                    filterable: true
+                },
+                dataSource: {
+                    data: result.Data,
+                    model: {
+                        id: "employee_basic_info_id",
+                        fields: [{ employee_basic_info_id: { type: "string", nullable: true } },
+                        { rpt_Employee_Name: { type: "string", nullable: true } },
+                        { rpt_Legal_Entity_Name: { type: "string", nullable: true } },
+                        { rpt_Division: { type: "string", nullable: true } },
+                        { rpt_Join_Date: { type: "string", nullable: true } },
+                        { rpt_Status_Pph21: { type: "string", nullable: true } },
+                        { rpt_Basic_Salary: { type: "number", nullable: true } },
+                        { rpt_Bonus: { type: "number", nullable: true } },
+                        { rpt_THR: { type: "number", nullable: true } },
+                        { rpt_Jaminan_Pensiun_BPJS: { type: "number", nullable: true } },
+                        { rpt_Jamsostek_BPJS_TK: { type: "number", nullable: true } },
+                        { rpt_Overtime: { type: "number", nullable: true } },
+                        { rpt_Phone_Allowance: { type: "number", nullable: true } },
+                        { rpt_Timeslip_Allowance: { type: "number", nullable: true } },
+                        { rpt_housing_allowance: { type: "number", nullable: true } },
+                        { rpt_job_allowance: { type: "number", nullable: true } },
+                        { rpt_Transportation_Allowance: { type: "number", nullable: true } },
+                        { rpt_Tambahan_Rapel: { type: "number", nullable: true } },
+                        { rpt_Tunjangan_Jabatan: { type: "number", nullable: true } },
+                        { rpt_Gaji_Kotor: { type: "number", nullable: true } },
+                        { rpt_Iuran_sukarela_Koperasi_Nava: { type: "number", nullable: true } },
+                        { rpt_Iuran_Wajib_Koperasi_Nava: { type: "number", nullable: true } },
+                        { rpt_Pot_Jaminan_Pensiun_BPJS: { type: "number", nullable: true } },
+                        { rpt_potongan_bpjs_6: { type: "number", nullable: true } },
+                        { rpt_potongan_lain_lain: { type: "number", nullable: true } },
+                        { rpt_Potongan_Unpaid_leave: { type: "number", nullable: true } },
+                        { rpt_Loan: { type: "number", nullable: true } },
+                        { rpt_Pph_21: { type: "number", nullable: true } },
+                        { rpt_THP: { type: "number", nullable: true } },
+                        { rpt_Take_Home_Pay: { type: "number", nullable: true } },
+                        { rpt_bank_id: { type: "string", nullable: true } },
+                        { rpt_Account_No: { type: "string", nullable: true } }]
+                    },
+                    pageSize: 10,
+                    aggregate: [
+                        { field: "rpt_Basic_Salary", aggregate: "sum" },
+                        { field: "rpt_Bonus", aggregate: "sum" },
+                        { field: "rpt_THR", aggregate: "sum" },
+                        { field: "rpt_Jaminan_Pensiun_BPJS", aggregate: "sum" },
+                        { field: "rpt_Jamsostek_BPJS_TK", aggregate: "sum" },
+                        { field: "rpt_Overtime", aggregate: "sum" },
+                        { field: "rpt_Phone_Allowance", aggregate: "sum" },
+                        { field: "rpt_Timeslip_Allowance", aggregate: "sum" },
+                        { field: "rpt_housing_allowance", aggregate: "sum" },
+                        { field: "rpt_job_allowance", aggregate: "sum" },
+                        { field: "rpt_Transportation_Allowance", aggregate: "sum" },
+                        { field: "rpt_Tambahan_Rapel", aggregate: "sum" },
+                        { field: "rpt_Tunjangan_Jabatan", aggregate: "sum" },
+                        { field: "rpt_Gaji_Kotor", aggregate: "sum" },
+                        { field: "rpt_Iuran_sukarela_Koperasi_Nava", aggregate: "sum" },
+                        { field: "rpt_Iuran_Wajib_Koperasi_Nava", aggregate: "sum" },
+                        { field: "rpt_Pot_Jaminan_Pensiun_BPJS", aggregate: "sum" },
+                        { field: "rpt_potongan_bpjs_6", aggregate: "sum" },
+                        { field: "rpt_potongan_lain_lain", aggregate: "sum" },
+                        { field: "rpt_Potongan_Unpaid_leave", aggregate: "sum" },
+                        { field: "rpt_Loan", aggregate: "sum" },
+                        { field: "rpt_Pph_21", aggregate: "sum" },
+                        { field: "rpt_THP", aggregate: "sum" },
+
+                    ]
+                   //aggregate: aggrSum(result.Data)
+                },
+                //height: 350,
+                //groupable: true,
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                resizable: true,
+                columns: [
+                    { title: "Employee Name", field: "rpt_Employee_Name", width: 250 },
+                    { title: "Legal Entity Name", field: "rpt_Legal_Entity_Name", width: 250 },
+                    { title: "Division", field: "rpt_Division", width: 250 },
+                    { title: "Join Date", field: "rpt_Join_Date", width: 250 },
+                    { title: "Status Pph21", field: "rpt_Status_Pph21", width: 250 },
+                    { title: "Basic Salary", field: "rpt_Basic_Salary", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Bonus", field: "rpt_Bonus", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "THR", field: "rpt_THR", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Jaminan Pensiun BPJS", field: "rpt_Jaminan_Pensiun_BPJS", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Jamsostek BPJS TK", field: "rpt_Jamsostek_BPJS_TK", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Overtime", field: "rpt_Overtime", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Phone Allowance", field: "rpt_Phone_Allowance", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Timeslip Allowance", field: "rpt_Timeslip_Allowance", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Housing Allowance", field: "rpt_housing_allowance", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Job Allowance", field: "rpt_job_allowance", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Transportation Allowance", field: "rpt_Transportation_Allowance", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Tambahan Rapel", field: "rpt_Tambahan_Rapel", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Tunjangan Jabatan", field: "rpt_Tunjangan_Jabatan", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Gaji Kotor", field: "rpt_Gaji_Kotor", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Iuran Sukarela Koperasi NAVA", field: "rpt_Iuran_sukarela_Koperasi_Nava", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Iuran Wajib Koperasi NAVA", field: "rpt_Iuran_Wajib_Koperasi_Nava", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Potongan Jaminan Pensiun BPJS", field: "rpt_Pot_Jaminan_Pensiun_BPJS", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Potongan BPJS 6 %", field: "rpt_potongan_bpjs_6", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Potongan Lain Lain", field: "rpt_potongan_lain_lain", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Potongan Unpaid Leave", field: "rpt_Potongan_Unpaid_leave", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Loan", field: "rpt_Loan", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "PPH 21", field: "rpt_Pph_21", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "THP", field: "rpt_THP", width: 190, format: "{0:n2}", aggregates: ["sum"], attributes: { style: "text-align:right" }, footerTemplate: "#=kendo.format('{0:n2}',sum)#" },
+                    { title: "Bank", field: "rpt_bank_id", width: 250},
+                    { title: "Account Number", field: "rpt_Account_No", width: 250}
+                ],
+                
+            }).data('kendoGrid');
+        } else {
+            $("#gridPayroll").empty().append("<div>No records available.</div>");
+        }
+        
+    }
+    
+    function generateModel(result) {
+        var model = {};
+        model.id = "employee_basic_info_id";
+        var fields = {};
+        for (var property in result) {
+            var propType = typeof result[property];
+
+            if (property == "employee_basic_info_id" || property == "rpt_Employee_Name" || property == "rpt_Legal_Entity_Name" || property == "rpt_Division" || property == "rpt_Join_Date" || property == "rpt_Status_Pph21" || property == "rpt_Account_No" || property == "rpt_bank_id" || property == "rpt_employee_code") {
+                fields[property] = {
+                    type: "string",
+                    nullable: true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            } else {
+                fields[property] = {
+                    type: "number",
+                    nullable: true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            }
+            //else if (propType == "number") {
+            //    fields[property] = {
+            //        type: "number",
+            //        nullable: true
+            //        //validation: {
+            //        //    required: true
+            //        //}
+            //    };
+            //} else if (propType == "boolean") {
+            //    fields[property] = {
+            //        type: "boolean",
+            //        nullable: true
+            //        //validation: {
+            //        //    required: true
+            //        //}
+            //    };
+            //} else if (propType == "string") {
+            //    var parsedDate = kendo.parseDate(result[property]);
+            //    if (parsedDate) {
+            //        fields[property] = {
+            //            type: "date",
+            //            nullable: true
+            //            //validation: {
+            //            //    required: true
+            //            //}
+            //        };
+            //        dateFields.push(property);
+            //    } else {
+            //        fields[property] = {
+            //            type: "string",
+            //            nullable: true
+            //            //validation: {
+            //            //    required: true
+            //            //}
+            //        };
+            //    }
+            //} else {
+            //    fields[property] = {
+            //        type: "string",
+            //        nullable: true
+            //        //validation: {
+            //        //    required: true
+            //        //}
+            //    };
+            //}
+
+        }
+        model.fields = fields;
+     
+        return model;
+    }
+
+    function ColumnGeneration(result) {
+        var GridColumnGeneration = [];
+        $.each(result[0], function (gridTitle, element) {
+            if (gridTitle != "employee_basic_info_id") {
+                if (gridTitle !== "rpt_Employee_Name" && gridTitle !== "rpt_Legal_Entity_Name" && gridTitle !== "rpt_Division" && gridTitle !== "rpt_Join_Date" && gridTitle !== "rpt_Status_Pph21") {
+                    element = parseFloat(element);
+                }
+
+                var propType = typeof element;
+                var title = gridTitle.replaceAll("rpt_", "").replaceAll("_", " ");
+                title = title.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                    return letter.toUpperCase();
+                });
+                var width = 190;
+                if (gridTitle == "rpt_Employee_Name") width = 250;
+                if (gridTitle == "rpt_Legal_Entity_Name") width = 250;
+                if (gridTitle == "rpt_Division") width = 250;
+                if (gridTitle == "rpt_Join_Date") width = 250;
+                if (gridTitle == "rpt_Status_Pph21") width = 250;
+
+                if (propType == "number") {
+                    GridColumnGeneration.push({ title: title, field: gridTitle, width: width, format: "{0:n2}", attributes: { style: "text-align:right" }, aggregates: ["sum"], footerTemplate: "#=kendo.format('{0:n2}',sum)#" });
+                } else if (propType == "object") {
+
+                    GridColumnGeneration.push({ title: title, field: gridTitle, width: width, format: "{0:n2}", attributes: { style: "text-align:right" }, aggregates: ["sum"], footerTemplate: "#=kendo.format('{0:n2}',sum)#" });
+                } else if (title == "Employee Name" || title == "Legal Entity Name" || title == "Join Date" || title == "Division" || title == "Status Pph21") {
+
+                    GridColumnGeneration.push({ title: title, field: gridTitle, width: width });
+                }
+                else {
+                    GridColumnGeneration.push({ title: title, field: gridTitle, width: width, format: "{0:n2}", attributes: { style: "text-align:right" }, aggregates: ["sum"], footerTemplate: "#=kendo.format('{0:n2}',sum)#" });
+                }
+            }
+        });
+
+        return GridColumnGeneration;
+    }
+
+    function aggrSum(result) {
+        
+        var GridColumnGeneration = [];
+        $.each(result[0], function (gridTitle, element) {
+            if (gridTitle != "employee_basic_info_id") {
+                if (gridTitle !== "rpt_Employee_Name" && gridTitle !== "rpt_Legal_Entity_Name") {
+                    element = parseFloat(element);
+                }
+                var propType = typeof element;
+                //var title = gridTitle.replaceAll("rpt_", "").replaceAll("_", " ");
+                var width = 190;
+                if (gridTitle == "rpt_Employee_Name") width = 250;
+                if (gridTitle == "rpt_Legal_Entity_Name") width = 250;
+
+                //if (propType == "number") {
+                //    GridColumnGeneration.push({ field: gridTitle, aggregate: "sum" });
+                //} else if (propType == "object") {
+                //    GridColumnGeneration.push({ field: gridTitle});
+                //}
+                //else {
+                //    GridColumnGeneration.push({ field: gridTitle});
+                //}
+                GridColumnGeneration.push({ field: gridTitle, aggregate: "sum" });
+
+
+            }
+        });
+       
+        return GridColumnGeneration;
+    }
+
+    String.prototype.replaceAll = function (search, replacement) {
+        var target = this;
+        return target.split(search).join(replacement);
+    };
+
+    $("#gridPayroll").on("click", ".k-grid-custom", function () {
+        var grid = $("#gridPayroll2").data("kendoGrid");
+        grid.bind("excelExport", function (e) {
+            e.workbook.fileName = "Employee List Account.xlsx";
+        });
+        grid.saveAsExcel();
+
+    });
+
+  
+
+   
+</script>

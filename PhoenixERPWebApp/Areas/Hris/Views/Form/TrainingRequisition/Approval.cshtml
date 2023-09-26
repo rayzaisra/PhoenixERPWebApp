@@ -1,0 +1,207 @@
+@{
+    ViewData["Title"] = "Training Approval";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+
+    @CodeMarvel.Infrastructure.Sessions.SessionManager.UserSession.BusinessUnitId
+}
+@section Panelhead{
+    <span class="translate" data-args="create">Approval</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <style>
+        .m-margin__top-20 {
+            margin-top: 20px !important;
+        }
+
+        .redtext {
+            color: red !important;
+        }
+
+        .bluetext {
+            color: blue !important;
+        }
+
+        .greentext {
+            color: greenyellow !important;
+        }
+    </style>
+    <legend>Training Request Approval</legend>
+    <br />
+    <h6>Request Information</h6>
+    <hr />
+    <form id="TrainingApprovalFormCreate" method="post">
+        <input value="@ViewBag.RecordID" type="hidden" name="id" id="id" />
+        <input type="hidden" name="created_on" id="created_on" />
+        <div class="row ">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Request Date">Request Date</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="request_date" id="request_date">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Request Status">Request Status</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="request_status" id="request_status">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">&nbsp;</div>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Requester">Requester</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="requester" id="requester">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job Title">Job Title</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="job_title_id" id="job_title_id">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Grade">Grade</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="job_grade_id" id="job_grade_id">
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <h6>Request Detail</h6>
+        <hr />
+        <div class="row ">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Training Name">Training Name</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="training_name" id="training_name">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Training Type">Training Type</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="training_type" id="training_type">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row ">
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Participant">Participant</span></label>
+                    <!-- begin: Datatable -->
+                    <table class="table table-striped- table-bordered table-hover table-checkable" id="dt_basic_job_posting" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Job Title</th>
+                                <th>Grade</th>
+                                <th>Division</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="no_data">
+                                <td colspan="4">No Data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- end:: Datatable -->
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Purpose Start Date">Purpose Start Date</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="start_date" id="start_date">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Purpose End Date">Purpose End Date</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="end_date" id="end_date">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Venue">Venue</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="venue" id="venue">
+                </div>
+            </div>
+
+        </div>
+        <div class="row ">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Training Cost">Training Cost</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="training_cost" id="training_cost">
+                </div>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Notes">Notes</span> :</label>
+                    <textarea class="form-control form-control-sm m-input m-input--square" name="notes" id="notes" cols="20"></textarea>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-12 m-form__group-sub">
+                <div class="form-group">
+                    <label>
+                        <h5>Approval</h5>
+                    </label>
+                    <div class="m-section__content">
+                        <table class="table table-striped table-bordered table-hover table-checkable" id="TrainingAprovalApproverList">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Title</th>
+                                    <th>Approver Name</th>
+                                    <th><center>Approval Status</center></th>
+                                    <th><center>Approved Date</center></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="no_data">
+                                    <td colspan="5">No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <center>
+
+                    <button type="button" id="btn-save" class="btn btn-success" onclick="ApprovedData()">Approved</button>
+                    <a data-target="#TrainingRequisitionModalReject" data-toggle="modal" id="btn-submit" name="btn-submit" class="btn btn-danger"><span class="translate" data-args="reject">Reject</span></a>
+                    <a href="~/Hris/TrainingRequisition" class="fakelink btn btn-secondary">Cancel</a>
+                </center>
+            </div>
+        </div>
+    </form>
+    @Html.Partial("TrainingRequisition/Detail");
+    @Html.Partial("TrainingRequisition/Reject");
+}
+@section Panelscript{
+    <script src="~/approval/gmApproval.js"></script>
+    <script src="~/assets/js/Areas/Hris/Form/TrainingRequisition.Approval.js"></script>
+}

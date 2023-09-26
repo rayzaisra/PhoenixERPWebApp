@@ -1,0 +1,114 @@
+﻿@model PhoenixERPWebApp.Models.TrainingRequisition
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: ##f4516c;
+    }
+</style>
+<div class="modal fade" id="modalDetail" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Add Accomodation
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formDetailRegPayment" class="form-vertical form-bordered" role="form" enctype="multipart/form-data">
+                    <div class="m-form__group">
+                        <div class="row ">
+                            <div class="col-lg-2 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Request :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.TrainingPaymentDetail.MasterTrainingRequestId)
+                                    .DataTextField("Text")
+                                    .OptionLabel("Select Request")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                    source.Read(read =>
+                                    {
+                                    read.Action("GetMasterTrainingRequest", "Dropdown", new { area = "HrisNew" });
+                                    });
+                                    })
+                                    .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm", required = "required" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-2 m-form__group-sub">
+                                <label>Status</label> <span class="req">*</span>  
+                                @(Html.Kendo().DropDownListFor(m => m.TrainingPaymentDetail.StatusRequest)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        //.Events(e => e.Change("change"))
+                                        .BindTo(new List<SelectListItem>() {
+                                          new SelectListItem() {
+                                              Text = "Fullfield",
+                                              Value = "Fullfield"
+                                          },
+                                          new SelectListItem() {
+                                              Text = "Not Fullfield",
+                                              Value = "NotFullfield"
+                                          }
+                                        })
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            maxlength = 15,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.TrainingPaymentDetail.StatusRequest)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.TrainingPaymentDetail.StatusRequest)} is required"
+                                        })
+									)
+                            </div>
+
+                            <div class="col-lg-2 m-form__group-sub">
+                                <label>Start Date</label> <span class="req">*</span>
+                                @(Html.Kendo().DatePickerFor(m => m.TrainingPaymentDetail.StartDate)
+                                        .Format("dd MMM yyyy")
+                                        .HtmlAttributes(new
+                                        {
+                                            @class = "form-control-sm m-input",
+                                            required = "required",
+                                        })
+                                    )
+                            </div>
+
+                            <div class="col-lg-2 m-form__group-sub">
+                                <label>End Date</label> <span class="req">*</span>
+                                @(Html.Kendo().DatePickerFor(m => m.TrainingPaymentDetail.EndDate)
+                                        .Format("dd MMM yyyy")
+                                        .HtmlAttributes(new
+                                        {
+                                            @class = "form-control-sm m-input",
+                                            required = "required",
+                                        })
+                                    )
+                            </div>
+
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>remarks </label>
+                                    <input type="text" class="form-control" id="remarks" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="saveDetailRegPayment()">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

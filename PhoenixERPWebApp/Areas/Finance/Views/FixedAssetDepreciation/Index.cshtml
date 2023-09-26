@@ -1,0 +1,317 @@
+﻿@{
+    ViewData["Title"] = "Fixed Asset Depreciation";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Fixed Asset Depreciation</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Fixed Asset Depreciation</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div class="input-group input-group-sm">
+                                <a asp-action="Detail" asp-controller="FixedAssetDepreciation" asp-area="Finance" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a> &nbsp;&nbsp;                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                @*<form id="form-search-dt_basic">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text input-group-sm"><i class="la la-search"></i></span></div>
+                                        <input autocomplete="off" type="text" name="q" class="form-control form-control-sm m-input searchbox" placeholder="Search">
+                                    </div>
+                                </form>*@
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list"> 
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().DropDownList()
+                                .Name("LegalEntityId")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .OptionLabel($"Choose a legal entity")
+                                .Events(e=>e.Select("legalEntity_Select"))
+                                .Filter(FilterType.Contains)
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetLegalEntity", "DropDown", new { area = "Finance" });
+                                    });
+                                })
+                                .HtmlAttributes(new { style = "width:250px;", @required = "required" })
+                            ) 
+                            @Html.Kendo().DatePicker().Name("PostingDate").Format("dd MMM yyyy").HtmlAttributes(new { @style = "width:200px;", @readonly = "readonly" }) 
+                            <button type="button" id="btnPostJournal" class="btn btn-primary" style="padding:.45rem 1.15rem;">Post Journal</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.FixedAssetDepreciation>()
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.Id).ClientTemplate("<input type='checkbox' id='#=Id#' class='k-checkbox row-checkbox'><label class='k-checkbox-label' for='#=Id#'></label>")
+                                            .ClientHeaderTemplate("<input type='checkbox' id='header-chb' class='k-checkbox'><label class='k-checkbox-label' for='header-chb'></label>").Width(50)
+                                            .HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Sortable(false).Filterable(false).Hidden();
+                                    columns.Bound(p => p.AcquisitonDate).Title("Next Period").Width(160);
+                                    columns.Bound(p => p.FixedAsset.FixedAssetName).ClientTemplateId("code-template").Width(300);
+                                    columns.Bound(p => p.FixedAsset.ItemCategoryName).Width(200);
+                                    columns.Bound(p => p.FixedAsset.LegalEntityName).Width(200);
+                                    columns.Bound(p => p.FixedAsset.BusinessUnitName).Width(200);
+                                    //columns.Bound(p => p.FixedAsset.CurrencyName).Width(100);
+                                    columns.Bound(p => p.AcquisitionAmount).Title("Acquisition Amount").Width(180).HtmlAttributes(new { style = "text-align:right" });
+                                    columns.Bound(p => p.DepreciationValue).Title("Deprecated per Month").Width(200).HtmlAttributes(new { style = "text-align:right" });
+                                    columns.Bound(p => p.AccumulationDepreciation).Width(230).HtmlAttributes(new { style = "text-align:right" });
+                                    columns.Bound(p => p.BookValue).Width(180).HtmlAttributes(new { style = "text-align:right" });
+                                    columns.Bound(p => p.Status).Width(140);/*.ClientTemplate("#= GetStatusButton(data) #")*/
+                                })
+                                .NoRecords()
+                                .Pageable(pageable => pageable
+                                    .Refresh(true)
+                                    .PageSizes(true)
+                                    .ButtonCount(5))
+                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                    .Extra(false)
+                                    .Operators(operators => operators
+                                    .ForString(str => str.Clear()
+                                        .Contains("Contains")
+                                        .StartsWith("Start sWith")
+                                        .EndsWith("End sWith")
+                                    )))
+                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                .Resizable(rsz => rsz.Columns(true))
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(10)
+                                    .Events(events => events.Error("errorHandler"))
+                                    .Model(model => { model.Id(p => p.Id); })
+                                    .Sort(sort=> { sort.Add(p => p.AcquisitonDate).Ascending(); })
+                                    .Read(read => read.Action("Read", "FixedAssetDepreciation"))
+                                )
+                                .Events(x => x.DataBound("onDataBound"))
+                                ) 
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="code-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'>#=FixedAsset.FixedAssetNumber# - #=FixedAsset.FixedAssetName#</span></a>
+</script>
+
+@*<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:green'><i class='fa fa-edit'></i></span></a>
+    <a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+</script>*@
+
+<script>
+    var detailSelected = [];
+    $(document).ready(function () { 
+        var grid = $("#grid").data("kendoGrid");
+        grid.table.on("click", ".row-checkbox", selectRow);
+
+        $('#header-chb').change(function (ev) {
+            var checked = ev.target.checked;
+            $('.row-checkbox').each(function (idx, item) {
+                if (checked) {
+                    if (!($(item).closest('tr').is('.k-state-selected'))) {
+                        $(item).click();
+                    }
+                } else {
+                    if ($(item).closest('tr').is('.k-state-selected')) {
+                        $(item).click();
+                    }
+                }
+            });
+        });
+    });
+
+    function selectRow() {
+        var checked = this.checked,
+            row = $(this).closest("tr"),
+            grid = $("#grid").data("kendoGrid"),
+            dataItem = grid.dataItem(row);
+
+        if (checked) {
+            //-select the row
+            row.addClass("k-state-selected");
+
+            var checkHeader = true;
+
+            $.each(grid.items(), function (index, item) {
+                if (!($(item).hasClass("k-state-selected"))) {
+                    checkHeader = false;
+                }
+            });
+
+            $("#header-chb")[0].checked = checkHeader;
+
+            detailSelected.push(dataItem.Id);
+        } else {
+            //-remove selection
+            row.removeClass("k-state-selected");
+            $("#header-chb")[0].checked = false;
+
+            var index = detailSelected.findIndex(function (data) { return data == dataItem.Id });
+            if (index != -1) {
+                detailSelected.splice(index, 1);
+            }
+        } 
+    }
+
+    //on dataBound event restore previous selected rows:
+    function onDataBound(e) {
+        var view = this.dataSource.view();
+        for (var i = 0; i < view.length; i++) {
+            var item = detailSelected.filter(function (data) { return data == view[i].Id });
+            if (item.length > 0) {
+                this.tbody.find("tr[data-uid='" + view[i].uid + "']")
+                    .addClass("k-state-selected")
+                    .find(".k-checkbox")
+                    .attr("checked", "checked");
+            }
+        }
+    }
+
+    $('#btnPostJournal').click(function () {  
+        var grid = $("#grid").data("kendoGrid");
+        var dataSource = grid.dataSource; 
+        var totalRecords = dataSource.total();
+        if (totalRecords == 0) {
+            swal('Warning', "Data not found.", 'warning');
+        }
+        else if ($("#LegalEntityId").data("kendoDropDownList").value() == "") {
+            swal('Warning', "Legal Entity is required", 'warning');
+        }
+        else{
+            swal({
+                title: "Confirmation",
+                text: 'Are you sure want to post journal this data?',
+                type: "question",
+                showCancelButton: !0,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                reverseButtons: !0
+            }).then(function (ok) {
+                if (ok.value) {
+                    mApp.block("#m_blockui_list", {
+                        overlayColor: "#000000",
+                        type: "loader",
+                        state: "primary",
+                        message: "Processing..."
+                    }); 
+
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        global: false,
+                        dataType: 'json',
+                        url: '@Url.Action("PostJournal", "FixedAssetDepreciation")', 
+                        data: { 'model': { 'LegalEntityId': $("#LegalEntityId").data("kendoDropDownList").value(),'PostingDate': $("#PostingDate").data("kendoDatePicker").value().toDateString(), 'Selected': detailSelected } },
+                        success: function (data) {
+                            mApp.unblock("#m_blockui_list");
+                            if (data.success) {
+                                swal('Information', data.message, 'success')
+                                    .then(function (ok) {
+                                        if (ok.value) {
+                                            detailSelected = [];
+                                            $("#header-chb")[0].checked = false; 
+                                            $('#grid').data('kendoGrid').dataSource.read();
+                                        }
+                                    });
+                            }
+                        },
+                        error: function (e, t, s) {
+                            mApp.unblock("#m_blockui_list");
+                        }
+                    })
+                }
+            }).catch(swal.noop);
+        }
+    }); 
+
+    function legalEntity_Select(e) {
+        if(e.dataItem) {
+            var dataItem = e.dataItem;
+
+              $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    data: { legalEntityId: dataItem.Value },
+                    url: "@Url.Action("GetPostingDate", "FixedAssetDepreciation")",
+                    success: function (result) { 
+                        if (result != null) {
+                            $("#PostingDate").data("kendoDatePicker").value(result);
+                        }
+                    }
+                }); 
+        }
+    }
+
+     function editGridRow(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "FixedAssetDepreciation")?Id=' + item.Id;
+     }
+
+    @*function deleteGridRow(e) {
+       deleteRow(e, '@Url.Action("Delete", "FixedAssetDepreciation")');
+    }*@
+
+    @*function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Open") buttonType = "m-badge--info"; 
+        if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.PayBalance") buttonType = "m-badge--focus"; 
+        else if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.WaitingApproval") buttonType = " m-badge--warning";
+        else if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Reject") buttonType = " m-badge--danger"; 
+        else if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Complete") buttonType = " m-badge--success";
+        else if (data.Status == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Reconsiliation") buttonType = " m-badge--dark";
+        return "<center><a href='javascript: void(0);' onclick='editGridRow(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.StatusDesc+"</a></center>";
+    }*@ 
+</script>
+
+

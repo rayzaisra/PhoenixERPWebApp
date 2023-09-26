@@ -1,0 +1,223 @@
+﻿@{
+    ViewData["Title"] = " Master Fixed Asset";
+}
+
+
+<input hidden id="detail-id" value="@ViewBag.RecordID" />
+<input hidden id="entity_id" value="@ViewBag.EntityID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator"> Master Fixed Asset</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/MasterFixedAsset")" class="m-nav__link">
+                        <span class="m-nav__link-text"> Master Fixed Asset</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__body">
+
+                    <div class="m-form__group">
+                        <h5> Master Fixed Asset <span style="width: 100px;" id="status"></span></h5>
+
+                        <!--begin::Form-->
+                        <input hidden name="approval_id" />
+                        <form id="form-MasterFixedAsset" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input hidden name="id" value="@ViewBag.RecordID" />
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Fixed Asset Id :</label>
+                                        <input class="form-control form-control-sm" readonly name="fixed_asset_id" id="fixed_asset_id" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Vendor :</label>
+                                        <input class="form-control form-control-sm" readonly name="vendor" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Division :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="division_id" name="division_id" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Unit :</label>
+                                        <input class="form-control form-control-sm" readonly name="unit" id="unit" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Classification :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="our_ref_id" name="our_ref_id" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Invoice No. :</label>
+                                        <input id="invoice" name="invoice" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Name :</label>
+                                        <input id="name" name="name" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Currency :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="currency" name="currency" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Purchase Order :</label>
+                                        <input id="purchase_order" name="purchase_order" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Place / Location :</label>
+                                        <input id="place" name="place" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Exchenge :</label>
+                                        <input id="exchange" name="exchange" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Eviden No. :</label>
+                                        <input id="eviden_no" name="eviden_no" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Category :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="category" name="category" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Price :</label>
+                                        <input id="price" name="price" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Date :</label>
+                                        <div class="input-group input-group-sm date">
+                                            <input class="form-control m-input marvel-datepicker" readonly placeholder="Select date" name="date" id="date" />
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Commercial Depreciation :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="commercial_depreciation" name="commercial_depreciation" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Economic Period(Year) :</label>
+                                        <input id="period" name="period" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Asset Description:</label>
+                                        <textarea id="remark" name="remark" class="form-control form-control-sm"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" id="btn-save" class="btn btn-sm btn-success"><i class="la-save"></i>Save</button>
+                            <button type="button" id="btn-submit" class="btn btn-sm btn-primary" disabled="disabled">Submit</button>
+                            <a href="@Url.Content("~/Finance/MasterFixedAsset")" class="fakelink btn btn-sm btn-secondary">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script src="~/Vendors/custom/KendoUI/js/kendo.all.min.js"></script>
+
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Finance/Scripts/MasterFixedAsset.Detail.js?@DateTime.Now" asp-append-version="true"></script>
+    <script src="~/vendors/custom/query-builder/js/doT.min.js"></script>
+    <script src="~/vendors/custom/query-builder/js/jQuery.extendext.js"></script>
+    <script src="~/vendors/custom/query-builder/src/interact.min.js"></script>
+    <script src="~/vendors/custom/query-builder/src/query-builder.standalone.js?@DateTime.Now" asp-append-version="true"></script>
+}

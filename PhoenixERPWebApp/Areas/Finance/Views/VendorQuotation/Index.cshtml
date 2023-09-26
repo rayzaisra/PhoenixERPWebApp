@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Request For Quotation <span class="m-badge m-badge--success m-badge--wide" id="lblJobCategory">Production</span></h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Procurement & Expenses</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="RequestForQuotation" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text">Request For Quotation</span></a>                    
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div class="input-group input-group-sm">
+                                <a asp-action="Detail" asp-controller="RequestForQuotation" asp-area="Finance" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">                        
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("rfqType")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Events(e =>e.Change("onFilterMode").Select("OnSelectMode"))
+                                    .BindTo(ViewBag.Category)
+                                    .SelectedIndex(0)
+                                    .HtmlAttributes(new { style = "width: 100%; min-width:150px;" })
+                                )     
+                            </li>
+                            <li class="m-portlet__nav-item">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("status")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Events(e => e.Change("onFilterMode"))
+                                    .OptionLabel("All Status")
+                                    .DataSource(source => source
+                                        .Custom()
+                                        .Transport(transport => transport
+                                        .Read(read =>
+                                        {
+                                            read.Action("GetDDLStatus", "Dropdown", new { area = "Finance" });
+                                        }))
+                                        .ServerFiltering(false)
+                                    ))
+                            </li>
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.RequestForQuotation>()
+                        .Name("grid")
+                        .Columns(columns =>
+                        {
+                           columns.Bound("").Title("#").Width(35).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.RequestForQuotationNumber).ClientTemplateId("code-template").Width(150);
+                            columns.Bound(p => p.RequestForQuotationDate).Width(130);
+                            columns.Bound(p => p.PurchaseRequestId).Width(150).Hidden();
+                            columns.Bound(p => p.JobName).Width(250);
+                            columns.Bound(p => p.DueDate).Width(150);
+                            columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButton(data) #").Width(150);
+                            columns.Bound(p => p.MainserviceCategoryName).Width(150);
+                            columns.Bound(p => p.IsPreferedVendorName).Width(100);
+                            columns.Bound(p => p.RequestorName).Width(200);
+                            columns.Bound(p => p.BusinessUnitName).Width(200);
+
+                        })
+                        .Pageable(pageable => pageable
+                        .Refresh(true)
+                        .PageSizes(true)
+                        .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                        .Extra(false)
+                        .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                            .Contains("Contains")
+                            .StartsWith("Start sWith")
+                            .EndsWith("End sWith")
+                        )))
+                        .NoRecords()
+                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model => { model.Id(p => p.Id); })
+                            .Read(read => read.Action("Read", "RequestForQuotation").Data("grid_params"))
+                        )
+                        .Events(e => e.DataBound("dataBoundEvent"))
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="code-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'>#=RequestForQuotationNumber#</span></a>
+</script>
+<script>
+    function onFilterMode() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        var grid = $("#grid").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+        mApp.unblock("#m_blockui_list");         
+    };
+
+    function OnSelectMode(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            var grid = $("#grid").data("kendoGrid");
+
+            $("#lblJobCategory").html(dataItem.Text)
+
+            if (dataItem.Text.toLowerCase().includes("other")) {
+                grid.hideColumn(4);
+                grid.showColumn(3);
+            } else {
+                grid.showColumn(4);
+                grid.hideColumn(3);
+            }
+        }
+    }
+
+    function grid_params() {
+        return {
+            mainserviceCategoryId: $("#rfqType").data("kendoDropDownList").value(),
+            RfqStatusId: $("#status").data("kendoDropDownList").value(),
+        };
+    }
+
+    function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Draft") buttonType = "m-badge--info";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.WaitingApproval") buttonType = " m-badge--warning";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Rejected") buttonType = " m-badge--danger";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Approved") buttonType = " m-badge--success";
+        return "<center><a href='javascript: void(0);' onclick='editGridRow(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+       
+    function editGridRow(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "RequestForQuotation")?Id=' + item.Id;
+    }
+</script>
+

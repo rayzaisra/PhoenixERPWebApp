@@ -1,0 +1,323 @@
+﻿
+@model PhoenixERPWebApp.Models.Finance.Transaction.GoodReturn.InventoryGoodsReturn
+@{
+    ViewData["Title"] = "Inventory Good Request Form";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+    var userSession = CodeMarvel.Infrastructure.Sessions.SessionManager.UserSession;
+}
+
+
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Inventory Good Receipt</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/GoodReturn")" class="m-nav__link">
+                        <span class="m-nav__link-text">Good Return</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet m-portlet--last m-portlet--head-sm m-portlet--responsive-mobile" id="main_portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    Goods Return Detail &nbsp;
+                                    <span id="status"></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <!--begin::Form-->
+                        @*<input hidden name="approval_id" />*@
+                        <form id="form-goodreturn" class="form-horizontal form-bordered" role="form" asp-action="Submit" asp-controller="GoodReturn" asp-area="finance">
+                            <input type="hidden" asp-for="Id" />
+                            @*<input hidden name="id" value="@ViewBag.RecordID" />*@
+                            @*<input type="hidden" asp-for="CompanyId" />
+        <input type="hidden" asp-for="BrandId" />*@
+                            <input type="hidden" asp-for="LegalEntityId" />
+                            <input type="hidden" asp-for="BusinessUnitId" />
+                            <input type="hidden" asp-for="AffiliationId" />
+                            <input type="hidden" asp-for="JobId" />
+                            @*<input type="hidden" asp-for="InvoicingTypeName" />
+        <input type="hidden" asp-for="PurchaseOrderNumber" />
+        <input type="hidden" asp-for="PicId" />*@
+                            <input type="hidden" asp-for="Status" />
+                            <input type="hidden" asp-for="StatusDesc" />
+                            @if (Model.Id != null)
+                            {
+                                <input type="hidden" asp-for="Id" />
+                            }
+                            @*<input type="hidden" asp-for="VendorName" />
+        <input type="hidden" asp-for="IsGenerated" />*@
+
+
+
+                            <div class="row">
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Good Return Number :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.GoodsReturnNumber).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Date Receipt :</label>
+                                        @Html.Kendo().DatePickerFor(m => m.GoodReceiptDatetime).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        @*<input id="BrandClient" name="BrandClient" class="form-control form-control-sm" disabled />*@
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Good Request Number :</label>
+                                        @if (Model.Id != null)
+                                        {
+                                            @Html.Kendo().TextBoxFor(m => m.InventoryGoodsRequestId).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @(Html.Kendo().DropDownListFor(m => m.InventoryGoodsRequestId)
+                                                                                        .DataTextField("Text")
+                                                                                        .OptionLabel("Select PO...")
+                                                                                        .DataValueField("Value")
+                                                                                        .Filter(FilterType.Contains)
+                                                                                        .DataSource(source =>
+                                                                                        {
+                                                                                            source.Read(read =>
+                                                                                            {
+                                                                                                read.Action("GetPOByVendorInGoodReceipt", "DropDown", new { area = "Finance" }).Data("filterPurchaseOrders");
+                                                                                            }).ServerFiltering(true); ;
+                                                                                        })
+                                                                                        .Events(e =>
+                                                                                        {
+                                                                                            e.Change("onSelectPO");
+                                                                                        })
+                                                                                        .CascadeFrom("VendorId")
+                                                                                        .Enable(false)
+                                                                                        .AutoBind(false)
+                                                                                        .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Date Return Schedule :</label>
+                                        @Html.Kendo().DatePickerFor(m => m.GoodsReturnDateTime).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                        @*<input class="form-control form-control-sm" name="JobName" id="JobName" disabled/>*@
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Type :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.Type).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Name :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.InvFaName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Requestor :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.RequestedBy).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        @*<input id="DivisionName" name="DivisionName" class="form-control form-control-sm" disabled/>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Division :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.DivisionId).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="display:none">
+
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>On Behalf :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.OnBehalfName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        @*<input id="DivisionName" name="DivisionName" class="form-control form-control-sm" disabled/>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Division :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.DivisionName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Job Title :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.BehalfJobTitle).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="display:none;">
+
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Received From :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.OnBehalfName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        @*<input id="DivisionName" name="DivisionName" class="form-control form-control-sm" disabled/>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub" style="display:none">
+                                    <div class="form-group">
+                                        <label>Division :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.DivisionName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" style="display:none;">
+
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Received By :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.OnBehalfName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        @*<input id="DivisionName" name="DivisionName" class="form-control form-control-sm" disabled/>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub" style="display:none">
+                                    <div class="form-group">
+                                        <label>Division :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.DivisionName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!--end::Form-->
+                            <br />
+                            <partial name="_HistoryApproval" />
+
+                            <br />
+                            <partial name="_StatusLog" />
+                            <br />
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group row">
+                                        <div class="col-lg-2">
+                                            <label>Log Remark </label>
+                                        </div>
+                                        <div class="col-lg-10">
+                                            @Html.TextAreaFor(x => x.LogDescription, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.processApprove == true)
+                                    {
+                                        <button type="button" id="btn-reject" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                        <button type="button" id="btn-approve" class="btn btn-primary"><span class="fa fa-bookmark"></span> Approve</button>
+                                    }
+
+                                    @if (ViewBag.IsSubmitter == true && Model.Status == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(0))
+                                    {
+                                        <button type="button" id="btn-submit" class="btn btn-info">Submit</button>
+                                    }
+
+                                    <a href="@Url.Content("~/Finance/GoodReturn")" class="fakelink btn btn-secondary">Back</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#btn-reject').click(function () {
+            $('#StatusDesc').val('Rejected');
+            if ($("#LogDescription").val() == "" || $("#LogDescription").val() == null) {
+                swal('Information', 'Please complete Log Remark your form !', 'info');
+                return;
+            }
+            callAction({ formId: "form-goodreturn", title: "reject", type: "POST" });
+        });
+
+        $('#btn-approve').click(function () {
+            $('#StatusDesc').val('Approved');
+            if ($("#LogDescription").val() == "" || $("#LogDescription").val() == null) {
+                swal('Information', 'Please complete Log Remark your form !', 'info');
+                return;
+            }
+            callAction({ formId: "form-goodreturn", title: "approve", type: "POST" });
+        });
+
+        $('#btn-submit').click(function () {
+            $('#StatusDesc').val('Submit');
+            if ($("#LogDescription").val() == "" || $("#LogDescription").val() == null) {
+                swal('Information', 'Please complete Log Remark your form !', 'info');
+                return;
+            }
+            callAction({ formId: "form-goodreturn", title: "submit", type: "POST" });
+        });
+
+    });
+
+</script>
+

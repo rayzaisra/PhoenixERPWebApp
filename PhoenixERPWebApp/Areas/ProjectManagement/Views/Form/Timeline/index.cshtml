@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Timeline";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+
+@section Panelhead{
+    <link href="~/assets/plugins/gantt/gantt.css" rel="stylesheet" />
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <form action="#" method="post" id="timelinefilter">
+        <div class="row">
+
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label><span class="translate" data-args="TimelineStartDate">TimelineStartDate</span> :</label>
+                    <div class="input-group date form_datetime form_datetime bs-datetime">
+                        <input type="text" size="16" name="TimelineStartDate" id="TimelineStartDate" data-date-format="yyyy-mm-dd" class="dtpicker form-control form-control-sm ">
+                        <span class="input-group-addon">
+                            <button class="btn default date-set btn-sm" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label><span class="translate" data-args="TimelineEndDate">TimelineEndDate</span> :</label>
+                    <div class="input-group date form_datetime form_datetime bs-datetime">
+                        <input type="text" size="16" name="TimelineEndDate" id="TimelineEndDate" data-date-format="yyyy-mm-dd" class="dtpicker form-control form-control-sm ">
+                        <span class="input-group-addon">
+                            <button class="btn default date-set btn-sm" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2"><label></label>
+    <button onclick="getdata()" class="btn btn-success btn-sm btn-block" type="button"><i class="la la-search"></i> Filter</button>
+</div>
+        </div>
+        </form>
+                <hr />
+                <div id="gantt_chart"></div>
+
+
+
+
+
+
+        }
+        @section Panelscript{
+
+
+
+            <script src="~/assets/plugins/gantt/velocity.min.js"></script>
+            <script src="~/assets/plugins/gantt/velocity.ui.min.js"></script>
+            <script src="~/assets/plugins/gantt/jquery-resizable.js"></script>
+            <script src="~/assets/plugins/gantt/jquery-draggable.js"></script>
+            <script src="~/assets/plugins/gantt/gantt_chart.js"></script>
+            <script src="~/assets/js/Areas/ProjectManagement/Form/Timeline.js"></script>
+        }
+

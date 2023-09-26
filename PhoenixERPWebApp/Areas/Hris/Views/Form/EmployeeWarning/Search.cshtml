@@ -1,0 +1,52 @@
+@{
+    ViewBag.ModalTitle = "EmployeeWarning";
+    ViewBag.ModalId = "EmployeeWarningModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="EmployeeWarningFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="description">description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_description" id="search_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_notes" id="search_notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="subject">subject</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_subject" id="search_subject"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="warning_by">warning_by</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_warning_by" id="search_warning_by"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="warning_date">warning_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_warning_date" id="search_warning_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="warning_to">warning_to</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_warning_to" id="search_warning_to"  maxlength="50" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnEmployeeWarning.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnEmployeeWarning.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

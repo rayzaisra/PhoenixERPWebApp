@@ -1,0 +1,685 @@
+﻿@model PhoenixERPWebApp.Models.Finance.Transaction.FixedAssetOutMovement.FixedAssetOutMovement
+@{
+    ViewData["Title"] = " Fixed Asset Out Movement";
+    if (Model != null && ViewBag.IsApprove == true)
+    {
+        ViewData["Title"] = "Fixed Asset Out Movement Form Approval";
+
+    }
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+    var userSession = CodeMarvel.Infrastructure.Sessions.SessionManager.UserSession;
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator"> Master Good Request</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/FixedAssetOutMovement")" class="m-nav__link">
+                        <span class="m-nav__link-text"> Fixed Asset Out Movement</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<input type="hidden" id="faoId" value="@ViewBag.Id"/>
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    @if (string.IsNullOrEmpty(Model.Id))
+                                    {
+                                        <span>@ViewBag.Header  &nbsp;</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@ViewBag.Header  &nbsp;</span>
+                                    }
+                                    @if (Model.Status != null)
+                                    {
+                                        @if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open)
+                                        {
+                                            <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open)</span>
+                                        }
+                                        else if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval)
+                                        {
+                                            <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval)</span>
+                                        }
+                                        else if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Approved)
+                                        {
+                                            <span class="m-badge m-badge--warning m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Approved)</span>
+                                        }
+                                        else if (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed)
+                                        {
+                                            <span class="m-badge m-badge--success m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.GoodRequestStatus.StatusName(PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open)</span>
+                                        }
+                                    }
+                                    <span id="status"></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <form id="formFixedOutMovement" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="CreatedBy" />
+                            <input type="hidden" asp-for="CreatedOn" />
+                            <input type="hidden" asp-for="ModifiedBy" />
+                            <input type="hidden" asp-for="ModifiedOn" />
+                            <input type="hidden" asp-for="ApprovedBy" />
+                            <input type="hidden" asp-for="ApprovedOn" />
+                            <input type="hidden" asp-for="DeletedBy" />
+                            <input type="hidden" asp-for="DeletedOn" />
+                            <input type="hidden" asp-for="IsActive" />
+                            <input type="hidden" asp-for="IsLocked" />
+                            <input type="hidden" asp-for="IsDefault" />
+                            <input type="hidden" asp-for="IsDeleted" />
+                            <input type="hidden" asp-for="OwnerId" />
+                            <input type="hidden" asp-for="DivisionRequestorId" />
+                            <input type="hidden" asp-for="RequestorId" />
+                            <input type="hidden" asp-for="DivisionOnBehalfId" />
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>FA Out Movement Number :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.FaNumber).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly", style = "width:100%", Placeholder = "Auto Generated by System.." })
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Date Request :</label>
+                                        @if ((Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval) || (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed))
+                                        {
+                                            @Html.Kendo().DatePickerFor(m => m.FaDatetime).Format("dd MMM yyyy").HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.Kendo().DatePickerFor(m => m.FaDatetime).Format("dd MMM yyyy").HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required" })
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Location :</label>
+                                        @if ((Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval) || (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed))
+                                        {@(Html.Kendo().DropDownListFor(i => i.LocationId)
+                                               .DataTextField("Text")
+                                               .DataValueField("Value")
+                                               .OptionLabel("Select From Location ... ")
+                                               .Filter(FilterType.Contains)
+                                               .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly", @required = "required" })
+                                               .DataSource(source => source
+                                                   .Custom()
+                                                   .Transport(transport => transport
+                                                   .Read(read =>
+                                                   {
+                                                       read.Action("GetMasterLocationProcurement", "Dropdown", new { area = "Finance" });
+                                                   }))
+                                               .ServerFiltering(false)
+                                               ))}
+                                    else
+                                    {@(Html.Kendo().DropDownListFor(i => i.LocationId)
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .OptionLabel("Select From Location ... ")
+                                            .Filter(FilterType.Contains)
+                                            .HtmlAttributes(new { style = "width:100%;", @required = "required" })
+                                            .Events(evt => evt.Change("onSelectLocation"))
+                                            .DataSource(source => source
+                                                .Custom()
+                                                .Transport(transport => transport
+                                                .Read(read =>
+                                                {
+                                                    read.Action("GetMasterLocationProcurement", "Dropdown", new { area = "Finance" });
+                                                }))
+                                            .ServerFiltering(false)
+                                            ))}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Requestor :</label>
+                                        <div class="input-group input-group-sm">
+                                            @Html.Kendo().TextBoxFor(m => m.RequestorName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Division Requestor :</label>
+                                        <div class="input-group input-group-sm">
+                                            @Html.Kendo().TextBoxFor(m => m.DivisionRequestorName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>On Behalf :</label>
+                                        <div class="input-group input-group-sm">
+                                            @if ((Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval) || (Model.Status == @PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Completed))
+                                            {
+                                                @(Html.Kendo().DropDownListFor(i => i.OnBehalfId)
+                                                                                   .DataTextField("Text")
+                                                                                   .OptionLabel("Select...")
+                                                                                   .DataValueField("Value")
+                                                                                   .Filter(FilterType.Contains)
+                                                                                   .HtmlAttributes(new { style = "width:100%;", required = "required", @readonly = "readonly" })
+                                                                                    .DataSource(source =>
+                                                                                   {
+                                                                                       source.Read(read =>
+                                                                                       {
+                                                                                           read.Action("GetEmployee", "Dropdown", new { area = "Finance" });
+                                                                                       }).ServerFiltering(true);
+                                                                                   })
+                                                                                   .Events(e =>
+                                                                                   {
+                                                                                       e.Change("onSelectBehalf");
+                                                                                   }))
+                                            }
+                                            else
+                                            {
+                                                @(Html.Kendo().DropDownListFor(i => i.OnBehalfId)
+                                                                                   .DataTextField("Text")
+                                                                                   .OptionLabel("Select...")
+                                                                                   .DataValueField("Value")
+                                                                                   .Filter(FilterType.Contains)
+                                                                                   .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                                    .DataSource(source =>
+                                                                                   {
+                                                                                       source.Read(read =>
+                                                                                       {
+                                                                                           read.Action("GetEmployee", "Dropdown", new { area = "Finance" });
+                                                                                       }).ServerFiltering(false);
+                                                                                   })
+                                                                                   .Events(e =>
+                                                                                   {
+                                                                                       e.Change("onSelectBehalf");
+                                                                                   }))
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Division On Behalf :</label>
+                                        <div class="input-group input-group-sm">
+                                            @Html.Kendo().TextBoxFor(m => m.DivisionOnBehalfName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="m-accordion m-accordion--bordered m-accordion--solid" id="detail" role="tablist">
+                                        <!--begin::Item-->
+                                        <div class="m-accordion__item">
+                                            <div class="m-accordion__item-head" role="tab" id="status_head" data-toggle="collapse" href="#detail_body" aria-expanded="true">
+                                                <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                <span class="m-accordion__item-title">Detail</span>
+                                                <span class="m-accordion__item-mode"></span>
+                                            </div>
+                                            <div class="m-accordion__item-body show" id="detail_body" role="tabpanel" aria-labelledby="detail_head" data-parent="#detail" style="">
+                                                <div class="m-accordion__item-content">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group ">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.Transaction.FixedAssetOutMovement.FixedAssetOutMovementDetail>()
+                                                                                        .Name("gridfixedasset")
+                                                                                        //.ToolBar(x =>
+                                                                                        //{
+                                                                                        //    x.Create().Text("Add Movement Status");
+                                                                                        //})
+                                                                                        .Columns(columns =>
+                                                                                        {
+                                                                                            if (((Model.Status ?? 0) != PhoenixERPWebApp.Models.Enum.GoodRequestStatus.WaitingApproval))
+                                                                                            {
+                                                                                                columns.Select().Width(100);
+                                                                                            }
+                                                                                            columns.Bound(p => p.Id).Width(200).Title("Fixed Asset Number");
+                                                                                            columns.Bound(p => p.UnitName).Title("Unit Name").Width(200);
+                                                                                            columns.Bound(p => p.RegistrationDate).Format("{0: dd MMM yyyy}").Width(150);
+                                                                                            columns.Bound(p => p.LocationName).Width(150);
+                                                                                            columns.Bound(p => p.ConditionName).Width(150);
+                                                                                            columns.Bound(p => p.Qty).Title("Qty").Width(100);
+                                                                                            columns.Bound(p => p.LegalEntityName).Width(150);
+                                                                                            columns.Bound(p => p.UrlLink).Width(150);
+
+                                                                                            //columns.Bound(p => p.CurrentLocation).ClientTemplate("#=LocationName#").Title("Location").Width(100);
+                                                                                        })
+                                                                                        .Pageable()
+                                                                                        .Resizable(rsz => rsz.Columns(true))
+                                                                                        .Sortable()
+                                                                                        .Scrollable()
+                                                                                        //.Events(ev => ev.Change("onChangeGrid"))
+                                                                                        .PersistSelection()
+                                                                                        .DataSource(dataSource => dataSource
+                                                                                            .Ajax()
+                                                                                            .Events(events => events.Error("errorHandler"))
+                                                                                            .Model(model =>
+                                                                                            {
+                                                                                                model.Id(p => p.Id);
+                                                                                                model.Field(p => p.Id).Editable(false);
+                                                                                            })
+                                                                                            .Read(read => read.Action("ReadDataFixedAsset", "FixedAssetOutMovement").Data("GetLocation"))
+                                                                                        )
+                                                                .AutoBind(false)
+                                                                .NoRecords()
+                                                                )
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <br />
+                            @if ((((Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open) || (Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Rejected))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button type="button" id="btn-generate" class="btn btn-sm m-btn--sm btn-info m-btn m-btn--icon m-btn--wide m--margin-right-10" onclick="ProcessData()">
+                                            <span>
+                                                <i class="la la-expand"></i>
+                                                <span>Process</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="m-accordion m-accordion--bordered m-accordion--solid" id="fixed_asset_out_detail" role="tablist">
+                                        <div class="m-accordion__item">
+                                            <div class="m-accordion__item-head" role="tab" id="fixed_asset_out_head" data-toggle="collapse" href="#fixed_asset_out_detail_body" aria-expanded="true">
+                                                <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                <span class="m-accordion__item-title">Fixed Asset Out Detail</span>
+                                                <span class="m-accordion__item-mode"></span>
+                                            </div>
+                                            <div class="m-accordion__item-body show" id="fixed_asset_out_detail_body" role="tabpanel" aria-labelledby="fixed_asset_out_detail_head" data-parent="#fixed_asset_out_detail" style="">
+                                                <div class="m-accordion__item-content">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group ">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.Transaction.FixedAssetOutMovement.FixedAssetOutMovementDetail>()
+                                                                    .Name("GridFixetAssetOutDetail")
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        if ((((Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open) || (Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Rejected))
+                                                                        {
+                                                                            columns.Command(command =>
+                                                                            {
+                                                                                command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                                command.Destroy().Text(" ");
+                                                                            }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                        }
+                                                                        columns.Bound(p => p.FixedAssetId).ClientTemplate("#= Link(data) #").Width("100px");
+                                                                        columns.Bound(p => p.UnitName).Title("Unit Name").Width(200);
+                                                                        columns.Bound(p => p.RequestDate).EditorTemplateName("Date").Title("Request Date").Width(150);
+                                                                        columns.Bound(p => p.Qty).EditorTemplateName("Integer").Title("Qty").Width(100);
+                                                                        columns.Bound(p => p.QtyMax).Hidden(true);
+                                                                        columns.Bound(b => b.RequestStatus).Title("RequestStatus").EditorTemplateName("Finance/FixedAssetMovement/RequestStatus").Width("100px").ClientTemplate("#=RequestStatusName#");
+                                                                        columns.Bound(p => p.Remark).Width(150);
+                                                                    }).Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                                                                        .DataSource(dataSource => dataSource
+                                                                                                                            .Ajax()
+                                                                                                                            .Events(events => events.Error("errorHandler"))
+                                                                                                                            .Model(model =>
+                                                                                                                            {
+                                                                                                                                model.Id(p => p.Id);
+                                                                                                                                model.Field(p => p.FixedAssetId).Editable(false);
+                                                                                                                                model.Field(p => p.UnitName).Editable(false);
+                                                                                                                                model.Field(p => p.RequestDate);
+                                                                                                                                model.Field(p => p.Qty);
+                                                                                                                                model.Field(p => p.QtyMax).Editable(false);
+                                                                                                                                model.Field(p => p.RequestStatus);
+                                                                                                                                model.Field(p => p.Remark);
+                                                                                                                            })
+                                                                                .Read(read => read.Action("ReadDetail", "FixedAssetOutMovement").Data("GetRequestId"))
+                                                                                .Update(update => update.Action("GRDetail_Update", "FixedAssetOutMovement"))
+                                                                                .Destroy(destroy => destroy.Action("GRDetail_Destroy", "FixedAsseOuttMovement"))
+                                                                                )
+                                                                .Events(x => x.Save("SaveGRDetail"))
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-1 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Remark :</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10 m-form__group-sub">
+                                    <div class="form-group">
+                                        @Html.TextAreaFor(m => m.Remark, new { style = "height:100px;width:100%" })
+                                        <span class="k-invalid-msg" data-for="Remark"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                        <hr />
+
+                        <br />
+                        <partial name="_HistoryApproval" />
+
+                        <br />
+                        <partial name="_StatusLog" />
+                        <br />
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row">
+                                    <div class="col-lg-2">
+                                        <label>Log Remark </label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        @Html.TextAreaFor(x => x.LogDescription, new { style = "height:150px;width:100%" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.processApprove == true)
+                                    {
+                                        <button type="button" id="btn-reject" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                        <button type="button" id="btn-approve" class="btn btn-primary"><span class="fa fa-bookmark"></span> Approve</button>
+                                    }
+
+                                    @if ((((Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Open) || (Model.Status ?? 0) == PhoenixERPWebApp.Models.Enum.GoodRequestStatus.Rejected))
+                                    {
+                                        <button type="button" id="btn-save" class="btn btn-success">Save</button>
+                                        <button type="button" id="btn-submit" class="btn btn-info">Submit</button>
+                                    }
+                                    <a href="@Url.Content("~/Finance/FixedAssetOutMovement")" class="fakelink btn btn-secondary">Back</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var faoid = $('#faoId').val();
+        if ($("#RequestorName").val() == "") {
+            $("#RequestorName").val("@userSession.FullName").change();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetDivLogin", "FixedAssetOutMovement")',
+                data: { BasicLogin: "@userSession.AppUserId" },
+                success: function (data) {
+                    console.log("employee", data);
+                    $("#DivisionRequestorName").val(data.DivisiName);
+                    $("#DivisionRequestorId").val(data.DivisionId);
+                    $("#RequestorId").val("@userSession.EmployeeBasicInfoId");
+                }
+            });
+        }
+        if (faoid !== "") {
+            onSelectBehalf();
+            onSelectLocation();
+        }
+    })
+
+     function Link(data) {
+
+        return "<center><a href='javascript: void(0);' onclick='Detail(this)' title='Edit' class='edit' target='_blank'>" + data.FixedAssetId + "</a></center>";
+
+    }
+
+    function Detail(e) {
+        var item = dataItem(e);
+        window.open('@Url.Action("Detail", "FixedAsset")?Id=' + item.FixedAssetId,'_blank');
+    }
+
+    function filterInvForm() {
+         return {
+            type: "FIXED ASSET"
+        };
+    }
+
+    function GetLocation() {
+        return {
+            Id:  $("#LocationId").data("kendoDropDownList").value()
+        };
+    }
+
+    function onSelectBehalf() {
+        if ($("#OnBehalfId").data("kendoDropDownList").value() != "") {
+             $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetBehalf", "FixedAssetOutMovement")',
+                data: { behalf: $("#OnBehalfId").data("kendoDropDownList").value() },
+                success: function (data) {
+                    $("#DivisionOnBehalfName").val(data.DivisiName);
+                    $("#DivisionOnBehalfId").val(data.DivisionId);
+                    //$("#behalf_jobtitle").val(data.JobTitleName);
+                }
+            });
+        }
+    }
+
+    function onSelectLocation() {
+        var grid = $("#gridfixedasset").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+
+    }
+
+    function SaveGRDetail(e) {
+        //var Id = $("#Id").val();
+        var UnitName = $("#UnitName").val();
+        var RequestDate =$("#RequestDate").val();
+        var qty = $('#Qty').val();
+        var qtyMax = $('#QtyMax').val();
+        var RequestStatus = $('#RequestStatus').data("kendoDropDownList").value();
+        var RequestStatusName = $('#RequestStatus').data("kendoDropDownList").text();
+        var Remark = $('#Remark').val();
+        e.model.dateTrx = RequestDate;
+        //e.model.set("Id", Id);
+        e.model.set("UnitName", UnitName);
+        e.model.set("RequestDate", RequestDate);
+        e.model.set("Qty",qty);
+        e.model.set("QtyMax",qtyMax);
+        e.model.set("RequestStatus", RequestStatus);
+        e.model.set("RequestStatusName", RequestStatusName);
+        e.model.set("Remark", Remark);
+    }
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+    function GetRequestId() {
+        return {
+            headerId: $("#Id").val()
+        };
+    }
+
+    function ProcessData()
+    {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        var gridfa = $("#gridfixedasset").data("kendoGrid");
+        var models = [];
+        var gridfabody = gridfa.table.find("tbody");
+            gridfabody.find("input[type=checkbox]:checked").each(function () {
+                var row = $(this).closest("tr");
+                var model = gridfa.dataItem(row);
+                models.push(model);
+            })
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Generate", "FixedAssetOutMovement")',
+            data: JSON.parse(JSON.stringify({ datas: models })),
+            dataType: 'json',
+            success: function (result) {
+                if (result.success) {
+                    var grid = $("#GridFixetAssetOutDetail").data("kendoGrid");
+                    grid.dataSource.read();
+                    grid.refresh();
+                } else {
+                    swal('Warning', result, 'warning');
+                }
+
+                mApp.unblock("#m_blockui_list");
+            },
+            error: function (e, t, s) {
+                console.log(e)
+                mApp.unblock("#m_blockui_list");
+            }
+        }).then(setTimeout(function () {
+            mApp.unblock("#m_blockui_list");
+        }, 2e3));
+
+
+    }
+
+     $('#btn-save').on("click", function (e) {
+        var validator = $("#formFixedOutMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#GridFixetAssetOutDetail").data("kendoGrid");
+              $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedOutMovement", title: "save", type: "POST", url: "@Url.Action("Save", "FixedAssetOutMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+
+    $('#btn-submit').on("click", function (e) {
+        var validator = $("#formFixedOutMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#GridFixetAssetOutDetail").data("kendoGrid");
+            $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedOutMovement", title: "submit", type: "POST", url: "@Url.Action("Submit","FixedAssetOutMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+
+    $('#btn-approve').on("click", function (e) {
+        var validator = $("#formFixedOutMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#GridFixetAssetOutDetail").data("kendoGrid");
+              $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedOutMovement", title: "submit", type: "POST", url: "@Url.Action("Approve","FixedAssetOutMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+
+    $('#btn-reject').on("click", function (e) {
+        var validator = $("#formFixedOutMovement").kendoValidator().data("kendoValidator");
+        console.log("validator", validator);
+        if (validator.validate()) {
+            var gridDetails = $("#GridFixetAssetOutDetail").data("kendoGrid");
+              $('#Remark').val($('#LogDescription').val());
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            };
+            callAction({ formId: "formFixedOutMovement", title: "submit", type: "POST", url: "@Url.Action("Reject","FixedAssetOutMovement")", objects: dataList });
+        } else {
+            swal('Information', 'Please complete your form !', 'info');
+        }
+    });
+</script>

@@ -1,0 +1,121 @@
+﻿@model PhoenixERPWebApp.Models.Leave
+
+<div class="row">
+    <div class="col-lg-5 m-form__group-sub" id="search">
+        <div class="form-group">
+            <label class="search-employee">My Job will Assisted by</label> :
+            @(Html.Kendo().AutoComplete()
+                .Name("SearchEmployee")
+                .DataTextField("Text")
+                .Filter(FilterType.Contains)
+                //.MinLength(3)
+                .HtmlAttributes(new { style = "width:100%"})
+                .Events(ev => ev.Select("employeeInfoSelectEvent"))
+                .DataSource(source => {
+                    source
+                        .Read(read =>
+                        {
+                            read.Action("GetDDLEmployeeBasicInfoByName", "Dropdown", new { area = "HrisNew" }).Data("params_autocomplete");
+                        })
+                        .ServerFiltering(true);
+                })
+            )
+        </div>
+    </div>
+    <div  class="col-lg-12">
+        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.InfoEmployee>()
+            .Name("grid")
+            .Columns(columns =>
+            {
+                //columns.Bound("").Title("#").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                columns.Bound(p => p.EmployeeName).Width(200);
+                columns.Bound(p => p.JobTitle).Width(200);
+                columns.Bound(p => p.Grade).Width(200);
+                columns.Bound(p => p.Division).Width(200);
+            })
+            .NoRecords()
+            /*.Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(5))
+            .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+            .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                .Extra(false)
+                .Operators(operators => operators
+                .ForString(str => str.Clear()
+                    .Contains("Contains")
+                    .StartsWith("Start sWith")
+                    .EndsWith("End sWith")
+                )))*/
+            //.Scrollable(s => s.Enabled(true).Height("auto"))
+            .Resizable(rsz => rsz.Columns(true))
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Events(events => events.Error("errorHandler"))
+                .Model(model => { model.Id(p => p.EmployeeId); })
+                .Read(read => read.Action("ReadAssisted", "LeaveTransaction").Data("assign_params"))
+            )
+        )
+    </div>
+</div>
+
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+</script>
+
+<script>
+    function params_autocomplete() {
+        return {
+            name: $("#SearchEmployee").val()
+        };
+    }
+
+    function assign_params() {
+        return {
+            id: '@Model.Id'
+        };
+    }
+
+    function employeeInfoSelectEvent(e) {
+        var dataItem = this.dataItem(e.item.index());
+        if (dataItem === undefined) {
+            this.value("");
+            ClearAsignEmployee();
+        } else {
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetEmployeeInfoById", "employeeinfo")',
+                data: { employeeId: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#AssistedJob").val(result.EmployeeId);
+
+                        //Clear data
+                        $("#grid").data('kendoGrid').dataSource.data([]);
+
+                        var newRow = { EmployeeName: result.EmployeeName, JobTitle: result.JobTitle, Grade: result.Grade, Division: result.Division };
+                        $("#grid").data("kendoGrid").dataSource.add(newRow);
+                        $('#gridLeaveBalance').data('kendoGrid').dataSource.read();
+                        $('#gridLeaveBalance').data('kendoGrid').refresh()
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+                }, 2e3));
+        }
+    }
+
+</script>

@@ -1,0 +1,74 @@
+@{
+    ViewData["Title"] = "Client Brand";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <form id="BrandFormCreate" method="post">
+        <div class="row ">
+            <div class="col-lg-12">
+                @*<input value="" type="hidden" id="sub_brand" name="sub_brand" />*@
+                <div class="form-group">
+                    <label><span class="translate" data-args="Company">Company</span> <span class="req">*</span>:</label>
+                    <select required id="company_id" name="company_id" class="form-control form-control-sm m-input m-input--square"></select>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Brand">Brand</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="brand_name" id="brand_name" maxlength="200" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="sub brand 1">Sub brand 1</span> <span class="req">*</span>:</label>
+                    <input style="width:100%" class="form-control form-control-sm m-input m-input--square" name="subbrand1" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="sub brand 2">Sub brand 2</span> <span class="req">*</span>:</label>
+                    <input style="width:100%" class="form-control form-control-sm m-input m-input--square" name="subbrand2" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Account">Account</span> <span class="req">*</span>:</label>
+                    <select required id="account_name" name="account_name" class="form-control form-control-sm m-input m-input--square"></select>
+                </div>
+                @*<div class="form-group">
+                    <label><span class="translate" data-args="business unit">Business Unit</span> <span class="req">*</span>:</label>
+                    <select required id="business_unit" name="business_unit" class="form-control form-control-sm m-input m-input--square"></select>
+                </div>*@
+                <div class="form-group">
+                    <label><span class="translate" data-args="Legal">Legal</span> <span class="req">*</span>:</label>
+                    <select required id="legal_enitity_id" name="legal_enitity_id" class="form-control form-control-sm m-input m-input--square"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Division">Division</span> <span class="req">*</span>:</label>
+                    <select required id="division_id" name="division_id" class="form-control form-control-sm m-input m-input--square"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Asf Fee">asf Fee</span> <span class="req">*</span>:</label>
+                    <input style="width:100%" class="form-control form-control-sm m-input m-input--square" name="asf_fee" type="text">
+                </div>
+                @*<div class="form-group">
+            <label><span class="translate" data-args="Account">Account</span> :</label>
+            <select required id="brand_account" name="brand_account[]" multiple class="form-control form-control-sm m-input m-input--square"></select>
+        </div>*@
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/ProjectManagement/Brand" class="fakelink btn btn-secondary">Close</a>
+            </div>
+
+        </div>
+    </form>
+}
+@section Panelscript{
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Brand/create.js"></script>
+}

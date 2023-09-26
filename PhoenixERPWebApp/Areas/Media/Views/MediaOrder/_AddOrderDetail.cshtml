@@ -1,0 +1,122 @@
+﻿
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+</style>
+
+<div class="modal fade" id="modal-media-order-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title-mediaplandetail-popup"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formdetailorder" class="form-horizontal form-bordered" method="post" role="form" enctype="multipart/form-data">
+                    <input type="hidden" id="fileNameInfoOrder" />
+                    <input type="hidden" id="fileMasterIDUploadOrder" />
+                    <div class="row ">
+                        <div class="col-lg-6">
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">Task ID</label>
+                                <div class="input-group input-group-sm col-sm-6">
+                                    @(Html.Kendo().DropDownList().Name("TypeIDOrderDetail")
+                                                             .DataTextField("Text")
+                                                             .DataValueField("Value")
+                                                             .Filter(FilterType.Contains)
+                                                             .Events(e => e.Change("OnchangeDDlType"))
+                                                             .DataSource(source =>
+                                                             {
+                                                                 source.Read(read =>
+                                                                 {
+                                                                     read.Action("GetDDLMediaType", "DropDown", new { area = "Media" });
+                                                                 });
+                                                             })
+                                                             .OptionLabel("Select Media type...")
+                                                             .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                    )
+                                    <span id="span_typeid" class="requiredvalue" style="color:red; display:none">Task Id is required !</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">Template File</label>
+                                <div class="input-group input-group-sm col-sm-6">
+                                    <a href='javascript: void(0);' id="linkFileTemplate" onclick='downloadDocTemplate()'></a> &nbsp;
+                                    <input type="hidden" id="fileTemplateId" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">Upload File</label>
+                                <div class="col-lg-6">
+                                    @(Html.Kendo().Upload()
+                                              .Name("filesorder")
+                                               .Async(a => a
+                                                                                                                            .Save("Events_Save", "Upload")
+                                                                                                                            .Save("SaveFileAsync", "mediaorder")
+                                                                                                                            .Remove("Events_Remove", "Upload")
+                                                                                                                            .AutoUpload(true)
+                                                                                                                            )
+                                              .Events(e => e
+                                              .Select("onSelectOrder").Complete("onCompleteOrder")
+                                              )
+                                    )
+                                    <div style="width:100%">
+                                        <a href='javascript: void(0);' id="linkInterviewDownloadFileOrder" onclick='downloadFileUpload()'></a> &nbsp;
+                                        <a href='javascript: void(0);' id="linkInterviewRemoveFileOrder" onclick='removeFileUpload()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                    </div>
+                                    <span id="span_upload" class="requiredvalue" style="color:red; display:none">File upload is required !</span>
+                                    <button id="buttonHdnUpload" type="button" style="display:none">Edit</button>
+                                </div>
+
+                            </div>
+                            @*<div class="form-group row">
+            <label class="col-form-label col-sm-3">Campaign</label>
+            <div class="input-group input-group-sm col-sm-3">
+
+                @(Html.Kendo().RadioButton().Name("Campaign11").Value("1").Checked(Model.Campaign == true).HtmlAttributes(new { @name = "Campaign" }).Label("Yes"))
+
+                @(Html.Kendo().RadioButton().Name("Campaign22").Value("0").Checked(Model.Campaign == false).HtmlAttributes(new { @name = "Campaign" }).Label("No"))
+            </div>
+        </div>*@
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">Start Periode</label>
+                                <div class="input-group input-group-sm col-sm-3">
+                                    @(Html.Kendo().DatePicker().Name("StartDateOrder")
+                                                     .Value(DateTime.Now)
+                                                     .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+                                    )
+                                    <span id="span_startDateReq" class="requiredvalue" style="color:red; display:none">Start date is required !</span>
+                                </div>
+                                <label class="col-form-label col-sm-1">End</label>
+                                <div class="input-group input-group-sm col-sm-3">
+                                    @(Html.Kendo().DatePicker().Name("EndDateOrder")
+                                                    .Value(DateTime.Now)
+                                                    .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+                                    )
+                                    <span id="span_endDateReq" class="requiredvalue" style="color:red; display:none">End date is required !</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="SaveSelectedMediaOrderDetail()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

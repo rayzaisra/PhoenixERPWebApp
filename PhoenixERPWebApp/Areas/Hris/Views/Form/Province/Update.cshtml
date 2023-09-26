@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Province";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="ProvinceFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="code">code</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="code" id="code" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="province">province</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="province" id="province" required maxlength="100" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Province" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Province.update.js"></script>
+}

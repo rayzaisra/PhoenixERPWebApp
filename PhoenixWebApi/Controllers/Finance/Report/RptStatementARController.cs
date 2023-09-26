@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc; 
+using Phoenix.Data.RestApi;
+using Phoenix.Data.Attributes; 
+using Phoenix.Data.Models.ViewModel;
+using Phoenix.Data;
+
+namespace PhoenixWebApi.Controllers.Finance
+{
+    [Produces("application/json")]
+    [Route("api/RptStatementAR")]
+    public class RptStatementARController : ControllerBase
+    {
+        readonly IRptStatementARService service;
+        public RptStatementARController(IRptStatementARService service)
+        {
+            this.service = service;
+        }
+        [HttpPost("GetData")]
+        [ActionRole(ActionMethod.Read)]
+        public async Task<IActionResult> GetData([FromBody] VwStatementOfArFilter Filter)
+        {
+            var result = await service.Get(Filter);
+            return Ok(new ApiResponse(result));
+        }
+    }
+}

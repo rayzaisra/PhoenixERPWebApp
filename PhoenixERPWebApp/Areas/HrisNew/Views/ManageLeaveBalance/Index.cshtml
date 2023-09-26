@@ -1,0 +1,484 @@
+@model PhoenixERPWebApp.Models.ManageLeaveBalanceView
+@{
+    ViewData["Title"] = "Manage Leave Balance";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<style>
+    .k-grid-content > .k-loading-mask {
+        visibility: hidden;
+    }
+
+    .k-grid > .k-loading-mask {
+        z-index: 2;
+    }
+
+        .k-grid > .k-loading-mask > .k-loading-color {
+            opacity: .7;
+        }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Manage Leave Balance</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="leavebalance" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Manage Leave Balance</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formFilter" class="form-horizontal form-bordered" role="form">
+
+                        @(Html.Kendo().DropDownList()
+                            .Name("LeaveRequestTypeId")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .HtmlAttributes(new { style = "width:25%;", required = "required" })
+                            .Height(400)
+                            .DataSource(source => source
+                                .Custom()
+                                .Transport(transport => transport
+                                .Read(read =>
+                                {
+                                    read.Action("GetDDLLeaveRequestTypeByEmployeeId", "Dropdown", new { area = "HrisNew" }).Data("paramsleaveRequest");
+                                }))
+                                .ServerFiltering(false))
+                        )
+                        <button type="button" id="btnFilter" class="btn btn-primary edit"><span class="fa fa-plus"></span> Filter</button>
+                    </form>
+                    <hr />
+                    <div id="divGrid" style="display:none">
+                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.GenerateLeaveBalanceByLeaveRequestType>()
+                        .Name("grid")
+                        //.AutoBind(false)
+                        .ToolBar(x =>
+                        {
+                            x.ClientTemplateId("grid-toolbar-template");
+ 
+                        })
+                        .Columns(columns =>
+                        {
+                            columns.Bound("").Title("#").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.EmployeeName).Width(250);
+                            columns.Bound(p => p.LegalEntityName).Width(120);
+                            columns.Bound(p => p.JobTitleName).Width(100);
+                            columns.Bound(p => p.JobGradeName).Width(100);
+                            columns.Bound(p => p.JoinDate).Width(100);
+                            columns.Bound(p => p.EmploymentStatusName).Width(100);
+                            columns.Bound(p => p.LeaveType).Width(100);
+                            columns.Bound(p => p.BalanceCurrentYear).Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                            columns.Bound(p => p.ExpiredDateCurrentYear).Width(100);
+                            columns.Bound(p => p.BalanceCarryOver).Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                            columns.Bound(p => p.ExpiredDateCarryOver).Width(100);
+                        })
+                        .NoRecords()
+                        .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                         //.ToolBar(tools => tools.Excel())
+                         .Excel(excel => excel
+                                    .FileName("LeaveBalance.xlsx")
+                                    .Filterable(true)
+                                    .AllPages(true)
+                                    .ProxyURL(Url.Action("Excel_Export_Save", "LeaveBalance"))
+                                )
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                            .Extra(false)
+                            .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                                .Contains("Contains")
+                                .StartsWith("Start sWith")
+                                .EndsWith("End sWith")
+                            )))
+                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model => { model.Id(p => p.EmployeeId); })
+                            .Read(read => read.Action("Read", "LeaveBalance").Data("LeaveBalanceRequest"))
+                        )
+                        .Events(e => e.DataBound("dataBoundEvent"))
+                    )
+                    </div>
+                    <div id="divGrid" style="display:none">
+                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.GenerateLeaveBalanceByLeaveRequestType>()
+                        .Name("gridCompensatory")
+                        //.AutoBind(false)
+                        .ToolBar(x =>
+                        {
+                            x.ClientTemplateId("grid-toolbar-template");
+                           
+                        })
+                        .Columns(columns =>
+                        {
+                            columns.Bound("").Title("#").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.EmployeeName).Width(250);
+                            columns.Bound(p => p.LegalEntityName).Width(120);
+                            columns.Bound(p => p.JobTitleName).Width(100);
+                            columns.Bound(p => p.JobGradeName).Width(100);
+                            columns.Bound(p => p.JoinDate).Width(100);
+                            columns.Bound(p => p.EmploymentStatusName).Width(100);
+                            columns.Bound(p => p.LeaveType).Width(100);
+                            columns.Bound(p => p.TotalCompensatoryDayOff).Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                            columns.Bound(p => p.ExpiredYear).Width(100);
+
+                        })
+                        .NoRecords()
+                        .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                         //.ToolBar(tools => tools.Excel())
+                         .Excel(excel => excel
+                                    .FileName("LeaveBalance.xlsx")
+                                    .Filterable(true)
+                                    .AllPages(true)
+                                    .ProxyURL(Url.Action("Excel_Export_Save", "LeaveBalance"))
+                                )
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                            .Extra(false)
+                            .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                                .Contains("Contains")
+                                .StartsWith("Start sWith")
+                                .EndsWith("End sWith")
+                            )))
+                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model => { model.Id(p => p.EmployeeId); })
+                            .Read(read => read.Action("Read", "LeaveBalance").Data("LeaveBalanceRequest"))
+                        )
+                        .Events(e => e.DataBound("dataBoundEvent"))
+                    )
+                    </div>
+
+
+                    @*<div></div>
+        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.ManageLeaveBalanceView>()
+            .Name("grid")
+            .ToolBar(x =>
+            {
+                x.ClientTemplateId("grid-toolbar-template");
+            })
+            .Columns(columns =>
+            {
+                columns.Bound("").Title("No").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                columns.Bound(p => p.EmployeeName).Width(250);
+                columns.Bound(p => p.JobTitle).Width(120);
+                columns.Bound(p => p.Grade).Width(100);
+                columns.Bound(p => p.JoinDate).Width(130).Filterable(x => x.Extra(true));
+                columns.Bound(p => p.Status).Width(120);
+                columns.Bound(p => p.AnnualLeave).Width(150);
+                columns.Bound(p => p.CompensatoryLeave).Width(180);
+                columns.Bound(p => p.AnnualLeavePreviousYear).Width(210);
+                columns.Bound(p => p.Year).Width(100);
+            })
+            .NoRecords()
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(5))
+            .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+            .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                .Extra(false)
+                .Operators(operators => operators
+                .ForString(str => str.Clear()
+                    .Contains("Contains")
+                    .StartsWith("Start sWith")
+                    .EndsWith("End sWith")
+                )))
+            .Scrollable(s => s.Enabled(true).Height("auto"))
+            .Resizable(rsz => rsz.Columns(true))
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Events(events => events.Error("errorHandler"))
+                .Model(model => { model.Id(p => p.EmployeeId); })
+                .Read(read => read.Action("Read", "LeaveBalance"))
+            )
+            .Events(e => e.DataBound("dataBoundEvent"))
+        )*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalLeaveBalance" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Form Manage Leave Balance
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formManageLeaveBalance" class="form-horizontal form-bordered" role="form"  enctype="multipart/form-data">
+                    <div class="m-form__group">
+                        <div class="row">
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Employee Name :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.EmployeeId)
+                                        .DataTextField("Text")
+                                        .OptionLabel("Select Employee")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .Events(evt => evt.Select("Leave_Select"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLEmployeeData", "dropdown", new { area = "hrisnew" });
+                                            });
+                                        })
+                                        .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                        )
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Leave Request Type : </label>
+                                    @(Html.Kendo().DropDownList()
+                                        .Name("LeaveRequestTypeIdPopUp")
+                                        .Enable(false)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                          .Events(evt => evt.Select("LeaveEmployee_Select"))
+                                        .Height(400)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLLeaveRequestTypeByEmployeeId", "Dropdown", new { area = "HrisNew" }).Data("paramsLeaveByEmployeeRequest");
+                                            }))
+                                            .ServerFiltering(false))
+                                    )
+                                </div>
+
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Annual Leave :</label>
+                                    @Html.Kendo().NumericTextBoxFor(m => m.AnnualLeave).Spinners(false).HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="saveLeave()">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="grid-toolbar-template" type="text/x-kendo-template">
+    <a class='k-button' href='javascript: void(0);' onclick='AddEditForm(this)'><span class='k-icon k-i-plus'></span>Manage Leave Balance</a>
+</script>
+
+
+<script>
+    function AddEditForm(e) {
+       // var valid = $("#formInventory").validate().form();
+        //if (valid) {
+            //ClearFormDetailInventory()
+            //var id = $("#Id").val();
+            //$('#InventoryDetail_InventoryId').val(id);
+            //var qtyNumeric = $("#InventoryDetail_Qty").data("kendoNumericTextBox");
+            //qtyNumeric.value(1);
+        $('#modalLeaveBalance').modal('show');
+
+        //}
+    }
+    @*$('#btnGenerate').click(function () {
+        callAction({ formId:"formGenerate", title: "generate", type:"POST", url: '@Url.Action("generate", "leavebalance")'});
+    });*@
+    function LeaveEmployee_Select(e) {
+        if (e.dataItem) {
+            var leaveId = e.dataItem.Value;
+            var employeeId = $('#EmployeeId').data("kendoDropDownList").value();
+            console.log(leaveId);
+            console.log(employeeId)
+        }
+    }
+    function Leave_Select(e) {
+        if (e.dataItem) {
+            var employeeId = e.dataItem.Value;
+            if (employeeId !=- null) {
+                $('#LeaveRequestTypeIdPopUp').data("kendoDropDownList").enable(true);
+            }
+             @*$.ajax({
+                    type: "GET",
+                    url: '@Url.Action("getAnnualLeave", "ManageLeaveBalance")',
+                    data: { employeeId: employeeId},
+                 success: function (result) {
+
+                     if (result != undefined) {
+                         if (result.LeaveBalance === null) {
+                             $('#AnnualLeave').data("kendoNumericTextBox").value('0');
+                         } else {
+                             $('#AnnualLeave').data("kendoNumericTextBox").value(result.LeaveBalance);
+                         }
+                        
+                     }
+                        mApp.unblock("#m_blockui_list");
+                    },
+                    error: function (e, t, s) {
+                        console.log(e)
+                        mApp.unblock("#m_blockui_list");
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblock("#m_blockui_list");
+                }, 2e3));*@
+        }
+    }
+
+    function saveLeave() {
+        var employeeId = $('#EmployeeId').data("kendoDropDownList").value();
+        var AnnualLeave = $('#AnnualLeave').data("kendoNumericTextBox").value();
+        var dataList = {
+            employeeId: employeeId,
+            AnnualLeave: AnnualLeave
+        }
+        @*$.ajax({
+            type: "POST",
+            url: '@Url.Action("saveManageLeaveBalance", "ManageLeaveBalance")',
+            data: { employeeId: employeeId, leaveBalance: leaveBalance},
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    //if (result.LeaveBalance === null) {
+                    //    $('#AnnualLeave').data("kendoNumericTextBox").value('0');
+                    //} else {
+                    //    $('#AnnualLeave').data("kendoNumericTextBox").value(result.LeaveBalance);
+                    //}
+                }
+                mApp.unblock("#m_blockui_list");
+            },
+            error: function (e, t, s) {
+                console.log(e)
+                mApp.unblock("#m_blockui_list");
+            }
+        }).then(setTimeout(function () {
+            mApp.unblock("#m_blockui_list");
+        }, 2e3));*@
+        callAction({ formId: "formManageLeaveBalance", title: "save", type: "POST", url: '@Url.Action("saveManageLeaveBalance", "ManageLeaveBalance")' });
+
+    }
+
+    $('#btnFilter').click(function () {
+        //callAction({ formId: "formGenerate", title: "generate", type: "POST", url: '@Url.Action("generate", "leavebalance")' });
+
+        var id = $('#LeaveRequestTypeId').data("kendoDropDownList").value()
+        if (id === 'COMPENSATORY') {
+            showLoading();
+            $('#gridCompensatory').data('kendoGrid').dataSource.read();
+            $('#gridCompensatory').data('kendoGrid').refresh()
+            setTimeout(function () {
+                kendo.ui.progress($("#gridCompensatory"), false);
+            }, 10000);
+            $('#divCompensatory').show();
+        } else {
+            showLoading2();
+            $('#grid').data('kendoGrid').dataSource.read();
+            $('#grid').data('kendoGrid').refresh()
+            setTimeout(function () {
+                kendo.ui.progress($("#grid"), false);
+            }, 10000);
+            $('#divGrid').show();
+        }
+
+    });
+
+    function paramsleaveRequest() {
+        return {
+            employeeid: "GENERATE"
+        };
+    }
+
+    function paramsLeaveByEmployeeRequest() {
+        var employeeId = $('#EmployeeId').data("kendoDropDownList").value();
+        return {
+            employeeid: employeeId
+        };
+    }
+    function LeaveBalanceRequest() {
+        return {
+            LeaveRequestTypeId: $('#LeaveRequestTypeId').data("kendoDropDownList").value()
+        };
+    }
+
+    function showLoading() {
+        //var myGrid = $("#gridCompensatory").getKendoGrid();
+        kendo.ui.progress($("#gridCompensatory"), true);
+    }
+
+    function showLoading2() {
+        //var myGrid = $("#grid").getKendoGrid();
+        kendo.ui.progress($("#grid"), true);
+    }
+
+</script>

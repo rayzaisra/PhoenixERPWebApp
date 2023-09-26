@@ -1,0 +1,1441 @@
+@model IEnumerable<PhoenixERPWebApp.Models.Pm.MyDam.MyDam>
+@{
+    ViewData["Title"] = "My DAM";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+    var mUserLogin = ViewBag.UserLogin as string;
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">My DAM List</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Project Management</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="mydam" asp-area="pm" class="m-nav__link"><span class="m-nav__link-text">My DAM List</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            @if (ViewBag.IsAdministrator)
+                            {
+                                <div class="input-group input-group-sm" style="margin-left:10px">
+                                    <button class="btn btn-sm btn-primary btn-form-upload"><i class="fa fa-upload"></i> Upload</button>
+                                </div>
+                                <div class="input-group input-group-sm" style="margin-left:10px">
+                                    <button class="btn btn-sm btn-success btn-listApproval"><i class="fa fa-clipboard"></i> List Approval</button>
+                                </div>
+                                <div class="input-group input-group-sm" style="margin-left:10px">
+                                    <button class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i> Delete File</button>
+                                </div>
+                                <div class="input-group input-group-sm" style="margin-left:10px">
+                                    <button class="btn btn-sm btn-focus btn-form-folder"><i class="fa fa-folder"></i> Create Folder</button>
+                                </div>
+                                <div class="input-group input-group-sm" style="margin-left:10px">
+                                    <button class="btn btn-sm btn-brand btn-move"><i class="fa fa-share"></i> Move</button>
+                                </div>
+
+                            }
+                            <div class="input-group input-group-sm" style="margin-left:10px">
+                                <button class="btn btn-sm btn-info btn-request"><i class="fas fa-user-plus"></i> Request</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="col-lg-12">
+                            <div class="input-group input-group-sm">
+                                @*<input type="text" id="search_val" class="form-control" placeholder="Search for...">&nbsp;*@
+                                <div class="input-group-append">
+                                    <button type="button" id="btn-search-val">
+                                        Filter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="m-portlet__body">
+                    <div id="listView"></div>
+                    <div id="pager" class="k-pager-wrap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalUpload" class="modal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title title-modal-tempApp">UPLOAD TO ONE DRIVE</h4>
+            </div>
+            <div class="modal-body">
+                <div class="m-portlet m-portlet--full-height ">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="label-block">TITLE</label>
+                            <input type="text" class="form-control tb-title-name k-textbox" required/>
+                        </div>
+                        <div class="form-group">
+                            <label>JOB NAME</label> <span class="req"></span>  :
+                            @(Html.Kendo().DropDownList()
+                                .Name("jobid")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .OptionLabel($"Choose Job number")
+                                .HtmlAttributes(new
+                                        {
+                                    style = "width:100%;"
+                                })
+                                .Height(400)
+                                .Filter(FilterType.Contains)
+                                .DataSource(source => source
+                                    .Custom()
+                                    .Transport(transport => transport
+                                    .Read(read =>
+                                    {
+                                        read.Action("GetDDLJobList", "Dropdown", new { area = "pm" });
+                                    }))
+                                    .ServerFiltering(false))
+                            )
+                        </div>
+                        <div class="form-group">
+                            <label class="label-block">Current Folder</label>
+                            <input type="text" class="form-control tb-label-folder k-textbox" disabled />
+
+                        </div>
+                        <div class="form-group">
+                            <div class="k-widget k-upload k-header k-upload-sync k-upload-empty">
+                                <label class="label-block">SELECT FILE</label>
+                                <input type="file" id="fu" placeholder="select file for upload to drive" style="width:100%" />
+                                <label class="label-block label-info-fu" style="font-weight:bold"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-success btnsave-uploadTodrive"><span class="fa fa-upload"></span> Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document" style="max-width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group detail-image">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnDownloadFile" class="btn btn-sm btn-success"><span class="fa fa-download"></span> Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCreateFolder" class="modal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm" style="max-width:40%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <h4 class="modal-title title-modal-tempApp">CREATE FOLDER</h4>
+                    <div class="form-group">
+                        <label class="label-block">Current Folder :</label>
+                        <input type="text" class="form-control tb-label-folder" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label class="label-block">New Folder :</label>
+                        <input type="text" class="form-control tb-folder-name" />
+                    </div>
+
+                    <div class="clearfix"></div>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-success btncreate-folder"><span class="fa fa-save"></span> Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalMoveFolder" class="modal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm" style="max-width:40%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <h4 class="modal-title title-modal-tempApp">MOVE FOLDER</h4>
+                    <div class="form-group">
+                        <label class="label-block">Move To Folder :</label>
+                        @(Html.Kendo().DropDownList()
+                                .Name("FolderName")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .OptionLabel($"Choose Folder")
+                                .HtmlAttributes(new
+                                        {
+                                    style = "width:100%;"
+                                })
+                                .Height(400)
+                                .Filter(FilterType.Contains)
+                                .DataSource(source => source
+                                    .Custom()
+                                    .Transport(transport => transport
+                                    .Read(read =>
+                                    {
+                                        read.Action("GetDDLFolderNameMyDam", "Dropdown", new { area = "pm" });
+                                    }))
+                                    .ServerFiltering(false))
+                        )
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-success btnmove-folder"><span class="fa fa-share"></span> Move</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalFilter" class="modal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm" style="max-width:40%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <h4 class="modal-title title-modal-tempApp">FILTER</h4>
+                    <div class="form-group">
+                        <label class="label-block">Search File Name :</label>
+                        <input type="text" class="form-control tb-title-name k-textbox" id="search_val" />
+                    </div>
+                    <div class="form-group">
+                        <label class="label-block">Search Job Name :</label>
+                        @(Html.Kendo().DropDownList()
+                               .Name("search_job_name_mydam")
+                               .DataTextField("Text")
+                               .DataValueField("Value")
+                               .OptionLabel($"Choose Job Name")
+                               .HtmlAttributes(new
+                                       {
+                                   style = "width:100%;"
+                               })
+                               .Height(400)
+                               .Filter(FilterType.Contains)
+                               .DataSource(source => source
+                                   .Custom()
+                                   .Transport(transport => transport
+                                   .Read(read =>
+                                   {
+                                       read.Action("GetDDLJobNameMyDam", "Dropdown", new { area = "pm" });
+                                   }))
+                                   .ServerFiltering(false))
+                        )
+                    </div>
+                    <div class="form-group">
+                        <label class="label-block">Search Client Name :</label>
+                        @(Html.Kendo().DropDownList()
+                               .Name("search_client_name_mydam")
+                               .DataTextField("Text")
+                               .DataValueField("Value")
+                               .OptionLabel($"Choose Client Name")
+                               .HtmlAttributes(new
+                                       {
+                                   style = "width:100%;"
+                               })
+                               .Height(400)
+                               .Filter(FilterType.Contains)
+                               .DataSource(source => source
+                                   .Custom()
+                                   .Transport(transport => transport
+                                   .Read(read =>
+                                   {
+                                       read.Action("GetDDLClientNameMyDam", "Dropdown", new { area = "pm" });
+                                   }))
+                                   .ServerFiltering(false))
+                        )
+                    </div>
+                    <div class="form-group">
+                        <label class="label-block">Search Campaign Name :</label>
+                        @(Html.Kendo().DropDownList()
+                               .Name("search_campaign_name_mydam")
+                               .DataTextField("Text")
+                               .DataValueField("Value")
+                               .OptionLabel($"Choose Campaign Name")
+                               .HtmlAttributes(new
+                                       {
+                                   style = "width:100%;"
+                               })
+                               .Height(400)
+                               .Filter(FilterType.Contains)
+                               .DataSource(source => source
+                                   .Custom()
+                                   .Transport(transport => transport
+                                   .Read(read =>
+                                   {
+                                       read.Action("GetDDLCampaignNameMyDam", "Dropdown", new { area = "pm" });
+                                   }))
+                                   .ServerFiltering(false))
+                        )
+                    </div>
+                    <div class="form-group">
+                        <label class="label-block">Search Job Created :</label>
+                        <div class="col-md-12">
+                            <label class="label-block">Start Date :</label>
+                            <input type="date" class="form-control tb-title-name k-textbox" id="search_job_created_val" style="display:inline-block" />
+                            <label class="label-block">End Date :</label>
+                            <input type="date" class="form-control tb-title-name k-textbox" id="search_job_created_val_end" style="display:inline-block" />
+                        </div>
+                        
+
+
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-success btn-search-go"><span class="fa fa-search"></span> Search</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script type="text/x-kendo-tmpl" id="template">
+    <div class="img-frame-cap">
+        #if ((parseInt(FilePath.toLowerCase().indexOf('.jpg')) > 0) || (parseInt(FilePath.toLowerCase().indexOf('.jpeg')) > 0) || (parseInt(FilePath.toLowerCase().indexOf('.png')) > 0) || (parseInt(FilePath.toLowerCase().indexOf('.tiff')) > 0)) {#
+        <img src="#:FilePath#" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if (parseInt(FilePath.toLowerCase().indexOf('.pdf')) > 0) {#
+        <img src="../../images/pdf.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if (parseInt(FilePath.toLowerCase().indexOf('.doc')) > 0) {#
+        <img src="../../images/word.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if (parseInt(FilePath.toLowerCase().indexOf('.xls')) > 0) {#
+        <img src="../../images/excel.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if (parseInt(FilePath.toLowerCase().indexOf('.ppt')) > 0) {#
+        <img src="../../images/ppt.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if (parseInt(FilePath.toLowerCase().indexOf('.txt')) > 0) {#
+        <img src="../../images/txt.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if ((parseInt(FilePath.toLowerCase().indexOf('.mp4')) > 0) || (parseInt(FilePath.toLowerCase().indexOf('.mp3')) > 0) || (parseInt(FilePath.toLowerCase().indexOf('.avi')) > 0) || (parseInt(FilePath.toLowerCase().indexOf('.vid')) > 0))   {#
+        <img src="../../images/icons8-radio-waves-50.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if (FileName == 'ROOT'){#
+        <img src="../../images/folderroot.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else if (parseInt(FileName.toLowerCase().indexOf('.')) < 0){#
+        <img src="../../images/folder.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} else {#
+        <img src="../../images/unknown-document.png" alt="#:FileName# image" class="center" width="150px" height="150px" onContextMenu="return false;" />
+        #} #
+
+
+
+        <div class="caption">#:FileName#</div>
+    </div>
+</script>
+
+<script>
+    var selectedFiles;
+    var userLogin;
+    var listFolder = [];
+    var labelFolder = "ROOT";
+    var CurrentFolderName ="";
+    $(document).ready(function () {
+        userLogin = '@mUserLogin';
+        CurrentFolderName = labelFolder;
+        listFolder.push({ id: 0, name: 'PROJECTMANAGEMENT/DAM', link: '' });
+        sessionStorage.setItem('breadcrumpod', JSON.stringify(listFolder));
+        //$('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+        //$(window).on('load', function () {
+        //    setTimeout(function () {
+        //        removeLoader();
+        //        GenerateThumbnail();
+        //        GenerateAndWriteThumbnail();
+        //    }, 2000);
+        //});
+        //removeLoader();
+        GenerateAndWriteThumbnail();
+        GenerateThumbnail();
+        
+        $('.tb-label-folder').val(labelFolder);
+        //loadData('');
+    });
+
+    $('.btn-move').on("click", function (e) {
+        $('#modalMoveFolder').modal('show');
+    });
+
+    $('.btnmove-folder').on("click", function (e) {
+        e.preventDefault();
+        if (selectedFiles == undefined) {
+            return swal(
+                'Information',
+                'There is no selected files',
+                'info'
+            );
+        }
+
+        if ($('#FolderName').data("kendoDropDownList").value() === "") {
+             return swal(
+                'Information',
+                'There is no selected folder',
+                'info'
+            );
+        }
+
+        mApp.blockPage({
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        startprocess();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Move", "MyDam")",
+            data: { SelectedId: selectedFiles, FolderId: ($('#FolderName').data("kendoDropDownList").value()) },
+            async: false,
+            success: function (responseData) {
+                $('#modalMoveFolder').modal('hide');
+                endprocess();
+                if (responseData.success) {
+                    swal('Information', "Move File Success", 'success');
+                    window.location.href = '@Url.Action("Index", "MyDam")';
+                } else {
+                    swal('Information', "Move File failed", 'error');
+                    window.location.href = '@Url.Action("Index", "MyDam")';
+                }
+
+            },
+            error: function (e, t, s) {
+                //swal(
+                //    'Information',
+                //    'Ooops, something went wrong !',
+                //    'info'
+                //);
+                endprocess();
+            }
+        }).then(setTimeout(function () {
+            mApp.unblockPage();
+        }, 2e3));
+    });
+
+    $('.btn-form-folder').on("click", function (e) {
+        e.preventDefault();
+        $('.tb-folder-name').val('');
+        $('#modalCreateFolder').modal('show');
+    });
+
+    $('.btncreate-folder').on('click', function () {
+        createFolder();
+    });
+
+    $('.btn-delete').on("click", function (e) {
+        e.preventDefault();
+
+        if (selectedFiles == undefined) {
+            return swal(
+                'Information',
+                'There is no selected files',
+                'info'
+            );
+        }
+        swal({
+            title: "Confirmation",
+            text: "Do you want to delete these files?",
+            type: "success",
+            showCancelButton: !0,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: !0,
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(function (e) {
+            if (e.value) {
+                mApp.blockPage({
+                    overlayColor: "#000000",
+                    type: "loader",
+                    state: "primary",
+                    message: "Processing..."
+                });
+                startprocess();
+                $.ajax({
+                    type: "DELETE",
+                    url: "@Url.Action("Delete", "MyDam")",
+                    data: { SelectedId: selectedFiles },
+                    async: false,
+                    success: function (responseData) {
+                        endprocess();
+                        swal('Information', "Delete file", 'success');
+                        window.location.href = '@Url.Action("Index", "MyDam")';
+                    },
+                    error: function (e, t, s) {
+                        //swal(
+                        //    'Information',
+                        //    'Ooops, something went wrong !',
+                        //    'info'
+                        //);
+                        endprocess();
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblockPage();
+                }, 2e3));
+
+            } else {
+
+            }
+        });
+    });
+
+    $('.btn-request').on("click", function (e) {
+        e.preventDefault();
+        if (selectedFiles == undefined) {
+            return swal(
+                'Information',
+                'There is no selected files',
+                'info'
+            );
+        }
+        swal({
+            title: "Confirmation",
+            text: "Do you want to request these files?",
+            type: "success",
+            showCancelButton: !0,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: !0,
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(function (e) {
+            if (e.value) {
+                mApp.blockPage({
+                    overlayColor: "#000000",
+                    type: "loader",
+                    state: "primary",
+                    message: "Processing..."
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Submit", "MyDam")",
+                    data: { SelectedId: selectedFiles },
+                    async: false,
+                    success: function (responseData) {
+                        swal('Information', "Send request", 'success');
+                    },
+                    error: function (e, t, s) {
+                        //swal(
+                        //    'Information',
+                        //    'Ooops, something went wrong !',
+                        //    'info'
+                        //);
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblockPage();
+                }, 2e3));
+            } else {
+            }
+        });
+    });
+
+    $('.btn-listApproval').on("click", function (e) {
+       window.location.href = '@Url.Action("IndexApproval", "MyDam")';
+    });
+
+    $('#btn-search-val').on("click", function (e) {
+        e.preventDefault();
+        var searchFileName = $('#search_val').val('');
+        var searchJobName = $('#search_job_name_mydam').data("kendoDropDownList").value('');
+        var searchClientName = $('#search_client_name_mydam').data("kendoDropDownList").value('');
+        var searchCampaignName = $('#search_campaign_name_mydam').data("kendoDropDownList").value('');
+        var searchJobCreated = $('#search_job_created_val').val('');
+        var searchJobCreatedEnd = $('#search_job_created_val_end').val('');
+        $('#modalFilter').modal('show');
+    });
+
+    $('.btn-search-go').on("click", function (e) {
+        e.preventDefault();
+        var searchFileName = $('#search_val').val();
+        var searchJobName = $('#search_job_name_mydam').data("kendoDropDownList").value();
+        var searchClientName = $('#search_client_name_mydam').data("kendoDropDownList").value();
+        var searchCampaignName = $('#search_campaign_name_mydam').data("kendoDropDownList").value();
+        var searchJobCreated = $('#search_job_created_val').val();
+        var searchJobCreatedend = $('#search_job_created_val_end').val();
+        var searchParam = searchFileName + "::" + searchJobName + "::" + searchClientName + "::" + searchCampaignName + "::" + searchJobCreated + "::" + searchJobCreatedend + "::";
+        if (searchParam !== "") {
+            GenerateThumbnail(searchParam);
+        } else {
+            GenerateThumbnail();
+        }
+        $('#modalFilter').modal('hide');
+    });
+
+    function createFolder() {
+        var folderName = $('.tb-folder-name').val();
+        if (folderName.length === 0 || folderName === '') {
+             swal(
+                            'Information',
+                            'Ooops, Folder Name cannot empty.',
+                            'info'
+                        );
+            return false;
+        }
+
+        var ds = sessionStorage.getItem('breadcrumpod');
+        ds = JSON.parse(ds);
+        var path = "PROJECTMANAGEMENT/DAM";
+        var linked = '';
+        var currentFolder = CurrentFolderName;
+
+
+        if (CurrentFolderName === "ROOT" || CurrentFolderName === "") {
+            path = path;
+        }
+        else {
+            path = path + "/" + CurrentFolderName;
+        }
+
+        var model = { Path: path, FolderName: folderName, Id:"mydam" };
+        console.log(model);
+         $('#modalCreateFolder').modal('hide');
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        //$('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            contentType: 'application/json',
+            url: $.helper.resolveApi("~odrive/createfolder"),
+            data: JSON.stringify(model),
+            success: function (r) {
+                mApp.unblock("#m_blockui_list");
+                $('#modalCreateFolder').modal('hide');
+                //window.location.href = '@Url.Action("Index", "MyDam")';
+                //$('#modalUpload').modal('hide');
+                setTimeout(function () {
+                    removeLoader();
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("GetMyDAM", "MyDam")",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        async: false,
+                        success: function (responseData) {
+                            $.each(responseData, function (k, v) {
+                                GetImageDAM(v.FilePath);
+                            });
+                        }
+                    });
+                    GenerateThumbnail();
+                    reloadPage();
+                }, 3000);
+                GenerateThumbnail();
+                removeLoader();
+            },
+            error: function (r) {
+                console.log(r);
+                swal(
+                    '' + r.status,
+                    r.statusText,
+                    'error'
+                );
+                mApp.unblock("#m_blockui_list");
+                $('#modalCreateFolder').modal('hide');
+            }
+        });
+    };
+
+    function downloadFile(filepath) {
+        var fileName = filepath.substr(filepath.lastIndexOf("/") + 1);
+        var linked = "PROJECTMANAGEMENT*DAM*" + fileName;
+
+        var urlApi = $.helper.resolveApi("~odrive/DownloadPe/" + linked);
+        $('#modalRemark').modal('hide');
+        mApp.blockPage({
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: urlApi,
+            success: function (data, statusText, xhr) {
+
+                var disposition = xhr.getResponseHeader('Content-Disposition');
+                var type = xhr.getResponseHeader('Content-Type');
+
+                var blob = base64ToBlob2(data.file, type, 512);
+                var filename = data.fileName;
+
+                if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                    window.navigator.msSaveBlob(blob, filename);
+
+                } else {
+                    var URL = window.URL || window.webkitURL;
+                    var downloadUrl = URL.createObjectURL(blob);
+
+                    if (filename !== '') {
+                        // use HTML5 a[download] attribute to specify filename
+                        var a = document.createElement("a");
+                        // safari doesn't support this yet
+                        if (typeof a.download === 'undefined') {
+                            window.location = downloadUrl;
+
+                        } else {
+
+                            a.href = downloadUrl;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                        }
+                    } else {
+
+                        window.location = downloadUrl;
+                    }
+
+                    setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                }
+                mApp.unblockPage();
+            },
+            error: function (e, a, b) {
+                console.log('error');
+                console.log(e);
+                console.log(a);
+                console.log(b);
+                //swal(
+                //    'Information',
+                //    'Ooops, something went wrong !',
+                //    'info'
+                //);
+                mApp.unblockPage();
+            }
+        });
+    };
+
+    function base64ToBlob2(base64, mimetype, slicesize) {
+        if (!window.atob || !window.Uint8Array) {
+            // The current browser doesn't have the atob function. Cannot continue
+            return null;
+        }
+        mimetype = mimetype || '';
+        slicesize = slicesize || 512;
+        var bytechars = atob(base64);
+        var bytearrays = [];
+        for (var offset = 0; offset < bytechars.length; offset += slicesize) {
+            var slice = bytechars.slice(offset, offset + slicesize);
+            var bytenums = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                bytenums[i] = slice.charCodeAt(i);
+            }
+            var bytearray = new Uint8Array(bytenums);
+            bytearrays[bytearrays.length] = bytearray;
+        }
+        return new Blob(bytearrays, { type: 'application/x-unknown' });
+    };
+
+    function GenerateAndWriteThumbnail(filename = null) {
+        var url = "@Url.Action("GetMyDAM", "MyDam")";
+        if (filename !== null) {
+            url = '@Url.Action("GetMyDAMByFilename", "MyDam")?filename=' + filename;
+        }
+        $.ajax({
+            type: "GET",
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            beforeSend: function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+
+            },
+            success: function (responseData) {
+                $.each(responseData, function (k, v) {
+                    GetImageDAM(v.FilePath);
+                });
+            }
+        })
+    }
+
+    function GenerateThumbnail(filename = null) {
+
+        var dataSource = null;
+        if (filename === null) {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: "@Url.Action("GetMyDAM", "MyDam")",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                    }
+                },
+                pageSize: 20
+            });
+        } else {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: "GET",
+                        url: '@Url.Action("GetMyDAMByFilename", "MyDam")?filename=' + filename,
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                    }
+                },
+                pageSize: 20
+            });
+        }
+
+
+        $("#pager").kendoPager({
+            dataSource: dataSource
+        });
+
+        $("#listView").kendoListView({
+            dataSource: dataSource,
+            selectable: "multiple",
+            dataBound: onDataBound,
+            change: onChange,
+            template: kendo.template($("#template").html())
+        });
+
+        function onDataBound() {
+            $(".img-frame-cap").on("dblclick", function () {
+                var listView = $("#listView").data("kendoListView");
+
+                var idx = $(this).index();
+                var item = listView.dataSource.view()[idx];
+                $('.detail-image').empty();
+                $('.modal-title').empty();
+                var title = '';
+                if (item.FileName === 'ROOT') {
+
+                    startprocess();
+                    $('#listView').empty();
+                    $('.tb-label-folder').val(labelFolder);
+                    CurrentFolderName = labelFolder;
+                    GenerateAndWriteThumbnail();
+                    GenerateThumbnail();
+                    endprocess();
+                    return;
+                }
+
+                if (parseInt(item.FileName.indexOf('.')) < 1) {
+                    startprocess();
+                    $('#listView').empty();
+                    var currentFolderPath = $('.tb-label-folder').val();
+                    $('.tb-label-folder').val(currentFolderPath + "/" + item.FileName);
+                    CurrentFolderName = (currentFolderPath + "/" + item.FileName).replace("ROOT/","").replace("/","*");
+                    var searchParam = "" + "::" + "" + "::" + "" + "::" + "" + "::" + "" + "::" + "" + "::"+ CurrentFolderName;
+                    GetImageDAM(searchParam);
+                    GenerateAndWriteThumbnail(searchParam);
+                    GenerateThumbnail(searchParam);
+                    endprocess();
+                    return;
+                }
+
+
+
+                title = '<span>' + item.FileName + '</span>';
+                var JobName = 'There is no job number attach to this file';
+                if (item.JobName !== null) {
+                    JobName = item.JobName;
+                }
+
+                var ClientBriefId = 'There is no client brief attach to this file';
+                if (item.ClientBriefId !== null) {
+                    ClientBriefId = item.ClientBriefId;
+                }
+                var CampaignName = 'There is no campaign name attach to this file';
+                if (item.CampaignName !== null) {
+                    CampaignName = item.CampaignName;
+                }
+                var ClientName = 'There is no client name attach to this file';
+                if (item.ClientName !== null) {
+                    ClientName = item.ClientName;
+                }
+                var html = '';
+                console.log(item);
+                if (
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.jpg')) > 0) ||
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.jpeg')) > 0) ||
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.png')) > 0) ||
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.tiff')) > 0)
+                ) { html = '<img src="' + item.FilePath + '" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>'; } else if (parseInt(item.FilePath.indexOf('.pdf')) > 0) {
+                    html = '<img src="../../images/pdf.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } else if (parseInt(item.FilePath.toLowerCase().indexOf('.doc')) > 0) {
+                    html = '<img src="../../images/word.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } else if (parseInt(item.FilePath.toLowerCase().indexOf('.xls')) > 0) {
+                    html = '<img src="../../images/excel.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } else if (parseInt(item.FilePath.toLowerCase().indexOf('.ppt')) > 0) {
+                    html = '<img src="../../images/ppt.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } else if (parseInt(item.FilePath.toLowerCase().indexOf('.txt')) > 0) {
+                    html = '<img src="../../images/txt.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } 
+                else if (
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.mp4')) > 0) ||
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.mp3')) > 0) ||
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.avi')) > 0) ||
+                    (parseInt(item.FilePath.toLowerCase().indexOf('.vid')) > 0)
+                ) {
+                    html = '<img src="../../images/icons8-radio-waves-50.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } 
+                else if (item.FileName === 'ROOT') {
+                    html = '<img src="../../images/folderroot.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } else if (parseInt(item.FilePath.toLowerCase().indexOf('.')) < 1) {
+                    html = '<img src="../../images/folder.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                } else {
+                    html = '<img src="../../images/unknown-document.png" alt="' + item.FileName + 'image" class="center" width="800px" height="800px" onContextMenu="return false;"/>';
+                }
+
+
+            
+
+
+                html = html +
+                    '<hr />' +
+                    '<div class="form-group">' +
+                    '<label class="label-block">FileName</label>' + '&nbsp;' +
+                    '<label class="label-block"> : </label>' + '&nbsp;' +
+                    '<label class="label-block">' + item.FileName + '</label>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<label class="label-block">Job Name</label>' + '&nbsp;' +
+                    '<label class="label-block"> : </label>' + '&nbsp;' +
+                    '<label class="label-block">' + JobName + '</label>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<label class="label-block">Client Brief Number</label>' + '&nbsp;' +
+                    '<label class="label-block"> : </label>' + '&nbsp;' +
+                    '<label class="label-block">' + ClientBriefId + '</label>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<label class="label-block">Campaign Name</label>' + '&nbsp;' +
+                    '<label class="label-block"> : </label>' + '&nbsp;' +
+                    '<label class="label-block">' + CampaignName + '</label>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<label class="label-block">Client Name</label>' + '&nbsp;' +
+                    '<label class="label-block"> : </label>' + '&nbsp;' +
+                    '<label class="label-block">' + ClientName + '</label>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<label class="label-block">Upload By</label>' + '&nbsp;' +
+                    '<label class="label-block"> : </label>' + '&nbsp;' +
+                    '<label class="label-block">' + item.CreatedBy + '</label>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<label class="label-block">Upload Date</label>' + '&nbsp;' +
+                    '<label class="label-block"> : </label>' + '&nbsp;' +
+                    '<label class="label-block">' + moment(item.CreatedOn).format("DD-MMM-YYYY") + '</label>' +
+                    '</div>';
+                if (item.Status === 3 && item.RequestBy === userLogin) {
+                    $('#btnDownloadFile').show();
+                    $('#btnDownloadFile').removeAttr('onclick');
+                    $('#btnDownloadFile').attr('onClick', "downloadFile(\"" + item.FilePath + "\");");
+                } else {
+                    $('#btnDownloadFile').hide();
+                }
+                $('.detail-image').append(html);
+                $('.modal-title').append(title);
+                $('#modalRemark').modal('show');
+            });
+        }
+
+        function onChange(e) {
+            e.preventDefault();
+            var data = this.dataSource.view(),
+                selected = $.map(this.select(), function (item) {
+    
+                    return data[$(item).index()]["Id"];
+                });
+            //console.log("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
+            selectedFiles = selected.join(",");
+
+        }
+
+        $("#listView").on("mousedown", function (e) {
+
+            // get item if the user clicked on an item template
+            var clickedItem = $(e.target).closest("div.product");
+            // prevent click event for item elements
+            clickedItem.on("click", function (e) {
+                e.stopPropagation();
+            });
+
+            if (clickedItem.length > 0) {
+                var listView = $("#listView").getKendoListView();
+
+                var selectedItems = listView.select();
+
+                if (clickedItem.hasClass("k-state-selected")) {
+                    // if item is already selected - remove it from collection
+                    selectedItems.splice($.inArray(clickedItem[0], selectedItems), 1);
+                } else {
+                    selectedItems.push(clickedItem);
+                }
+
+                // unbind "change" event to prevent multiple calls
+                listView.unbind("change");
+                listView.clearSelection();
+                listView.bind("change", onChange);
+                listView.select(selectedItems);
+
+            }
+        });
+    }
+
+    let GetImageDAM = function (filepath) {
+        let urlApi = $.helper.resolveApi("~odrive/GetImageDAM");
+        mApp.blockPage({
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: urlApi,
+            data: { filepath: filepath },
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                var sourceData = JSON.stringify(data);
+
+                if (data.webUrl != null) {
+
+                }
+            },
+            error: function (e, t, s) {
+                //swal(
+                //    'Information',
+                //    'Ooops, something went wrong !',
+                //    'info'
+                //);
+                console.log(e);
+            }
+        }).then(setTimeout(function () {
+            mApp.unblockPage();
+        }, 2e3));
+    };
+
+    $('.btn-form-upload').on('click', function () {
+        openFormUpload();
+    });
+
+    $('.btnsave-uploadTodrive').on('click', function () {
+        //uploadToDrive();
+        // GenerateAndWriteThumbnail();
+        //GenerateThumbnail();
+        if ($('.tb-title-name').val() == "") {
+             return swal(
+                'Information',
+                'Ooops, there is no title name for this file, please input the title name before upload!',
+                'warning'
+            );
+        }
+        $.when(uploadToDrive(), GenerateAndWriteThumbnail()).done(function (a1, a2) {
+            $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+            $('#modalUpload').modal('hide');
+            setTimeout(function () {
+                removeLoader();
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("GetMyDAM", "MyDam")",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    success: function (responseData) {
+                        $.each(responseData, function (k, v) {
+                            GetImageDAM(v.FilePath);
+                        });
+                    }
+                });
+                GenerateAndWriteThumbnail();
+                GenerateThumbnail();
+                reloadPage();
+            }, 5000);
+        });
+        GenerateAndWriteThumbnail();
+        GenerateThumbnail();
+        removeLoader();
+       
+    });
+
+    function reloadPage() {
+        location.reload(true);
+    }
+
+    function openFormUpload() {
+        $('#modalUpload').modal('show');
+    };
+
+    function uploadToDrive() {
+
+        var files = $("#fu").get(0).files;
+        if (files.length === 0) {
+            return swal(
+                'Information',
+                'Ooops, there is no file for upload, please select file first before upload!',
+                'warning'
+            );
+        }
+        console.log(files[0]);
+        var path = "PROJECTMANAGEMENT/DAM";
+        var currentFolder = CurrentFolderName;
+        if (CurrentFolderName === "ROOT" || CurrentFolderName === "") {
+            path = path;
+        }
+        else {
+            path = path + "/" + CurrentFolderName;
+        }
+        var fullPath = path + "/" + files[0].name;
+        var aliasName = $('.tb-title-name').val();
+        var jobId = $('#jobid').val();
+        var frmData = new FormData();
+        frmData.append("File", files[0]);
+        frmData.append("Path", path);
+        frmData.append("FileAliasName", aliasName);
+        frmData.append("PathFullWithFileName", fullPath);
+        frmData.append("JobId", jobId);
+        var urlApi = $.helper.resolveApi("~odrive/uploadtodrivemydam");
+        ////startprocess();
+        $.ajax({
+            url: urlApi,
+            type: "POST",
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: frmData,
+            beforeSend: function () {
+                startprocess();
+            },
+            success: function (responseData) {
+                $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+                $('#modalUpload').modal('hide');
+                setTimeout(function () {
+                    removeLoader();
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("GetMyDAM", "MyDam")",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        async: false,
+                        success: function (responseData) {
+                            $.each(responseData, function (k, v) {
+                                GetImageDAM(v.FilePath);
+                            });
+                        }
+                    });
+                    GenerateThumbnail();
+                    reloadPage();
+                }, 1000);
+                GenerateThumbnail();
+                removeLoader();
+            },
+            error: function (error) { console.log(error); }
+        });
+    };
+
+    function removeLoader() {
+        $("#loadingDiv").fadeOut(800, function () {
+            // fadeOut complete. Remove the loading div
+            $("#loadingDiv").remove(); //makes page more lightweight
+        });
+    }
+
+    function loadData(folderName) {
+
+    var linkDefault = "PROJECTMANAGEMENT*DAM";
+    var urlApi = "";
+    if (folderName === '' || folderName === undefined)
+        urlApi = $.helper.resolveApi("~odrive/getrootpe/" + linkDefault);
+    else
+        urlApi = $.helper.resolveApi("~odrive/getrootpe/" + linkDefault + "*" + folderName);
+
+        urlApi = urlApi+"::"+"";
+    //var model = { WebUrl: urlApi, Id: $('#job_number').text() };
+        mApp.blockPage({
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        $.ajax({
+            //type: "POST",
+            //dataType: 'json',
+            //contentType: 'application/json',
+            //url: $.helper.resolveApi("~odrive/getrootpe"),
+            //data: JSON.stringify(model),
+            type: "GET",
+            dataType: 'json',
+            url: urlApi,
+            success: function (data) {
+                if (data.length === 0) {
+                    bindEmptyTable();
+                }
+                else {
+                    bindTable(data);
+                }
+                mApp.unblockPage();
+            },
+            error: function (e, t, s) {
+                //swal(
+                //    'Information',
+                //    'Ooops, something went wrong !',
+                //    'info'
+                //);
+                console.log(e);
+                mApp.unblockPage();
+            }
+        });
+    }
+
+    function bindEmptyTable() {
+        $('#dt_basic> tbody').empty();
+        var table = $('#dt_basic > tbody:last-child');
+        table.append('<tr><td colspan="5" class="text-center">there is no data</td></tr>');
+    }
+
+    function bindTable(data) {
+        console.log(data);
+
+        $('#dt_basic> tbody').empty();
+        var table = $('#dt_basic > tbody:last-child');
+        $.each(data, function (r, val) {
+            var fullpath = "PROJECTMANAGEMENT*DAM*";
+            console.log(fullpath);
+            var type = "";
+            var row = "<tr>";
+            if (val.folder !== null) {
+                row = row + "<td><i class='fa fa-folder' style='color:#ffd969'></i> <a href='javascript:lookUpFolder(\"" + val.name + "\")'>" + val.name + "</a></td>";
+                row = row + "<td>" + val.folder.childCount + " item</td>";
+                 row = row + "<td><button class='btn btn-sm btn-small btn-default' title='open folder' onclick='lookUpFolder(\"" + val.name + "\")'><i class='fa fa-folder-open' style='color:#ffd969'></i></button>  <button class='btn btn-sm btn-small btn-default' title='delete folder' onclick='deleteFile(\"" + val.name + "\")'><i class='fa fa-trash' style='color:#ffd969'></i></button></td>";
+            }
+
+
+            row = row + "</tr>";
+            table.append(row);
+        });
+    }
+
+    function lookUpFolder(folderName) {
+        var ds = sessionStorage.getItem('breadcrumpod');
+        ds = JSON.parse(ds);
+        var idx = 0;
+        var linked = '';
+        if (ds.length === 1) {
+            ds.push({ id: 1, name: folderName, link: folderName });
+            linked = folderName;
+        }
+        else {
+            $.each(ds, function (x, r) {
+                idx++;
+                if (r.id === 1)
+                    linked = r.name;
+                else if (r.id > 1)
+                    linked = linked + "*" + r.name;
+            });
+            linked = linked + "*" + folderName;
+            ds.push({ id: idx, name: folderName, link: linked });
+        }
+        sessionStorage.setItem('breadcrumpod', JSON.stringify(ds));
+        buildBreadCrump('add', folderName);
+        loadData(linked);
+    }
+
+    function buildBreadCrump(type, foldername) {
+        var $ul = $('.ul-bredchild');
+        if (type === 'add') {
+            var li = '<li class="m-nav__separator ' + foldername.replace(/ /g, '') + '">-</li>';
+            li = li + '<li class="m-nav__item ' + foldername.replace(/ /g, '') + '" >';
+            li = li + '<a href="javascript:linkBreadCrump(\'' + foldername + '\')" class="m-nav__link">';
+            li = li + '<span class="m-nav__link-text">' + foldername + '</span>';
+            li = li + '</a></li>';
+            $ul.append(li);
+        }
+    }
+
+
+
+</script>
+
+<style>
+    .product {
+        float: left;
+        height: 110px;
+        margin: 0;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+        .product img {
+            float: left;
+            width: 110px;
+            height: 110px;
+        }
+
+        .product h3 {
+            margin: 0;
+            padding: 10px 0 0 10px;
+            font-size: .9em;
+            overflow: hidden;
+            font-weight: normal;
+            float: left;
+            max-width: 100px;
+            text-transform: uppercase;
+        }
+
+
+
+    .img-frame-cap {
+        float: left;
+        border-radius: 10px;
+        padding: 8px 8px 5px 8px;
+        border: 1px solid #999;
+        margin-top: 10px;
+        margin-left: 20px;
+        width: 200px;
+        height: 200px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .caption {
+        text-align: left;
+        margin-top: 4px;
+        font-size: 12px;
+        word-wrap: break-word;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+    }
+
+    .m-portlet__head {
+        border-bottom: 0px solid #ebedf2;
+    }
+
+    .k-pager-wrap {
+        clear: both;
+        overflow: hidden;
+        position: relative;
+        line-height: 2em;
+        /*padding: .333em 0 .333em .25em;*/
+        padding: 10px;
+        word-break: break-all;
+    }
+
+    .m-portlet .m-portlet__body {
+        padding: 0rem 0rem;
+    }
+
+    .m-portlet .m-portlet__head {
+        border-bottom: 0px solid #ebedf2;
+        margin-bottom: -20px;
+    }
+
+    /*Hidden class for adding and removing*/
+    .lds-dual-ring.hidden {
+        display: none;
+    }
+
+    /*Add an overlay to the entire page blocking any further presses to buttons or other elements.*/
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0,0,0,.8);
+        z-index: 999;
+        opacity: 1;
+        transition: all 0.5s;
+    }
+
+    .loader,
+    .loader:after {
+        border-radius: 50%;
+        width: 10em;
+        height: 10em;
+    }
+
+    .loader {
+        margin: 100px auto;
+        font-size: 10px;
+        position: relative;
+        text-indent: -9999em;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-animation: load8 1.1s infinite linear;
+        animation: load8 1.1s infinite linear;
+    }
+
+    #loadingDiv {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+    }
+</style>

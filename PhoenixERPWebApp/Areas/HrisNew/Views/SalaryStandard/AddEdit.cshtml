@@ -1,0 +1,153 @@
+@model PhoenixERPWebApp.Models.SalaryStandard
+@{
+    ViewData["Title"] = "Salary Standard";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Salary Standard</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="salarystandard" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Salary Standard</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="salarystandard" asp-area="hrisnew"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="salarystandard" asp-area="hrisnew"  asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formSalaryStandard" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="salarystandard" asp-area="HrisNew">
+                        @*enctype="multipart/form-data"*@
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+  
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="Name"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.Name)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 150,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Name)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Name)} is required" 
+                                        }
+                                     ))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="Value"></label> <span class="req">*</span>  :  
+                                     @(Html.Kendo().NumericTextBoxFor(m => m.Value)
+                                        .Spinners(false)
+                                        .Format("n")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 15,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Value)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Value)} is required"                
+                                        }))
+                                </div>
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="Description"></label> <span class="req">*</span>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.Description)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 255,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Description)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Description)} is required" 
+                                        }
+                                     ))
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                <a asp-action="index" asp-controller="salarystandard" asp-area="hrisnew" class="fakelink btn btn-secondary">Close</a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-save').click(function () {
+        callAction({ formId:"formSalaryStandard", title: "save", type:"POST"});
+    });
+</script>

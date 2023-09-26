@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Document Management";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<style>
+    .div-doc {
+        background-color: #EEEEEE;
+        padding: 10px;
+        height: 100px;
+        margin: 1%;
+        cursor: pointer;
+        border: 1px solid #B7B7B7;
+    }
+
+        .div-doc:hover {
+            background-color: #D4E0D8;
+        }
+
+        .div-doc:active {
+            background-color: #A0C3AB;
+        }
+</style>
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="documentmanagement" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Document Management</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <h3 class="m-portlet__head-text m--font-success">Document Management</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="row" style="position:center">
+                        <div class="col-md-3 div-doc">
+                            <a asp-action="index" asp-controller="legaldocument" asp-area="hrisnew" class="m-nav__link">
+                                <table style="margin:10px;">
+                                    <tr>
+                                        <td><span class="fa fa-copy fa-4x" style="color:black;"></span><br /></td>
+                                        <td style="padding-left:10px;"><span style="font-size:14px;">Document</span><br /><span style="font-size:10px;">Review Document Records</span></td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </div>
+                        <div class="col-md-4 div-doc">
+                            <a asp-action="dashboard" asp-controller="legaldocument" asp-area="hrisnew" class="m-nav__link">
+                                <table style="margin:10px;">
+                                    <tr>
+                                        <td><span class="fa fa-tachometer-alt fa-4x" style="color:black;"></span><br /></td>
+                                        <td style="padding-left:10px;"><span style="font-size:14px;">Dashboard</span><br /><span style="font-size:10px;">View of Records Explairation and Archives</span></td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </div>
+                        <div class="col-md-3 div-doc">
+                            <a asp-action="addedit" asp-controller="legaldocument" asp-area="hrisnew" class="m-nav__link">
+                                <table style="margin:10px;">
+                                    <tr>
+                                        <td><span class="fa fa-upload fa-4x" style="color:black;"></span><br /></td>
+                                        <td style="padding-left:10px;"><span style="font-size:14px;">File Upload</span><br /><span style="font-size:10px;">Uploading of Personal Records</span></td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

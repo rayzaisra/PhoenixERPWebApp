@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Division";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="DivisionFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="division_code">division_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="division_code" id="division_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="division_name">division_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="division_name" id="division_name"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="subgroupid">subgroupid</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="subgroupid" id="subgroupid"  maxlength="100" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Division" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Division.update.js"></script>
+}

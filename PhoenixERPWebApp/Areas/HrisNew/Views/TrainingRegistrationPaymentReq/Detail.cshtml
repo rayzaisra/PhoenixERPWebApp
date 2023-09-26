@@ -1,0 +1,627 @@
+﻿@using PhoenixERPWebApp.Models.Enum;
+@model PhoenixERPWebApp.Models.TrainingRequisition
+@{
+    ViewData["Title"] = "Training Registration (Payment Request)";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<style>
+    .label-required {
+        color: red;
+    }
+
+    table {
+        width: 100%;
+        border: 0px;
+    }
+
+        table tr td {
+            text-align: left;
+            padding: 5px;
+        }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Payment Request</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Training</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Hrisnew/TrainingRequisition")" class="m-nav__link">
+                        <span class="m-nav__link-text">Training Registration (Payment Request)</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__head" style="background:#fafafa">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    @if (!string.IsNullOrEmpty(Model.Id))
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.Status))
+                                        {
+                                            @if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.WaitingSubmitToFinance)
+                                            {
+                                                <span class="m-badge m-badge--danger m-badge--wide" id="lblstatus">@TrainingStatusSubmitToFinance.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.WaitingSubmitToFinance)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Save)
+                                            {
+                                                <span class="m-badge m-badge--warning m-badge--wide" id="lblstatus">@TrainingStatusSubmitToFinance.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Save)</span>
+                                            }
+                                            else if (Model.Status == PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Submit)
+                                            {
+                                                <span class="m-badge m-badge--warning m-badge--wide" id="lblstatus">@TrainingStatusSubmitToFinance.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Submit)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="m-badge m-badge--danger m-badge--wide" id="lblstatus">@TrainingStatusSubmitToFinance.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.WaitingSubmitToFinance)</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="m-badge m-badge--danger m-badge--wide" id="lblstatus">@TrainingStatusSubmitToFinance.GetStatus(PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.WaitingSubmitToFinance)</span>
+                                        }
+                                    }
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <form id="form" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed" role="form">
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitId" />
+                        <input type="hidden" asp-for="RequesterEmployeeBasicInfoId" />
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Code" />
+                        <input type="hidden" asp-for="RegPaymentId" />
+
+
+
+                        <div class="row" style="display:none">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Search Training">Search Training</span> <span class="req">*</span></label>
+                                    @(Html.Kendo().DropDownListFor(m => m.TrainingId)
+										.DataTextField("Text")
+										.DataValueField("Value")
+										.Filter(FilterType.Contains)
+										.DataSource(source =>
+										{
+											source.Read(read =>
+											{
+												read.Action("GETDDLTraining", "Dropdown", new { area = "HrisNew" });
+											});
+										})
+										.OptionLabel(new
+										{
+											Text = "Select Training",
+											Value = ""
+										})
+										.HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-md", @required = "required" })
+										.Events(ev => ev.Change("TrainingOnChange"))
+									)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="TrainingName"></label>
+                                    @Html.TextAreaFor(x => x.TrainingName, new { style = "height:100px;width:100%", @class = "k-textbox", @readonly = true })
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="IsTrainingBonding"></label>
+                                    <span style="margin-right:15px;margin-left:20px">@(Html.Kendo().RadioButtonFor(m => m.IsTrainingBonding).Value(true).Label("Yes"))</span>
+                                    @(Html.Kendo().RadioButtonFor(m => m.IsTrainingBonding).Label("No").Value(false).HtmlAttributes(new { @readonly = true }))
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="TrainingType"></label>
+                                    @(Html.Kendo().TextBoxFor(m => m.TrainingType).HtmlAttributes(new { style = "width:100%", @readonly = true }))
+                                </div>
+                                <div class="form-group">
+                                    <label for="PurposeStartDate">Propose Start Date</label><span class="req">*</span>
+                                    @Html.Kendo().DatePickerFor(m => m.PurposeStartDate).Format("dd MMM yyyy").HtmlAttributes(new { @class = "form-control form-control-sm", style = "width:100%", Required = "Required", @readonly = true })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="TrainingCost"></label>
+                                    @(Html.Kendo().NumericTextBoxFor(x => x.TrainingCost).Decimals(2).Spinners(false).HtmlAttributes(new { style = "width: 100%", @readonly = true }))
+                                </div>
+                                <div class="form-group">
+                                    <label for="PurposeEndDate">Propose End Date</label><span class="req">*</span>
+                                    @Html.Kendo().DatePickerFor(m => m.PurposeEndDate).Format("dd MMM yyyy").HtmlAttributes(new { @class = "form-control form-control-sm", style = "width:100%", Required = "Required", @readonly = true })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="Venue">Venue</label><span class="req">*</span>
+                                    @Html.TextAreaFor(x => x.Venue, new { style = "height:150px;width:100%", @class = "k-textbox", Required = "Required", @readonly = true })
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="Venue">Note</label><span class="req">*</span>
+                                    @Html.TextAreaFor(x => x.Notes, new { style = "height:150px;width:100%", Required = "Required", @class = "k-textbox", @readonly = true })
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert m-alert--default" role="alert">
+                                    Participants
+                                </div>
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.TrainingRequisitionDetail>()
+									.Name("grid")
+									.Columns(columns =>
+									{
+
+										columns.Bound(p => p.EmployeeBasicInfoName).Title("Name").Width(100);
+										columns.Bound(p => p.JobTitleName).Title("Title").Width(100);
+										columns.Bound(p => p.JobGradeName).Title("Grade").Width(100);
+										columns.Bound(p => p.DivisionName).Title("Division").Width(100);
+
+									})
+									.DataSource(dataSource => dataSource
+										.Ajax()
+										.PageSize(10)
+										.Events(events => events.Error("errorHandler"))
+										.Model(model => { model.Id(p => p.Id); })
+										.Read(read => read.Action("ReadDetail", "TrainingRequisition").Data("GetTrainingRequisitionId"))
+									)
+									.NoRecords()
+								)
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="detail_head" data-toggle="collapse" href="#detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">Accomodation</span>
+                                            <span class="m-accordion__item-mode"></span>
+
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="detail_body" role="tabpanel" aria-labelledby="detail_head" data-parent="#detail" style="">
+                                            <div class="m-accordion__item-content">
+                                                <button type="button" id="btn-add" class="btn btn-primary btn-sm" onclick="AddFormAccomodation(this)">
+                                                    <span class="glyphicon glyphicon-plus"></span> Add Accomodation
+                                                </button>
+                                                <div class="row">
+                                                    <div id="grid_detail_reg_payment" class="table table-bordered"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <partial name="_HistoryApproval" />
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <center>
+                                    @if (Model.Status == "5")
+                                    {
+                                        <button type="button" id="btn-submit" class="btn btn-primary" disabled>Complete Training</button>
+                                        <button type="button" id="btn-save" class="btn btn-success" disabled>Save Accomodation</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" id="btn-submit" class="btn btn-primary">Complete Training</button>
+                                        <button type="button" id="btn-save" class="btn btn-success">Save Accomodation</button>
+                                    }
+
+                                    <a asp-action="index" asp-controller="TrainingRegistrationPaymentReq" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </center>
+                            </div>
+                        </div>
+
+
+                    </form>
+                    <!--end::Form-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_EmployeeList" />
+<div class="modal-container"></div>
+<partial name="_DetailAccomodation" />
+
+<script id="grid-toolbar-template" type="text/x-kendo-template">
+    <a class='k-button' href='javascript: void(0);' onclick='AddFormAccomodation(this)'><span class='k-icon k-i-plus'></span>Add Accomodation</a>
+</script>
+
+<script>
+
+    (function ($, kendo) {
+        var _init = kendo.ui.Popup.fn.init;
+        var Popup = kendo.ui.Popup.extend({
+            init: function (element, options) {
+                // Only set appendTo if nothing was manually set in the options.
+                if (options.appendTo === undefined) {
+                    // Find the nearest parent bootstrap modal, if any.
+                    var parentModal = $(options.anchor).closest('.modal');
+
+                    // Found one!
+                    if (parentModal.length > 0) {
+                        options.appendTo = parentModal[0];
+                    }
+                }
+                // Call the base constructor.
+                _init.call(this, element, options);
+            }
+        });
+        kendo.ui.plugin(Popup);
+    }(window.kendo.jQuery, window.kendo));
+
+    $(function () {
+        if ( $('#TrainingId').data("kendoDropDownList").value() !== "") {
+            $('#TrainingId').data("kendoDropDownList").trigger("change");
+        }
+
+        $("#grid_detail_reg_payment").on("click", "button.remove", function () {
+            var $tr = $(this).closest("tr"),
+                grid = $("#grid_detail_reg_payment").data("kendoGrid"),
+                dataItem = grid.dataItem($tr);
+
+            grid.dataSource.remove(dataItem);
+        });
+
+        var id = '@Model.RegPaymentId';
+        if (id != '') {
+          var paramid= '@Model.RegPaymentId'
+            $.ajax({
+            type: "GET",
+            contentType: "application/x-www-form-urlencoded",
+            async: false,
+            data: {
+                id: paramid,
+            },
+            url: "@Url.Action("GetDetail", "TrainingRegistrationPaymentReq")",
+            success: function (result) {
+                console.log(result);
+                grid = $("#grid_detail_reg_payment").kendoGrid({
+                    dataSource: { data: result.Data, pageSize: 30 },
+                    type: "POST",
+                    serverPaging: false,
+                    pageable: true,
+                    resizable: true,
+                    columns: [
+                        {
+                            field: "Action", width: 30,
+                            template: "<button class='delete remove k-button'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></button>"
+                        },
+                        { field: "Id", title: "ID", width: 10, hidden: true },
+                        { field: "MasterTrainingRequestId", title: "MasterTrainingRequestId", width: 10, hidden: true },
+                        { field: "MasterTrainingRequestName", title: "Request", width: 50 },
+                        { field: "StatusRequest", title: "Status", width: 30 },
+                        { field: "StartDate", title: "Start Date", width: 50, template: "#= kendo.toString(formatDate(StartDate)) #" },
+                        { field: "EndDate", title: "End Date", width: 50, template: "#= kendo.toString(formatDate(EndDate)) #" },
+                        { field: "Remarks", title: "Remarks", width: 100 },
+                    ]
+                });
+
+                $('#modalDetail').modal('hide');
+
+            }
+        });
+        }
+    })
+
+    function saveDetailRegPayment()
+    {
+        var valid = $("#formDetailRegPayment").validate().form();
+
+        if (valid) {
+            var RegPaymentId = $('#RegPaymentId').val();
+            var MasterTrainingRequestId = $("#TrainingPaymentDetail_MasterTrainingRequestId").val();
+            var startDate = $("#TrainingPaymentDetail_StartDate").data("kendoDatePicker").value();
+            var endDate = $("#TrainingPaymentDetail_EndDate").data("kendoDatePicker").value();
+
+            var StatusRequest = $("#TrainingPaymentDetail_StatusRequest").val();
+            var remarks = $("#remarks").val();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                async: false,
+                data: {
+                    MasterTrainingRequestId: MasterTrainingRequestId,
+                    startDate: startDate.toISOString(),
+                    endDate: endDate.toISOString(),
+                    StatusRequest: StatusRequest,
+                    remarks: remarks,
+                },
+                url: "@Url.Action("AddDetail", "TrainingRegistrationPaymentReq")",
+                success: function (result) {
+                    console.log(result);
+                    grid = $("#grid_detail_reg_payment").kendoGrid({
+                        dataSource: { data: result.Data, pageSize: 30 },
+                        type: "POST",
+                        serverPaging: false,
+                        pageable: true,
+                        resizable: true,
+                        columns: [
+                            {
+                                field: "Action", width: 30,
+                                template: "<button class='remove k-button'>Remove</button>"
+                            },
+                            { field: "Id", title: "ID", width: 10, hidden: true },
+                            { field: "MasterTrainingRequestId", title: "MasterTrainingRequestId", width: 10, hidden: true },
+                            { field: "MasterTrainingRequestName", title: "Request", width: 50 },
+                            { field: "StatusRequest", title: "Status", width: 30 },
+                            { field: "StartDate", title: "Start Date", width: 50, template: "#= kendo.toString(formatDate(StartDate)) #"},
+                            { field: "EndDate", title: "End Date", width: 50, template: "#= kendo.toString(formatDate(EndDate)) #" },
+                            { field: "Remarks", title: "Remarks", width: 100 },
+                        ]
+                    });
+
+                    $('#modalDetail').modal('hide');
+                }
+            });
+        }
+    }
+
+    function formatDate(date) {
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let dateObj = new Date(date);
+        let month = monthNames[dateObj.getMonth()];
+        let day = String(dateObj.getDate()).padStart(2, '0');
+        let year = dateObj.getFullYear();
+        let output = day + '-' + month + '-' + year;
+        return output;
+    }
+
+
+    function AddFormAccomodation(e) {
+        $("#TrainingPaymentDetail_StartDate").data("kendoDatePicker").value('');
+        $("#TrainingPaymentDetail_EndDate").data("kendoDatePicker").value('');
+        $("#remarks").val('');
+        $('#modalDetail').modal('show');
+    }
+
+    function AddEmployee() {
+       ClearDataFilter();
+        $('#modal-choice-employee').modal('show');
+    }
+
+    function ClearDataFilter() {
+    	$("#GroupId").data("kendoDropDownList").select(-1);
+    	$("#SubgroupId").data("kendoDropDownList").select(-1);
+    	$("#DivisionId").data("kendoDropDownList").select(-1);
+    	$("#DepartementId").data("kendoDropDownList").select(-1);
+    }
+
+    function deleteGridRowEmployeeList(e) {
+        swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: !0
+        }).then(function (ok) {
+            if (ok.value) {
+                mApp.block("#m_blockui_list", {
+                    overlayColor: "#000000",
+                    type: "loader",
+                    state: "primary",
+                    message: "Processing..."
+                });
+
+                var item = dataItem(e);
+                $("#grid").data("kendoGrid").dataSource.remove(item);
+            }
+        }).catch(swal.noop);
+    }
+
+    function TrainingOnChange() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        var tid = $("#TrainingId").data("kendoDropDownList").value();
+        $.ajax({
+        	type: "GET",
+        	url: '@Url.Action("GetTrainingSettingDetail", "TrainingRequisition")',
+        	data: { id: tid },
+        	success: function (result) {
+        		if (result != undefined) {
+        			$("#TrainingName").val(result.Name);
+        			$("#TrainingCost").data("kendoNumericTextBox").value(result.TrainingCost);
+        			$("#TrainingType").val(result.TrainingType);
+        			if (result.BondingDetail != null) {
+        				//$("#IsTrainingBonding").data("kendoRadioButton").checked(true);
+        				$('input[name="IsTrainingBonding"][value="True"]').prop("checked", true);
+        			} else {
+        				$('input[name="IsTrainingBonding"][value="False"]').prop("checked", true);
+        			}
+        		}
+        		mApp.unblock("#m_blockui_list");
+        	},
+        	error: function (e, t, s) {
+        		//console.log(e)
+                console.log(e);
+        		mApp.unblock("#m_blockui_list");
+        	}
+        }).then(setTimeout(function () {
+        	mApp.unblock("#m_blockui_list");
+        }, 2e3));
+    };
+
+    $('#btn-save').click(function () {
+
+        if ($("#RequesterEmployeeBasicInfoId").val() == null || $("#BusinessUnitId").val() == null) {
+            swal('Warning', "Please Check Your Session", 'error');
+            setTimeout(
+                function () {
+                    window.location.href = '@Url.Action("Index", "TrainingRegistrationPaymentReq")';
+                }, 2000);
+        }
+
+        var gridData = $("#grid_detail_reg_payment").data("kendoGrid");
+        if (!gridData)//Grid is initialized
+        {
+            swal('Warning', "Please Add  Accomodation", 'error');
+        }
+        
+        
+        var dataList = {
+            Details: $("#grid_detail_reg_payment").data("kendoGrid").dataSource.data()
+        };
+
+       
+        callAction({ formId: "form", title: "Save", type: "POST" , url: '@Url.Action("Save", "TrainingRegistrationPaymentReq")', objects: dataList });
+    });
+
+	$('#btn-submit').click(function () {
+
+        if ($("#RequesterEmployeeBasicInfoId").val() == null || $("#BusinessUnitId").val() == null) {
+            swal('Warning', "Please Check Your Session", 'error');
+            setTimeout(
+                function () {
+                    //do something special
+                    window.location.href = '@Url.Action("Index", "TrainingRegistrationPaymentReq")';
+                }, 2000);
+        }
+
+        var gridData = $("#grid_detail_reg_payment").data("kendoGrid");
+        if (!gridData)//Grid is initialized
+        {
+            swal('Warning', "Please Add  Accomodation", 'error');
+        }
+        var dataList = {
+            Details: $("#grid_detail_reg_payment").data("kendoGrid").dataSource.data()
+        };
+        callAction({ formId: "form", title: "Submit", type: "POST" , url: '@Url.Action("Submit", "TrainingRegistrationPaymentReq")', objects: dataList });
+    });
+
+    $('#btnApprove').click(function () {
+        callAction({ formId: "form", title: "Approve", type: "POST", url: '@Url.Action("Approve", "TrainingRequisition")' });
+    });
+
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+    $('#btnReject').click(function () {
+        callAction({ formId: "form", title: "Reject", type: "POST", url: '@Url.Action("Reject", "TrainingRequisition")' });
+    });
+
+    function ShowBonding() {
+        var rev = $('#TrainingCost').data("kendoNumericTextBox").value();
+        if (parseInt(rev) >= parseInt(15000000)) {
+            $("#bonding_detail_div").css({ display: "block" });
+        }
+    }
+
+    function GetTrainingRequisitionId() {
+        return {
+            Id: $("#Id").val()
+        };
+    }
+
+    function OnChangeFilter_EmployeeList() {
+    	$("#grid-choice-employee").data("kendoGrid").dataSource.read();
+    }
+
+    function filterSubGroup_EmployeeList() {
+    	return { GroupId : $("#GroupId").data("kendoDropDownList").value() }
+    }
+
+    function filterDivision_EmployeeList() {
+    	console.log("filter division by subgroup change");
+    	console.log($("#SubgroupId").data("kendoDropDownList").value());
+    	return { subGroupId: $("#SubgroupId").data("kendoDropDownList").value() }
+    }
+
+    function filteDept_EmployeeList() {
+    	return { divisionId: $("#DivisionId").data("kendoDropDownList").value() }
+    }
+
+    function gridChoiceEmployee_params() {
+    	var grpid = $("#GroupId").data("kendoDropDownList").value();
+    	var subgrpid = $("#SubgroupId").data("kendoDropDownList").value();
+    	var divid = $("#DivisionId").data("kendoDropDownList").value();
+    	var depid = $("#DepartementId").data("kendoDropDownList").value();
+    	return { FilterGroupId: grpid, FilterSubgroupId: subgrpid, FilterDivisionId: divid, FilterDepartementId: depid };
+    }
+
+    function SaveSelectedEmployee() {
+        $("#grid").data('kendoGrid').dataSource.data([]);
+        var allSelected = $("#grid-choice-employee tr.k-state-selected");
+        var griddtlds = $("#grid").data('kendoGrid').dataSource;
+
+        if (allSelected.length < 1) {
+            swal('Warning', "At Lease Choose 1 employee, Please Choose more.", 'error');
+            return;
+        }
+        $.each(allSelected, function (e) {
+            var row = $(this);
+            var grid = row.closest(".k-grid").data("kendoGrid");
+            var dataItem = grid.dataItem(row);
+            griddtlds.add(dataItem)
+        });
+
+        $('#modal-choice-employee').modal('toggle');
+    }
+</script>

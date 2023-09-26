@@ -1,0 +1,101 @@
+﻿@model PhoenixERPWebApp.Models.Termination
+@{
+    DateTime? TerminationInterviewDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        if (TerminationInterviewDate >= Model.TerminationInterviewDate)
+        {
+            TerminationInterviewDate = Model.TerminationInterviewDate;
+        }
+    }
+}
+
+<div class="row" id="requestor_data_detail">
+    <div class="col-lg-12 m-row--no-padding">
+        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="requestor_Detail" role="tablist">
+            <!--begin::Item-->
+            <div class="m-accordion__item">
+                <div class="m-accordion__item-head show" role="tab" id="requestor_Detail_head" data-toggle="collapse" href="#requestor_Detail_body" aria-expanded="true">
+                    <span class="m-accordion__item-icon"><i class="fa fa-user"></i></span>
+                    <span class="m-accordion__item-title">Personnel Information</span>
+                    <span class="m-accordion__item-mode"></span>
+                </div>
+                <div class="m-accordion__item-body show" id="requestor_Detail_body" role="tabpanel" aria-labelledby="requestor_Detail_head" data-parent="#requestor_Detail">
+                    <div class="m-accordion__item-content">
+                            
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.EmployeeId"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.EmployeeId)
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:100%",
+                                        @readonly = "readonly",
+                                        required = "required",
+                                        @class = "form-control form-control-sm m-input",
+                                    }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.EmployeeName"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.EmployeeName)
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:100%",
+                                        @readonly = "readonly",
+                                        @class = "form-control form-control-sm m-input",
+                                    }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="TerminationInterviewDate"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().DatePickerFor(m => m.TerminationInterviewDate)
+                                    .Format("dd MMM yyyy")
+                                    .Min($"{TerminationInterviewDate}")
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:100%",
+                                        @class = "form-control form-control-sm m-input",
+                                        required = "required",
+                                        placeholder = $"Choose a {Html.DisplayNameFor(m => m.TerminationInterviewDate)}",
+                                        onkeydown = "javascript:return false;"
+                                    })
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.JobTitle"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.JobTitle)
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:100%",
+                                        @readonly = "readonly",
+                                        @class = "form-control form-control-sm m-input",
+                                    }))
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.Email"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Email)
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:100%",
+                                        @readonly = "readonly",
+                                        @class = "form-control form-control-sm m-input",
+                                    }))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

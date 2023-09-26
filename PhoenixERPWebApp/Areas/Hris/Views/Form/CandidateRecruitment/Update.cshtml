@@ -1,0 +1,281 @@
+@{
+    ViewData["Title"] = "CandidateRecruitment";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="CandidateRecruitmentFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="achievement">achievement</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="achievement" id="achievement"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="address">address</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="address" id="address" required maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="alcohol_willing">alcohol_willing</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="alcohol_willing" id="alcohol_willing"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="applicant_progress_id">applicant_progress_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="applicant_progress_id" id="applicant_progress_id"  maxlength="10" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approver_id">approver_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approver_id" id="approver_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="birth_place">birth_place</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="birth_place" id="birth_place"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="certificate">certificate</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="certificate" id="certificate"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="cigaret_willing">cigaret_willing</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="cigaret_willing" id="cigaret_willing"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="city_id">city_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="city_id" id="city_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="company_last_address">company_last_address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="company_last_address" id="company_last_address"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="company_last_from">company_last_from</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="company_last_from" id="company_last_from"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="company_last_name">company_last_name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="company_last_name" id="company_last_name" required maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="company_last_phone">company_last_phone</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="company_last_phone" id="company_last_phone"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="company_last_until">company_last_until</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="company_last_until" id="company_last_until"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="country">country</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="country" id="country"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="course_institution">course_institution</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="course_institution" id="course_institution"  maxlength="80" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="course_tittle">course_tittle</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="course_tittle" id="course_tittle"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="course_years">course_years</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="course_years" id="course_years"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="date_birth">date_birth</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="date_birth" id="date_birth" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="education_level_id">education_level_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="education_level_id" id="education_level_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="education_year_from">education_year_from</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="education_year_from" id="education_year_from"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="education_year_to">education_year_to</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="education_year_to" id="education_year_to"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="email">email</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="email" id="email" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="file_id">file_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="file_id" id="file_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="first_name">first_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="first_name" id="first_name"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="gender">gender</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="gender" id="gender"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="identity_card">identity_card</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="identity_card" id="identity_card"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="institusion">institusion</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="institusion" id="institusion" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="interest">interest</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="interest" id="interest"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_repository_id">job_repository_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="job_repository_id" id="job_repository_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="last_education">last_education</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="last_education" id="last_education" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="last_name">last_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="last_name" id="last_name"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="last_position">last_position</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="last_position" id="last_position"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="looking_job">looking_job</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="looking_job" id="looking_job" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="major">major</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="major" id="major"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="married_status_id">married_status_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="married_status_id" id="married_status_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="mobile_number">mobile_number</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="mobile_number" id="mobile_number"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="nationality_id">nationality_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="nationality_id" id="nationality_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="nick_name">nick_name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="nick_name" id="nick_name" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="pay_slip">pay_slip</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="pay_slip" id="pay_slip"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="phone_number">phone_number</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="phone_number" id="phone_number" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="portofolio">portofolio</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="portofolio" id="portofolio"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="profile_file">profile_file</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="profile_file" id="profile_file" required maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="province">province</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="province" id="province"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="relation_people">relation_people</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="relation_people" id="relation_people" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="religion_id">religion_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="religion_id" id="religion_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="resume_screening">resume_screening</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="resume_screening" id="resume_screening" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="source_recruitment">source_recruitment</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="source_recruitment" id="source_recruitment"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="work_number">work_number</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="work_number" id="work_number"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="zip_code">zip_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="zip_code" id="zip_code"  maxlength="100" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/CandidateRecruitment" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/CandidateRecruitment.update.js"></script>
+}

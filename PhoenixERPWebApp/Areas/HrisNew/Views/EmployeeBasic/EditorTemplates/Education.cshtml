@@ -1,0 +1,142 @@
+@model PhoenixERPWebApp.Models.Education
+<!-- BEGIN: Subheader -->
+<!-- MODAL REMOTE -->
+<style>
+	.k-animation-container, .k-widget, .k-widget *, .k-animation-container *, .k-widget *:before, .k-animation-container *:after {
+		box-sizing: border-box !important;
+	}
+
+	/*k-popup-edit-form k-window-content k-content*/
+	.k-window-titlebar k-header, div.k-edit-form-container{
+		width: 820px;
+		/*padding:0px !important;*/
+	}
+
+	table {
+		border: none;
+		padding: 5px 20px;
+		width: 100%;
+		position:center;
+	}
+
+		table tr > td {
+			width: 50%;
+			padding: 0px 20px;
+		}
+</style>
+<div class="k-content">
+	<div class="row">
+		<div class="col-sm-12">
+			<table>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="EEducationLevelId"></label><span class="req">*</span> :
+							@(Html.Kendo().DropDownListFor(m => m.EEducationLevelId)
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.OptionLabel($"choose a {Html.DisplayNameFor(m => m.EEducationLevelId)}")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;",
+									required = "required",
+									validationmessage = $"{Html.DisplayNameFor(m => m.EEducationLevelId)} is required"
+								})
+								.Height(400)
+								.Filter(FilterType.Contains)
+								.DataSource(source => source
+									.Custom()
+									.Transport(transport => transport
+										.Read(read =>
+										{
+											read.Action("GetDDLeducationlevel", "Dropdown", new { area = "hrisnew" });
+										}))
+								.ServerFiltering(false))
+							)
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="EMajors"></label> : @*<span class="req">*</span>*@
+							@(Html.Kendo().TextBoxFor(x => x.EMajors).HtmlAttributes(new { style = "width:100%", @maxlength = 100 }))
+						</div>						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>Year</label><span class="req">*</span> :<br />
+						<div style="display:inline-block">
+							@(Html.Kendo().DatePickerFor(m => m.EStartEducation).Start(CalendarView.Decade).Depth(CalendarView.Decade)
+								.Format("yyyy")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;margin-right:10px",
+									@class = "form-control form-control-sm m-input",
+								}))
+						</div>
+						<div style="display:inline-block">
+							@(Html.Kendo().DatePickerFor(m => m.EEndEducation).Start(CalendarView.Decade).Depth(CalendarView.Decade)
+							.Format("yyyy")
+							.HtmlAttributes(new
+							{
+								style = "width:100%",
+								@class = "form-control form-control-sm m-input",
+							}))
+						</div>	
+					</td>
+					<td>
+						@*<div class="form-group">
+							<label asp-for="EInstitutionId"></label>:
+							@(Html.Kendo().DropDownListFor(m => m.EInstitutionId)
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.OptionLabel($"choose a {Html.DisplayNameFor(m => m.EInstitutionId)}")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;",
+									validationmessage = $"{Html.DisplayNameFor(m => m.EInstitutionId)} is required"
+								})
+								.Height(400)
+								.Filter(FilterType.Contains)
+								.Events(evt => evt.Change("InstitutionOnChange"))
+								.DataSource(source => source
+									.Custom()
+									.Transport(transport => transport
+										.Read(read =>
+										{
+											read.Action("GetDDLInstitution", "Dropdown", new { area = "hrisnew" });
+										}))
+								.ServerFiltering(false))
+							)
+						</div>*@
+						<div class="form-group">
+							<div class="form-group">
+								<label asp-for="OtherInstitution"></label> <span class="req">*</span> :
+								@Html.TextAreaFor(x => x.OtherInstitution, new { @class = "k-textbox", required = "required", @maxlength = 100, style = "width: 100%;padding:0.5em" })
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="EQualification"></label> :
+							@(Html.Kendo().TextBoxFor(x => x.EQualification).HtmlAttributes(new { style = "width:100%", @maxlength = 100 }))
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="EAddress"></label> <span class="req">*</span> :
+							@Html.TextAreaFor(x => x.EAddress, new { @class = "k-textbox", required = "required", @maxlength = 2000, style = "width: 100%;padding:0.5em" })
+						</div>
+					</td>
+				</tr>	
+			</table>
+		</div>
+	</div>
+</div>
+<script>
+	//$(document).ready(function () {
+	//	$("#OtherInstitution").attr("disabled", true);
+	//});
+</script>

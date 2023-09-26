@@ -1,0 +1,268 @@
+﻿@model PhoenixERPWebApp.Models.Termination
+
+<div class="row" id="assign_data_detail">
+    <div class="col-lg-12 m-row--no-padding">
+        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="assign_Detail" role="tablist">
+            <!--begin::Item-->
+            <div class="m-accordion__item">
+                <div class="m-accordion__item-head show" role="tab" id="assign_Detail_head" data-toggle="collapse" href="#assign_Detail_body" aria-expanded="true">
+                    <span class="m-accordion__item-icon"><i class="fa fa-user"></i></span>
+                    <span class="m-accordion__item-title">Assignment Employee</span>
+                    <span class="m-accordion__item-mode"></span>
+                </div>
+                <div class="m-accordion__item-body show" id="assign_Detail_body" role="tabpanel" aria-labelledby="assign_Detail_head" data-parent="#assign_Detail">
+                    <div class="m-accordion__item-content">
+                        <div class="row" id="search">
+                            <div class="col-lg-5 m-form__group-sub">
+                                <div class="form-group">
+                                    <label class="search-employee">Search Employee </label>:
+                                    @(Html.Kendo().AutoComplete()
+                                            .Name("SearchEmployee")
+                                            .DataTextField("Text")
+                                            .Filter(FilterType.Contains)
+                                            //.MinLength(3)
+                                            .HtmlAttributes(new { style = "width:100%"})
+                                            .Events(ev => ev.Select("employeeInfoSelectEvent"))
+                                            .DataSource(source => {
+                                                source
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLTerminationEmployeeBasicInfoByName", "Dropdown", new { area = "HrisNew" }).Data("params_autocomplete");
+                                                    })
+                                                    .ServerFiltering(true);
+                                            })
+                                    )
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5>Detail Information</h5>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.EmployeeId"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().TextBoxFor(x => x.EmployeeBasicInfoId)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            required = "required",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.EmployeeName"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.EmployeeName)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.JobTitle"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.JobTitle)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.Grade"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Grade)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">                                                                    
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.DateEmployed"></label> :
+                                    @(Html.Kendo().DatePickerFor(m => m.infoEmployee.DateEmployed)
+                                        .Format("dd MMM yyyy")
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.EmployementStatus"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.EmployementStatus)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.DateBirth"></label> :
+                                        @(Html.Kendo().DatePickerFor(m => m.infoEmployee.DateBirth)
+                                        .Format("dd MMM yyyy")
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.Age"></label> :      
+                                        @(Html.Kendo().NumericTextBoxFor(m => m.infoEmployee.Age)
+                                        .Spinners(false)
+                                        .Round(true)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input"
+                                        }))
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.Phone"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Phone)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                                                                   
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.Email"></label> :
+                                    @(Html.Kendo().TextBoxFor(x => x.infoEmployee.Email)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @readonly = "readonly",
+                                            @class = "form-control form-control-sm m-input",
+                                        }))
+                                </div>
+                            </div>
+                            <div class="col-lg-3 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="infoEmployee.EmployeeContractDocumentName"></label>:
+                                    <div style="width:100%">
+                                        <input type="hidden" asp-for="infoEmployee.EmployeeContractDocument" />
+                                        <a href='javascript: void(0);' id="linkDownloadFileContract" onclick='downloadFileContract()'></a> &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>               
+    $(document).ready(function () {
+        $("#linkDownloadFileContract").text('@Model.infoEmployee.EmployeeContractDocumentName');
+    });
+       
+    function downloadFileContract() {
+        downloadAction({url: '@Url.RouteUrl(new { action = "download", controller = "Download" })',data: { id:$("#infoEmployee_EmployeeContractDocument").val() }});
+    }
+
+    function params_autocomplete() {
+        return {
+            name: $("#SearchEmployee").val(),
+            terminationType: $("#TerminationType").data("kendoDropDownList").value()
+        };
+    }
+
+    function employeeInfoSelectEvent(e) {
+        var dataItem = this.dataItem(e.item.index());
+        if (dataItem === undefined) {
+            this.value("");
+            ClearAsignEmployee();
+        } else {
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetEmployeeInfoById", "employeeinfo")',
+                data: { employeeId: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#EmployeeBasicInfoId").val(result.EmployeeId);
+                        //$("#infoEmployee_EmployeeId").val(result.EmployeeId);
+                        $("#infoEmployee_EmployeeName").val(result.EmployeeName);
+                        $("#infoEmployee_JobTitle").val(result.JobTitle);
+                        $("#infoEmployee_Grade").val(result.Grade);
+                        $("#infoEmployee_EmployementStatus").val(result.EmployementStatus);
+                        $("#infoEmployee_Phone").val(result.Phone);
+                        $("#infoEmployee_DateBirth").data("kendoDatePicker").value(result.DateBirth);
+                        $("#infoEmployee_Age").data("kendoNumericTextBox").value(result.Age);
+                        $("#infoEmployee_Email").val(result.Email);
+                        $("#infoEmployee_DateEmployed").data("kendoDatePicker").value(result.DateEmployed);
+                        $("#infoEmployee_EmployeeContractDocument").val(result.EmployeeContractDocument);
+                        $("#linkDownloadFileContract").html(result.EmployeeContractDocumentName);
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    }
+
+    function ClearAsignEmployee() {
+        $("#EmployeeBasicInfoId").val("");
+        //$("#infoEmployee_EmployeeId").val("");
+        $("#infoEmployee_EmployeeName").val("");
+        $("#infoEmployee_JobTitle").val("");
+        $("#infoEmployee_Grade").val("");
+        $("#infoEmployee_EmployementStatus").val("");
+        $("#infoEmployee_Phone").val("");
+        $("#infoEmployee_DateBirth").data("kendoDatePicker").value("");
+        $("#infoEmployee_Age").data("kendoNumericTextBox").value("");
+        $("#infoEmployee_Email").val("");
+        $("#infoEmployee_DateEmployed").data("kendoDatePicker").value("");
+        $("#infoEmployee_EmployeeContractDocument").val("");
+        $("#linkDownloadFileContract").html("");
+    }
+</script>

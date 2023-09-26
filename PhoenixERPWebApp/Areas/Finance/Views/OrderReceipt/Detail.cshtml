@@ -1,0 +1,380 @@
+@model PhoenixERPWebApp.Models.Finance.OrderReceipt
+@{
+    ViewData["Title"] = "Form Order Receipt";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Order Receipt</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Order Receipt</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="OrderReceipt" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Order Receipt</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action ="Detail" asp-controller="OrderReceipt" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">
+                                @ViewBag.Header &nbsp;
+                                @if (Model.Status != null)
+                                {
+                                    @if (Model.Status == @PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.Open.ToString())
+                                    {
+                                        <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.StatusName(PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.Open)</span>
+                                    }
+                                    else if (Model.Status == @PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.Delivered.ToString())
+                                    {
+                                        <span class="m-badge m-badge--success m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.StatusName(PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.Delivered)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.StatusName(PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.Open)</span>
+                                    }
+                                }
+                                @*<span id="status"></span>*@
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formOrderReceipt" class="form-horizontal form-bordered" role="form" asp-action="Save" asp-controller="OrderReceipt" asp-area="finance">
+                        @*enctype="multipart/form-data"*@
+                        <div class="row ">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="CreatedBy" />
+                            @*<input type="hidden" asp-for="CreatedOn" />*@
+                            <input type="hidden" asp-for="ModifiedBy" />
+                            <input type="hidden" asp-for="ModifiedOn" />
+                            <input type="hidden" asp-for="ApprovedBy" />
+                            <input type="hidden" asp-for="ApprovedOn" />
+                            <input type="hidden" asp-for="IsActive" />
+                            <input type="hidden" asp-for="IsLocked" />
+                            <input type="hidden" asp-for="IsDefault" />
+                            <input type="hidden" asp-for="IsDeleted" />
+                            <input type="hidden" asp-for="OwnerId" />
+                            <input type="hidden" asp-for="DeletedBy" />
+                            <input type="hidden" asp-for="DeletedOn" />
+                            <input type="hidden" asp-for="BusinessUnitId" />
+                            <input type="hidden" asp-for="LegalEntityId" />
+
+
+                            <div class="col-md-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="ReceiptOrderNumber"></label>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.ReceiptOrderNumber)
+                                                                                .HtmlAttributes(new
+                                                                                {
+                                                                                    @class = "form-control form-control-sm",
+                                                                                    @readonly = "readonly",
+                                                                                    style = "width:100%",
+                                                                                    placeholder = "Auto Generated by System.."
+                                                                                }
+                                                                             ))
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="GoodRequestNumber"></label>  :
+                                    @(Html.Kendo().DropDownListFor(m => m.GoodRequestNumber)
+                                                                        .DataTextField("Text")
+                                                                        .OptionLabel("Select Good Request...")
+                                                                        .DataValueField("Text")
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source =>
+                                                                        {
+                                                                            source.Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLGoodRequest", "DropDown", new { area = "Finance" });
+                                                                            });
+                                                                        })
+                                                                        .Events(e =>
+                                                                        {
+                                                                            e.Change("onSelectGReq");
+                                                                        })
+                                                                        .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label> Created On : </label>
+                                    @(Html.Kendo().DatePickerFor(m => m.DateReceipt)
+                                                                                .Value(DateTime.Today)
+                                                                                .HtmlAttributes(new
+                                                                                {
+                                                                                    style = "width:100%",
+                                                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.DateReceipt)}"
+                                                                                }
+                                                                            ))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="m-form__group-sub col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="EmployeeName"></label>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.EmployeeName)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            maxlength = 255,
+                                                                            @readonly = "readonly"
+                                                                        }
+                                                                     ))
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="BusinessUnitName"></label>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.BusinessUnitName)
+                                                                                .HtmlAttributes(new
+                                                                                {
+                                                                                    @class = "form-control form-control-sm",
+                                                                                    @readonly = "readonly",
+                                                                                    style = "width:100%",
+                                                                                }
+                                                                             ))
+                                </div>
+                            </div>
+                            <div class="col-md-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="LegalEntityName"></label>  :
+                                    @(Html.Kendo().TextBoxFor(m => m.LegalEntityName)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            @class = "form-control form-control-sm",
+                                                                            @readonly = "readonly",
+                                                                            style = "width:100%",
+                                                                        }
+                                                                     ))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Image :</label>
+                                    <div id="divImageAttachment"></div>
+                                    <div style="width:100%">
+                                        <input type="hidden" asp-for="UploadImage" />
+                                        <a href='javascript: void(0);' id="downloadLinkImageAttachment" onclick='downloadImage()'></a> &nbsp;
+                                        <a href='javascript: void(0);' id="removeLinkImageAttachment" onclick='removeImage()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Document :</label>
+                                    <div id="divDocAttachment"></div>
+                                    <div style="width:100%">
+                                        <input type="hidden" asp-for="UploadDoc" />
+                                        <a href='javascript: void(0);' id="downloadLinkDocAttachment" onclick='downloadDoc()'></a> &nbsp;
+                                        <a href='javascript: void(0);' id="removeLinkDocAttachment" onclick='removeDoc()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row pull-right">
+                                    <a asp-action="index" asp-controller="OrderReceipt" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                    @if (Model.Status != null)
+                                    {
+                                        if (Model.Status == @PhoenixERPWebApp.Models.Enum.OrderReceiptStatus.Open.ToString())
+                                        {
+                                            <button type="button" id="btn-delivered" class="btn btn-success">Delivered</button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <button type="button" id="btn-delivered" class="btn btn-success">Delivered</button>
+                                        <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function removeImage() {
+        ImageAttachmentFunction();
+    }
+
+    function downloadImage() {
+        console.log($("#UploadImage").val());
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#UploadImage").val() }});
+    }
+
+    function ImageAttachmentFunction() {
+        $("#downloadLinkImageAttachment").empty();
+        $("#removeLinkImageAttachment").empty();
+        $("#divImageAttachment").empty().append("<input name='ImageAttachmentUpload' id='ImageAttachmentUpload' type='file' required/>");
+
+        $("#ImaageAttachmentUpload").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg", ".png", ".gif", ".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+
+    function removeDoc() {
+        DocAttachmentFunction();
+    }
+
+    function downloadDoc() {
+        console.log($("#UploadDoc").val());
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#UploadDoc").val() }});
+    }
+
+    function DocAttachmentFunction() {
+        $("#downloadLinkDocAttachment").empty();
+        $("#removeLinkDocAttachment").empty();
+        $("#divDocAttachment").empty().append("<input name='DocAttachmentUpload' id='DocAttachmentUpload' type='file' required/>");
+
+        $("#ImaageAttachmentUpload").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg", ".png", ".gif", ".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+
+
+    function onSelectGReq() {
+        console.log("onSelectGReq");
+        if ($("#Id").val() != null && $("#Id").val() != "") {
+            //GetDataPODetail();
+        } else {
+            if ($("#GoodRequestNumber").val() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDataGoodRequest", "OrderReceipt")',
+                    data: { number: $("#GoodRequestNumber").val() },
+                    success: function (data) {
+                        console.log(data);
+                        $("#BusinessUnitId").val(data.BusinessUnitId);
+                        $("#LegalEntityId").val(data.LegalEntityId);
+                        $("#BusinessUnitName").val(data.BusinessUnitName);
+                        $("#LegalEntityName").val(data.LegalEntityName);
+                        $("#EmployeeName").val(data.EmployeeName);
+                    }
+                });
+            } else {
+                $("#BusinessUnitId").val("");
+                $("#LegalEntityId").val("");
+                $("#BusinessUnitName").val("");
+                $("#LegalEntityName").val("");
+                $("#EmployeeName").val("");
+            }
+        }
+    };
+
+    //###############################################################################################//
+    var param = (function (param) {
+        param.saveUrl = "@Url.Action("Save", "OrderReceipt")";
+        param.deliveredUrl = "@Url.Action("Delivered", "OrderReceipt")";
+        return param;
+    })(param || {});
+
+    var pageFunction = (function (pageFunction) {
+        pageFunction.init = function () {
+            //initialize
+        };
+        pageFunction.save = function () {
+            var validator = $("#formOrderReceipt").kendoValidator().data("kendoValidator");
+            if (validator.validate()) {
+                callActionFile({ formId: "formOrderReceipt", title: "save", type: "POST", url: param.saveUrl});
+            } else {
+                swal('Information', 'Please complete your form !', 'info');
+            }
+        };
+        pageFunction.delivered = function () {
+            var validator = $("#formOrderReceipt").kendoValidator().data("kendoValidator");
+            if (validator.validate()) {
+                callActionFile({ formId: "formOrderReceipt", title: "delivered", type: "POST", url: param.deliveredUrl });
+            } else {
+                swal('Information', 'Please complete your form !', 'info');
+            }
+        };
+        return pageFunction;
+    })(pageFunction || {});
+
+    $(document).ready(function () {
+        console.log("Init Good Request Detail...");
+        console.log($("#Id").val());
+        if ($('#Id').val() != null && $('#Id').val() != "") {
+            //onSelectGR();
+            //$("#GoodReceiptId").data("kendoDropDownList").readonly();
+        };
+        $("#btn-save").click(pageFunction.save);
+        $("#btn-delivered").click(pageFunction.delivered);
+        var ImageAttachment = '@Model.ImageName';
+        if (ImageAttachment == '') {
+            ImageAttachmentFunction();
+        } else {
+            $("#downloadLinkImageAttachment").text(ImageAttachment);
+        }
+        var DocAttachment = '@Model.DocName';
+        if (DocAttachment == '') {
+            DocAttachmentFunction();
+        } else {
+            $("#downloadLinkDocAttachment").text(DocAttachment);
+        }
+    });
+</script>

@@ -1,0 +1,159 @@
+<div id="tree_businessunit" class="tree-demo"> </div>
+<script>
+    var $tree = $('#tree_businessunit');
+    var xclick = 0;
+    var TreeView = function () {
+
+        var tree = $tree.jstree({
+            "themes": {
+                "theme": "default",
+                "dots": false,
+                "icons": true
+            },
+
+            'core': {
+                "themes": {
+                    "responsive": false
+                },
+                "check_callback": true,
+                'data': function (obj, callback) {
+                    $.ajax({
+                        type: "GET",
+                        dataType: 'json',
+                        url: $.helper.resolveApi("~core/BusinessUnit"),
+                        success: function (r) {
+ 
+                            if (r.status.success) {
+                                callback.call(this, r.data);
+                            }
+                        }
+                    });
+                }
+
+            },
+            "types": {
+                "default": {
+                    "icon": "fa fa-folder icon-state-warning icon-lg"
+                },
+                "root": {
+                    "class": "css-custom"
+                },
+                "file": {
+                    "icon": "fa fa-file icon-state-warning icon-lg"
+                }
+            },
+            state: { "key": "demo2" },
+            plugins: ["dnd", "state", "types"]
+
+
+        }).bind("select_node.jstree", function (e, data) {
+            if (xclick > 0) {
+                if (current_mode != null) {
+                    if (current_mode == "mpp") {
+
+                        function AddRowTableAproval(no, title, nama) {
+                            var acak = randomIntFromInterval(1, 999);
+                            var markup = "<tr id=" + acak + "><td>" + no + "</td><td>" + title + "</td><td>" + nama + "</td></tr>";
+                            $("#MppListApprover tbody").append(markup);
+                        }
+
+                        function DeleteajaApproval(id) {
+                            $('table#MppListApprover tr#' + id + '').remove();
+                        }
+
+                        var ajaxUrlGetTempateApprovalLink = API + "General/TmTemplateApproval/List";                       
+                        if ($.trim(data.node.text) == 'Nava+' || $.trim(data.node.text) == 'Nava+ Central Resources' || $.trim(data.node.text) == 'Finance & Accounting' || $.trim(data.node.text) == 'INTERFACE' ) {
+                            ajaxGet(ajaxUrlGetTempateApprovalLink, { Search_MenuName: "Man Power Planing", Search_TemplateName: "MPP Nava" }, function (response) {
+                                response = parseJson(response);
+                                DeleteajaApproval('no_data');
+                                var count = 1;
+                                var ttl = "";
+                                $("#MppListApprover > tbody").html("");
+                                $.each(response.rows[0].listTmUserApproval, function (index, value) {
+                                    if (value.job_title_name === null || value.job_title_name === "") {
+                                        ttl = "Unset Jobtitle";
+                                    } else {
+                                        ttl = value.job_title_name;
+                                    }
+                                    AddRowTableAproval(count, ttl, value.employee_full_name);
+                                    count = count + 1;
+                            
+                                });
+                                $("#template_approval_id").val(response.rows[0].id);
+                                $('#' + current_treename).val(data.node.text);
+                                $('#' + current_treenode).val(data.selected[0]);
+                                $('#Treebu').modal('hide');
+                            });
+                            
+                        } else if ($.trim(data.node.text) == 'HCGA'||$.trim(data.node.text) == 'IT and Procurment') {
+                            ajaxGet(ajaxUrlGetTempateApprovalLink, { Search_MenuName: "Man Power Planing", Search_TemplateName: "MPP HCGA" }, function (response) {
+                                response = parseJson(response);
+                                DeleteajaApproval('no_data');
+                                var count = 1;
+                                var ttl = "";
+                                $("#MppListApprover > tbody").html("");
+                                $.each(response.rows[0].listTmUserApproval, function (index, value) {
+                                    if (value.job_title_name === null || value.job_title_name === "") {
+                                        ttl = "Unset Jobtitle";
+                                    } else {
+                                        ttl = value.job_title_name;
+                                    }
+                                    AddRowTableAproval(count, ttl, value.employee_full_name);
+                                    count = count + 1;
+                                });
+                              
+                                $("#template_approval_id").val(response.rows[0].id);
+                                $('#' + current_treename).val(data.node.text);
+                                $('#' + current_treenode).val(data.selected[0]);
+                                $('#Treebu').modal('hide');
+                            });
+                        }else {
+                            ajaxGet(ajaxUrlGetTempateApprovalLink, { Search_MenuName: "Man Power Planing", Search_TemplateName: "MPP IRIS / BRANDCOM" }, function (response) {
+                                response = parseJson(response);
+                                DeleteajaApproval('no_data');
+                                var count = 1;
+                                var ttl = "";
+                                $("#MppListApprover > tbody").html("");
+                                $.each(response.rows[0].listTmUserApproval, function (index, value) {
+                                    if (value.job_title_name === null || value.job_title_name === "") {
+                                        ttl = "Unset Jobtitle";
+                                    } else {
+                                        ttl = value.job_title_name;
+                                    }
+                                    AddRowTableAproval(count, ttl, value.employee_full_name);
+                                    count = count + 1;
+                                });
+                                $("#template_approval_id").val(response.rows[0].id);
+                                $('#' + current_treename).val(data.node.text);
+                                $('#' + current_treenode).val(data.selected[0]);
+                                $('#Treebu').modal('hide');
+                            });
+
+                        }
+                       
+
+
+                    } else {
+                        $('#' + current_treename).val(data.node.text);
+
+                        $('#' + current_treenode).val(data.selected[0]);
+
+                        $('#Treebu').modal('hide');
+                    }
+                } else {
+                    $('#' + current_treename).val(data.node.text);
+
+                    $('#' + current_treenode).val(data.selected[0]);
+
+                    $('#Treebu').modal('hide');
+                }
+            }
+            xclick++;
+        });;
+
+
+    };
+    $(function () {
+        TreeView();
+    })
+</script>

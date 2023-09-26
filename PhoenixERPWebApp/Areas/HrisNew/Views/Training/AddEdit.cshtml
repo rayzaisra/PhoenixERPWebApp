@@ -1,0 +1,233 @@
+@model PhoenixERPWebApp.Models.Training
+@{
+    ViewData["Title"] = "Training";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Training Detail</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Training</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="Training" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Training Detail</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action ="addedit" asp-controller="Training" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="form" class="form-horizontal form-bordered" role="form" asp-action="Submit" asp-controller="Training" asp-area="HrisNew">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training Category">Training Category</span> :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.Category)
+                                        .DataTextField("Text")
+                                        .OptionLabel("Select Category...")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GETDDLTrainingCategory", "DropDown", new { area = "HrisNew" });
+                                            });
+                                        })
+                                        .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training Subject">Training Subject</span> :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.Subject)
+                                        .DataTextField("Text")
+                                        .OptionLabel("Select Subject...")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GETDDLTrainingSubject", "DropDown", new { area = "HrisNew" });
+                                            });
+                                        })
+                                        .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training Type">Training Type</span> :</label>
+                                    <label>Received From :</label>
+                                    @(Html.Kendo().DropDownListFor(m => m.TrainingType)
+                                                 .DataTextField("Text")
+                                                 .OptionLabel("Select Training Type...")
+                                                 .DataValueField("Value")
+                                                 .Filter(FilterType.Contains)
+                                                 .DataSource(source =>
+                                                 {
+                                                     source.Read(read =>
+                                                     {
+                                                         read.Action("GETDDLTrainingType", "DropDown", new { area = "HrisNew" });
+                                                     });
+                                                 })
+                                                 .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training Course Name">Training Course Name</span> :</label>
+                                    @(Html.Kendo().TextBoxFor(m => m.Name).HtmlAttributes(new { style = "width:100%", maxlength = 255 }))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Training Cost">Training Cost</span> :</label>
+                                    @Html.Kendo().NumericTextBoxFor(m => m.TrainingCost).HtmlAttributes(new { @class = "form-control form-control-sm" }).Events(x => x.Change("ShowBonding"))
+                                    @*<input class="form-control form-control-sm m-input m-input--square" asp-for="TrainingCost" type="number" onblur="ShowBonding()">*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="">Training Cost more than 15.000.000 need to fill bonding detail bellow</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group" id="bonding_detail_div" style="display:none">
+                                    <label><span class="translate" data-args="Bonding Detail">Bonding Detail</span> :</label>
+                                    @Html.TextAreaFor(x => x.BondingDetail, new { style = "height:150px;width:100%" })
+                                    @*<textarea class="form-control form-control-sm m-input m-input--square" asp-for="BondingDetial" rows="10"></textarea>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Recruitment">Requirement</span> :</label>
+                                    @Html.TextAreaFor(x => x.Recruitment, new { style = "height:150px;width:100%" })
+                                    @*<textarea class="form-control form-control-sm m-input m-input--square" asp-for="Recruitment" rows="10"></textarea>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Description / Note">Description / Note</span> :</label>
+                                    @Html.TextAreaFor(x => x.Description, new { style = "height:150px;width:100%" })
+                                    @*<textarea class="form-control form-control-sm m-input m-input--square" asp-for="Description" rows="10"></textarea>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label><span class="translate" data-args="Target Audiance">Target Audiance</span> :</label>
+                                    @Html.TextAreaFor(x => x.TargetAudiance, new { style = "height:150px;width:100%" })
+                                    @*<textarea class="form-control form-control-sm m-input m-input--square" asp-for="TargetAudiance" rows="10"></textarea>*@
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <center>
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a asp-action="index" asp-controller="Training" asp-area="hrisnew" class="fakelink btn btn-secondary">Close</a>
+                                </center>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-save').click(function () {
+        callAction({ formId:"form", title: "Save", type:"POST"});
+    });
+
+    function ShowBonding() {
+
+        var rev = $('#TrainingCost').data("kendoNumericTextBox").value();
+        if (parseInt(rev) >= parseInt(15000000)) {
+        	$("#bonding_detail_div").css("display", "");
+        	$('#BondingDetail').prop("required", true);
+        } else {
+        	$("#bonding_detail_div").css("display", "none");
+        	$('#BondingDetail').prop("required", false);
+        }
+
+    }
+</script>

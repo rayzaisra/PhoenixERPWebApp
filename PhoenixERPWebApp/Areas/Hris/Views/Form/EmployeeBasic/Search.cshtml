@@ -1,0 +1,29 @@
+@{
+    ViewBag.ModalTitle = "EmployeeBasicInfo";
+    ViewBag.ModalId = "EmployeeBasicInfoModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="EmployeeBasicInfoFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="Employee Name">Employee Name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="Search_name" id="Search_name"  maxlength="50" type="text">
+            </div>
+            
+            
+           
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnEmployeeBasicInfo.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnEmployeeBasicInfo.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

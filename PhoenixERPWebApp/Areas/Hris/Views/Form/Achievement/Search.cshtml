@@ -1,0 +1,47 @@
+@{
+    ViewBag.ModalTitle = "Achievement";
+    ViewBag.ModalId = "AchievementModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="AchievementFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="achievement_date">achievement_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_achievement_date" id="search_achievement_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="achievement_description">achievement_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_achievement_description" id="search_achievement_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="achievement_title">achievement_title</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_achievement_title" id="search_achievement_title"  maxlength="200" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_notes" id="search_notes"  maxlength="2147483647" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnAchievement.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnAchievement.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

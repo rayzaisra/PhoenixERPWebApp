@@ -1,0 +1,36 @@
+<ul id="damtabs" class="nav nav-tabs nav-fill" data-tabs="tabs">
+    <li class="nav-item "><a class="nav-link active" href="#damonedrive" data-toggle="tab">One Drive</a></li>
+    @*<li class="nav-item"><a class="nav-link " href="#daminternal" data-toggle="tab">Internal File</a></li>
+    <li class="nav-item"><a class="nav-link " href="#daminternalupload" data-toggle="tab">Upload</a></li>*@
+
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="damonedrive">
+        <form id="damonedriveform" method="post">
+           
+            <div class="form-group m-form__group">
+                <div class="custom-file">
+                    <input type="hidden" name="damUploadId" id="damUploadId"/>
+                    <input type="hidden" name="customFileType" id="customFileType" />
+                    <input type="file" class="custom-file-input" name="file" id="customFile" >
+                    <label id="lblcustomFile" class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="name">name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="name" id="name" required maxlength="400" type="text">
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="tags">tags</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="tags" id="tags" required maxlength="400" type="text">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="btn-save" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+<script src="~/assets/js/Areas/General/Form/Dam.upload.js"></script>

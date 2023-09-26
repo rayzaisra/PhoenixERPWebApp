@@ -1,0 +1,17 @@
+﻿@model object
+@(Html.Kendo().DropDownListFor(m => m)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .OptionLabel("Select Good Receipt..")
+    .HtmlAttributes(new { style = "width:100%;", required = "required" })
+    .Height(400)
+    .Filter(FilterType.Contains)
+    .Events(evt => evt.Select("SR_Select"))
+    .DataSource(source => source
+        .Custom()
+        .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Action("GetDDLServiceReceiptDetailByPO", "Bast", new { area = "Finance" }).Data("gridPODetail_params");
+        })))
+)

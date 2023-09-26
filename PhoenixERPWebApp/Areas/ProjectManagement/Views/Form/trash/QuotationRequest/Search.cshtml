@@ -1,0 +1,55 @@
+@{
+    ViewBag.ModalTitle = "QuotationRequest";
+    ViewBag.ModalId = "QuotationRequestModalSearch";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="QuotationRequestFormSearch" method="post">
+    
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="closing_date">Closing Date</span></label>
+                <input class="md-input" name="search_closing_date" id="search_closing_date"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="company_id">Company Id</span></label>
+                <input class="md-input" name="search_company_id" id="search_company_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="days">Days</span></label>
+                <input class="md-input" name="search_days" id="search_days"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="delivery_date">Delivery Date</span></label>
+                <input class="md-input" name="search_delivery_date" id="search_delivery_date"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="delivery_place">Delivery Place</span></label>
+                <input class="md-input" name="search_delivery_place" id="search_delivery_place"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="fq_date">Fq Date</span></label>
+                <input class="md-input" name="search_fq_date" id="search_fq_date"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="payment_id">Payment Id</span></label>
+                <input class="md-input" name="search_payment_id" id="search_payment_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="remarks">Remarks</span></label>
+                <input class="md-input" name="search_remarks" id="search_remarks"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="shift">Shift</span></label>
+                <input class="md-input" name="search_shift" id="search_shift"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_id">Task Id</span></label>
+                <input class="md-input" name="search_task_id" id="search_task_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="transaction_type_id">Transaction Type Id</span></label>
+                <input class="md-input" name="search_transaction_type_id" id="search_transaction_type_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="weeks">Weeks</span></label>
+                <input class="md-input" name="search_weeks" id="search_weeks"   type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" onclick="fnQuotationRequest.initsearch()" class="md-btn md-btn-primary"><i class="uk-icon-search"></i> Search</button>
+        <button type="button" onclick="fnQuotationRequest.initsearch('reset')" class="md-btn md-btn-success"><i class="uk-icon-times-circle"></i> Reset</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

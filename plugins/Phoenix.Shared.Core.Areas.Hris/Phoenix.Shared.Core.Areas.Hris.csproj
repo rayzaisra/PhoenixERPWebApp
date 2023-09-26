@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>%24/phoenix/PhoenixERPWebApp/plugins/Phoenix.Shared.Core.Areas.Hris</SccProjectName>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccAuxPath>https://dev.azure.com/arganthajkt</SccAuxPath>
+    <SccLocalPath>.</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ApiControllers\MasterData\**" />
+    <Compile Remove="ApiControllers\NewFolder1\**" />
+    <EmbeddedResource Remove="ApiControllers\MasterData\**" />
+    <EmbeddedResource Remove="ApiControllers\NewFolder1\**" />
+    <None Remove="ApiControllers\MasterData\**" />
+    <None Remove="ApiControllers\NewFolder1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ApiControllers\Finance\MasterData\MappingJurnal\" />
+    <Folder Include="ApiControllers\HrisNew\MasterData\Attendance\" />
+    <Folder Include="ApiControllers\HrisNew\MasterData\Leave\" />
+    <Folder Include="ApiControllers\HrisNew\MasterData\Legal\" />
+    <Folder Include="ApiControllers\HrisNew\MasterData\Institution\" />
+    <Folder Include="ApiControllers\HrisNew\MasterData\PDR\" />
+    <Folder Include="ApiControllers\HrisNew\Transaction\Attendance\" />
+    <Folder Include="ApiControllers\HrisNew\Transaction\Demotion\" />
+    <Folder Include="ApiControllers\HrisNew\Transaction\Rotation\" />
+    <Folder Include="ApiControllers\HrisNew\Transaction\Promotion\" />
+    <Folder Include="ApiControllers\HrisNew\Transaction\Overtime\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Selects\" />
+    <Folder Include="Services\Custome\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2019.1.115" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Phoenix.Data\Phoenix.Data.csproj" />
+    <ProjectReference Include="..\Phoenix.Shared.Core.Areas.General\Phoenix.Shared.Core.Areas.General.csproj" />
+    <ProjectReference Include="..\Phoenix.Shared.Core\Phoenix.Shared.Core.csproj" />
+    <ProjectReference Include="..\Phoenix.Shared\Phoenix.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Messages.resx">
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

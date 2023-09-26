@@ -1,0 +1,361 @@
+﻿@model PhoenixERPWebApp.Models.Pm.Report.ParamSearchTaskListViewModel
+@{
+    ViewData["Title"] = "Report Job List";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Report Job List</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Job List</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="ReportTask" asp-area="pm" class="m-nav__link"><span class="m-nav__link-text">Report</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="ticketsForm">
+                        <input type="hidden" id="isNonJob" value="@ViewBag.isNonJob" name="isNonJob" />
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="startDate"></label>
+                                    @(Html.Kendo().DatePickerFor(x=>x.startDate)
+                                                                //.Value(DateTime.Today)
+                                                                .HtmlAttributes(new { style = "width: 50%", title = "datepicker" })
+                                                                .Min(DateTime.Now.AddDays(-90))
+                                                                .Max(DateTime.Now.AddDays(+90))
+                                                                //                         .Events(e =>
+                                                                //                         {
+                                                                //    e.Change("dateChange");
+                                                                //})
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                     )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="endDate"></label>
+                                    @(Html.Kendo().DatePickerFor(x=>x.endDate)
+                                                                //.Value(DateTime.Today.AddDays(+30))
+                                                                .HtmlAttributes(new { style = "width: 50%", title = "datepicker" })
+                                                                .Min(DateTime.Now.AddDays(-90))
+                                                                .Max(DateTime.Now.AddDays(+90))
+                                                                //                         .Events(e =>
+                                                                //                         {
+                                                                //    e.Change("dateChange");
+                                                                //})
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                    )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label asp-for="legalEntityId"></label>
+                                        @(Html.Kendo().DropDownListFor(m => m.legalEntityId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.legalEntityId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="jobId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.jobId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetJobId", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.jobId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="taskName"></label> :
+                                    @(Html.Kendo().TextBoxFor(m => m.taskName)
+                                        .HtmlAttributes(new {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.taskName)}",
+
+                                        }
+                                     ))
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="userTask"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.userTask)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("getddlemployeedata", "Dropdown", new { area = "hrisnew" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.userTask)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="divisionId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.divisionId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("getdivision", "Dropdown", new { area = "hrisnew" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.divisionId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <button type="button" id="btnSearch" class="btn btn-primary edit" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="filterSearch" style="display:none">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Pm.Report.ShowTaskViewModel>()
+  .Name("grid")
+
+                  .Columns(column =>
+                  {
+                      column.Bound("").Title("No").Width(30).ClientTemplate("#= renderNumber(data) #");
+                      column.Bound(p => p.JobNumber).Title("Job Number").ClientTemplate("#= LinkJob(data) #");
+                      column.Bound(p => p.JobName).Title("Job Name");
+                      column.Bound(p => p.Startjob).Title("Start Job").Format("{0:dd-MM-yyyy}");
+                      column.Bound(p => p.DeadLineJob).Title("Finish Job").Format("{0:dd-MM-yyyy}");
+                      column.Bound(p => p.ClientName).Title("Client Name");
+                      column.Bound(p => p.BusinessUnitNameClientBrief).Title("Business Unit");
+                      column.Bound(p => p.JobStatusName).Title("Job Status");
+                      column.Bound(p => p.JobTypeName).Title("Job Type");
+                      column.Bound(p => p.Revenue).Title("Revenue").HtmlAttributes(new { style = "text-align:right;" });
+                      column.Bound(p => p.TaskName).Title("Task Name").ClientTemplate("#= Link(data) #");
+                      column.Bound(p => p.UserTask).Title("User Task");
+                  })
+                   .ToolBar(toolBar =>
+                   {
+                       toolBar.Excel();
+                       toolBar.Pdf();
+                   })
+                                 .Excel(excel => excel
+                                    .FileName("Report Task.xlsx")
+                                    .Filterable(true)
+                                    .AllPages(true)
+                                    .ProxyURL(Url.Action("Excel_Export_Save", "ReportTask"))
+                                )
+                                  .Pdf(pdf => pdf
+                                            .AllPages()
+                                            .AvoidLinks()
+                                            .PaperSize("A0")
+                                            .Margin("5.5cm", "1cm", "1cm", "1cm")
+                                            .Landscape()
+                                            .RepeatHeaders()
+                                            .TemplateId("page-template")
+                                            .FileName("Report Task.pdf")
+                                        )
+                                .NoRecords()
+                                 //.Pageable()
+                                 .Sortable()
+                                 .Filterable()
+                                .Groupable()
+                                //.Scrollable()
+                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                .Resizable(rsz => rsz.Columns(true))
+                                          .Events(a => a.DataBound("gridDatabound"))
+                                          .DataSource(dataSource => dataSource
+                                          .Ajax().Events(e => e.Sync("endRequest"))
+                                          //.PageSize(10)
+                                          .Read(read => read.Action("ReadTask", "ReportTask").Data("grid_report_params"))
+                                   )
+                    )
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var rowNumber = 0;
+    $(function () {
+
+        if ('@Model.startDate' != '') {
+            $('#btnSearch').trigger('click')
+        }
+
+    })
+
+    function gridDatabound() {
+        rowNumber = 0;
+    }
+
+    function renderNumber(data) {
+        return ++rowNumber;
+    }
+
+    function grid_report_params() {
+        var startdate = $("#startDate").data("kendoDatePicker").value();
+        var enddate = $("#endDate").data("kendoDatePicker").value();
+        var legalentity = $("#legalEntityId").data("kendoDropDownList").value();
+        var jobid = $("#jobId").data("kendoDropDownList").value();
+        var taskName = $("#taskName").val();
+        var userTask = $("#userTask").data("kendoDropDownList").value();
+        var divisionId = $("#divisionId").data("kendoDropDownList").value();
+
+        //var year = $("#FiscalYearsId").data("kendoDropDownList").value();
+        if (startdate === null) {
+            startdate = new Date()
+        }
+
+        //if (enddate === null) {
+        //    enddate = new Date()
+        //}
+
+        return {
+            jobId: jobid,
+            startDate: startdate,
+            endDate: enddate,
+            taskName: taskName,
+            userTask: userTask,
+            divisionId: divisionId,
+            legalEntityId: legalentity
+        }
+    }
+
+    function endRequest() {
+        var grid = $("#grid").data("kendoGrid");
+        grid.dataSource.read();
+    }
+
+    function DetailTask(e) {
+        var item = dataItem(e);
+        window.open('/ProjectManagement/Job/Task/' + item.JobNumber,'_blank');
+    }
+
+    function DetailJob(e) {
+        var item = dataItem(e);
+        window.open('/ProjectManagement/Job/Detail/' + item.JobNumber, '_blank');
+    }
+
+    function Link(data) {
+        var arrayName = data.TaskName.split(";");
+        var html = "";
+        $.each(arrayName, function (i) {
+            var link = "<a href='javascript: void(0);'  onclick='DetailTask(this)' title='Edit' class='edit' target='_blank'>" + arrayName[i].trim() + "</a>";
+            html = html + link + "; ";
+        });
+        //return "<center><a href='javascript: void(0);' onclick='Detail(this)' title='Edit' class='edit' target='_blank'>" + data.FixedAssetId + "</a></center>";
+        return html;
+    }
+
+    function LinkJob(data) {
+        return "<center><a href='javascript: void(0);' onclick='DetailJob(this)' title='Edit' class='edit' target='_blank'>" + data.JobNumber + "</a></center>";
+    }
+
+    $('#btnSearch').click(function () {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        //alert('ok')
+        var startdate = $("#startDate").data("kendoDatePicker").value();
+        var enddate = $("#endDate").data("kendoDatePicker").value();
+
+        if (startdate === null) {
+            swal('Error', "Please fill start date before filtering data", 'error');
+            mApp.unblock("#m_blockui_list");
+            return false;
+        } else {
+            $('#filterSearch').show();
+
+            $('#grid').data('kendoGrid').dataSource.read();
+            $('#grid').data('kendoGrid').refresh();
+        }
+
+
+        mApp.unblock("#m_blockui_list");
+    });
+</script>
+

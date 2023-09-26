@@ -1,0 +1,17 @@
+@model object
+@(Html.Kendo().DropDownListFor(m => m)
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .OptionLabel("-- Select --")
+        .HtmlAttributes(new { style = "width:100%;", required = "required"})
+        .Height(250)
+        .Filter(FilterType.Contains)
+        .Events(x => x.Change("rating_change"))
+        .BindTo(new List<SelectListItem>() {
+              new SelectListItem() { Text = "1", Value = "1" },
+              new SelectListItem() { Text = "2", Value = "2" },
+              new SelectListItem() { Text = "3", Value = "3" },
+              new SelectListItem() { Text = "4", Value = "4" },
+              new SelectListItem() { Text = "5", Value = "5" },
+          })
+)

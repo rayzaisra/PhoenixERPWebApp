@@ -1,0 +1,265 @@
+﻿@model PhoenixERPWebApp.Models.Finance.Transaction.GeneralAdjustment.GeneralAdjustmentDetail
+@{
+    ViewData["Title"] = "General Adjustment Detail";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">@ViewData["Title"]</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="GeneralAdjustment" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text">@ViewData["Title"]</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="Detail" asp-controller="GeneralAdjustment" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="Detail" asp-controller="GeneralAdjustment" asp-area="Finance" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <form id="form" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input type="hidden" asp-for="Id" />
+                            <input hidden name="id" value="@ViewBag.RecordID" />
+                            <div class="row">
+                                <div class="col-lg-12 m-row--no-padding">
+                                    <div class="m-section__content">
+                                        <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                            <div class="m-demo__preview">
+                                                <div class="row">
+
+                                                    <div class="col-lg-3 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Date :</label>
+                                                            @Html.Kendo().DatePickerFor(m => m.Date).HtmlAttributes(new { @class = "m-input marvel-datepicker", style = "width:100%" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-3 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label class="">Amount :</label>
+                                                            <div class="input-group input-group-sm">
+                                                                <select id="currency" name="currency" class="form-control form-control-sm m-input m-input--square"></select>
+                                                                @Html.Kendo().NumericTextBoxFor(m => m.Amount).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-3 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Legal Entity :</label>
+                                                            @Html.Kendo().TextBoxFor(m => m.LegalEntity).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-3 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Status :</label>
+                                                            <select id="status" name="status" class="form-control form-control-sm m-input m-input--square"></select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label class="">Voucher :</label>
+                                                            <select id="voucher" name="voucher" class="form-control form-control-sm m-input m-input--square"></select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label class="">Charges :</label>
+                                                            @Html.Kendo().TextBoxFor(m => m.Charges).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label class="">Affiliate :</label>
+                                                            <select id="affiliate" name="affiliate" class="form-control form-control-sm m-input m-input--square"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-row--no-padding">
+                                                        <div class="row">
+
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Description :</label>
+                                                                    <textarea asp-for="Description" rows="5" cols="40" class="form-control form-control-sm"></textarea>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 m-row--no-padding">
+                                                        <div class="row">
+
+                                                            <div class="col-lg-6 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Exchange :</label>
+                                                                    @Html.Kendo().TextBoxFor(m => m.Exchange).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-6 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Share Services :</label>
+                                                                    <select id="shareservices" name="shareservices" class="form-control form-control-sm m-input m-input--square"></select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Reference :</label>
+                                                                    @Html.Kendo().TextBoxFor(m => m.Reference).HtmlAttributes(new { @class = "form-control form-control-sm" })
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-lg-6 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Due Date :</label>
+                                                                    @Html.Kendo().DatePickerFor(m => m.DueDate).HtmlAttributes(new { @class = "m-input marvel-datepicker", style = "width:100%" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                    <div class="col-lg-12">
+                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.Transaction.GeneralAdjustment.GeneralAdjustmentDetailList>()
+                                                            .Name("grid")
+                                                            .Columns(columns =>
+                                                            {
+                                                                columns.Bound("").ClientTemplate("#= renderNumber(data) #").Title("#").Width(50);
+                                                                columns.Bound(p => p.ACCNo).Width(200);
+                                                                columns.Bound(p => p.Name).Width(200);
+                                                                columns.Bound(p => p.Desc).Width(200);
+                                                                columns.Bound(p => p.Debit).Width(200).Format("{0:n2}");
+                                                                columns.Bound(p => p.Credit).Width(200).Format("{0:n2}");
+                                                                columns.Bound(p => p.Division).Width(200);
+                                                                columns.Bound(p => p.JobId).Width(200);
+                                                            })
+                                                            .Pageable(pageable => pageable
+                                                                .Refresh(true)
+                                                                .PageSizes(true)
+                                                                .ButtonCount(5))
+                                                            .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                            .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                .Extra(false)
+                                                                .Operators(operators => operators
+                                                                .ForString(str => str.Clear()
+                                                                    .Contains("Contains")
+                                                                    .StartsWith("Start sWith")
+                                                                    .EndsWith("End sWith")
+                                                                )))
+                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                            .Resizable(rsz => rsz.Columns(true))
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(10)
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.Id); })
+                                                                .Read(read => read.Action("ReadDetail", "GeneralAdjustment"))
+                                                            )
+                                        )
+                                    </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="button" id="btn-save" class="btn btn-sm btn-success" disabled="disabled">Save</button>
+                                    <button type="button" id="btn-submit" class="btn btn-sm btn-primary" disabled="disabled">Submit</button>
+                                    <a asp-action="Index" asp-controller="GeneralAdjustment" asp-area="Finance" class="fakelink btn btn-sm btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var counter = 1;
+
+    function onDataBound(e) {
+        counter = 1;
+    }
+
+    function renderNumber(data) {
+        return counter++;
+    }
+    var param = (function (param) {
+        return param;
+    })(param || {});
+</script>
+<script src="~/Areas/Finance/Scripts/GeneralAdjustment/GeneralAdjustment.Detail.js" asp-append-version="true"></script>

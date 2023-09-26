@@ -1,0 +1,92 @@
+@{
+    ViewBag.ModalTitle = "Hiring Request Replacement";
+    ViewBag.ModalId = "HiringRequestModalDetailReplacement";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+    <form id="HiringRequestFormDetailReplacement" method="post">
+        <input type="hidden" name="Id" id="Idr">
+        <input type="hidden" name="indexReplacement" id="indexReplacement" />
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Employee(Replaced)">Employee(Replaced)</span>:</label>
+                    <input type="text" name="employee_name_replace" id="employee_name_replace" class="md-input form-control form-control-sm m-input m-input--square" readonly>
+                    <input type="hidden" name="employee_id_replace" id="employee_id_replace">
+                    <span class="md-input-bar "></span>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Status">Status</span> :</label>
+                    <input type="text" name="employment_status" id="employment_statusr" class="md-input form-control form-control-sm m-input m-input--square" readonly>
+
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Project Name">Project Name</span> :</label>
+                    <input type="text" name="porject_name" id="porject_namer" class="md-input form-control form-control-sm m-input m-input--square">
+
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job Title">Job Title</span> :</label>
+                    <input type="hidden" name="job_title_id" id="job_title_idr">
+                    <input type="text" name="job_title_nm" id="job_title_nmr" class="md-input form-control form-control-sm m-input m-input--square" readonly>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Budget Source">Budget Source</span> :</label>
+                    <select name="budget_source" id="budget_sourcer" class="md-input form-control form-control-sm m-input m-input--square">
+                        <option value="CORPORATE">CORPRATE</option>
+                        <option value="PROJECT">PROJECT</option>
+                    </select>
+                    @*<input type="text" name="budget_source" id="budget_sourcer" class="md-input form-control form-control-sm m-input m-input--square" readonly>*@
+
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Grade">Grade</span> :</label>
+                    <input type="hidden" name="job_grade_idu" id="job_grade_idur">
+                    <input type="text" name="Job_Grade" id="Job_Grader" class="md-input form-control form-control-sm m-input m-input--square" readonly>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Budget">Budget</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square allownumericwithdecimal" name="mppBudget" id="mppBudgetr" type="text">
+                </div>
+
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Date Fullfillment">Date Fullfillment</span> :</label>
+                    <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                        <input type="text" class="form-control" id="dffr" name="dff">
+                        <span class="input-group-btn">
+                            <button class="btn default" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Detail Spesification">Detail Spesification</span> :</label>
+                    <textarea class="form-control form-control-sm m-input m-input--square" name="detail_spesification" id="detail_spesificationr"></textarea>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" id="btn-save" class="btn btn-primary" onclick="SaveDetilReplacement()">Save</button>
+                <button type="button" id="btn-remove" class="btn btn-danger" onclick="RemoveDetilReplacement()">Remove</button>
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+            </div>
+
+        </div>
+    </form>

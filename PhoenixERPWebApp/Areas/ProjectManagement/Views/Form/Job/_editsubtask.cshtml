@@ -1,0 +1,59 @@
+
+@{
+    ViewBag.ModalTitle = "EditSub Task";
+    ViewBag.ModalId = "EditSubTask";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="EditSubTaskForm" method="post">
+ 
+            <input value="" type="hidden" name="id" id="id" />
+            <div class="row ">
+                <div class="col-lg-6 nopadding">
+                    <div class="form-group taskfield">
+                        <label><span class="translate" data-args="Sub Task Name">Sub Task Name</span> <span class="req">*</span>:</label>
+                        <input class="form-control form-control-sm m-input m-input--square" name="sub_task" id="sub_task" required maxlength="50" type="text">
+                        <input name="task_id" id="task_id" required type="hidden">
+                    </div>
+                    <div class="form-group ">
+                        <label><span class="translate" data-args="Description">Description</span> <span class="req">*</span>:</label>
+                        <textarea class="form-control form-control-sm m-input m-input--square" name="description" rows="4" id="description"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-6  taskfieldnp">
+                    <div class="form-group ">
+                        <label><span class="translate" data-args="Start Date">Start Date</span> <span class="req">*</span>:</label>
+
+                        <div class="input-group ">
+                            <input type="text" class="datepicker form-control form-control-sm m-input m-input--square" data-date-format="yyyy-mm-dd"  placeholder="Select date & time" id="start_date" name="start_date" />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group ">
+                        <label><span class="translate" data-args="Deadline Date">Deadline Date</span> <span class="req">*</span>:</label>
+                        <div class="input-group ">
+                            <input type="text" class="datepicker form-control form-control-sm m-input m-input--square" data-date-format="yyyy-mm-dd"  placeholder="Select date & time" id="due_date" name="due_date" />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                        <label><span class="translate" data-args="Hour">Hour</span> <span class="req">*</span>:</label>
+                        <input class="form-control form-control-sm m-input m-input--square" name="hour" id="hour" required maxlength="10" type="number">
+
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                    <button type="button" id="taskclose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+</form>
+ 

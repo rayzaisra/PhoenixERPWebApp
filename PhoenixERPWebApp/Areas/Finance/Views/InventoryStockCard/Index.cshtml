@@ -1,0 +1,553 @@
+﻿@model PhoenixERPWebApp.Models.Finance.Transaction.Inventory.Inventory
+@{
+    ViewData["Title"] = "Inventory Stock Card";
+}
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Inventory</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance </span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item"><a asp-action="index" asp-controller="Inventory" asp-area="finance" class="m-nav__link"> <span class="m-nav__link-text">Inventory</span></a></li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <span class="m-nav__link-text">Inventory Stock Card</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    Inventory &nbsp;
+                                    <span id="status"></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <form id="formInventory" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed" asp-action="submit" asp-controller="Inventory" asp-area="Finance" enctype="multipart/form-data">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="LegalEntity" />
+                            <input type="hidden" asp-for="BusinessUnit" />
+                            <input type="hidden" asp-for="CreatedOn" />
+                            <input type="hidden" asp-for="CreatedBy" />
+                            <input type="hidden" asp-for="OwnerId" />
+                            <input type="hidden" asp-for="FileUpload" />
+
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Inventory Number :</label>
+                                        @(Html.Kendo().DropDownListFor(i => i.InventoryInNumber)
+                                                                   .DataTextField("Value")
+                                                                   .DataValueField("Value")
+                                                                   .OptionLabel("Select Inventory Number")
+                                                                   .Filter(FilterType.Contains)
+                                                                   .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                   .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetInvFa", "GoodRequest", new { area = "Finance" }).Data("filterInvFa");
+                                                                        }).ServerFiltering(false); ;
+                                                                    }).Events(e => e.Select("invChange"))
+                                        )
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Brand :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.Brand).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Reorder Level (Unit) :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.ReOrderLevel).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Remark :</label>
+                                        @Html.TextAreaFor(m => m.Remark, new { style = "height:100px;width:100%", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Inventory Name :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.InventoryName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Sub Brand :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.SubBrand).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Stock On Hand :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.QtyOnHand).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Category :</label>
+                                        @(Html.Kendo().TextBoxFor(m => m.CategoryName).HtmlAttributes(new { @class = "form-control form-control-sm", style = "width:100%", @readonly = "@readonly" }))
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Lead Time :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.LeadTime).HtmlAttributes(new { @class = "form-control form-control-sm", style = "width:100%", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Status :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.StatusName).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Inventory Type :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.VendorNameId).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "@readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @*<div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label asp-for="FileUpload"></label> <span class="req"></span> :
+                                        <div id="divFileUpload"></div>
+                                    </div>
+                                </div>*@
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <div style="width:100%" class="displayimage">
+                                            <label>Image :</label>
+                                            <a class="thumbnail pull-left" href="#">
+                                                <img class="media-object" id="img-inventory-nava" width="225">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="m-accordion m-accordion--bordered m-accordion--solid" id="detail" role="tablist">
+                                        <!--begin::Item-->
+                                        <div class="m-accordion__item">
+                                            <div class="m-accordion__item-head" role="tab" id="detail_head" data-toggle="collapse" href="#detail_body" aria-expanded="true">
+                                                <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                <span class="m-accordion__item-title">Inventory Detail</span>
+                                                <span class="m-accordion__item-mode"></span>
+                                            </div>
+                                            <div class="m-accordion__item-body show" id="detail_body" role="tabpanel" aria-labelledby="detail_head" data-parent="#detail" style="">
+                                                <div class="m-accordion__item-content">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.Transaction.Inventory.InventoryDetail>
+                                                                ()
+                                                                .Name("gridinventorystockcard")
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Bound(p => p.Id).Width(200).Hidden(true);
+                                                                    columns.Bound(p => p.Transaction).Width(100);
+                                                                    columns.Bound(p => p.ReferenceNumber).Width(100);
+                                                                    columns.Bound(p => p.Location).ClientTemplate("#=LocationName#").Width(200);
+                                                                    columns.Bound(p => p.DateReceipt).Format("{0: dd MMM yyyy}").Width(100);
+                                                                    columns.Bound(p => p.Qty).Width(100);
+                                                                    columns.Bound(p => p.QtyOut).Width(100);
+                                                                    columns.Bound(p => p.Difference).Width(100);
+                                                                })
+                                                                .Pageable(pageable => pageable
+                                                                .PageSizes(true))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(10)
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.Id); })
+                                                                .Read(read => read.Action("ReadInventoryStockCardDetail", "InventoryStockCard").Data("InvId"))
+                                                                ).NoRecords()
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="pull-right">
+                                        <a asp-action="index" asp-controller="Inventory" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script id="btnAction-template" type="text/x-kendo-template">
+        <a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+    </script>
+
+    <script id="grid-toolbar-template" type="text/x-kendo-template">
+        <a class='k-button' href='javascript: void(0);' onclick='AddFormDetailInventory(this)'><span class='k-icon k-i-plus'></span>Add Detail</a>
+    </script>*@
+
+<script>
+    $(function () {
+        $("#gridinventorystockcard").hide();
+    });
+
+    let getImageInventroy = function (filename) {
+
+     let urlApi = $.helper.resolveApi("~odrive/GetImageInventory");
+     var id = filename;
+
+       mApp.blockPage({
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        }),
+        $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: urlApi,
+        data: {id: id},
+        success: function (data) {
+            console.log("data = " + data.webUrl);
+            if (data.webUrl !== null) {
+                $("#img-inventory-nava").attr("src",data.webUrl);
+            }
+        },
+        error: function (e, t, s) {
+                //swal(
+                //    'Information',
+                //    'Ooops, something went wrong !',
+                //    'info'
+                //);
+            console.log(e);
+            }
+        }).then(setTimeout(function () {
+            mApp.unblockPage();
+        }, 2e3));
+    };
+
+    function FileUpload() {
+        //$("#linkDownloadFile").empty();
+        $("#linkInterviewRemoveFile").empty();
+        $("#divFileUpload").empty().append("<input name='file' id='file' type='file'/>");
+
+        $("#file").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg",".jpeg", ".png", ".gif", ".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+
+    function removeFileUpload() {
+        FileUpload();
+    }
+
+    function downloadFileUpload() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#FileUpload").val() }});
+    }
+
+    function filterInvFa() {
+        return {
+            type: 'INVENTORY'
+        };
+    }
+
+    function InvId() {
+        return {
+            invId: $("#InventoryInNumber").val()
+        };
+    }
+
+    function invChange(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetDataInventoryStockCard", "InventoryStockCard")',
+                data: { id: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $('#Brand').val(result.Brand);
+                        $('#ReOrderLevel').val(result.ReOrderLevel);
+                        $('#Remark').val(result.Remark);
+                        $('#InventoryName').val(result.InventoryName);
+                        $('#SubBrand').val(result.SubBrand);
+                        $('#QtyOnHand').val(result.QtyOnHand);
+                        $('#CategoryName').val(result.CategoryName);
+                        $('#LeadTime').val(result.LeadTime);
+                        $('#StatusName').val(result.StatusName);
+                        $('#VendorNameId').val(result.VendorNameId);
+
+                        var FileUploadName = result.FileUploadName;
+                        console.log("FileUploadName = " + FileUploadName);
+                        if (FileUploadName == '') {
+                            $('.displayimage').hide();
+                        } else {
+                            $('.displayimage').show();
+                        }
+
+                        if (FileUploadName == '') {
+                            FileUpload();
+                        } else {
+                            FileUpload();
+                            getImageInventroy(FileUploadName);
+                        }
+
+                        $("#gridinventorystockcard").show();
+                        $("#gridinventorystockcard").data("kendoGrid").dataSource.read();
+                        $("#gridinventorystockcard").data("kendoGrid").refresh();
+
+                    }
+                }
+            });
+        }
+
+    }
+
+    @*function formatNumber(num) {
+        return (
+            num
+                //.toFixed(2) // always two decimal digits
+                .replace(',', '.') // replace decimal point character with ,
+                .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+        ) // use . as a separator
+    }
+    function FilterBusinessUnitById() {
+        return {
+            affiliationid : $("#AffiliationId").val()
+        };
+    }
+
+
+
+    function EditDetail(data) {
+        return "<center><a href='javascript: void(0);' onclick='FormDetail(this)' title='Edit' class='edit'>" + data.Id + "</a></center>";
+    }
+
+    function deleteGridRow(e) {
+        var grid = $("#grid").data("kendoGrid");
+        grid.removeRow("tr:eq(1)");
+        //deleteRow(e, '@Url.Action("DeleteTempDetail", "Inventory")');
+    }
+
+    function AddFormDetailInventory(e) {
+        var valid = $("#formInventory").validate().form();
+        if (valid) {
+            ClearFormDetailInventory()
+            var id = $("#Id").val();
+            $('#InventoryDetail_InventoryId').val(id);
+            var qtyNumeric = $("#InventoryDetail_Qty").data("kendoNumericTextBox");
+            qtyNumeric.value(1);
+            $('#modalDetailInv').modal('show');
+
+        }
+    }
+
+    function SumQty(e) {
+        var total = 0;
+        //var grid = $("[id ^= 'Grid_']").data("kendoGrid");
+        var grid = $("#grid").data("kendoGrid");
+        var gridData = grid.dataSource.view();
+        for (var i = 0; i < gridData.length; i++) {
+            total += gridData[i].Qty;
+        }
+        $("#TotalQty").data("kendoNumericTextBox").value(total);
+    }
+
+
+
+
+    function RequiredDetailRemove() {
+
+    }
+
+    function saveDetailInv() {
+        var valid = $("#formDetailInv").validate().form();
+        if (valid) {
+            var dataList = {}
+            $('#InventoryDetail_ConditionName').val($('#InventoryDetail_Condition').data("kendoDropDownList").text());
+            $('#InventoryDetail_LocationName').val($('#InventoryDetail_Location').data("kendoDropDownList").text());
+            $('#InventoryDetail_status_name').val($('#InventoryDetail_Status').data("kendoDropDownList").text());
+            $('#InventoryDetail_UnitOfMeasure').val($('#InventoryDetail_UomId').data("kendoDropDownList").text());
+            callActionFile({ formId: "formDetailInv", title: "save", type: "POST", objects: dataList });
+            //callActionFile({ formId: "formDetailInv", title: "save", type: "POST", url: '@Url.Action("SaveDetailPersist", "Inventory")', objects: dataList });
+        }
+    }
+
+    function FormDetail(e) {
+        var item = dataItem(e);
+        $('#modalDetailInv').modal('show');
+        $('#InventoryDetail_Id').val(item.Id);
+        $('#InventoryDetail_InventoryId').val(item.InventoryId);
+        $('#InventoryDetail_DateReceipt').val(item.DateReceipt);
+        var qtyNumeric = $("#InventoryDetail_Qty").data("kendoNumericTextBox");
+        qtyNumeric.value(1);
+        $('#InventoryDetail_UnitName').val(item.UnitName);
+        $('#InventoryDetail_Manufacturer').val(item.Manufacturer);
+        $('#InventoryDetail_Brand').val(item.Brand);
+        $('#InventoryDetail_Model').val(item.Model);
+        $('#InventoryDetail_ProductNumber').val(item.ProductNumber);
+        $('#InventoryDetail_Color').val(item.Color);
+        $('#InventoryDetail_Condition').data("kendoDropDownList").value(item.Condition);
+        $('#InventoryDetail_Location').data("kendoDropDownList").value(item.Location);
+        $('#InventoryDetail_DateReceipt').val(item.DateReceipt);
+        $('#InventoryDetail_Remark').val(item.Remark);
+        $('#InventoryDetail_ItemName').val(item.ItemName);
+
+        $('#InventoryDetail_Status').data("kendoDropDownList").value(item.Status);
+        $('#InventoryDetail_VendorNameId').data("kendoDropDownList").value(item.VendorNameId);
+        $('#InventoryDetail_VendorBrandId').data("kendoDropDownList").value(item.VendorBrandId);
+        $('#InventoryDetail_UomId').data("kendoDropDownList").value(item.UomId);
+        //var numerictextbox = $("#InventoryDetail_LeadTime").data("kendoNumericTextBox");
+        //numerictextbox.value(item.LeadTime);
+
+        //$('#InventoryDetail_FileAttachment').val(item.FileAttachment);
+        //if (item.FileAttachment != null) {
+        //    $("#divFileAttachment").empty();
+        //    $('#downloadLinkFileAttachment').text(item.FileAttachmentName);
+        //    $('#removeLinkFileAttachment').html("<span style='color:maroon'><i class='fa fa-times'></i></span>");
+        //}
+    }
+
+    function ClearFormDetailInventory() {
+        $("#InventoryDetail_Id").val("");
+        //$("#InventoryDetail_InventoryId").val("");
+        $('#InventoryDetail_DateReceipt').val("");
+        $('#InventoryDetail_Qty').data("kendoNumericTextBox").value(0);
+        $('#InventoryDetail_UnitName').val("");
+        $('#InventoryDetail_Manufacturer').val("");
+        $('#InventoryDetail_Brand').val("");
+        $('#InventoryDetail_Model').val("");
+        $('#InventoryDetail_ProductNumber').val("");
+        $('#InventoryDetail_Color').val("");
+        $('#InventoryDetail_Condition').data("kendoDropDownList").value("");
+        $('#InventoryDetail_Location').data("kendoDropDownList").value("");
+        $('#InventoryDetail_DateReceipt').val("");
+        $('#InventoryDetail_Remark').val("");
+        $('#InventoryDetail_ItemName').val("");
+        $('#InventoryDetail_Status').data("kendoDropDownList").value("");
+        $('#InventoryDetail_VendorNameId').data("kendoDropDownList").value("");
+        $('#InventoryDetail_VendorBrandId').data("kendoDropDownList").value("");
+        $('#InventoryDetail_UomId').data("kendoDropDownList").value("");
+        //$("#InventoryDetail_LeadTime").data("kendoNumericTextBox").value(0);
+        $('#InventoryDetail_FileAttachment').val("");
+    }
+
+
+    //############################################################
+
+
+    var pageFunction = (function (pageFunction) {
+        pageFunction.init = function () {
+            //initialize
+        };
+        pageFunction.save = function () {
+
+            var gridDetails = $("#grid").data("kendoGrid");
+            gridDetails.saveRow();
+            var dataList = {
+                details: gridDetails.dataSource.data()
+            }
+            $("#LegalEntity").val($("#LegalEntityId").data("kendoDropDownList").text());
+            $("#BusinessUnit").val($("#BusinessUnitId").data("kendoDropDownList").text());
+            callActionFile({ formId: "formInventory", title: "save", type: "POST", objects: dataList });
+        };
+        return pageFunction;
+    })(pageFunction || {});
+
+
+
+
+    function InventoryDetail_SaveEvent(e) {
+        var Manufacturer = $("#Manufacturer").data("kendoTextBox").value();
+        var Brand = $("#Brand").data("kendoTextBox").value();
+        var Model = $("#Model").data("kendoTextBox").value();
+        var ProductNumber = $("#ProductNumber").data("kendoTextBox").value();
+        var Color = $("#Color").data("kendoTextBox").text();
+        var Condition = $("#Condition").data("kendoDropDownList").text();
+        var Qty = $("#Qty").data("kendoNumericTextBox").value();
+        var UnitName = $("#UnitName").data("kendoTextBox").text();
+        var Location = $("#Location").data("kendoDropDownList").text();
+        //var LeadTime = $("#LeadTime").data("kendoNumericTextBox").value();
+        e.model.set("Manufacturer", Manufacturer);
+        e.model.set("Brand", Brand);
+        e.model.set("Model", Model);
+        e.model.set("ProductNumber", ProductNumber);
+        e.model.set("Color", Color);
+        e.model.set("Condition", Condition);
+        e.model.set("Qty", Qty);
+        e.model.set("UnitName", UnitName);
+        e.model.set("Location", Location);
+        //e.model.set("LeadTime", LeadTime);
+    }
+
+    function InventoryDetail_EditEvent(e) {
+        //if (e.model.ItemTypeName != "Inventory") {
+        //    var disableField = e.container.find("input[name=InventoryId]").data("kendoDropDownList");
+        //    disableField.enable(false);
+        //}
+    }*@
+</script>
+

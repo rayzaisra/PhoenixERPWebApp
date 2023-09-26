@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "JobLevel";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="JobLevelFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="job_code">job_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="job_code" id="job_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_name">job_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="job_name" id="job_name"  maxlength="100" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/JobLevel" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/JobLevel.create.js"></script>
+}

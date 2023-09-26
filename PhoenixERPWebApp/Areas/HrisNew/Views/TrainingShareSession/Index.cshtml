@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Training Share Session";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Training Share Session</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Training</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="TrainingRegistrationPaymentReq" asp-area="hrisnew" class="m-nav__link">
+                        <span class="m-nav__link-text">Training Share Session</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <a asp-action="addedit" asp-controller="TrainingShareSession" asp-area="Hrisnew" class="m-btn btn btn-primary btn-sm m-btn--sm" title="Add New Record"><i class="la la-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.TrainingShareSession>()
+                                .Name("grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.Id).Hidden(true);
+                                    columns.Bound("").ClientTemplateId("btnAction-template").Title("Action").HtmlAttributes(new { style = "text-align:left;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(50);
+                                    columns.Bound(p => p.TrainingName).Title("Training Name").HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                    columns.Bound(p => p.TrainerEmployeeBasicInfoName).Title("Tranner Name").HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                    columns.Bound(p => p.StartDate).Title("Start Date").Format("{0:dd  MMM  yyyy}").Width(150);
+                                    columns.Bound(p => p.EndDate).Title("End Date").Format("{0:dd  MMM  yyyy}").Width(150);
+                                    //columns.Bound(p => p.RequesterEmployeeBasicInfoName).Title("Request By").HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                    //columns.Bound(p => p.BusinessUnitName).Title("Division").HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                    //columns.Bound(p => p.TrainingType).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                    //columns.Bound(p => p.Venue).Title("Location").Width(150).HtmlAttributes(new { style = "text-align:center;" });
+                                    //columns.Bound(p => p.Participant).Title("Participant").Width(150).HtmlAttributes(new { style = "text-align:center;" });
+                                    //columns.Bound("").ClientTemplate("#= GetStatusButton(data) #").Title("Status").Width(200);
+
+                                })
+                                .NoRecords()
+                                .Pageable(pageable => pageable
+                                    .Refresh(true)
+                                    .PageSizes(true)
+                                    .ButtonCount(5))
+                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                .Resizable(rsz => rsz.Columns(true))
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(10)
+                                    .Events(events => events.Error("errorHandler"))
+                                    .Model(model => { model.Id(p => p.Id); })
+                                    .Read(read => read.Action("ReadTrainingShareSession", "TrainingShareSession"))
+                                )
+                                .Events(e => e.DataBound("dataBoundEvent"))
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:green'><i class='fa fa-edit'></i></span></a>
+</script>
+<script>
+     function GetStatusButton(data) {
+        var button = "";
+         if (data.Status == @PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.WaitingSubmitToFinance) {
+             button = "<center><a href='javascript: void(0);' class='m-badge m-badge--info m-badge--wide'>@PhoenixERPWebApp.Models.Enum.TrainingStatus.GetStatus(@PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.WaitingSubmitToFinance)</a></center>";
+         } else if (data.Status == @PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Save) {
+             button = "<center><a href='javascript: void(0);' class='m-badge m-badge--warning m-badge--wide'>@PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.GetStatus(@PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Save)</a></center>";
+         } else if (data.Status == @PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Submit) {
+             button = "<center><a href='javascript: void(0);' class='m-badge m-badge--warning m-badge--wide'>@PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.GetStatus(@PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.Submit)</a></center>";
+         } else {
+             button = "<center><a href='javascript: void(0);' class='m-badge m-badge--info m-badge--wide'>@PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.GetStatus(@PhoenixERPWebApp.Models.Enum.TrainingStatusSubmitToFinance.WaitingSubmitToFinance)</a></center>";
+         }
+        return button;
+    }
+    function editGridRow(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("addedit", "TrainingShareSession")?Id=' + item.Id;
+    }
+
+    function LinktoInv(data) {
+
+        return "<center><a href='javascript: void(0);' onclick='ApproveGridRow(this)' title='Edit' class='edit'>" + data.Code + "</a></center>";
+    }
+</script>

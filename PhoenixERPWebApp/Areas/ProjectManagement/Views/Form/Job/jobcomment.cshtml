@@ -1,0 +1,78 @@
+﻿<div class="m-row--col-separator-xl">
+    <style>
+        .container {
+            padding: 5px;
+            border-top: none;
+            margin: 5px 0;
+            border-bottom: solid;
+            border-width: 1px;
+            border-color: rgba(0,0,255,0.25);
+        }
+
+        .darker {
+            border-color: #ccc;
+            background-color: #ddd;
+        }
+
+        .username {
+            color: green;
+        }
+
+        .container::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .container img {
+            float: left;
+            max-width: 60px;
+            width: 100%;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+            .container img.right {
+                float: right;
+                margin-left: 20px;
+                margin-right: 0;
+            }
+
+        .time-right {
+            float: right;
+            color: #aaa;
+        }
+
+        .time-left {
+            float: left;
+            color: #999;
+        }
+
+        .loader {
+            border: 1px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 2px solid #3498db;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+    </style>
+    <div>
+        <h3>Comments</h3>
+        <div class="comment-container">
+        </div>
+        <div id="area-comment" class="input-group">
+            <textarea id="txtAreaComment" rows="1" class="form-control form-control-sm" style="resize:none; height:40px;" placeholder="Type Comment Here" name="content[0][description]" maxlength="250"></textarea>
+            <div class="input-group-append">
+                <a id="input-comment" class="btn btn-primary btn-sm" href="javascript:void(0)">
+                    <i class="fa fa-comment comment-link" aria-hidden="true"></i>
+                </a>
+                <a id="input-upload" class="btn btn-success btn-sm" href="javascript:void(0)" >
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

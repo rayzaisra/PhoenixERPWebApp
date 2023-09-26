@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Home</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="fa fa-home fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Home</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="m-portlet m-portlet--skin-dark m-portlet--bordered-semi">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="flaticon-home"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        ERP Phoenix
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            <partial name="_SectionGeneral" />
+            @*Welcome <b>Admin</b>, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply
+                dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.*@
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <div class="m-portlet m-portlet--bordered-semi">
+        <div class="m-portlet__body">
+            <div class="row">
+                <div class="m-nav-grid m-nav-grid--skin-light">
+                    <div class=" m-nav-grid__row">
+                        <a asp-action="index" asp-controller="home" asp-area="finance" class="m-nav-grid__item">
+                            <i class="m-nav-grid__icon flaticon-file"></i>
+                            <span class="m-nav-grid__text">Finance</span>
+                        </a>
+                        <a href="~/hris" class="m-nav-grid__item">
+                            <i class="m-nav-grid__icon flaticon-time"></i>
+                            <span class="m-nav-grid__text">HRIS</span>
+                        </a>
+                        <a href="~/projectmanagement" class="m-nav-grid__item">
+                            <i class="m-nav-grid__icon flaticon-folder"></i>
+                            <span class="m-nav-grid__text">Project Management</span>
+                        </a>
+                        <a asp-action="index" asp-controller="home" asp-area="um" class="m-nav-grid__item">
+                            <i class="m-nav-grid__icon flaticon-clipboard"></i>
+                            <span class="m-nav-grid__text">User Management</span>
+                        </a>
+                        <a asp-action="index" asp-controller="home" asp-area="media" class="m-nav-grid__item">
+                            <i class="m-nav-grid__icon flaticon-folder"></i>
+                            <span class="m-nav-grid__text">Media</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="m-content" style="display:none;">
+    <div class="m-portlet m-portlet--bordered-semi">
+        <div class="m-portlet__body">
+            <partial name="_SectionKanbanBoard" />
+        </div>
+    </div>
+</div>
+
+<div class="m-content" style="display:none">
+    <div class="m-portlet m-portlet--bordered-semi">
+        <div class="m-portlet__body">
+            <partial name="_SectionListGrafik" />
+        </div>
+    </div>
+</div>
+<div class="m-content" style="display:block">
+    <div class="m-portlet m-portlet--bordered-semi">
+        <div class="m-portlet__body">
+            <partial name="_SectionSummaries .cshtml" />
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/app/js/my-script.js"></script>
+}

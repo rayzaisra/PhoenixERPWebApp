@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "Assign Central Resources";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+
+
+
+
+@section Panelhead{
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+   
+<div id="Jobassigncentralcontent" style="display:none">
+    <form action="#" method="post" id="JobassigncentralForm">
+        <input value="@ViewBag.RecordID" type="hidden" name="id" />
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-4">
+                <table class="table" id="centralresourcetable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Central Resource</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="col-lg-4">
+                <h5>Campaign Name</h5>
+                <h6 id="campaign_name">-</h6>
+                <hr />
+                <h5>Job Name</h5>
+                <h6 id="job_name">-</h6>
+                <hr />
+                <h5>Job Number</h5>
+                <h6 id="job_number">-</h6>
+                <hr />
+            </div>
+            <div class="col-lg-4">
+                <h5>Account Manager</h5>
+                <div id="accountmanagerlist" style="margin-left:10px">-</div>
+                <hr />
+                <h5>Deadline</h5>
+                <h6 id="deadline" class="xdatetime">-</h6>
+                <hr />
+                <h5>Final Delivery</h5>
+                <h6 id="final_delivery" class="xdatetime">-</h6>
+                <hr />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/projectmanagement/job/detail/@ViewBag.RecordID" class="fakelink btn btn-secondary">back</a>
+            </div>
+
+        </div>
+    </form>
+ 
+</div>
+<div id="Jobassigncentralinit" style="display:block">
+    <div class="m-loader m-loader--lg" style="width:100%; display: inline-block;"></div>
+</div>
+
+}
+
+@section Panelscript{
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Job/assigncentral.js" asp-append-version="true"></script>
+}

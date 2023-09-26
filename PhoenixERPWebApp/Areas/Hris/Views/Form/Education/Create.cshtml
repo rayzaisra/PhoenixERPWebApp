@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Education";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="EducationFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="address">address</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="address" id="address" required maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="education_level_id">education_level_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="education_level_id" id="education_level_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="end_education">end_education</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="end_education" id="end_education" required maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="institution_id">institution_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="institution_id" id="institution_id" required maxlength="60" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="majors">majors</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="majors" id="majors"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="start_education">start_education</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="start_education" id="start_education" required maxlength="100" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Education" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Education.create.js"></script>
+}

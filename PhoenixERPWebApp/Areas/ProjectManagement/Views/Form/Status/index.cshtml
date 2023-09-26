@@ -1,0 +1,191 @@
+@{
+    ViewData["Title"] = "Set Status";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+@section Panelhead{
+    <div id="statusheader" style="left:0;">
+        
+    </div>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+
+    <style>
+        .tasktitle {
+            font-size: 12px;
+        }
+
+        .tbldetilpca .easyui-fluid {
+            width: 100% !important;
+        }
+
+        .easyui-fluid .textbox-text {
+            width: 100% !important;
+        }
+
+        .tasktitle .titletop {
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
+        .tasktitle .titleno {
+            font-weight: bold;
+            float: left;
+        }
+
+        .tasktitle .titlebottom {
+            margin-left: 23px;
+        }
+
+        .tblnopadding tbody tr td {
+            padding: 0px !important;
+        }
+
+        .tblnopadding tfoot tr td {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+
+        .lbltbl {
+            padding: 5px 2px 2px 2px;
+        }
+
+        .tblnopadding tbody tr td input.xcount {
+            direction: rtl;
+        }
+
+        .centericon {
+            text-align: center;
+            vertical-align: central;
+        }
+
+        .tblnopadding tbody tr td div.xtotalnew {
+            font-size: 11px !important;
+            font-weight: bold;
+            padding-top: 5px;
+            width: 100%;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .tblnopadding tbody tr td div.xtotal {
+            font-size: 11px !important;
+            font-weight: bold;
+            padding-top: 5px;
+            width: 100%;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .tblnopadding tfoot tr td div.xtotal {
+            font-size: 11px !important;
+            font-weight: bold;
+            padding-top: 5px;
+            width: 100%;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .tbldetilpca tbody tr td {
+            padding: 2px;
+        }
+
+        .xcount {
+            text-align: right;
+        }
+
+        .xcountpca {
+            text-align: right;
+        }
+
+        .xtotal {
+            text-align: right;
+        }
+
+        .xtotalpca {
+            text-align: right;
+            padding-right: 5px;
+            min-width: 150px;
+        }
+
+        .xtemplate {
+            display: none;
+        }
+
+        #tbltaskdetil {
+        }
+
+        .stask {
+            width: 200px;
+        }
+    </style>
+    <form action="#" method="post" id="PCAForm">
+
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-5">
+                <div class="form-group">
+                    <label><span class="translate" data-args="job_number">job_number</span> :</label>
+                    <select id="job_detail_id" name="job_detail_id" style="width:100%"></select>
+                </div>
+                <hr />
+                <div class="m-form__group form-group" id="setform" style="display:none">
+                    <label for="">
+                        Set To:
+                    </label>
+                    <select id="job_status_id" onchange="pickstatus()" name="job_status_id" style="width:100%"></select>
+                    <div class="m-radio-list" id="jobstatusdiv">
+
+                    </div>
+                    @*<button type="submit" class="btn btn-circle btn-outline btn-sm"> <span class="translate" data-args="submit">submit</span></button>*@
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <h4>Client Name</h4>
+                <h5 id="company_name">-</h5>
+                <hr />
+                <h4>Campaign Name</h4>
+                <h5 id="campaign_name">-</h5>
+                <hr />
+                <h4>Job Number</h4>
+                <h5 id="job_number">-</h5>
+                <hr />
+                <h4>Job Name</h4>
+                <h5 id="job_name">-</h5>
+                <hr />
+                @*<div id="damfilediv">
+
+                </div>*@
+            </div>
+
+        </div><hr />
+
+        <div class="row">
+            <div class="col-lg-12">
+                <center>
+                    <button type="submit" class="btn btn-primary" id="btn-submit"><span class="translate" data-args="submit">submit</span></button>
+                    <button type="button" class="fakelink btn btn-secondary" id="btn_cancel">Cancel</button>
+                    @*<a asp-action="Index" asp-controller="Status" asp-area="projectmanagement" class="fakelink btn btn-secondary">Cancel</a>*@
+                </center>
+            </div>
+        </div>
+
+
+
+    </form>
+
+
+}
+@section Panelscript{
+    <script>
+        var job_id = '@Context.Request.Query["job_id"]';
+
+        var RecordID = "@ViewBag.RecordID";
+    </script>
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Status.js"></script>
+}
+

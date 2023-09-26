@@ -1,0 +1,550 @@
+@model PhoenixERPWebApp.Models.Leave
+@{
+    if (Model.IsApprove == true)
+    {
+        ViewData["Title"] = "Leave Transaction Request Form Approval";
+    }
+    else
+    {
+        ViewData["Title"] = "Leave Transaction Request Form";
+    }
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    DateTime? StartDate = DateTime.Now;
+    DateTime? EndDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.Id))
+    {
+        if (StartDate >= Model.StartDate)
+        {
+            StartDate = Model.StartDate;
+        }
+
+        if (EndDate >= Model.EndDate)
+        {
+            EndDate = Model.EndDate;
+        }
+    }
+}
+<style>
+    .k-grid-footer {
+        display: none;
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="indexapproval" asp-controller="leavetransaction" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Leave Transaction Request Form Approval</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="index" asp-controller="leavetransaction" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Leave Transaction Request Form</span></a>
+                    }
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (Model.IsApprove == true)
+                    {
+                        <a asp-action="addedit" asp-controller="leavetransaction" asp-area="hrisnew" asp-route-Id="@Model.Id" asp-route-isApprove="true" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="leavetransaction" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="leavetransaction" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Leave Transaction Request Form</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formLeave" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+                        @*enctype="multipart/form-data"*@
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                                <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                                <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                                <input type="hidden" asp-for="AssistedJob" />
+                                <input type="hidden" asp-for="FileUpload" />
+                                <partial name="_RequestEmploye" />
+
+                                <br />
+                                <div class="row" id="request_detail_data_detail" style="display:block">
+                                    <div class="col-lg-12 m-row--no-padding">
+                                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="request_detail_Detail" role="tablist">
+                                            <!--begin::Item-->
+                                            <div class="m-accordion__item">
+                                                <div class="m-accordion__item-head show" role="tab" id="request_detail_Detail_head" data-toggle="collapse" href="#request_detail_Detail_body" aria-expanded="true">
+                                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                    <span class="m-accordion__item-title">Request Detail</span>
+                                                    <span class="m-accordion__item-mode"></span>
+                                                </div>
+                                                <div class="m-accordion__item-body show" id="request_detail_Detail_body" role="tabpanel" aria-labelledby="request_detail_Detail_head" data-parent="#request_detail_Detail">
+                                                    <div class="m-accordion__item-content">
+                                                        <div class="row">
+                                                            <div class="col-lg-4 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="LeaveRequestTypeId"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().DropDownListFor(m => m.LeaveRequestTypeId)
+                                                                        .DataTextField("Text")
+                                                                        .DataValueField("Value")
+                                                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LeaveRequestTypeId)}")
+                                                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                                        .Height(400)
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source => source
+                                                                            .Custom()
+                                                                            .Transport(transport => transport
+                                                                            .Read(read =>
+                                                                            {
+                                                                                read.Action("GetDDLLeaveRequestType", "Dropdown", new { area = "HrisNew" });
+                                                                            }))
+                                                                            .ServerFiltering(false))
+                                                                        .Events(x => x.Select("leaveRequestTypeSelectEvent"))
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 m-form__group-sub leaveOther">
+                                                                <div class="form-group">
+                                                                    <label asp-for="OtherLeave"></label><span class="req">*</span> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.OtherLeave)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.OtherLeave)}",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            required = "required"
+                                                                        }
+                                                                    ))
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="FileUpload"></label>
+                                                                    <div id="divFileUpload"></div>
+                                                                    <div style="width:100%">
+                                                                        <a href='javascript: void(0);' id="linkDownloadFileLeave" onclick='downloadFileUpload()'></a> &nbsp;
+                                                                        <a href='javascript: void(0);' id="linkRemoveFileLeave" onclick='removeFileUpload()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.LeaveBalanceInfo>()
+                                                            .Name("gridLeaveBalance")
+                                                            .Columns(columns =>
+                                                            {
+                                                               columns.Bound("").Title("#").Width(35).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                                                                columns.Bound(p => p.LeaveType).Width(200);
+                                                                columns.Bound(p => p.Balance).Width(200);
+                                                                columns.Bound(p => p.ExpiredDate).Width(200);
+                                                            })
+                                                            .NoRecords()
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(10)
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.Id); })
+                                                                .Aggregates(x => x.Add(y => y.Balance).Sum())
+                                                                .Read(read => read.Action("ReadLeaveBalance", "leavetransaction", new { area = "HrisNew" }).Data("gridLeaveBalance_params"))
+                                                            )
+                                                            .Events(e => e.DataBound("dataBoundEvent"))
+                                                            .AutoBind(false)
+                                                        )
+                                                        <br />
+                                                        <div class="row">
+                                                            <div class="col-lg-4 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="StartDate"></label> <span class="req">*</span> :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.StartDate)
+                                                                        .Format("dd MMM yyyy")
+                                                                        .Min($"{StartDate}")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            required = "required",
+                                                                            placeholder = $"Choose a {Html.DisplayNameFor(m => m.StartDate)}",
+                                                                            onkeydown = "javascript:return false;"
+                                                                        })
+                                                                        .Events(evt => evt.Change("startDateChange"))
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>To</label> <span class="req">*</span> :
+                                                                    @(Html.Kendo().DatePickerFor(m => m.EndDate)
+                                                                        .Format("dd MMM yyyy")
+                                                                        .Min($"{EndDate}")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            required = "required",
+                                                                            placeholder = $"Choose a {Html.DisplayNameFor(m => m.EndDate)}",
+                                                                            onkeydown = "javascript:return false;"
+                                                                        })
+                                                                        .Events(evt => evt.Change("endDateChange"))
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>Days</label> :
+                                                                    @(Html.Kendo().NumericTextBoxFor(m => m.TotalDays)
+                                                                        .Spinners(false)
+                                                                        .Round(true)
+                                                                        .Format("N0")
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            @readonly = "readonly",
+                                                                        }))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-4 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label>While on leave I could be reached at</label><span class="req">*</span> :
+                                                                    @(Html.Kendo().TextBoxFor(m => m.Reached)
+                                                                        .HtmlAttributes(new
+                                                                        {
+                                                                            style = "width:100%",
+                                                                            maxlength = 50,
+                                                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Reached)}",
+                                                                            @class = "form-control form-control-sm m-input",
+                                                                            required = "required"
+                                                                        }
+                                                                    ))
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <partial name="_AssignEmploye" />
+                                                        <br />
+                                                        <div class="row">
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <label asp-for="Reason"></label> <span class="req">*</span> :
+                                                                    @(Html.Kendo().EditorFor(x => x.Reason)
+                                                                        .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                                                        .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                                                        .Placeholder($"Type your {Html.DisplayNameFor(m => m.Reason)} here")
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <partial name="_HistoryApproval" />
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.isRequestor == true)
+                                    {
+                                        @if ((Model.Status ?? 0) == PhoenixERPWebApp.Models.StatusTransaction.Draft)
+                                        {
+                                            <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                                        }
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                    }
+
+                                    @if (Model.IsApprove == true)
+                                    {
+                                        @if (ViewBag.processApprove == true)
+                                        {
+                                            <button type="button" id="btnShow" class="btn btn-danger"><span class="fa fa-ban"></span> Reject</button>
+                                            @*<button type="button" id="btnReject" class="btn btn-danger edit"><span class="fa fa-ban"></span> Reject</button>*@
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-bookmark"></span> Approve</button>
+                                        }
+                                        <a asp-action="Indexapproval" asp-controller="leavetransaction" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="index" asp-controller="leavetransaction" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var processError = "";
+    $(document).ready(function () {
+
+        var FileUploadName = '@Model.FileUploadName';
+        console.log("FileUploadName = " + FileUploadName);
+        if (FileUploadName == '') {
+            console.log("FileUploadName C= " + FileUploadName);
+            FileUpload();
+        } else {
+            $("#linkDownloadFileLeave").text(FileUploadName);
+        }
+
+        Other($("#LeaveRequestTypeId").data("kendoDropDownList").text());
+
+        if ('@Model.Status' != '') {
+            if ('@Model.IsApprove' == "True" || !('@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Draft')) {// || '@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransaction.Rejected')) {
+                $('.k-editor-toolbar').hide();
+                $($("#Reason").data().kendoEditor.body).attr("contentEditable", false);
+                $($("#Reason").data().kendoEditor.body).css("background-color", "#F8F9FA");
+
+                $("#LeaveRequestTypeId").data("kendoDropDownList").readonly();
+                $("#StartDate").data("kendoDatePicker").readonly();
+                $("#EndDate").data("kendoDatePicker").readonly();
+                $("#search").remove();
+                $("#Reached").attr("readonly","readonly");
+            }
+        }
+
+        $('#gridLeaveBalance').data('kendoGrid').dataSource.read();
+        $('#gridLeaveBalance').data('kendoGrid').refresh()
+    });
+
+     function removeFileUpload() {
+        FileUpload();
+    }
+
+    function downloadFileUpload() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download" })', data: { id: $("#FileUpload").val() }});
+    }
+
+    function FileUpload() {
+        $("#linkDownloadFileLeave").empty();
+        $("#linkRemoveFileLeave").empty();
+        $("#divFileUpload").empty().append("<input name='file' id='file' type='file'/>");
+
+        $("#file").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg", ".jpeg", ".png", ".gif", ".doc", ".pdf", ".docx", ".xlx", ".xlsx"]
+            }
+        });
+    }
+
+    $('#btnShow').click(function () {
+        $("#RemarkRejected").attr("required", "required");
+        $('#modalRemark').modal('show');
+    });
+
+
+    $('#btnApprove').click(function () {
+        $("#RemarkRejected").removeAttr("required", "required");
+        if (!isValid()) return;
+        callAction({ formId:"formLeave", title: "approve", type:"POST", url: '@Url.Action("approve", "leavetransaction")'});
+    });
+
+    $('#btnReject').click(function () {
+        callAction({ formId:"formLeave", title: "reject", type:"POST", url: '@Url.Action("reject", "leavetransaction")'});
+    });
+
+    $('#btnSubmit').click(function () {
+        if (!isValid()) return;
+        callActionFile({ formId: "formLeave", title: "submit", type: "POST", url: '@Url.Action("submit", "leavetransaction")' });
+    });
+
+    $('#btnSave').click(function () {
+        if (!isValid()) return;
+        callActionFile({ formId: "formLeave", title: "save", type: "POST", url: '@Url.Action("save", "leavetransaction")' });
+    });
+
+    function startDateChange() {
+        TotalDays();
+    }
+
+    function endDateChange() {
+        TotalDays();
+    }
+
+    function TotalDays() {
+        var startDate = $("#StartDate").data("kendoDatePicker").value();
+        var endDate = $("#EndDate").data("kendoDatePicker").value();
+
+        if (startDate != null && endDate != null) {
+             mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("CalculateWorkingDays", "leavetransaction")',
+            data: { startDate: startDate.toISOString(), endDate: endDate.toISOString()},
+            success: function (result) {
+                if (result != undefined) {
+                    $("#TotalDays").data("kendoNumericTextBox").value(result);
+                    //$('#gridLeaveBalance').data('kendoGrid').dataSource.read();
+                    //$('#gridLeaveBalance').data('kendoGrid').refresh()
+                }
+                mApp.unblock("#m_blockui_list");
+            },
+            error: function (e, t, s) {
+                console.log(e)
+                mApp.unblock("#m_blockui_list");
+            }
+        }).then(setTimeout(function () {
+            mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+
+    }
+
+    function isValid() {
+        var valid = $("#formLeave").validate().form();
+        if (valid) {
+            if ($("#TotalDays").data("kendoNumericTextBox").value() > totalBalance()) {
+                swal('Warning', 'Total days may not exceed the total leave !', 'warning');
+                return false;
+            }
+
+            if ($('#grid').data('kendoGrid').dataSource.data().length == 0) {
+                swal('Warning', 'Please select my job will assisted by', 'warning');
+                return false;
+
+            }
+                return true;
+        } else {
+            return false;
+        }
+    }
+    function totalBalance() {
+        var grid = $('#gridLeaveBalance').data('kendoGrid');
+        var aggregates = grid.dataSource.aggregates();
+        return aggregates.Balance.sum;
+    }
+
+    function leaveRequestTypeSelectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            Other(dataItem.Text);
+        }
+    }
+
+    function Other(text) {
+        $(".leaveOther").css("display", "none");
+        if (text.toLowerCase() == 'other') {
+            $(".leaveOther").css("display", "block");
+            $("#OtherLeave").attr("required", "required")
+        } else {
+            $("#OtherLeave").removeAttr("required");
+            $("#OtherLeave").val("");
+        }
+    }
+
+    function gridLeaveBalance_params() {
+        return {
+            employeeId: $("#EmployeeBasicInfoId").val(),
+            endDate: $("#EndDate").val()
+        }
+    }
+
+
+</script>

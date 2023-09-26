@@ -1,0 +1,185 @@
+@model PhoenixERPWebApp.Models.Termination
+@{
+    ViewData["Title"] = "Process Termination Request";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="hcprocesstermination" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Process Termination Request</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="addedit" asp-controller="hcprocesstermination" asp-area="hrisnew" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Process Termination Request</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formTermination" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+
+                        @*<input type="hidden" asp-for="Id" />*@
+                        <input type="hidden" asp-for="EmployeeBasicInfoId" />
+                        @*<input type="hidden" asp-for="LastDayDate" />*@
+                        @*<input type="hidden" asp-for="EffectiveResignDate" />*@
+                        <input type="hidden" asp-for="ResignLetter" />
+                        <input type="hidden" asp-for="EndOfContract" />
+                        <input type="hidden" asp-for="Penalty" />
+                        <input type="hidden" asp-for="TrainingBonding" />
+                        @*<input type="hidden" asp-for="Reason" />*@
+                        <input type="hidden" asp-for="TerminationType" />
+                        @*<input type="hidden" asp-for="TerminationDate" />*@
+                        <input type="hidden" asp-for="MedicalCertificate" />
+                        <input type="hidden" asp-for="DateOfSick" />
+                        <input type="hidden" asp-for="SalaryCalculation" />
+                        @*<input type="hidden" asp-for="FaulsNoticeDate" />*@
+                        @*<input type="hidden" asp-for="InterviewWarningDate" />*@
+                        @*<input type="hidden" asp-for="FaultCategoryId" />*@
+                        <input type="hidden" asp-for="InterviewWarningFile" />
+                        <input type="hidden" asp-for="StatementOfPoliceReport" />
+                        @*<input type="hidden" asp-for="WarningLetter" />
+        <input type="hidden" asp-for="WarningLetterDate" />*@
+                        <input type="hidden" asp-for="Status" />
+                        <input type="hidden" asp-for="StatusInterview" />
+                        <input type="hidden" asp-for="StatusChecklist" />
+                        @*<input type="hidden" asp-for="RequestDate" />*@
+                        <input type="hidden" asp-for="Requestor" />
+                        @*<input type="hidden" asp-for="TerminationInterviewDate" />*@
+                        @*<input type="hidden" asp-for="Notes" />*@
+                        @*<input type="hidden" asp-for="ExitInterviewFiles" />*@
+                        <input type="hidden" asp-for="ReplacementStatus" />
+                        <input type="hidden" asp-for="IsInterview" />
+                        <input type="hidden" asp-for="IsChecklist" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="BusinessUnitDivisionId" />
+                        <input type="hidden" asp-for="BusinessUnitDepartementId" />
+                        <input type="hidden" asp-for="IsHcProcess" />
+                        <input type="hidden" asp-for="IsHcApprove" />
+
+                        <partial name="_RequestEmployee" />
+                        <partial name="_AssignEmploye" />                        
+                        <partial name="_HistoryApproval" />
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    @if (ViewBag.IsApprove == true)
+                                    {
+                                        if (Model.TerminationType == "4")
+                                        {
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Process to Exit Checklist</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" id="btnApprove" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Process to Exit Interview</button>
+                                        }
+
+                                    }
+                                    <a asp-action="index" asp-controller="hcprocesstermination" asp-area="hrisnew" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+     $(document).ready(function () {
+         var fileName = '@Model.ExitInterviewFilesName';
+         if (fileName == '') {
+            Files();
+         } else {
+            $("#linkDownloadFile").text(fileName);
+         }
+
+         if ("@ViewBag.IsApprove" == "False") {
+             $("#linkRemoveFile").empty();
+         }
+    });
+
+    function removeFile() {
+        Files();
+    }
+
+    function downloadFile() {
+        downloadAction({url: '@Url.RouteUrl(new { action = "download", controller = "Download" })',data: { id: '@Model.ExitInterviewFiles' }});
+    }
+
+    function Files() {
+        $("#divDownloadFile").remove();
+        $("#divFile").empty().append("<input name='file' id='file' type='file' />");
+
+        $("#file").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".doc", ".pdf", ".docx"]
+            }
+        });
+    }
+    
+    $('#btnApprove').click(function () {
+        callActionFile({ formId:"formTermination", title: "submit", type:"POST", url: '@Url.Action("approve", "hcprocesstermination")'});
+    });
+</script>

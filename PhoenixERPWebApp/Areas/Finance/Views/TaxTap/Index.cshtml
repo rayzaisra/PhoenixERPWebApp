@@ -1,0 +1,453 @@
+﻿@{
+    ViewData["Title"] = "Tax TAP";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Tax Tap</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/TaxTap")" class="m-nav__link">
+                        <span class="m-nav__link-text">Tax TAP</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            @*<span class="m-portlet__head-icon">
+                                <a href="@Url.Content("~/Finance/InvoiceReceived/Detail/")" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                            </span>*@
+                            @*<div class="input-group input-group-sm">
+                                <a href="@Url.Content("~/Finance/InvoiceReceived/Detail/")" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                            </div>*@       
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        @*<div class="btn-group" role="group">*@
+                        <div class="col-lg-4">
+                            @(Html.Kendo().DropDownList()
+                                .Name("Filter-LegalEntity")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .Filter(FilterType.Contains)
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                    });
+                                })
+                                .OptionLabel(new
+                                {
+                                    Text = "Select Legal Entity...",
+                                    Value = ""
+                                })
+                                .Events(e =>
+                                {
+                                    e.Change("onSelectLegalEntityStatus");
+                                })
+                                .HtmlAttributes(new { style = "width:100%;" })
+                            )
+                        </div>
+                        <div class="col-lg-4">
+                            @(Html.Kendo().DropDownList()
+                                    .Name("Filter-BusinessUnit")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetDivision", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel(new
+                                    {
+                                        Text = "Select Division...",
+                                        Value = ""
+                                    })
+                                    .Events(e =>
+                                    {
+                                        e.Change("onSelectBusinessUnitStatus");
+                                    })
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                            )
+                        </div>
+                        <div class="col-lg-4">
+                            @(Html.Kendo().DropDownList()
+                            .Name("Filter")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .Events(e =>
+                            {
+                                e.Change("onSelectStatus");
+                            })
+                            .BindTo(new List<SelectListItem>() {
+                                new SelectListItem() {
+                                Text = PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAXTAP),
+                                Value = PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAXTAP
+                                }                                         
+                            })
+                            .HtmlAttributes(new { style = "width: 100%" })
+                            )
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon"
+                                   aria-describedby="tooltip_d4ny9s36oh">
+                                    <i class="la la-expand"></i>
+                                </a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top"
+                                     role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true"
+                                     x-placement="top" style="position: absolute; will-change: transform;
+                                        visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">
+                                    <div class="tooltip-arrow arrow" style="left: 48px;"></div>
+                                    <div class="tooltip-inner">Fullscreen</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+               
+                    <div class="m-portlet__body" id="m_blockui_list">
+                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.Transaction.InvoiceReceived.InvoiceReceivedList>()
+                        .Name("grid")
+                        .Columns(columns =>
+                        {
+                            //columns.Bound("").ClientTemplateId("btnAction-template")
+                            //.Title("Action").HtmlAttributes(new { style = "text-align:center;" })
+                            //.HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                            columns.Bound("").ClientTemplate("#= renderNumber(data) #").Title("#").Width(50);
+                            columns.Bound("").ClientTemplate("#= LinktoInv(data) #").Title("Invoice Received Number").Width(200);                          
+                            columns.Bound(p => p.PoNumber).Title("Po Number").Width(150);
+                            columns.Bound(p => p.InvoiceDate).Width(200).Format("{0:dd  MMM  yyyy}");
+                            columns.Bound(p => p.ClientName).Title("Vendor Name").Width(200);
+                            columns.Bound(p => p.InvoiceVendorDate).Width(200).Format("{0:dd  MMM  yyyy}");
+                            columns.Bound(p => p.Amount).Width(200).Format("{0:n2}");
+                            columns.Bound("").ClientTemplate("#= GetStatusButton(data) #").Title("Status Name").Width(200);
+                            columns.Bound(p => p.InvoiceStatusId).Hidden();
+
+                        })
+                            .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                            .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                            .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                            .Extra(false)
+                            .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                            .Contains("Contains")
+                            .StartsWith("Start sWith")
+                            .EndsWith("End sWith")
+                            )))
+                            .NoRecords()
+                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                            .Resizable(rsz => rsz.Columns(true))
+                            .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model => { model.Id(p => p.Id); })
+                            .Read(read => read.Action("Read", "InvoiceReceived").Data("InvoiceReceivedStatusParam"))
+                            )
+                        )
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:green'><i class='fa fa-edit'></i></span></a>
+    @*<a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>*@
+    @*#if(InvoiceStatusId==@PhoenixERPWebApp.Models.InvoiceReceivedStatus.ApproveAdmin){#
+    <a href='javascript: void(0);' onclick='createTAP(this)' title='TAP'class='edit'><span style='color:black'><i class='fa fa-file'></i></span></a>
+    #}#*@
+   
+</script>
+<script>
+    function GetStatusButton(data) {
+        var button = "";
+        if (data.InvoiceStatusId == @PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Open) {
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--info m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Open)</a></center>";
+        }else if (data.InvoiceStatusId == @PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAP) {
+
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--warning m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAP)</a></center>";
+        } else if (data.InvoiceStatusId == @PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAXTAP) {
+
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--danger m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAXTAP)</a></center>";
+        } else if (data.InvoiceStatusId == @PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.OpenAP) {
+
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--dark m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.OpenAP)</a></center>";
+        } else if (data.InvoiceStatusId ==  @PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Posted ) {
+
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--success m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Posted)</a></center>";
+        } else if (data.InvoiceStatusId == @PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Revised) {
+
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--warning m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Revised)</a></center>";
+        } else if (data.InvoiceStatusId == @PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Rejected) {
+
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--danger m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Rejected)</a></center>";
+        } else {
+
+            button = "<center><a href='javascript: void(0);' onclick='ProcessData(this)' class='m-badge m-badge--info m-badge--wide'>@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.StatusName(@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Open)</a></center>";
+        }
+        return button;
+    }
+    function LinktoInv(data) {
+
+        return "<center><a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'>" + data.InvoiceNumber +"</a></center>";
+    }
+ 
+    var refresh = false;
+    function InvoiceReceivedStatusParam() {
+       
+        var status = $("#Filter").data("kendoDropDownList").value();
+        var bu = $("#Filter-BusinessUnit").data("kendoDropDownList").value();
+        var legal = $("#Filter-LegalEntity").data("kendoDropDownList").value();
+
+        return {
+            status: status,
+            businessUnit: bu,
+            legalEntity: legal
+        };   
+    }
+    function onSelectLegalEntityStatus() {
+       mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        var status = $("#Filter").data("kendoDropDownList").value();
+        var bu = $("#Filter-BusinessUnit").data("kendoDropDownList").value();
+        var legal = $("#Filter-LegalEntity").data("kendoDropDownList").value();
+
+       var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    type: "json",
+                    url: '@Url.Action("ReadCustom", "InvoiceReceived")',
+                    data: {
+                        status: status,
+                        businessUnit: bu,
+                        legalEntity: legal
+                    }
+                }
+            }, schema: {
+                data: (response) => {
+                    //console.log(response)
+                    // Augment returned data with a slice() method used internally by Kendo DataSource
+                    // in the absence of "schema.model" to obtain a pristine copy of the object.
+                    response.slice = () => JSON.parse(JSON.stringify(response.Data));
+                    return response.Data;
+                },
+                total: (response) => {
+                    return response.Total;
+                }
+            },
+            pageSize: 10
+        });
+        var gridv = $('#grid').data('kendoGrid');
+        gridv.setDataSource(dataSource);   
+        mApp.unblock("#m_blockui_list");
+
+    };
+    function onSelectBusinessUnitStatus() {
+       mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        var status = $("#Filter").data("kendoDropDownList").value();
+        var bu = $("#Filter-BusinessUnit").data("kendoDropDownList").value();
+        var legal = $("#Filter-LegalEntity").data("kendoDropDownList").value();
+
+       var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    type: "json",
+                    url: '@Url.Action("ReadCustom", "InvoiceReceived")',
+                    data: {
+                        status: status,
+                        businessUnit: bu,
+                        legalEntity: legal
+                    }
+                }
+            }, schema: {
+                data: (response) => {
+                    //console.log(response)
+                    // Augment returned data with a slice() method used internally by Kendo DataSource
+                    // in the absence of "schema.model" to obtain a pristine copy of the object.
+                    response.slice = () => JSON.parse(JSON.stringify(response.Data));
+                    return response.Data;
+                },
+                total: (response) => {
+                    return response.Total;
+                }
+            },
+            pageSize: 10
+        });
+        var gridv = $('#grid').data('kendoGrid');
+        gridv.setDataSource(dataSource);   
+        mApp.unblock("#m_blockui_list");
+
+    };
+
+    function onSelectStatus() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        var status = $("#Filter").data("kendoDropDownList").value();
+        var bu = $("#Filter-BusinessUnit").data("kendoDropDownList").value();
+        var legal = $("#Filter-LegalEntity").data("kendoDropDownList").value();
+
+       var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    type: "json",
+                    url: '@Url.Action("ReadCustom", "InvoiceReceived")',
+                    data: {
+                        status: status,
+                        businessUnit: bu,
+                        legalEntity: legal
+                    }
+                }
+            }, schema: {
+                data: (response) => {
+                    //console.log(response)
+                    // Augment returned data with a slice() method used internally by Kendo DataSource
+                    // in the absence of "schema.model" to obtain a pristine copy of the object.
+                    response.slice = () => JSON.parse(JSON.stringify(response.Data));
+                    return response.Data;
+                },
+                total: (response) => {
+                    return response.Total;
+                }
+            },
+            pageSize: 10
+        });
+        var gridv = $('#grid').data('kendoGrid');
+        gridv.setDataSource(dataSource);   
+        mApp.unblock("#m_blockui_list");
+    };
+
+    function ProcessData(e) {
+        var item = dataItem(e);
+        if (item.InvoiceStatusId == "3") {
+            swal({
+            title: "Are you sure want to Process this into TAP?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: !0
+        }).then(function (ok) {
+            if (ok.value) {
+                mApp.block("#m_blockui_list", {
+                    overlayColor: "#000000",
+                    type: "loader",
+                    state: "primary",
+                    message: "Processing..."
+                });
+                window.location.href = '@Url.Action("Detail", "TemporaryAccountPayable")?VendorId=' + item.ClientId + '&InvoiceReceivableId=' + item.Id + '&OurRef=' + InvoiceNumber+'';
+
+                mApp.unblock("#m_blockui_list");
+            }
+        }).catch(swal.noop);
+
+        } else {
+            return false;
+        }
+        
+        @*callActionFile({ formId: "form", title: "Process", type: "POST", url: "@Url.Action("Submit", "InvoiceReceived")" });*@
+    }
+
+    function editGridRow(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "InvoiceReceived")?Id=' + item.Id;
+    }
+
+    function deleteGridRow(e) {
+        deleteRow(e, '@Url.Action("Delete", "InvoiceReceived")');
+    }
+
+    var counter = 1;
+
+    function onDataBound(e) {
+        counter = 1;
+    }
+
+    function renderNumber(data) {
+
+       return "<center>" + counter++ + "</center>";    
+    }
+
+    function createTAP(e) {
+        var item = dataItem(e);
+        console.log(item);
+        @*window.location.href = '@Url.Action("Detail", "TemporaryAcountPayable")?Id=' + item.Id;*@
+    }
+
+    (function ($) {
+        'use strict';
+          var param = (function (param) {
+                param.saveUrl = "@Url.Action("Save", "InvoiceReceived")";
+                param.submitUrl = "@Url.Action("Submit", "InvoiceReceived")";
+                param.getClientData = "@Url.Action("GetClientData", "InvoiceReceived")"
+                return param;
+            })(param || {});
+          var pageFunction = (function (pageFunction) {
+            pageFunction.init = function () {
+                //initialize
+            };
+
+           pageFunction.processtatus = function () {
+               callActionFile({ formId: "form", title: "Process", type: "POST", url: param.submitUrl });
+            };
+
+            return pageFunction;
+        })(pageFunction || {});
+
+    $(document).ready(function () {
+        $("#status_selebrity").click(function (e) {
+            alert("Handler for .click() called.");
+        });
+
+    });
+    }(jQuery));
+</script>

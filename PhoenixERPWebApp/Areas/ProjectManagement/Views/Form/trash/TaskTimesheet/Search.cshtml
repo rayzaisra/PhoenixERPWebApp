@@ -1,0 +1,40 @@
+@{
+    ViewBag.ModalTitle = "TaskTimesheet";
+    ViewBag.ModalId = "TaskTimesheetModalSearch";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="TaskTimesheetFormSearch" method="post">
+    
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="date_worksheet">Date Worksheet</span></label>
+                <input class="md-input" name="search_date_worksheet" id="search_date_worksheet"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="end_time">End Time</span></label>
+                <input class="md-input" name="search_end_time" id="search_end_time"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="notes">Notes</span></label>
+                <input class="md-input" name="search_notes" id="search_notes"   maxlength="2147483647" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="start_time">Start Time</span></label>
+                <input class="md-input" name="search_start_time" id="search_start_time"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task">Task</span></label>
+                <input class="md-input" name="search_task" id="search_task"   maxlength="100" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_id">Task Id</span></label>
+                <input class="md-input" name="search_task_id" id="search_task_id"   maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="worksheet_description">Worksheet Description</span></label>
+                <input class="md-input" name="search_worksheet_description" id="search_worksheet_description"   maxlength="2147483647" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" onclick="fnTaskTimesheet.initsearch()" class="md-btn md-btn-primary"><i class="uk-icon-search"></i> Search</button>
+        <button type="button" onclick="fnTaskTimesheet.initsearch('reset')" class="md-btn md-btn-success"><i class="uk-icon-times-circle"></i> Reset</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

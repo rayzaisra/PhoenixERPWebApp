@@ -1,0 +1,200 @@
+@inject Phoenix.WebExtension.Attributes.MenuAuthorization menuAuthorization;
+@{
+    ViewData["Title"] = "Production Cost Analysis List";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+
+    var privilege = await menuAuthorization.GetPrivilege("Pm", "Pca");
+    //if (!privilege.IsRead) { throw new Exception("You have no authorization to the current access."); }
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Production Cost Analysis List</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="pca" asp-area="pm" class="m-nav__link"><span class="m-nav__link-text">Production Cost Analysis List</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @if (privilege.IsAdd)
+                                {
+                                    <a asp-action="addedit" asp-controller="pca" asp-area="pm" class="m-btn btn btn-primary btn-sm m-btn--sm" title="Add New Record"><i class="la la-plus"></i></a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("status")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Events(e => e.Change("onFilterMode"))
+                                    .OptionLabel("All Status")
+                                    .DataSource(source => source
+                                        .Custom()
+                                        .Transport(transport => transport
+                                        .Read(read =>
+                                        {
+                                            read.Action("GetDDLStatusPcaPce", "Dropdown", new { area = "Pm" });
+                                        }))
+                                        .ServerFiltering(false)
+                                    ))
+                            </li>
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Pca>()
+                        .Name("grid")
+                        .Columns(columns =>
+                        {
+                            columns.Bound("").Title("#").Width(35).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.Code).ClientTemplateId("code-template").Width(150);
+                            columns.Bound(p => p.PceId).ClientTemplateId("pceId-template").Width(150);
+                            columns.Bound(p => p.JobName).ClientTemplateId("jobname-template").Width(200);
+                            columns.Bound(p => p.CompanyName).Width(200);
+                            columns.Bound(p => p.BrandName).Width(200);
+                            //columns.Bound(p => p.CostAnalysis).Width(140).HtmlAttributes(new { style = "text-align:right;" });
+                            columns.Bound(p => p.CostAnalysis).ClientTemplate("#if(CurrencySymbol!=null && CostAnalysis!=null){# #=CurrencySymbol# #}# #if(CostAnalysis!=null){# #=kendo.format('{0:n2}', CostAnalysis)# #}#").Width(150).HtmlAttributes(new { style = "text-align:right;" });
+                            columns.Bound(p => p.Revision).Width(100);
+                            columns.Bound(p => p.CreatedOn).Width(150).Filterable(ftb => ftb.Extra(true));
+                            columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButton(data) #").Width(150);
+                        })
+                        .NoRecords()
+                        .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                            .Extra(false)
+                            .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                                .Contains("Contains")
+                                .StartsWith("Start sWith")
+                                .EndsWith("End sWith")
+                            )))
+                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model => { model.Id(p => p.Id); })
+                            .Read(read => read.Action("Read", "Pca").Data("grid_params"))
+                        )
+                        .Events(e => e.DataBound("dataBoundEvent"))
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="pceId-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='ViewPCE(this)' title='View PCE' class='edit'><span style='color:blue; text-decoration:underline;'>#if(PceId!=null){# #=PceId# #}#</span></a>
+</script>
+<script id="code-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='View(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'>#=Code#</span></a>
+</script>
+<script id="jobname-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='ViewJob(this)' title='View Job' class='edit'><span style='color:blue; text-decoration:underline;'>#=JobName#</span></a>
+</script>
+<script>
+    $(function () {
+        var priv = '@privilege.IsRead';
+
+        if (priv === 'False') {
+            swal(
+                'Information',
+                'You dont have a right access to this page, please contact your admin!',
+                'info'
+            );
+        }
+
+    })
+    function View(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("AddEdit", "Pca")?Id=' + item.Id;
+    }
+
+    function ViewPCE(e){
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("AddEdit", "Pce")?Id=' + item.PceId + '&IsRead=true';
+    }
+
+    function ViewJob(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("detail", "job", new { area= "projectmanagement" })?id=' + item.JobId;
+    }
+
+    function grid_params() {
+        return {
+            status: $("#status").data("kendoDropDownList").value()
+        }
+    }
+
+    function onFilterMode() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        var grid = $("#grid").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+        mApp.unblock("#m_blockui_list");
+    };
+
+    function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Draft") buttonType = "m-badge--info";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.WaitingApproval") buttonType = " m-badge--warning";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Rejected") buttonType = " m-badge--danger";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Approved") buttonType = " m-badge--success";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Revised") buttonType = " m-badge--danger";
+        return "<center><a href='javascript: void(0);' onclick='View(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+</script>

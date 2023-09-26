@@ -1,0 +1,52 @@
+@{
+    ViewBag.ModalTitle = "Bonus";
+    ViewBag.ModalId = "BonusModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="BonusFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="amount">amount</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_amount" id="search_amount"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bonus_description">bonus_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_bonus_description" id="search_bonus_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="date_bonus">date_bonus</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_date_bonus" id="search_date_bonus"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_notes" id="search_notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="title">title</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_title" id="search_title"  maxlength="200" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnBonus.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnBonus.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

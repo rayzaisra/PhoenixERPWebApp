@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "MotherPca";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <form id="MotherPcaFormUpdate" method="post">
+        <div class="row ">
+            <div class="col-lg-12">
+                <input value="@ViewBag.RecordID" type="hidden" name="id" />
+                <input value="" type="hidden" id="sub_MotherPca" name="sub_MotherPca" />
+                <div class="form-group">
+                    <label><span class="translate" data-args="Company">Company</span> <span class="req">*</span>:</label>
+                    <select required id="company_id" name="company_id" class="form-control form-control-sm m-input m-input--square"></select>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="MotherPca">MotherPca</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="MotherPca_name" id="MotherPca_name" maxlength="50" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="sub MotherPca">Sub MotherPca</span> <span class="req">*</span>:</label>
+                    <input style="width:100%" class="form-control form-control-sm m-input m-input--square" id="sub_MotherPcatag" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Account">Account</span> :</label>
+                    <select required id="MotherPca_account" name="MotherPca_account[]" multiple class="form-control form-control-sm m-input m-input--square"></select>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/ProjectManagement/MotherPca" class="fakelink btn btn-secondary">Close</a>
+            </div>
+
+        </div>
+    </form>
+}
+@section Panelscript{
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/MotherPca.update.js"></script>
+}

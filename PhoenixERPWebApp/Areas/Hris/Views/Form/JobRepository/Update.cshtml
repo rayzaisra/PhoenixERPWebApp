@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "JobRepository";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="JobRepositoryFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="date">date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="date" id="date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="external_id">external_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="external_id" id="external_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_posting_requisition_id">job_posting_requisition_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="job_posting_requisition_id" id="job_posting_requisition_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="pe_file_id">pe_file_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="pe_file_id" id="pe_file_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="remark">remark</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="remark" id="remark"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="version">version</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="version" id="version"   type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/JobRepository" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/JobRepository.update.js"></script>
+}

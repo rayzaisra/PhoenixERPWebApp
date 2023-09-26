@@ -1,0 +1,369 @@
+﻿@model PhoenixERPWebApp.Models.BudgetMasterHeader
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+     
+    .k-numerictextbox .k-input {
+        text-align: right;
+        padding-right: 10px;
+    } 
+</style>
+
+<div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Add Budget Details
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" asp-for="BudgetMaster.BudgetMasterHeaderId"/>
+                <input type="hidden" asp-for="BudgetMaster.CreatedBy" />
+                <input type="hidden" asp-for="BudgetMaster.CreatedOn" />
+                <input type="hidden" asp-for="BudgetMaster.ModifiedBy" />
+                <input type="hidden" asp-for="BudgetMaster.ModifiedOn" />
+                <input type="hidden" asp-for="BudgetMaster.Id"/>
+                <input type="hidden" asp-for="BudgetMaster.HrisDivisionId"/>
+                <input type="hidden" asp-for="BudgetMaster.AccountId"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalAcrBudget"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalRealBudgetAcr"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalBudgetUsed"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalBudgetUsedAllTransaction"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalBudgetBalanceAcr"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalBudgetBalanceReal"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalBudgetBalance"/>
+                <input type="hidden" asp-for="BudgetMaster.TotalBudgetBalanceAllTransaction"/>
+
+                <div class="row">
+                    <div class="col-lg-9">                        
+                        <div class="col-lg-12 row m-row--col-separator-xl">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="BudgetMaster.MasterBudgetCodeId"></label><span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(x=>x.BudgetMaster.MasterBudgetCodeId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BudgetMaster.MasterBudgetCodeId)}")
+                                        .HtmlAttributes(new { style = "width:100%;", @readonly= "readonly" })
+                                        .Height(400)
+                                        .Filter(FilterType.Contains)
+                                        .Popup(x=>x.AppendTo(".modal-body"))
+                                        .Events(x=>x.Select("masterBudgetCode_selectEvent"))
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLMasterBudgetCodeCapex", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                        .AutoBind(true)
+                                    )
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BudgetMaster.MasterMonthlyBudgetSpreadId"></label><span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(x => x.BudgetMaster.MasterMonthlyBudgetSpreadId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BudgetMaster.MasterMonthlyBudgetSpreadId)}")
+                                        .HtmlAttributes(new { style = "width:100%;" })
+                                        .Height(400)
+                                        .Filter(FilterType.Contains)
+                                        .Popup(x => x.AppendTo(".modal-body"))
+                                        .Events(x => x.Select("masterMonthlyBudgetSpread_selectEvent"))
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLMasterMonthlyBudgetSpreads", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                        .AutoBind(true)
+                                    )
+                                </div>  
+                                <div class="form-group">
+                                    <label asp-for="BudgetMaster.CostSharingAllocationId"></label><span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(x=>x.BudgetMaster.CostSharingAllocationId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BudgetMaster.CostSharingAllocationId)}")
+                                        .HtmlAttributes(new { style = "width:100%;" })
+                                        .Height(400)
+                                        .Filter(FilterType.Contains)
+                                        .Popup(x => x.AppendTo(".modal-body"))
+                                        .Events(x=>x.Select("costSharingAllocation_selectEvent"))
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLCostSharingAllocation", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                        .AutoBind(true)
+                                    )
+                                </div>
+                                 <div class="form-group">
+                                    <label asp-for="BudgetMaster.BugetOwnerId"></label><span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(x => x.BudgetMaster.BugetOwnerId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BudgetMaster.BugetOwnerId)}")
+                                        .HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                        .Height(400)
+                                        .Filter(FilterType.Contains)
+                                        .Popup(x => x.AppendTo(".modal-body"))
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetEmployee", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                        .AutoBind(true)
+                                    )
+                                </div>   
+                                 <div class="form-group">
+                                     <label asp-for="BudgetMaster.TotalBudget"></label><span class="req">*</span>  :
+                                     @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.TotalBudget).Events(x => x.Change("totalBudget_changeEvent")).Format("n0").Min(0).Spinners(false).HtmlAttributes(new { style = "width:100%"})
+                                 </div>
+                            </div>
+                            <div class="col-lg-6" style="padding-right:0px">
+                                <div class="form-group">
+                                    <label asp-for="BudgetMaster.HrisDivisionName"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.BudgetMaster.HrisDivisionName).HtmlAttributes(new { @readonly = "readonly", style = "width:100%" })
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BudgetMaster.CodeRec"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.BudgetMaster.CodeRec).HtmlAttributes(new { @readonly = "readonly", style = "width:100%" })
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BudgetMaster.AccountCOALv3"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.BudgetMaster.AccountCOALv3).HtmlAttributes(new { @readonly = "readonly", style = "width:100%" })
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BudgetMaster.AccountCOALv5"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.BudgetMaster.AccountCOALv5).HtmlAttributes(new { @readonly = "readonly", style = "width:100%" })
+                                </div>
+                                <div class="form-group m-form__group row m-row--no-padding">
+                                    <div class="col-lg-6" style="padding-right:5px;">
+                                        <label asp-for="BudgetMaster.Status"></label> :
+                                        @Html.Kendo().TextBoxFor(m => m.BudgetMaster.Status).HtmlAttributes(new { @readonly = "readonly", style = "width:100%" })
+                                    </div>
+                                    <div class="col-lg-6" style="padding-left:5px;"> 
+                                            <label asp-for="Version"></label> :
+                                            @Html.Kendo().NumericTextBoxFor(m => m.BudgetMaster.Version).Spinners(false).Format("N0").HtmlAttributes(new { @readonly = "readonly", @style = "width:100%" })
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group m-form__group row m-row--no-padding" style="margin-bottom:0px!important">
+                                <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                    <div class="alert m-alert--default" role="alert">
+                                        Cost Sharing Allocation List
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row m-row--no-padding">
+                                <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.BudgetMasterDetail>()
+                                        .Name("grid-BudgetMasterDetail")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(p => p.BusinessUnitName).ClientFooterTemplate("TOTAL : ").Width(200);
+                                            columns.Bound(p => p.CostSharingAllocationPercent).ClientFooterTemplate("#=sum#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget01).Title("January").ClientFooterTemplate("#=kendo.format('{0:N2}', budget1())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget02).Title("February").ClientFooterTemplate("#=kendo.format('{0:N2}', budget2())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget03).Title("March").ClientFooterTemplate("#=kendo.format('{0:N2}', budget3())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget04).Title("April").ClientFooterTemplate("#=kendo.format('{0:N2}', budget4())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget05).Title("May").ClientFooterTemplate("#=kendo.format('{0:N2}', budget5())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget06).Title("June").ClientFooterTemplate("#=kendo.format('{0:N2}', budget6())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget07).Title("July").ClientFooterTemplate("#=kendo.format('{0:N2}', budget7())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget08).Title("August").ClientFooterTemplate("#=kendo.format('{0:N2}', budget8())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget09).Title("September").ClientFooterTemplate("#=kendo.format('{0:N2}', budget9())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget10).Title("October").ClientFooterTemplate("#=kendo.format('{0:N2}', budget10())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget11).Title("November").ClientFooterTemplate("#=kendo.format('{0:N2}', budget11())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p => p.Budget12).Title("December").ClientFooterTemplate("#=kendo.format('{0:N2}', budget12())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                            columns.Bound(p=>p.Id).Title("Total").ClientTemplate("#=kendo.format('{0:N2}', totalBudget(data))#").ClientFooterTemplate("#=kendo.format('{0:N2}', total())#").Width(150).HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                        })
+                                        //.Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                        //.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                        //    .Extra(false)
+                                        //    .Operators(operators => operators
+                                        //    .ForString(str => str.Clear()
+                                        //        .Contains("Contains")
+                                        //        .StartsWith("Start sWith")
+                                        //        .EndsWith("End sWith")
+                                        //    )))
+                                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                        .Resizable(rsz => rsz.Columns(true))
+                                        .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .Events(events => events.Error("errorHandler"))
+                                            .Model(model =>
+                                            {
+                                                model.Id(p => p.Id);
+                                            })
+                                            .Aggregates(aggregates =>
+                                            {
+                                                aggregates.Add(p => p.CostSharingAllocationPercent).Sum();
+                                            })
+                                            .Read(read => read.Action("ReadBudgetMasterDetail", "BudgetCapex").Data("gridBudgetDetail_params"))
+                                        )
+                                        .NoRecords()
+                                        .AutoBind(false)
+                                    ) 
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-lg-3">                                              
+                        <div class="form-group m-form__group row m-row--no-padding" style="margin-bottom:0px!important">
+                            <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                <div class="alert m-alert--default" role="alert">
+                                    Master Monthly Budget Spread List
+                                </div>
+                            </div>
+                        </div> 
+                
+                        <div class="form-group m-form__group row m-row--no-padding">
+                            <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-center" style="width:60%"><label>Month</label></td>
+                                                <td class="text-center" style="width:40%"><label>Percentage</label></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth1"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth1).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth2"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth2).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth3"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth3).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth4"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth4).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth5"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth5).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth6"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth6).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth7"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth7).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth8"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth8).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth9"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth9).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt=>evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth10"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth10).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth11"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth11).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt => evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label asp-for="BudgetMaster.PercentageSpreadMonth12"></label></td>
+                                                <td>
+                                                    @Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.PercentageSpreadMonth12).Format("##.## \\%").Min(0).Max(100).Spinners(false).Events(evt=>evt.Change("calculate_change")).HtmlAttributes(new { style = "width:100%",  @readonly="readonly" })
+                                                </td>
+                                            </tr>
+                                            <tr style="font-weight:bold;">
+                                                <td><label asp-for="BudgetMaster.TotalPercentageSpreadMonth"></label></td>
+                                                <td>
+                                                    @(Html.Kendo().NumericTextBoxFor(x => x.BudgetMaster.TotalPercentageSpreadMonth)
+                                                        .Spinners(false).Events(evt=>evt.Change("calculate_change"))
+                                                        .Format("## \\%")
+                                                        .HtmlAttributes(new
+                                                        {
+                                                            style = "width:100%",
+                                                            @readonly = "readonly"
+                                                        }
+                                                    ))
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>                  
+                <div class="row ">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label asp-for="BudgetMaster.RemarksProcess"></label> :
+                            @Html.TextAreaFor(x => x.BudgetMaster.RemarksProcess, new { style = "height:100px;width:100%" })
+                        </div>
+                    </div>
+                </div>
+                <partial name="_HistoryApproval" />
+                <partial name="_StatusLog" />
+                <br/> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="processDetail(1)"><span class="fa fa-paper-plane"></span>Submit</button>
+                <button type="button" class="btn btn-danger" id="btn-reject-detail" onclick="processDetail(2)"><span class="fa fa-ban"></span> Reject</button>
+                <button type="button" class="btn btn-primary" id="btn-approve-detail" onclick="processDetail(3)"><span class="fa fa-bookmark"></span> Approve</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+

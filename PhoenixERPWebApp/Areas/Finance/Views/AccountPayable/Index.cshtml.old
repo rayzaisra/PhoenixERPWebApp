@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "Temporary Account Payable List";
+}
+<link href="~/bundles/css/datatable.min.css?@DateTime.Now" rel="stylesheet" />
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Temporary Account Payable List</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Account Payable List</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <a href="@Url.Content("~/Finance/AccountPayable/Detail/")" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                                <button id="btn-delete" type="button" class="m-btn btn btn-danger btn-sm m-btn--sm"><i class="la la-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text input-group-sm"><i class="la la-search"></i></span></div>
+                                        <input autocomplete="off" type="text" name="q" class="form-control form-control-sm m-input searchbox" placeholder="Search">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <!--begin: Selected Rows Group Action Form -->
+                    <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30 collapse" id="m_datatable_group_action_form1">
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="m-form__group m-form__group--inline">
+                                    <div class="m-form__label m-form__label-no-wrap">
+                                        <label class="m--font-bold m--font-danger-">
+                                            Selected
+                                            <span id="m_datatable_selected_number1">0</span> records:
+                                        </label>
+                                    </div>
+                                    <div class="m-form__control">
+                                        <div class="btn-toolbar">
+                                            <div class="dropdown">
+                                                <button type="button" class="btn btn-accent btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                    Update status
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                    <a class="dropdown-item" href="#">Pending</a>
+                                                    <a class="dropdown-item" href="#">Delivered</a>
+                                                    <a class="dropdown-item" href="#">Canceled</a>
+                                                </div>
+                                            </div>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-sm btn-danger" type="button" id="m_datatable_delete_all1">Delete All</button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#m_modal_fetch_id_server">Fetch Selected Records</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="grid"></div>
+                    <script type="text/x-kendo-template" id="grid_template">
+                        <div class="grid-detail-marvel">
+                            <div class="col-lg-6">
+                                <div class="status-approval"></div>
+
+                            </div>
+
+                        </div>
+                    </script>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<style>
+    /*.k-grid .k-state-selected {
+        background-color: #ffffff !important;
+        color: #000000;
+    }*/
+    #grid tbody tr:hover {
+        background: #b6b6b6;
+    }
+    /*.k-grid .k-alt.k-state-selected {
+        background-color: #f1f1f1 !important;
+        color: #000000;
+    }*/
+</style>
+
+@section Scripts{
+    <script src="~/vendors/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/Vendors/custom/KendoUI/js/kendo.all.min.js"></script>
+    <script src="~/Areas/Finance/Scripts/AccountPayable.Index.js?@DateTime.Now" asp-append-version="true"></script>
+}
+
+

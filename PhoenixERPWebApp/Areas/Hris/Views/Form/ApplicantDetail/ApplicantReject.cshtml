@@ -1,0 +1,138 @@
+@{
+    ViewData["Title"] = "Applicant Detail Info";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    @*<a href="@Url.Content("~/Hris/Activity/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>*@
+}
+
+@section Paneltools{
+    @*<a  data-target="#ActivityModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>*@
+}
+@section Panelbody{
+    <script>
+        $('#xbreadcrumb').hide();
+    </script>
+
+    <input value="@ViewBag.RecordID" type="hidden" name="id" id="id" />
+    <input value="@ViewBag.RecordIDSec" type="hidden" name="job_vacancy_id" id="job_vacancy_id" />
+    <div class="row">
+        <div class="col-lg-9">
+            <legend>Applicant Detail Info</legend>
+            <div class="form-group">&nbsp;</div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <a href="@Url.Content("~/Hris/Applicant/TrackingNewApplicant/")@ViewBag.RecordIDSec" class="btn btn-primary">< Back to Job Tracking</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                &nbsp;
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                &nbsp;
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="form-group">
+                <a href="#" class="btn btn-secondary" onclick="ApprovedData()">Approval Status</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/Interview/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-secondary">Interview</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/Comment/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-secondary">Comment</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/Training/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-secondary">Screening Test</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/ApplicantReject/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-primary">Reject</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/ApplicantMoveStage/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" style="border-style: solid; border-color: blue;"  class="btn btn-secondary">Move Stage</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Applicant ID">Applicant ID</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="applicant_code" id="applicant_code" readonly/>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Posting Code">Posting Code</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="posting_code" id="posting_code" readonly />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Status">Status</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="posting_status" id="posting_status" readonly />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Recruitment Status">Recruitment Status</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="recruitment_status" id="recruitment_status" readonly/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Vacancy">Vacancy</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="vacancy_name" id="vacancy_name" readonly/>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+    </div>
+    <hr />
+    <legend>Reject Applicant</legend>
+    <form id="ApplicantRejectForm" name="ApplicantRejectForm" method="post">
+        <input value="@ViewBag.RecordID" type="hidden" name="id" id="id" />
+        <input type="hidden" name="applicant_progress_id" id="applicant_progress_id" />
+        <input type="hidden" name="candidate_recruitment_id" id="candidate_recruitment_id" />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Reject Type"><b>Reject Type</b></span> :</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" name="reject_type" id="reject_type_kiv" value="KIV" onclick="CheckRadioButton()" /> Move to KIV/Tallent Pool
+                </div>
+                <div class="form-group">
+                    <input type="radio" name="reject_type" id="reject_type_reject" value="Reject" onclick="CheckRadioButton()" /> Reject
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Reject Reason">Reject Reason</span> :</label>
+                </div>
+                <div class="form-group">
+                    <textarea name="reject_reason" id="reject_reason" cols="30"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-primary" onclick="RejectData()"><span class="translate" data-args="Save">Save</span></button>
+                @*<a href="~/Hris/Applicant/TrackingNewApplicant/@ViewBag.RecordIDSec" class="fakelink btn btn-secondary">Cancel</a>*@
+            </div>
+
+        </div>
+    </form>
+
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/ApplicantDetail.applicantreject.js"></script>
+}

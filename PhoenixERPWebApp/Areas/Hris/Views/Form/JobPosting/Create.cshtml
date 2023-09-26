@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "JobPostingRequisition";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="JobPostingRequisitionFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="business_unit_id">business_unit_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="business_unit_id" id="business_unit_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_age_range_end">candidate_age_range_end</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="candidate_age_range_end" id="candidate_age_range_end"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_age_range_start">candidate_age_range_start</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="candidate_age_range_start" id="candidate_age_range_start"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_experience">candidate_experience</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="candidate_experience" id="candidate_experience"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="candidate_qualification">candidate_qualification</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="candidate_qualification" id="candidate_qualification" required maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="central_resource_id">central_resource_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="central_resource_id" id="central_resource_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="client_brief_id">client_brief_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="client_brief_id" id="client_brief_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="code">code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="code" id="code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_post_description">job_post_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="job_post_description" id="job_post_description"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="job_title">job_title</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="job_title" id="job_title" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="notes">notes</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="notes" id="notes"  maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="number_of_position">number_of_position</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="number_of_position" id="number_of_position"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="reg_code">reg_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="reg_code" id="reg_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="salary_end">salary_end</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="salary_end" id="salary_end"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="salary_start">salary_start</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="salary_start" id="salary_start"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="status">status</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="status" id="status"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/JobPostingRequisition" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/JobPostingRequisition.create.js"></script>
+}

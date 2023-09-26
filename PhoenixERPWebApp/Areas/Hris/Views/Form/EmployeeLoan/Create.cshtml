@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Employee Loan";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <form id="EmployeeLoanFormCreate" method="post">
+        <div class="row ">
+            <div class="col-lg-12">
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="name">Name</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="name" id="name" maxlength="50" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Loan Category">Loan Category</span> :</label>
+                    <select id="loan_category_id" name="loan_category_id" class="form-control form-control-sm m-input m-input--square"></select>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Loan Date">Loan Date</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="date_loan" id="date_loan" type="date">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="value">Value</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="value" id="value" maxlength="50" type="number">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Payroll Deduction">Payroll Deduction</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="payroll_deduction" id="payroll_deduction" maxlength="50" type="number">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Repayment Start Date">Repayment Start Date</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="date_repaymentstartdate" id="date_repaymentstartdate" type="date">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job Title">Job Title</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="description" id="description" maxlength="200" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Grade">Grade</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="grade" id="grade" maxlength="200" type="text">
+                </div>
+
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/Hris/EmployeeLoan" class="fakelink btn btn-secondary">Close</a>
+            </div>
+
+        </div>
+    </form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/EmployeeLoan.create.js"></script>
+}

@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.ModalTitle = "LIST";
+    ViewBag.ModalId = "categorylist";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+
+
+<div>
+    <form action="#"  method="post" id="TimesheetTaskCreate">
+        <div class="form-group">
+            <label><span class="translate" data-args="Job"></span> :</label>
+            <select id="job_number" name="job_number" class="form-control">
+                <option></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Task</label>
+            <select id="taskList" name="task_id" class="form-control">
+                <option></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Task NonJob</label>
+            <input type="text" name="non_job" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control form-control-sm m-input m-input--square" required name="description" id="description"></textarea>
+        </div>
+    </form>
+</div>
+
+<div id="tmpl_acc_item" class="xtemplate">
+</div>
+
+@*<div id="tmpl_acc_item" class="xtemplate">
+        <form action="#" method="post" id="TimesheetTaskCreate">
+            <div class="m-accordion__item">
+                <div class="m-accordion__item-head collapsed" role="tab" id="acclist_{{id}}_head" data-toggle="collapse" href="#acclist_{{id}}_body" aria-expanded="    false">
+                    <span class="m-accordion__item-icon">
+                        <i class="fa flaticon-list-2 "></i>
+                    </span>
+                    <span class="m-accordion__item-title">
+                        {{title}}
+                    </span>
+                    <span class="m-accordion__item-mode"></span>
+                </div>
+
+                <div class="m-accordion__item-body collapse" id="acclist_{{id}}_body" class=" " role="tabpanel" aria-labelledby="acclist_{{id}}_head">
+                    <div class="m-accordion__item-content">
+                        {{loopdata}}
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>*@
+<div class="m-accordion m-accordion--bordered m-accordion--solid" id="acclist" role="tablist">
+    <!--begin::Item-->
+    <!--end::Item-->
+
+</div>
+<hr />
+<button type="button" onclick="fnTimesheet.addnewtask()" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+@*<button type="button" onclick="fnTimesheet.addtask()" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>*@
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -1,0 +1,136 @@
+@{
+    ViewData["Title"] = "SalaryProcess";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="SalaryProcessFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="basic_salary">basic_salary</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="basic_salary" id="basic_salary"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bonus">bonus</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bonus" id="bonus"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bruto">bruto</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bruto" id="bruto"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bruto_ofyears">bruto_ofyears</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bruto_ofyears" id="bruto_ofyears"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employement_status_id">employement_status_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employement_status_id" id="employement_status_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="loan">loan</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="loan" id="loan"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="location">location</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="location" id="location"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="month">month</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="month" id="month"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="netto">netto</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="netto" id="netto"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="netto_ofyears">netto_ofyears</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="netto_ofyears" id="netto_ofyears"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="pkp_ofyears">pkp_ofyears</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="pkp_ofyears" id="pkp_ofyears"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="position_cost">position_cost</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="position_cost" id="position_cost"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="ptkp_ofmonths">ptkp_ofmonths</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="ptkp_ofmonths" id="ptkp_ofmonths"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="ptkp_ofyears">ptkp_ofyears</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="ptkp_ofyears" id="ptkp_ofyears"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="status_employee_id">status_employee_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="status_employee_id" id="status_employee_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="tax_no_npwp">tax_no_npwp</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="tax_no_npwp" id="tax_no_npwp"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="tax_ofmonths">tax_ofmonths</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="tax_ofmonths" id="tax_ofmonths"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="tax_ofyears">tax_ofyears</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="tax_ofyears" id="tax_ofyears"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="transport">transport</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="transport" id="transport"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="year">year</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="year" id="year"   type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/SalaryProcess" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/SalaryProcess.update.js"></script>
+}

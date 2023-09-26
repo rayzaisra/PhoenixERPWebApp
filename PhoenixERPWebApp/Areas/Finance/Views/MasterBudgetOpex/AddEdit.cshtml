@@ -1,0 +1,266 @@
+@model PhoenixERPWebApp.Models.MasterBudgetCode
+@{
+    ViewData["Title"] = "Master Budget Code OPEX";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Master Budget Code OPEX</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                       <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="masterbudgetopex" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Master Budget Code OPEX</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="masterbudgetopex" asp-area="finance"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="masterbudgetopex" asp-area="finance"  asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">@ViewBag.Header Master Budget Code OPEX</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formmasterbudgetopex" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="masterbudgetopex" asp-area="Finance">
+                        @*enctype="multipart/form-data"*@
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" /> 
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="CoaName" />
+
+                                <div class="row m-row--col-separator-xl">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                             <label asp-for="BudgetCode"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.BudgetCode)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    @readonly = "readonly",
+                                                    placeholder = $"Auto generated by system"
+                                                }
+                                             ))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="CoaId"></label> <span class="req">*</span>  :
+                                           @(Html.Kendo().DropDownListFor(x=>x.CoaId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.CoaId)}")
+                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                .Height(250)
+                                                .Filter(FilterType.Contains)
+                                                .Events(evt => evt.Select("CoaId_Select"))
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                    read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                }))
+                                                .ServerFiltering(false))
+                                            )
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                             <label asp-for="BudgetName"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.BudgetName)
+                                                .HtmlAttributes(new {
+                                                    style = "width:100%",
+                                                    maxlength = 50,
+                                                    placeholder = $"Input type a {Html.DisplayNameFor(m => m.BudgetName)}",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.BudgetName)} is required" 
+                                                }
+                                             ))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="CodeRec"></label> :
+                                            @(Html.Kendo().TextBoxFor(x => x.CodeRec)
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%",
+                                                    @readonly = "readonly"
+                                                }
+                                            ))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                         <div class="form-group">
+                                            <label>Create Date</label>  :
+                                            @(Html.Kendo().DatePickerFor(m => m.CreatedOn)
+                                               .HtmlAttributes(new
+                                               {
+                                                   style = "width:100%",
+                                                   @readonly = "readonly",
+                                                   placeholder = $"Auto generated by system",
+                                                   onkeydown = "javascript:return false;"
+                                               })
+                                               .Format("dd MMMM yyyy"))
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="HrisDivisionId"></label> <span class="req">*</span> :
+                                            @(Html.Kendo().DropDownListFor(m => m.HrisDivisionId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Filter(FilterType.Contains)
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetDivisionHris", "Dropdown", new { area = "Finance" });
+                                                    });
+                                                })
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.HrisDivisionId)}")
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%;",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.BudgetName)} is required"
+                                                })
+                                            )
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-lg-4">
+                                         <div class="form-group">
+                                            <label asp-for="BugetOwnerId"></label><span class="req">*</span> :
+                                            @(Html.Kendo().DropDownListFor(x => x.BugetOwnerId)
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BugetOwnerId)}")
+                                                .HtmlAttributes(new
+                                                {
+                                                    style = "width:100%;",
+                                                    required = "required",
+                                                    validationmessage = $"{Html.DisplayNameFor(m => m.BugetOwnerId)} is required"
+                                                }) 
+                                                .Filter(FilterType.Contains) 
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetEmployee", "Dropdown", new { area = "Finance" });
+                                                    }))
+                                                    .ServerFiltering(false))
+                                                .AutoBind(true)
+                                            )
+                                        </div>   
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a asp-action="index" asp-controller="masterbudgetopex" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-save').click(function () {
+        callAction({ formId:"formmasterbudgetopex", title: "save", type:"POST"});
+    });
+
+     function CoaId_Select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+            
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Get", "ChartOfAccount")',
+                data: { id: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#CodeRec").val(result.CodeRec);
+                        $("#CoaName").val(result.Name5);
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    }
+</script>

@@ -1,0 +1,112 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+<link href="~/vendors/custom/datatables/datatables.bundle.css" rel="stylesheet" />
+<style>
+    .dataTables_wrapper .dataTables_paginate .pagination .page-item > .page-link {
+        border: 1px solid #ddd;
+        border-radius: 15px;
+    }
+
+    .pagination > .active, ul > .active {
+        background-color: rgba(0,0,0,0.0);
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">TEMPLATE APPROVAL</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">System</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Application</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Um/ManageMenu")" class="m-nav__link">
+                        <span class="m-nav__link-text">Manage Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <a href="@Url.Content("~/Um/TemplateApproval/AdditionalTemplate")" class="m-btn btn btn-primary btn-sm m-btn--sm btnadd-template"><i class="la la-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body row" id="m_blockui_list">
+                    @*<div class="col-md-12">
+                            <input type="hidden" id="hidMenuId" />
+                            <label class="label-block">#MENU NAME </label>
+                            <h3 class="title-menuname"></h3>
+                        </div>*@
+
+                    <table class="table table-striped- table-bordered table-hover table-checkable" id="dt_basic">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">MENU</th>
+                                <th rowspan="2">TEMPLATE NAME</th>
+                                <th rowspan="2">DIVISION</th>
+                                <th colspan="2">NOTIFICATION</th>
+                                <th colspan="2">REMINDER</th>
+                                <th rowspan="2">TYPE</th>
+                                <th rowspan="2">CATEGORY</th>
+                                @*<th rowspan="2">MAX.BUDGET</th>*@
+                                <th rowspan="2"><i class="fa fa-cogs pull-right"></i></th>
+                            </tr>
+                            <tr>
+                                <th>WEB</th>
+                                <th>EMAIL</th>
+                                <th>DUE DATE</th>
+                                <th>REMINDER</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/vendors/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/Areas/Um/Scripts/TemplateApproval.js" asp-append-version="true"></script>
+}
+
+

@@ -1,0 +1,15 @@
+﻿@model object
+@(Html.Kendo().DropDownListFor(m => m)
+    //.Template("#:Value# - #:Text#")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .OptionLabel("All")
+    //.AutoBind(false)
+    .HtmlAttributes(new { style = "width:100%" })
+    .DataSource(source => source
+        .Custom()
+        .Transport(transport => transport
+            .Read(read => { read.Action("GetDDLNonJobByBusinessUnitId", "Dropdown", new { area = "pm" }) ; })
+        )
+        .ServerFiltering(false)
+    ))

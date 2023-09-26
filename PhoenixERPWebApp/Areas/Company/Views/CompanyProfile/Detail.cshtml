@@ -1,0 +1,514 @@
+﻿<input hidden id="detail-id" value="@ViewBag.RecordID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Vendors</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Company/Vendor")" class="m-nav__link">
+                        <span class="m-nav__link-text">Vendors</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__body">
+                    <form id="form-company" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                        <input hidden name="company.id" value="@ViewBag.RecordID" />
+                        <div class="form-group m-form__group row m-row--no-padding">
+
+                            <div class="col-lg-12 m-row--no-padding">
+                                <label>Company Info :</label>
+                                <div class="m-section__content">
+                                    <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                        <div class="m-demo__preview">
+                                            <!-- Begin: Form Company-->
+                                            <div class="row">
+                                                <!-- Begin: Input Company Code-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Company Code :</label>
+                                                        <input name="company.registration_code" type="text" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter Company Code">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Company Code-->
+                                                <!-- Begin: Input Company Name-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label class="">Company Name :</label>
+                                                        <input type="text" id="name" name="company.company_name" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter company name">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Company Name-->
+                                                <!-- Begin: Input Website -->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label class="">Website :</label>
+                                                        <input type="text" id="website" name="company.website" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter website">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Website -->
+                                                <!-- Begin: Input Email-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Email :</label>
+                                                        <input id="company_email" name="company.email" type="text" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter email business">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Email-->
+                                            </div>
+                                            <div class="row">
+                                                <!-- Begin: Input Register Number/NPWP-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Tax Registration Number / NPWP</label>
+                                                        <input id="company_number_npwp" name="company.tax_registration_number" type="text" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter Tax Register Number/NPWP">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Register Number/NPWP-->
+                                                <!-- Begin: Input Phone-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label class="">Phone :</label>
+                                                        <input type="text" id="company_phone" name="company.phone" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter phone">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Phone-->
+                                                <!-- Begin: Input Fax-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Fax :</label>
+                                                        <input id="company_fax" name="company.fax" type="text" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter fax">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Fax-->
+                                                <!-- Begin: Type Client -->
+                                                <input type="hidden" name="company.is_client" value="false" />
+                                                <input type="hidden" name="company.is_vendor" value="true" />
+                                                <!-- End: Type Client-->
+                                                <!-- Begin: Term Of Payment -->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label class="">Term Of Payment (Day) :</label>
+                                                        <input type="text" id="company_term_of_payment" name="company.payment_term_day" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter Payment (Day)">
+                                                    </div>
+                                                </div>
+                                                <!-- End:Term Of Payment -->
+                                            </div>
+                                            <div class="row">
+                                                <!-- Begin: Lead Time (Day) -->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Lead Time (Day) :</label>
+                                                        <input id="lelad_time" name="company.shipping_term_day" type="text" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                               placeholder="Enter Lead Time (Day)">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Lead Time (Day) -->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <!-- Begin: Social Media -->
+                                                    <div class="form-group">
+                                                        <label class="">Social Media :</label>
+                                                        <div class="row">
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <input type="text" id="facebook" name="company.facebook" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                                           placeholder="Enter Facebook">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <input type="text" id="twitter" name="company.twitter" class="form-control form-control-sm m-input m--margin-bottom-30"
+                                                                           placeholder="Enter Twitter">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12 m-form__group-sub">
+                                                                <div class="form-group">
+                                                                    <input type="text" id="instagram" name="company.instagram" class="form-control form-control-sm m-input"
+                                                                           placeholder="Enter Instagram">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End: Social Media -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row m-row--no-padding" id="m_repeater_company">
+                            <div class="col-lg-12 m-row--no-padding" data-repeater-list="company_address">
+                                <label>Address List :</label>
+                                <div class="m-section__content">
+                                    <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                        <div class="m-demo__preview">
+                                            <div class="row">
+                                                <input hidden name="company_address.id[0]" />
+                                                <input hidden name="company_address.address_type[0]" value="1" />
+
+                                                <!-- Begin: Input Office Address -->
+                                                <div class="col-lg-4 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Office Address</label>
+                                                        <textarea name="company_address.address[0]" class="form-control m--margin-bottom-30 m-input" rows="3"
+                                                                  placeholder="Enter Office Address"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Office Address -->
+                                                <!-- Begin: Input Country-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Country :</label>
+                                                        <select name="company_address.country_id[0]" class="form-control form-control-sm m-input m--margin-bottom-30 country-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Country-->
+                                                <!-- Begin: Input City-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>City :</label>
+                                                        <select name="company_address.city_id[0]" class="form-control form-control-sm m-input m--margin-bottom-30 city-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input City-->
+                                                <!-- Begin: Zip Code -->
+                                                <div class="col-lg-2 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Zip Code :</label>
+                                                        <input name="company_address.zip_code[0]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                                               placeholder="Enter Zip Code">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Zip Code-->
+                                            </div>
+
+                                            <div class="row">
+                                                <input hidden name="company_address.id[1]" />
+                                                <input hidden name="company_address.address_type[1]" value="2" />
+
+                                                <!-- Begin: Input Office Address -->
+                                                <div class="col-lg-4 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Tax Address</label>
+                                                        <textarea name="company_address.address[1]" class="form-control m--margin-bottom-30 m-input" rows="3"
+                                                                  placeholder="Enter Office Address"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Office Address -->
+                                                <!-- Begin: Input Country-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Country :</label>
+                                                        <select name="company_address.country_id[1]" class="form-control form-control-sm m-input m--margin-bottom-30 country-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Country-->
+                                                <!-- Begin: Input City-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>City :</label>
+                                                        <select name="company_address.city_id[1]" class="form-control form-control-sm m-input m--margin-bottom-30 city-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input City-->
+                                                <!-- Begin: Zip Code -->
+                                                <div class="col-lg-2 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Zip Code :</label>
+                                                        <input name="company_address.zip_code[1]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                                               placeholder="Enter Zip Code">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Zip Code-->
+                                            </div>
+                                            <div class="row">
+                                                <input hidden name="company_address.id[2]" />
+                                                <input hidden name="company_address.address_type[2]" value="3" />
+
+                                                <!-- Begin: Input Office Address -->
+                                                <div class="col-lg-4 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Billing Address</label>
+                                                        <textarea name="company_address.address[2]" class="form-control m--margin-bottom-30 m-input" rows="3"
+                                                                  placeholder="Enter Office Address"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Office Address -->
+                                                <!-- Begin: Input Country-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Country :</label>
+                                                        <select name="company_address.country_id[2]" class="form-control form-control-sm m-input m--margin-bottom-30 country-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Country-->
+                                                <!-- Begin: Input City-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>City :</label>
+                                                        <select name="company_address.city_id[2]" class="form-control form-control-sm m-input m--margin-bottom-30 city-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input City-->
+                                                <!-- Begin: Zip Code -->
+                                                <div class="col-lg-2 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Zip Code :</label>
+                                                        <input name="company_address.zip_code[2]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                                               placeholder="Enter Zip Code">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Zip Code-->
+                                            </div>
+
+                                            <div class="row">
+                                                <input hidden name="company_address.id[3]" />
+                                                <input hidden name="company_address.address_type[3]" value="4" />
+
+                                                <!-- Begin: Input Office Address -->
+                                                <div class="col-lg-4 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Ship To Address</label>
+                                                        <textarea name="company_address.address[3]" class="form-control m--margin-bottom-30 m-input" rows="3"
+                                                                  placeholder="Enter Office Address"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Office Address -->
+                                                <!-- Begin: Input Country-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Country :</label>
+                                                        <select name="company_address.country_id[3]" class="form-control form-control-sm m-input m--margin-bottom-30 country-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input Country-->
+                                                <!-- Begin: Input City-->
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>City :</label>
+                                                        <select name="company_address.city_id[3]" class="form-control form-control-sm m-input m--margin-bottom-30 city-lookup"></select>
+                                                    </div>
+                                                </div>
+                                                <!-- End: Input City-->
+                                                <!-- Begin: Zip Code -->
+                                                <div class="col-lg-2 m-form__group-sub">
+                                                    <div class="form-group">
+                                                        <label>Zip Code :</label>
+                                                        <input name="company_address.zip_code[3]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                                                               placeholder="Enter Zip Code">
+                                                    </div>
+                                                </div>
+                                                <!-- End: Zip Code-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="m-separator m-separator--dashed"></div>*@
+                        <div class="form-group m-form__group row m-row--no-padding">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <label>Bank :</label>
+                                <div class="m-section__content">
+                                    <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                        <div class="m-demo__preview">
+                                            <div id="bank_input">
+                                                <!-- Repeat Bank -->
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <button id="btn-add-bank" type="button" data-repeater-create="" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--wide">
+                                                        <span>
+                                                            <i class="la la-plus"></i>
+                                                            <span>Add</span>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group m-form__group row m-row--no-padding">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <label>Contact :</label>
+                                <div class="m-section__content">
+                                    <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                        <div class="m-demo__preview">
+                                            <div id="contact_person_input">
+                                                <!-- Repeat Contact Person-->
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-3 m-form__group-sub">
+                                                    <button id="btn-add-contact" type="button" data-repeater-create="" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--wide">
+                                                        <span>
+                                                            <i class="la la-plus"></i>
+                                                            <span>Add</span>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group m-form__group row m-row--no-padding">
+                            <div class="col-lg-12">
+                                <button type="button" id="btn-save" class="btn btn-brand">Save</button>
+                                <a href="@Url.Content("~/Company/Client")" class="fakelink btn btn-secondary">Close</a>
+                            </div>
+                        </div>
+
+                    </form>
+                    <!-- End: Form Company-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Begin:: Bank Dynamic -->
+<div class="row bank" style="display: none;">
+    <div class="col-lg-12 row">
+        <input hidden name="company_bank.id[%index%]" />
+        <!-- Begin: Input Bank-->
+        <div class="col-lg-4 m-form__group-sub">
+            <div class="form-group">
+                <label>Bank :</label>
+                <select id="bank[%index%]" name="company_bank.bank_id[%index%]" class="form-control form-control-sm m-input m--margin-bottom-30 bank-lookup"></select>
+            </div>
+        </div>
+        <!-- End: Input Bank-->
+        <!-- Begin: Input Account-->
+        <div class="col-lg-4 m-form__group-sub">
+            <div class="form-group">
+                <label>Account :</label>
+                <input id="account[%index%]" name="company_bank.account_number[%index%]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                       placeholder="Enter Account">
+            </div>
+        </div>
+        <!-- End: Input Account-->
+        <!-- Begin: Input Currency-->
+        <div class="col-lg-3 m-form__group-sub">
+            <div class="form-group">
+                <label>Currency :</label>
+                <select id="currency_id[%index%]" name="company_bank.currency_id[%index%]" class="form-control form-control-sm m-input m--margin-bottom-30 currency-lookup"></select>
+            </div>
+        </div>
+        <!-- End: Input Currency-->
+        <div class="col-lg-1 m-form__group-sub">
+            <div class="form-group">
+                <label></label>
+                <button data-index="%index%" type="button" class="btn-sm btn btn-danger m-btn m-btn--icon removeit" style="margin-top:5px">
+                    <span>
+                        <i class="la la-trash-o"></i>
+                        <span>Delete</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End:: Bank Dynamic-->
+<!-- Begin:: Contact Person Dynamic-->
+<div class="row contact-person" style="display: none;">
+    <div class="col-lg-12 row">
+        <input hidden name="company_contact.id[%index%]" />
+        <!-- Begin: Title -->
+        <div class="col-lg-2 m-form__group-sub">
+            <div class="form-group">
+                <label>Title :</label>
+                <select id="salutation_id[%index%]" name="company_contact.salutation_id[%index%]" class="form-control form-control-sm m-input m--margin-bottom-30 salutation-lookup"></select>
+            </div>
+        </div>
+        <!-- End: Title -->
+        <!-- Begin: Name -->
+        <div class="col-lg-3 m-form__group-sub">
+            <div class="form-group">
+                <label>Name :</label>
+                <input id="name[%index%]" name="company_contact.contact_name[%index%]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                       placeholder="Enter Name">
+            </div>
+        </div>
+        <!-- End: Name -->
+        <!-- Begin: Position Title -->
+        <div class="col-lg-2 m-form__group-sub">
+            <div class="form-group">
+                <label>Position Title :</label>
+                <input name="company_contact.position_title[%index%]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                       placeholder="Enter Position Title">
+            </div>
+        </div>
+        <!-- End: Position Title -->
+        <!-- Begin: Phone -->
+        <div class="col-lg-2 m-form__group-sub">
+            <div class="form-group">
+                <label>Phone :</label>
+                <input name="company_contact.phone[%index%]" type="text" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                       placeholder="Enter Phone">
+            </div>
+        </div>
+        <!-- End: Phone -->
+        <!-- Begin: Email -->
+        <div class="col-lg-2 m-form__group-sub">
+            <div class="form-group">
+                <label>Email :</label>
+                <input name="company_contact.email[%index%]" type="email" class="form-control m--margin-bottom-30 form-control-sm m-input"
+                       placeholder="Enter Email">
+            </div>
+        </div>
+        <!-- End: Email -->
+        <div class="col-lg-1 m-form__group-sub">
+            <div class="form-group">
+                <label></label>
+                <button data-index="%index%" type="button" class="btn-sm btn btn-danger m-btn m-btn--icon removeit" style="margin-top:5px">
+                    <span>
+                        <i class="la la-trash-o"></i>
+                        <span>Delete</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Areas/Company/Scripts/Vendor.Detail.js?@DateTime.Now" asp-append-version="true"></script>
+}

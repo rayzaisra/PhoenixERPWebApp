@@ -1,0 +1,68 @@
+﻿<div id="modalAdd" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">ADD/EDIT USER APPLICATION</h4>
+                <button class="btn btn-info btn-sm btn-small btnLookupEmp"><i class="fa fa-eye"></i> Lookup Data Employee</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="hidden" id="hidId" value="0" />
+                    <label class="uk-form-label">User Id <i>(email login app)</i></label>
+                    <input class="form-control" id="tbUserId" placeholder="user id" disabled readonly />
+                </div>
+                <div class="form-group">
+                    <label class="uk-form-label">Email<i></i></label>
+                    <input class="form-control" id="tbEmail" type="email" placeholder="email" />
+                </div>
+                <div class="form-group">
+                    <label class="uk-form-label">Alias Name</label>
+                    <input class="form-control" id="tbAliasName" placeholder="alias name" />
+                </div>
+                <div class="form-group">
+                    <label class="uk-form-label">Group</label>
+                    <select id="ddlGroup" class="form-control form-control-sm" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label class="uk-form-label">Employee Id<i>(user id from data lookup employee)</i></label>
+                    <div class="input-group mb-3">
+                        <input class="form-control" id="tbEmpId" placeholder="employee id" disabled readonly="readonly" aria-describedby="basic-addon2" />
+                        <div class="input-group-append">
+                            <button class="btn md-btn-small btn-sm btn-warning clearEmpId" title="clear input employee id if user not from data lookup employee" type="button"><i class="fa fa-eraser"> Clear Employee Id</i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @*<label class="uk-form-label">Is MsUser (optional)</label>&nbsp;&nbsp;*@
+                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand" style="width:100px">
+                        Is MsUser
+                        <input type="checkbox" value="" class="m-group-checkable" name="cbIsMsUser" id="cbIsMsUser">
+                        <span></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    @*<label class="uk-form-label">Is MsUser (optional)</label>&nbsp;&nbsp;*@
+                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand" style="width:100px">
+                        Is Locked
+                        <input type="checkbox" value="" class="m-group-checkable" name="cbIsLocked" id="cbIsLocked" >
+                        <span></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    @*<label class="uk-form-label">Is MsUser (optional)</label>&nbsp;&nbsp;*@
+                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand" style="width:100px">
+                        Is Need Timesheet
+                        <input type="checkbox" value="" class="m-group-checkable" name="cbIsUserNeedTimesheed" id="cbIsUserNeedTimesheed" >
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-save">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

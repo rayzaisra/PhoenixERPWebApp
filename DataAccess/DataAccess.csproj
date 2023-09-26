@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>%24/phoenix/PhoenixERPWebApp/DataAccess</SccProjectName>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccAuxPath>https://dev.azure.com/arganthajkt</SccAuxPath>
+    <SccLocalPath>.</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DatabaseContext\**" />
+    <EmbeddedResource Remove="DatabaseContext\**" />
+    <None Remove="DatabaseContext\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Entity\CompanyAddress.cs" />
+    <Compile Remove="Models\Entity\CompanyBank.cs" />
+    <Compile Remove="Models\Entity\CompanyBrand.cs" />
+    <Compile Remove="Models\Entity\CompanyContact.cs" />
+    <Compile Remove="Models\Entity\Finance\VendorQuotationVendor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DataTables.AspNet.AspNetCore" Version="2.0.2" />
+    <PackageReference Include="DataTables.AspNet.Core" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
+    <PackageReference Include="NPoco" Version="3.9.4" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2019.1.115" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommonTool\CommonTool.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Generator\Schema\" />
+    <Folder Include="Models\Custom\General\" />
+    <Folder Include="Models\Entity\Custom\General\" />
+    <Folder Include="QueryBuilder\" />
+  </ItemGroup>
+
+</Project>

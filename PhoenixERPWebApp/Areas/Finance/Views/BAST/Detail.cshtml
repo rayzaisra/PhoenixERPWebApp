@@ -1,0 +1,734 @@
+﻿@model PhoenixERPWebApp.Models.Finance.Bast
+@{
+    ViewData["Title"] = "BAST";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+    var userSession = CodeMarvel.Infrastructure.Sessions.SessionManager.UserSession;
+}
+
+<input hidden id="detail-id" value="@ViewBag.RecordID" />
+<input hidden id="entity_id" value="@ViewBag.EntityID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">BAST</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/BAST")" class="m-nav__link">
+                        <span class="m-nav__link-text">BAST</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__body">
+
+                    <div class="m-form__group">
+                        <h5>
+                            BAST &nbsp;
+                            @if (Model.Status == @PhoenixERPWebApp.Models.Enum.BastStatus.Open)
+                            {
+                                <span class="m-badge m-badge--dark m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.BastStatus.StatusName(PhoenixERPWebApp.Models.Enum.BastStatus.Open)</span>
+                            }
+                            else if (Model.Status == @PhoenixERPWebApp.Models.Enum.BastStatus.Closed)
+                            {
+                                <span class="m-badge m-badge--warning m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.BastStatus.StatusName(PhoenixERPWebApp.Models.Enum.BastStatus.Closed)</span>
+                            }
+                            else
+                            {
+                                <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.BastStatus.StatusName(PhoenixERPWebApp.Models.Enum.BastStatus.Open)</span>
+                            }
+                        </h5>
+
+                        <!--begin::Form-->
+                        <input hidden name="approval_id" />
+                        <form id="form-BAST" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="PurchaseOrderNumber" />
+                            <input type="hidden" asp-for="VendorName" />
+                            <input type="hidden" asp-for="GoodsReceiptNumber" />
+                            <input type="hidden" asp-for="Status" />
+
+                            <div class="row">
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Vendor Name :</label>
+                                        @(Html.Kendo().DropDownListFor(m => m.VendorId)
+                                            .DataTextField("Text")
+                                            .OptionLabel("Select Vendor...")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetDDLVendorInv", "DropDown", new { area = "Finance" });
+                                                });
+                                            })
+                                            //.Events(e =>
+                                            //{
+                                            //    e.Change("onSelectVendor");
+                                            //})
+                                            .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Job ID - Name :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.JobId).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>PO Number :</label>
+                                        @(Html.Kendo().DropDownListFor(m => m.PurchaseOrderId)
+                                            .DataTextField("Text")
+                                            .OptionLabel("Select PO...")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetPOClient", "DropDown", new { area = "Finance" }).Data("getVendorId");
+                                                }).ServerFiltering(true); ;
+                                            })
+                                            .Events(e =>
+                                            {
+                                                e.Change("onSelectPO");
+                                            })
+                                            .CascadeFrom("VendorId")
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm" })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Employee :</label>
+                                        @Html.Kendo().TextBoxFor(m => m.ModifiedBy).HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Legal Entity :</label>
+                                        @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                            .DataTextField("Text")
+                                            .OptionLabel("Legal Entity...")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetLegalEntity", "DropDown", new { area = "Finance" });
+                                                });
+                                            })
+                                            .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Division :</label>
+                                        <input name="division" id="division" type="text" class="form-control form-control-sm m-input m-input--square" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Business Unit :</label>
+                                        @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                            .DataTextField("Text")
+                                            .OptionLabel("Business Unit...")
+                                            .DataValueField("Value")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetDivision", "DropDown", new { area = "Finance" });
+                                                });
+                                            })
+                                            .HtmlAttributes(new { style = "width:100%;", @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Date Receipt :</label>
+                                        @Html.Kendo().DatePickerFor(m => m.BastReceiptTime).HtmlAttributes(new { @class = "form-control form-control-sm", @required = "required" })
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="po_detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head" role="tab" id="po_detail_head" data-toggle="collapse" href="#po_detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-suitcase"></i></span>
+                                        <span class="m-accordion__item-title">Purchase Order Detail</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="po_detail_body" role="tabpanel" aria-labelledby="po_detail_head" data-parent="#po_detail" style="">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group ">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.PurchaseOrderDetail>()
+                                                            .Name("grid-PurchaseOrderDetailList")
+                                                            .Columns(columns =>
+                                                            {
+                                                                columns.Bound(p => p.ItemTypeId).ClientTemplate("#if(ItemTypeId!=null){# #=ItemTypeName# #}#").Width(150);
+                                                                columns.Bound(p => p.ItemId).ClientTemplate("#if(ItemCode!=null){# #=ItemCode# - #=ItemName# #}#").Width(150);
+                                                                columns.Bound(p => p.ItemName).Width(200);
+                                                                columns.Bound(p => p.Qty).Width(100).Format("{0:N0}");
+                                                                columns.Bound(p => p.UomId).Width(100);
+                                                                columns.Bound(p => p.UnitPrice).Width(200);
+                                                                columns.Bound(p => p.Amount).Width(200);
+                                                            })
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model => { model.Id(p => p.Id); })
+                                                                .Read(read => read.Action("ReadDetail", "PurchaseOrder").Data("gridPODetail_params"))
+                                                            )
+                                                            .NoRecords()
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12" id="m_blockui_list">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="gr_detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head" role="tab" id="po_detail_head" data-toggle="collapse" href="#gr_detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-suitcase"></i></span>
+                                        <span class="m-accordion__item-title">Goods and Service Receipt.</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="gr_detail_body" role="tabpanel" aria-labelledby="gr_detail_head" data-parent="#gr_detail" style="">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group ">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.BastDetail>()
+                                                            .Name("gridGR")
+                                                            .ToolBar(x =>
+                                                            {
+                                                                if (Model.Status != "2")
+                                                                {
+                                                                    x.Create();
+                                                                }
+                                                            })
+                                                            .Columns(columns =>
+                                                            {
+                                                                if (Model.Status != "2")
+                                                                {
+                                                                    columns.Command(command =>
+                                                                    {
+                                                                        command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                    }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                }
+                                                                columns.Bound(p => p.Id).Width(200).Hidden();
+
+                                                                columns.Bound(p => p.GoodReceiptId).ClientTemplate("#=GoodReceiptNumber#").EditorTemplateName("Finance/Bast/GoodReceiptDropDown").Width(200).Title("Goods and Service Receipt.");
+                                                                columns.Bound(p => p.ModifiedOn).Title("Date Receipt").Width(200).Format("{0:dd MMM yyyy}");
+                                                                columns.Bound(p => p.ItemType).EditorTemplateName("StringReadOnly").Width(200).Title("Item");
+                                                                columns.Bound(p => p.InvFaId).EditorTemplateName("StringReadOnly").Width(200).Hidden();
+                                                                columns.Bound(p => p.ItemName).EditorTemplateName("StringReadOnly").Width(200).Title("Name");
+                                                                columns.Bound(p => p.Qty).EditorTemplateName("DecimalReadOnly").Width(200);
+                                                                columns.Bound(p => p.ReceivedQty).EditorTemplateName("DecimalReadOnly").Title("Received Qty").Width(100);
+                                                                columns.Bound(p => p.RemainingQty).EditorTemplateName("DecimalReadOnly").Title("Remaining Qty").Width(100);
+                                                                columns.Bound(p => p.Location).Title("Location").Width(200);
+                                                            })
+                                                            .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax() 
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                .Model(model =>
+                                                                {
+                                                                    model.Id(p => p.Id);
+                                                                    model.Field(p => p.Id).Editable(false);
+                                                                })
+                                                                .Read(read => read.Action("ReadDetail", "Bast").Data("paramGR_BastId"))
+                                                                .Create(create => create.Action("GoodReceiptBast_Create", "Bast"))
+                                                                .Update(update => update.Action("GoodReceiptBast_Update", "Bast"))
+                                                                .Destroy(destroy => destroy.Action("GoodReceiptBast_Destroy", "Bast"))
+                                                            )
+                                                            .Events(e => e.Save("SavePodDetailList"))
+                                                            .NoRecords()
+                                                            .AutoBind(false)
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12" id="m_blockui_list">
+                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="sr_detail" role="tablist">
+                                <!--begin::Item-->
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head" role="tab" id="sr_detail_head" data-toggle="collapse" href="#sr_detail_body" aria-expanded="true">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-suitcase"></i></span>
+                                        <span class="m-accordion__item-title">Status Log</span>
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+                                    <div class="m-accordion__item-body show" id="sr_detail_body" role="tabpanel" aria-labelledby="sr_detail_head" data-parent="#sr_detail" style="">
+                                        <div class="m-accordion__item-content">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group ">
+                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.BAST.BastLog>()
+                                                            .Name("gridBASTLog")
+                                                            .Columns(columns =>
+                                                            {
+                                                                //columns.Command(command =>
+                                                                //{
+                                                                //    command.Custom("").TemplateId("btnAction-template");
+                                                                //}).Title("Action").HtmlAttributes(new { style = "text-align:center;" })
+                                                                //.HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                //columns.Bound("").ClientTemplate("#= renderNumber(data) #").Title("#").Width(50);
+                                                               columns.Bound("").Title("#").Width(35).Filterable(false)
+                                                            .HtmlAttributes(new { style = "text-align:center;", @class = "row-number" })
+                                                            .HeaderHtmlAttributes(new { style = "text-align:center;" });
+                                                                columns.Bound(p => p.NameEmployee).Width(200).Title("Employee Name");
+                                                                //columns.Bound("").ClientTemplate("#= LinktoInv(data) #").Title("Harusnya BAST Number").Width(200);
+                                                                columns.Bound(p => p.CreatedDt).Width(200).Title("Status Date").Format("{0:dd MMM yyyy HH:mm}");
+                                                                columns.Bound(p => p.Status).Width(200).Title("Status");
+                                                                columns.Bound(p => p.Remark).Width(200);
+                                                                //columns.Bound(p => p.BastReceiptTime).Title("Date Receipt").Format("{0:MMMM dd, yyyy}").Width(200);
+                                                                //columns.Bound("").ClientTemplate("#= GetStatusButton(data) #").Title("Status Name").Width(200);
+                                                                //columns.Bound(p => p.Status).Width(200).Hidden();
+                                                            })
+                                                            .Pageable(pageable => pageable
+                                                                .Refresh(true)
+                                                                .PageSizes(true)
+                                                                .ButtonCount(5))
+                                                            .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                            .Resizable(rsz => rsz.Columns(true))
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(10)
+                                                                .Events(events => events.Error("errorHandler"))
+                                                                //.Model(model =>
+                                                                //{
+                                                                //    model.Id(p => p.Id);
+                                                                //})
+                                                                .Read(read => read.Action("GetBastLog", "BAST").Data("paramGR_BastId"))
+                                                            )
+                                                            .Events(x => x.DataBound("dataBoundEvent"))
+                                                            .NoRecords()
+                                                    )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">                        
+                        <div class="col-md-6 m-form__group-sub">
+                            <div class="form-group">
+                                <label>Remark :</label>
+                                @Html.TextAreaFor(m => m.Remark, new { @class = "form-control form-control-sm" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="gridDetail"></div>
+                            <script type="text/x-kendo-template" id="template">
+                                <div class="col-lg-3">
+                                    <div class="k-upload-init-progress">
+                                        <h6>Loading...</h6>
+                                    </div>
+                                </div>
+                                <input name="files" class="file-upload" id="files_#=id #" type="file" style="display:none" />
+                            </script>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pull-right">
+                                @if (Model.Status != "2")
+                                {
+                                    <button type="button" id="btn-save" class="btn btn-sm btn-success"><i class="la-save"></i>Save</button>
+                                    if (Model.Id != null)
+                                    {
+                                        <button type="button" id="btn-closed" class="btn btn-sm btn-primary">Approve</button>
+                                        <button type="button" id="btn-rejected" class="btn btn-sm btn-primary">Rejected</button>
+                                    }
+                                }
+                                <a href="@Url.Content("~/Finance/BAST")" class="fakelink btn btn-sm btn-secondary">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="fileTemplate" type="text/x-kendo-template">
+    <span class="k-progress"></span>
+    <span class="k-file-extension-wrapper">
+        <span class="k-file-extension">#=files[0].extension#</span>
+        <span class="k-file-state"></span>
+    </span>
+    <span class="k-file-name-size-wrapper">
+        <a href="javascript: void (0)" data-id="#=files[0].id#" class="link_#=files[0].uid# link-download">
+            <span class="k-file-name" title="#=name#">#=name#</span>
+        </a>
+    </span>
+    <strong class="k-upload-status">
+        <button type="button" class="k-button k-upload-action" aria-label="Remove">
+            <span class="k-icon k-i-close k-i-x" title="Remove"></span>
+        </button>
+    </strong>
+</script>
+
+<script>
+    function SR_Select(e) {
+        console.log("SR_Select " + e.dataItem);
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSRDetailData")',
+                data: { srdId: dataItem.Value },
+                success: function (result) {
+                    console.log(result);
+                    if (result != null) {
+                        $('#ModifiedOn').val(result.ModifiedOn);
+                        $('#ItemName').val(result.ItemName);
+                        $('#InvFaId').val("-");
+                        $('#ItemType').val(result.ItemTypeName);
+                        $('#Qty').data("kendoNumericTextBox").value(result.PurchasedQty);
+                        $('#ReceivedQty').data("kendoNumericTextBox").value(result.ReceivedQty);
+                        $('#RemainingQty').data("kendoNumericTextBox").value(result.RemainingQty);
+                        $('#Location').val("-");
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    } 
+    function GR_Select(e) {
+        console.log("GR_Select " + e.dataItem);
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetGRDetailData")',
+                data: { grdId: dataItem.Value },
+                success: function (result) {
+                    console.log(result);
+                    if (result != null) {
+                        $('#ModifiedOn').val(result.ModifiedOn);
+                        $('#ItemName').val(result.ItemName);
+                        $('#InvFaId').val("-");
+                        $('#ItemType').val(result.ItemTypeName);
+                        $('#Qty').data("kendoNumericTextBox").value(result.PurchasedQty);
+                        $('#ReceivedQty').data("kendoNumericTextBox").value(result.ReceivedQty);
+                        $('#RemainingQty').data("kendoNumericTextBox").value(result.RemainingQty);
+                        $('#Location').val(result.Location);
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    } 
+    function SaveBastSRDetailList(e) {
+        var ServiceReceiptId = $("#ServiceReceiptId").val();;
+        var ModifiedOn = $("#ModifiedOn").val();;
+        var ItemType = $("#ItemType").val();;
+        var InvFaId = $("#InvFaId").val();;
+        var ItemName = $("#ItemName").val();;
+        var Qty = $("#Qty").val();
+        var ReceivedQty = $("#ReceivedQty").val();
+        var RemainingQty = $("#RemainingQty").val();
+        var Location = $("#Location").val();
+
+        e.model.set("ServiceReceiptId", ServiceReceiptId);
+        e.model.set("ModifiedOn", ModifiedOn);
+        e.model.set("ItemType", ItemType);
+        e.model.set("InvFaId", InvFaId);
+        e.model.set("ItemName", ItemName);
+        e.model.set("Qty", Qty);
+        e.model.set("ReceivedQty", ReceivedQty);
+        e.model.set("RemainingQty", RemainingQty);
+        e.model.set("Location", Location);
+    }
+    function SavePodDetailList(e) {
+
+        var GoodReceiptNumber = $("#GoodReceiptId").data("kendoDropDownList").text();
+        var GoodReceiptId = $("#GoodReceiptId").val();;
+        var ModifiedOn = $("#ModifiedOn").val();;
+        var ItemType = $("#ItemType").val();;
+        var InvFaId = $("#InvFaId").val();;
+        var ItemName = $("#ItemName").val();;
+        var Qty = $("#Qty").val();
+        var ReceivedQty = $("#ReceivedQty").val();
+        var RemainingQty = $("#RemainingQty").val();
+        var Location = $("#Location").val();
+        
+        e.model.set("GoodReceiptNumber", GoodReceiptNumber);
+        e.model.set("GoodReceiptId", GoodReceiptId);
+        e.model.set("ModifiedOn", ModifiedOn);
+        e.model.set("ItemType", ItemType);
+        e.model.set("InvFaId", InvFaId);
+        e.model.set("ItemName", ItemName);
+        e.model.set("Qty", Qty);
+        e.model.set("ReceivedQty", ReceivedQty);
+        e.model.set("RemainingQty", RemainingQty);
+        e.model.set("Location", Location);
+
+    }
+    function paramGR_BastId() {
+        return {
+            bastId: $("#Id").val(),
+            type: "Good"
+        };
+    }
+    function paramSR_BastId() {
+        return {
+            bastId: $("#Id").val(),
+            type: "Service"
+        };
+    }
+    function getVendorId() {
+        return {
+            clientId: $("#VendorId").val()
+        };
+    }
+
+    function gridPODetail_params() {
+        return {
+            poId: $("#PurchaseOrderId").val()
+        }
+    }
+
+    function onSelectPO() {
+        console.log("onSelectPo");
+        if ($("#Id").val() != null && $("#Id").val() != "") {
+            $("#grid-PurchaseOrderDetailList").data("kendoGrid").dataSource.read();
+            $("#grid-PurchaseOrderDetailList").data("kendoGrid").refresh();
+        } else {
+            console.log("onSelectPoNewForm");
+            if ($("#PurchaseOrderId").val() != "") {
+                $("#grid-PurchaseOrderDetailList").data("kendoGrid").dataSource.read();
+                $("#grid-PurchaseOrderDetailList").data("kendoGrid").refresh();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDataPO", "Bast")',
+                    data: { poId: $("#PurchaseOrderId").val() },
+                    success: function (data) {
+                        console.log(data);
+                        $("#JobName").val(data.JobName);
+                        $("#BusinessUnitId").data("kendoDropDownList").value(data.BusinessUnitId);
+                        $("#CompanyId").val(data.CompanyId);
+                        $("#LegalEntityId").data("kendoDropDownList").value(data.LegalEntityId);
+                        $("#JobId").val(data.JobId);
+                        $("#PurchaseOrderNumber").val(data.PurchaseOrderNumber);
+                    }
+                });
+            } else {
+                $("#JobName").val("");
+                $("#BusinessUnitId").data("kendoDropDownList").value("");
+                $("#CompanyId").val("");
+                $("#LegalEntityId").data("kendoDropDownList").value("");
+                $("#JobId").val("");
+                $("#PurchaseOrderNumber").val("");
+            }
+        }
+    };
+
+    //####################################################################################################
+    (function ($) {
+         var param = (function (param) {
+             param.saveUrl = "@Url.Action("Save", "Bast")";
+             param.closedUrl = "@Url.Action("Closed", "Bast")";
+             param.rejectedUrl = "@Url.Action("Rejected", "Bast")";
+            return param;
+        })(param || {});
+
+        var pageFunction = (function (pageFunction) {
+            pageFunction.init = function () {
+                //initialize
+            };
+            pageFunction.save = function () {
+                var validator = $("#form-BAST").kendoValidator().data("kendoValidator");
+                
+                var header = $("#form-BAST").serializeArray();
+               // alert(valid);
+                if (validator.validate()) {
+                    var gridGR = $("#gridGR").data("kendoGrid");
+                    gridGR.saveRow();
+                    //var gridSR = $("#gridSR").data("kendoGrid");
+                    //gridSR.saveRow();
+                    var gridJoin = gridGR.dataSource.data();//$.merge(gridGR.dataSource.data());//, gridSR.dataSource.data()
+                    var dataList = {
+                        details: gridJoin,
+                    }
+                    //alert(param.saveUrl)
+                    console.log(header)
+                    console.log(JSON.stringify(dataList));
+                    $("#VendorName").val($("#VendorId").data("kendoDropDownList").text());
+                    callAction({ formId: "form-BAST", title: "save", type: "POST", url: param.saveUrl, objects: dataList });
+                } else {
+                    swal('Information', 'Please complete your form !', 'info');
+                }
+            };
+            pageFunction.closed = function () {
+                var validator = $("#form-BAST").kendoValidator().data("kendoValidator");
+                if (validator.validate()) {
+                    var gridGR = $("#gridGR").data("kendoGrid");
+                    gridGR.saveRow();
+                    //var gridSR = $("#gridSR").data("kendoGrid");
+                    //gridSR.saveRow();
+                    var gridJoin = gridGR.dataSource.data();// $.merge(gridGR.dataSource.data());//, gridSR.dataSource.data()
+                    var dataList = {
+                        details: gridJoin,
+                    }
+                    $("#VendorName").val($("#VendorId").data("kendoDropDownList").text());
+                    callAction({ formId: "form-BAST", title: "closed", type: "POST", url: param.closedUrl, objects: dataList });
+                } else {
+                    swal('Information', 'Please complete your form !', 'info');
+                }
+            };
+            pageFunction.rejected = function () {
+                var validator = $("#form-BAST").kendoValidator().data("kendoValidator");
+                if (validator.validate()) {
+                    var gridGR = $("#gridGR").data("kendoGrid");
+                    gridGR.saveRow();
+                    //var gridSR = $("#gridSR").data("kendoGrid");
+                    //gridSR.saveRow();
+                    var gridJoin = gridGR.dataSource.data();// $.merge(gridGR.dataSource.data());//, gridSR.dataSource.data()
+                    var dataList = {
+                        details: gridJoin,
+                    }
+                    $("#VendorName").val($("#VendorId").data("kendoDropDownList").text());
+                    callAction({ formId: "form-BAST", title: "reject", type: "POST", url: param.rejectedUrl, objects: dataList });
+                } else {
+                    swal('Information', 'Please complete your form !', 'info');
+                }
+            };
+            return pageFunction;
+        })(pageFunction || {});
+
+
+        $(document).ready(function () {
+            $("#btn-generate").attr("disabled", true);
+            console.log("Init...");
+            console.log($("#Id").val());
+            if ($('#Id').val() != null && $('#Id').val() != "") {
+                onSelectPO();
+                $("#gridGR").data("kendoGrid").dataSource.read();
+                //$("#gridSR").data("kendoGrid").dataSource.read();
+                if ($('#Status').val() == "2") {
+                    $("#VendorId").data("kendoDropDownList").readonly();
+                    $("#PurchaseOrderId").data("kendoDropDownList").readonly();
+                    $("#Remark").attr("readonly", true);
+                    $("#BastReceiptTime").attr("readonly", true);
+                }
+            };
+            $("#ModifiedBy").val("@userSession.FullName").change();
+            $("#division").val("@userSession.BusinessUnitId").change();
+            $('#btn-save').click(pageFunction.save);
+            $('#btn-closed').click(pageFunction.closed);
+            $('#btn-rejected').click(pageFunction.rejected);
+        });
+
+    }(jQuery));
+</script>
+

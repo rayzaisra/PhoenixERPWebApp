@@ -1,0 +1,10 @@
+@*@model decimal?*@
+@*@Html.Kendo().NumericTextBoxFor(x => x).HtmlAttributes(new { style = "width:100%;", required = "required", data_min = 0, data_max = ViewData["num"] }).Events(x => x.Change("calculate_change"))*@
+
+@model int?
+
+@(Html.Kendo().NumericTextBoxFor(m => m)
+      .HtmlAttributes(new { style = "width:100%" })
+      .Min(0)
+      .Events(x=>x.Change("calculate_change"))
+)

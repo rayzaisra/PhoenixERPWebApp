@@ -1,0 +1,56 @@
+﻿<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator"><span class="translate" data-args="@Model">@Model</span></h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline" id="xbreadcrumb">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-home fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="~/" class="m-nav__link">
+                        <span class="m-nav__link-text translate" data-args="Home">Home</span>
+                    </a>
+                </li>
+
+ 
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var here = location.href.split('/').slice(3);
+
+        var parts = [];
+
+        for (var i = 0; i < here.length; i++) {
+            var part = here[i];
+            var text = part.toUpperCase();
+            var link = '/' + here.slice(0, i + 1).join('/');
+            parts.push({ "text": text, "link": link });
+        }
+        ibc = '';
+        $('#xbreadcrumb').find(".autocrumb").remove();
+        xbcno = 0;
+        $.each(parts, function (index, val) {
+            xbcno++;
+            if (xbcno <4) {
+                ibc += '<li class="autocrumb m-nav__separator"><i class="fa fa-angle-double-right"></i></li>';
+                ibc += '<li class="autocrumb m-nav__item">';
+                ibc += '<a href="' + val.link + '" class=" fakelink m-nav__link">';
+                ibc += '<span class="m-nav__link-text translate" data-args="' + val.text + '">' + val.text + '</span>';
+                ibc += '</a>';
+                ibc += '</li>';
+            }
+
+        });
+        if (ibc != '') {
+            $('#xbreadcrumb').append(ibc)
+        }
+        
+        
+    })
+
+</script>

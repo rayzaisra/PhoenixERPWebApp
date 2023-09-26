@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "MedicalClaim";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="MedicalClaimFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="date_claim">date_claim</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="date_claim" id="date_claim" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="reason">reason</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="reason" id="reason" required maxlength="2147483647" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="value">value</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="value" id="value" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="year_periode">year_periode</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="year_periode" id="year_periode" required maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/MedicalClaim" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/MedicalClaim.update.js"></script>
+}

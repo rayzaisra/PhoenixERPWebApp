@@ -1,0 +1,318 @@
+@model PhoenixERPWebApp.Models.VwMasterJobClosing
+@{
+    ViewData["Title"] = "Setting Journal Job Closing";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Setting Journal Job Closing</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                       <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="masterjobclosing" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Setting Journal Job Closing</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                     @if (string.IsNullOrEmpty(Model.MainserviceCategoryId) && string.IsNullOrEmpty(Model.BusinessUnitId))
+                    {
+                        <a asp-action="addedit" asp-controller="masterjobclosing" asp-area="finance"  class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="masterjobclosing" asp-area="finance"  asp-route-mainServiceCategoryId="@Model.MainserviceCategoryId" asp-route-shareServiceId="@Model.BusinessUnitId" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Setting Journal Job Closing</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formmasterjobclosing" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="masterjobclosing" asp-area="Finance"> 
+                        <div class="row ">
+                            <input type="hidden" asp-for="isEdit" />
+                            <input type="hidden" asp-for="MainserviceCategoryName" /> 
+                            <input type="hidden" asp-for="BusinessUnitName" /> 
+
+                            <div class="col-lg-6">
+                                <div class="form-group m-form__group-sub">
+                                     <label asp-for="MainserviceCategoryId"></label> <span class="req">*</span>  :
+                                     @(Html.Kendo().DropDownListFor(x => x.MainserviceCategoryId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.MainserviceCategoryId)}")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",                                              
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.MainserviceCategoryId)} is required",
+                                            @readonly="readonly"
+                                        })
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDDLMainserviceCategory", "Dropdown",new {area="finance"});
+                                             }))
+                                            .ServerFiltering(false)
+                                        )
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-lg-6">
+                                <div class="form-group m-form__group-sub">
+                                    <label asp-for="BusinessUnitId"></label> <span class="req">*</span>  :
+                                     @(Html.Kendo().DropDownListFor(x => x.BusinessUnitId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Events(evt => evt.Change("businessUnit_Change"))
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BusinessUnitId)}")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",                                              
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.BusinessUnitId)} is required" 
+                                        })
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetDivisionFinance", "Dropdown",new {area="finance"});
+                                             }))
+                                            .ServerFiltering(false)
+                                        ) 
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <div class="alert m-alert--default" role="alert">
+                                    <span>Chart Of Account Configuration - Account Payable</span>
+                                </div>
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.MapCoaTransaksi>()
+                                    .Name("gridAP")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Command(command =>
+                                        {
+                                            command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                        }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(60);
+                                        columns.Bound(p => p.Description).EditorTemplateName("StringReadOnly").Width(150);
+                                        columns.Bound(p => p.CoaId).EditorTemplateName("Finance/MasterJournal/CoaIdDropdown").ClientTemplate("#if(CoaId!=null){# #=AccountName# #}#").Width(250);
+                                        columns.Bound(p => p.CodeRec).EditorTemplateName("StringReadOnly").Width(100);
+                                        columns.Bound(p => p.DK).EditorTemplateName("Finance/MasterJournal/ConditionDropdown").ClientTemplate("#=Condition#").Width(100);
+                                    })
+                                    .Editable(x => x.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(true))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(model =>
+                                        {
+                                            model.Id(p => p.Id);
+                                        })
+                                        .Read(read => read.Action("ReadAP", "masterjobclosing").Data("grid_params"))
+                                        .Update(update => update.Action("UpdateDetail", "masterjobclosing"))
+                                    )
+                                    .Events(e => e.Save("saveap_event"))
+                                    .NoRecords()
+                                )
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <div class="alert m-alert--default" role="alert">
+                                    <span>Chart Of Account Configuration - Account Receivable</span>
+                                </div>
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.MapCoaTransaksi>()
+                                    .Name("gridAR")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Command(command =>
+                                        {
+                                            command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                        }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(60);
+                                        columns.Bound(p => p.Description).EditorTemplateName("StringReadOnly").Width(150);
+                                        columns.Bound(p => p.CoaId).EditorTemplateName("Finance/MasterJournal/CoaIdDropdown").ClientTemplate("#if(CoaId!=null){# #=AccountName# #}#").Width(250);
+                                        columns.Bound(p => p.CodeRec).EditorTemplateName("StringReadOnly").Width(100);
+                                        columns.Bound(p => p.DK).EditorTemplateName("Finance/MasterJournal/ConditionDropdown").ClientTemplate("#=Condition#").Width(100);
+                                    })
+                                    .Editable(x => x.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(true))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(model =>
+                                        {
+                                            model.Id(p => p.Id);
+                                        })
+                                        .Read(read => read.Action("ReadAR", "masterjobclosing").Data("grid_params"))
+                                        .Update(update => update.Action("UpdateDetail", "masterjobclosing"))
+                                    )
+                                    .Events(e => e.Save("savear_event"))
+                                    .NoRecords()
+                                )
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a asp-action="index" asp-controller="masterjobclosing" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {        
+        if ("@Model.MainserviceCategoryId" != "" && "@Model.BusinessUnitId" != "" ) { 
+            //$("#MainserviceCategoryId").data("kendoDropDownList").readonly();
+            $("#BusinessUnitId").data("kendoDropDownList").readonly();
+        }
+    });
+
+    function businessUnit_Change() { 
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+         
+        $('#gridAP').data('kendoGrid').dataSource.read();
+        $('#gridAR').data('kendoGrid').dataSource.read(); 
+
+        mApp.unblock("#m_blockui_list"); 
+    }
+    
+    function grid_params() {
+        return {
+            mainServiceCategoryId: $("#MainserviceCategoryId").val(),
+            businessUnitId: $("#BusinessUnitId").val(),
+            isEdit: $("#isEdit").val()
+        }
+    }
+     
+    function saveap_event(e) {
+        var CoaId = $("#CoaId").data("kendoDropDownList").value();
+        var AccountName = $("#CoaId").data("kendoDropDownList").text();
+        var CodeRec = $("#CodeRec").val();
+        var Condition = $("#DK").data("kendoDropDownList").value();
+
+        e.model.set("CoaId", CoaId);
+        e.model.set("CodeRec", CodeRec);
+        e.model.set("AccountName", AccountName);
+        e.model.set("DK", Condition);
+    }
+
+    function savear_event(e) {
+        var CoaId = $("#CoaId").data("kendoDropDownList").value();
+        var AccountName = $("#CoaId").data("kendoDropDownList").text();
+        var CodeRec = $("#CodeRec").val();
+        var Condition = $("#DK").data("kendoDropDownList").value();
+
+        e.model.set("CoaId", CoaId);
+        e.model.set("CodeRec", CodeRec);
+        e.model.set("AccountName", AccountName);
+        e.model.set("DK", Condition);
+    }
+    
+    function CoaId_Select(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+
+            mApp.block("#m_blockui_list", {
+                overlayColor: "#000000",
+                type: "loader",
+                state: "primary",
+                message: "Processing..."
+            });
+            
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Get", "ChartOfAccount")',
+                data: { id: dataItem.Value },
+                success: function (result) {
+                    if (result != undefined) {
+                        $("#CodeRec").val(result.CodeRec);
+                    }
+                    mApp.unblock("#m_blockui_list");
+                },
+                error: function (e, t, s) {
+                    console.log(e)
+                    mApp.unblock("#m_blockui_list");
+                }
+            }).then(setTimeout(function () {
+                mApp.unblock("#m_blockui_list");
+            }, 2e3));
+        }
+    }
+
+    $('#btn-save').click(function () {
+        $("#BusinessUnitName").val($("#BusinessUnitId").data("kendoDropDownList").text())
+        callAction({ formId: "formmasterjobclosing", title: "save", type: "POST", url: '@Url.Action("submit", "masterjobclosing")', objects: result()});
+    });
+
+    function result() {
+        var gridAP = $("#gridAP").data("kendoGrid");
+        var gridAR = $("#gridAR").data("kendoGrid");
+        var dataList = {
+            AP: gridAP.dataSource.data(),
+            AR: gridAR.dataSource.data()
+        }
+
+        return dataList;
+    }
+</script>

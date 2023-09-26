@@ -1,0 +1,221 @@
+@model PhoenixERPWebApp.Models.VwFinReportControl
+@{
+    ViewData["Title"] = "Report Control";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Report Control</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                       <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">Report Control</li> 
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">Report Control</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formFinReportControl" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="finreportcontrol" asp-area="Finance"> 
+                        <div class="row ">
+                            <div class="col-lg-12">  
+                                <div class="form-group m-form__group-sub">
+                                    Realized/Unrealized Currency Gain<br />
+                                    Determine account code for realized currency gain that is collected from clients.<br />
+                                   <input type="hidden" asp-for="ItemCodeCurrencyGain"/>
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaIdCurrencyGain)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel("Select..")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required"})
+                                        .Height(250)
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                    )
+                                </div>
+                            </div> 
+                            <div class="col-lg-12">  
+                                <div class="form-group m-form__group-sub">
+                                    Realized/Unrealized Currency Loss<br />
+                                    Determine account code for realized currency loss that is collected from clients.<br />
+                                   <input type="hidden" asp-for="ItemCodeCurrencyLoss"/>
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaIdCurrencyLoss)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel("Select..")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required"})
+                                        .Height(250)
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                    )
+                                </div>
+                            </div>  
+                            <div class="col-lg-12">  
+                                <div class="form-group m-form__group-sub">
+                                    Current Year Earnings<br />
+                                    Determine account code for profit and loss in balance sheet report. This account will be used to post sales and expense transactions.<br />
+                                   <input type="hidden" asp-for="ItemCodeYTD"/>
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaIdYTD)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel("Select..")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required"})
+                                        .Height(250)
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                    )
+                                </div>
+                            </div> 
+                            <div class="col-lg-12">  
+                                <div class="form-group m-form__group-sub">
+                                    Retained Earnings Prior Year <br/>
+                                    Determine account code for Retained earning prior year in balance sheet report. This account will be used for end year proccess.<br/>
+                                   <input type="hidden" asp-for="ItemCodeREPY"/>
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaIdREPY)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel("Select..")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required"})
+                                        .Height(250)
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                    )
+                                </div> 
+                            </div>
+                            <div class="col-lg-12">  
+                                <div class="form-group m-form__group-sub">
+                                    Retained Earnings <br/>
+                                    Determine account code for Retained earning in balance sheet report. This account will be used for end year proccess.
+                                   <input type="hidden" asp-for="ItemCodePAL"/>
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaIdPAL)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel("Select..")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required"})
+                                        .Height(250)
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                    )
+
+                                </div> 
+                            </div>
+                            <div class="col-lg-12">  
+                                <div class="form-group m-form__group-sub">
+                                    Historical Balance <br/>
+                                    Determine account code to balance the balance sheet report. This is a temporary account only for unbalanced opening balance.
+                                   <input type="hidden" asp-for="ItemCodeHistoricalBalance"/>
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaIdHistoricalBalance)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .OptionLabel("Select..")
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required"})
+                                        .Height(250)
+                                        .Filter(FilterType.Contains) 
+                                        .DataSource(source => source
+                                            .Custom()
+                                            .Transport(transport => transport
+                                            .Read(read =>
+                                            {
+                                                read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                            }))
+                                            .ServerFiltering(false))
+                                    )
+
+                                </div> 
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-save').click(function () {
+        callAction({ formId:"formFinReportControl", title: "save", type:"POST"});
+    });
+</script>

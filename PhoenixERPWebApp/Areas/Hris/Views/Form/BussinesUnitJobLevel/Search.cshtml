@@ -1,0 +1,42 @@
+@{
+    ViewBag.ModalTitle = "BussinesUnitJobLevel";
+    ViewBag.ModalId = "BussinesUnitJobLevelModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="BussinesUnitJobLevelFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="bussines_unit_id">bussines_unit_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_bussines_unit_id" id="search_bussines_unit_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="hrjob_grade_id">hrjob_grade_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_hrjob_grade_id" id="search_hrjob_grade_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="hrjob_level_id">hrjob_level_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_hrjob_level_id" id="search_hrjob_level_id"  maxlength="-1" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="parent_id">parent_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_parent_id" id="search_parent_id"  maxlength="255" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnBussinesUnitJobLevel.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnBussinesUnitJobLevel.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

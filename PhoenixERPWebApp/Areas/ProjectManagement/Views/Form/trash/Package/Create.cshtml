@@ -1,0 +1,31 @@
+@{
+    ViewBag.ModalTitle = "Package";
+    ViewBag.ModalId = "PackageModalCreate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="PackageFormCreate" method="post">
+    
+
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="description">Description</span> </label>
+                <input class="md-input" name="description" id="description"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="job_category_id">Job Category Id</span> </label>
+                <input class="md-input" name="job_category_id" id="job_category_id"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="package">Package</span> </label>
+                <input class="md-input" name="package" id="package"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="value">Value</span> </label>
+                <input class="md-input" name="value" id="value"   type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

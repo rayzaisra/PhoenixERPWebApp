@@ -1,0 +1,717 @@
+﻿<input hidden id="detail-id" value="@ViewBag.RecordID" />
+<input hidden id="entity_id" value="@ViewBag.EntityID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Vendor Quotation</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Procurment & Expenses</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/VendorQuotation")" class="m-nav__link">
+                        <span class="m-nav__link-text">Vendor Quotation</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <!--NEW-->
+        <div class="col-xl-12 col-lg-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--last m-portlet--head-sm m-portlet--responsive-mobile" id="main_portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    Vendor Quotation &nbsp;
+                                    <span id="status"></span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                    
+                           
+                            <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <input hidden name="approval_id" />
+
+                <div class="m-portlet__body">
+                    <!--begin::Form-->
+                    <h5>Quotation from vendor <span style="width: 100px;" id="status"></span></h5>
+                    <input hidden name="approval_id" />
+                    <form id="form-RequestForQuotation" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                        <input hidden name="id" value="@ViewBag.RecordID" />
+
+                        <div class="row">
+
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Quotation Number :</label>
+                                    <input id="vendor_quotation_number" name="vendor_quotation_number" type="text" class="form-control form-control-sm m-input" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>RFQ Number :</label>
+                                    <div class="input-group input-group-sm date">
+                                        <input id="rfq_id" name="rfq_id" style="width: 100%;height:100%" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Quotation Date :</label>
+                                    <div class="input-group input-group-sm date">
+                                        <input type="text" class="form-control m-input marvel-datepicker" readonly placeholder="Select Date & Time" name="quotation_date" id="quotation_date" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>RFQ Type :</label>
+                                    <input id="rfq_type" name="rfq_type" type="text" class="form-control form-control-sm m-input" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Reference Number :</label>
+                                    <div class="input-group input-group-sm date">
+                                        <input id="reference_number" name="reference_number" class="form-control form-control-sm m-input" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label>Job Name :</label>
+                                    <div class="input-group input-group-sm date">
+                                        <input id="job_name" name="job_name" class="form-control form-control-sm m-input" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr /><br />
+                        <div class="row">
+                            <div class="col-lg-12 m-row--no-padding">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="m_accordion_4" role="tablist">
+
+                                    <!--begin:: vendor 1 Item-->
+                                    <div class="m-accordion__item" id="vendor1">
+                                        <div class="m-accordion__item-head" role="tab" id="m_accordion_4_item_1_head" data-toggle="collapse" href="#m_accordion_4_item_1_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title"><span id="vendor_text_1">Vendor 1 Information</span></span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="m_accordion_4_item_1_body" role="tabpanel" aria-labelledby="m_accordion_4_item_1_head" data-parent="#m_accordion_4" style="">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Vendor :</label>
+                                                            <input id="company_id" name="vendor_id" style="width: 100%;height:100%" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label class="">Ship To :</label>
+                                                            <input type="text" id="delivery_address" name="delivery_address" class="form-control form-control-sm m-input"
+                                                                   placeholder="Enter Delivery Place">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Term Of Payment :</label>
+                                                            <input type="text" id="term_of_payment" name="term_of_payment" class="form-control form-control-sm m-input"
+                                                                   placeholder="Enter Exchange Rate">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Delivery Date :</label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <input type="text" class="form-control m-input marvel-datepicker" readonly placeholder="Select Date & Time" name="delivery_date" id="delivery_date" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Expire Quotation :</label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <input type="text" class="form-control m-input marvel-datepicker" readonly placeholder="Select Date & Time" name="expiry_date" id="expiry_date" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Exchange Rate :</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <input id="currency_id" class="form-control" name="currency_id" style="width:auto;height:auto;" />
+                                                                </div>
+                                                                <input type="number" id="exchange_rate" name="exchange_rate" class="form-control form-control-sm m-input"
+                                                                       placeholder="Rate" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Amount :</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <input type="number" name="amount" id="amountr" class="form-control form-control-sm m-input" style="width:150px!important"
+                                                                           placeholder="Amount" />
+                                                                </div>
+                                                                <input type="number" name="discount" id="discountr" class="form-control form-control-sm m-input" style="width:150px!important"
+                                                                       placeholder="Discount" />
+                                                                <button type="button" class="btn btn-sm btn-success" onclick="calculateTotalAmount();">Calculate</button>
+                                                            </div>
+                                                            <span class="m-form__help">Please fill discount and amount.</span>
+                                                        </div>
+                                                        <h6 class="m--font-success">Total : <b>Rp.</b> <label id="total_final_amount">0</label></h6>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="m-accordion__item-body show">
+                                                    <br />
+                                                    <h5><i class="fa flaticon-list"></i> Details</h5>
+                                                    <div id="grid"></div>
+                                                    <script type="text/x-kendo-template" id="template">
+                                                        <div class="col-lg-3">
+                                                            <div class="k-upload-init-progress">
+                                                                <h6>Loading...</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="file-upload " id="files_#=id #" type="file" style="display:none"></div>
+                                                    </script>
+                                                    <script id="attachment" type="text/x-kendo-template">
+                                                        <div class="m-list-search">
+                                                            <div class="m-list-search__results">
+                                                                <span class="m-list-search__result-category m-list-search__result-category--first">
+                                                                    Attachment Request For Quotation
+                                                                </span>
+
+                                                                # if(items.length > 0){ #
+                                                                # for (var i = 0; i < items.length; i++) { #
+                                                                <a href='${$.helper.resolveApi("~/core/FileUpload?id=")}${items[i].id}&x-token=${$.helper.getTokenData().Token}' class="m-list-search__result-item ">
+                                                                    <span class="m-list-search__result-item-icon"><i class="flaticon-attachment m--font-warning"></i></span>
+
+                                                                    <span class="m-list-search__result-item-text"> ${ items[i].name }</span>
+                                                                </a>
+                                                                # } #
+
+                                                                # } else {#
+                                                                <div class="alert m-alert--warning" role="alert">
+                                                                    <strong>Nothing Attachment</strong>
+                                                                </div>
+                                                                #} #
+
+                                                            </div>
+                                                        </div>
+                                                    </script>
+
+                                                    <script id="fileTemplate" type="text/x-kendo-template">
+                                                        <span class="k-progress"></span>
+                                                        <span class="k-file-extension-wrapper">
+                                                            <span class="k-file-extension">#=files[0].extension#</span>
+                                                            <span class="k-file-state"></span>
+                                                        </span>
+                                                        <span class="k-file-name-size-wrapper">
+                                                            <a href="javascript: void (0)" data-id="#=files[0].id#" class="link_#=files[0].uid# link-download">
+                                                                <span class="k-file-name" title="#=name#">#=name#</span>
+                                                                <span class="m-badge m-badge--info m-badge--wide">Request to vendor</span>
+                                                            </a>
+                                                        </span>
+                                                        <strong class="k-upload-status">
+                                                            <button type="button" class="k-button k-upload-action" aria-label="Remove">
+                                                                <span class="k-icon k-i-close k-i-x" title="Remove"></span>
+                                                            </button>
+                                                        </strong>
+
+                                                    </script>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <table class="table table-stripped table-bordered table-condensed ">
+                                                                <tbody>
+                                                                    <tr class="odd">
+                                                                        <td>Subtotal</td>
+                                                                        <td><span class="textrp">Rp.</span>&nbsp;<span id="end_subtotal">246,336,675</span></td>
+                                                                    </tr>
+                                                                    <tr class="even">
+                                                                        <td>Agency Service Fee 10%</td>
+                                                                        <td><span class="textrp">Rp.</span>&nbsp;<span id="end_asf">24,633,668</span></td>
+                                                                    </tr>
+                                                                    <tr class="odd">
+                                                                        <td>VAT (10% x (Sub Total + ASF))</td>
+                                                                        <td class="bopcapro"><span class="textrp">Rp.</span>&nbsp;<span id="end_vat">24,633,668</span></td>
+                                                                    </tr>
+                                                                    <tr class="even">
+                                                                        <td>Grand Total</td>
+                                                                        <td><span class="textrp"><b>Rp.</b></span>&nbsp;<span id="end_gradtotal">295,604,011</span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            <!--end inner arcodian body-->
+
+                                        </div>
+                                        <!--end arcodian body-->
+                                    </div>
+                                    <!--end:: vendor 1 Item-->
+                                    <!--begin:: vendor 2 Item-->
+                                    <div class="m-accordion__item" id="vendor2">
+                                        <div class="m-accordion__item-head" role="tab" id="m_accordion_4_item_2_head" data-toggle="collapse" href="#m_accordion_4_item_2_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title"><span id="vendor_text_2">Vendor 2 Information</span></span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="m_accordion_4_item_2_body" role="tabpanel" aria-labelledby="m_accordion_4_item_2_head" data-parent="#m_accordion_4" style="">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Vendor :</label>
+                                                            <input id="company_id" name="vendor_id" style="width: 100%;height:100%" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label class="">Ship To :</label>
+                                                            <input type="text" id="delivery_address" name="delivery_address" class="form-control form-control-sm m-input"
+                                                                   placeholder="Enter Delivery Place">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Term Of Payment :</label>
+                                                            <input type="text" id="term_of_payment" name="term_of_payment" class="form-control form-control-sm m-input"
+                                                                   placeholder="Enter Exchange Rate">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Delivery Date :</label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <input type="text" class="form-control m-input marvel-datepicker" readonly placeholder="Select Date & Time" name="delivery_date" id="delivery_date" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Expire Quotation :</label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <input type="text" class="form-control m-input marvel-datepicker" readonly placeholder="Select Date & Time" name="expiry_date" id="expiry_date" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Exchange Rate :</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <input id="currency_id" class="form-control" name="currency_id" style="width:auto;height:auto;" />
+                                                                </div>
+                                                                <input type="number" id="exchange_rate" name="exchange_rate" class="form-control form-control-sm m-input"
+                                                                       placeholder="Rate" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Amount :</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <input type="number" name="amount" id="amountr" class="form-control form-control-sm m-input" style="width:150px!important"
+                                                                           placeholder="Amount" />
+                                                                </div>
+                                                                <input type="number" name="discount" id="discountr" class="form-control form-control-sm m-input" style="width:150px!important"
+                                                                       placeholder="Discount" />
+                                                                <button type="button" class="btn btn-sm btn-success" onclick="calculateTotalAmount();">Calculate</button>
+                                                            </div>
+                                                            <span class="m-form__help">Please fill discount and amount.</span>
+                                                        </div>
+                                                        <h6 class="m--font-success">Total : <b>Rp.</b> <label id="total_final_amount">0</label></h6>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="m-accordion__item-body show">
+                                                    <br />
+                                                    <h5><i class="fa flaticon-list"></i> Details</h5>
+                                                    <div id="grid"></div>
+                                                    <script type="text/x-kendo-template" id="template">
+                                                        <div class="col-lg-3">
+                                                            <div class="k-upload-init-progress">
+                                                                <h6>Loading...</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="file-upload " id="files_#=id #" type="file" style="display:none"></div>
+                                                    </script>
+                                                    <script id="attachment" type="text/x-kendo-template">
+                                                        <div class="m-list-search">
+                                                            <div class="m-list-search__results">
+                                                                <span class="m-list-search__result-category m-list-search__result-category--first">
+                                                                    Attachment Request For Quotation
+                                                                </span>
+
+                                                                # if(items.length > 0){ #
+                                                                # for (var i = 0; i < items.length; i++) { #
+                                                                <a href='${$.helper.resolveApi("~/core/FileUpload?id=")}${items[i].id}&x-token=${$.helper.getTokenData().Token}' class="m-list-search__result-item ">
+                                                                    <span class="m-list-search__result-item-icon"><i class="flaticon-attachment m--font-warning"></i></span>
+
+                                                                    <span class="m-list-search__result-item-text"> ${ items[i].name }</span>
+                                                                </a>
+                                                                # } #
+
+                                                                # } else {#
+                                                                <div class="alert m-alert--warning" role="alert">
+                                                                    <strong>Nothing Attachment</strong>
+                                                                </div>
+                                                                #} #
+
+                                                            </div>
+                                                        </div>
+                                                    </script>
+
+                                                    <script id="fileTemplate" type="text/x-kendo-template">
+                                                        <span class="k-progress"></span>
+                                                        <span class="k-file-extension-wrapper">
+                                                            <span class="k-file-extension">#=files[0].extension#</span>
+                                                            <span class="k-file-state"></span>
+                                                        </span>
+                                                        <span class="k-file-name-size-wrapper">
+                                                            <a href="javascript: void (0)" data-id="#=files[0].id#" class="link_#=files[0].uid# link-download">
+                                                                <span class="k-file-name" title="#=name#">#=name#</span>
+                                                                <span class="m-badge m-badge--info m-badge--wide">Request to vendor</span>
+                                                            </a>
+                                                        </span>
+                                                        <strong class="k-upload-status">
+                                                            <button type="button" class="k-button k-upload-action" aria-label="Remove">
+                                                                <span class="k-icon k-i-close k-i-x" title="Remove"></span>
+                                                            </button>
+                                                        </strong>
+
+                                                    </script>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <table class="table table-stripped table-bordered table-condensed ">
+                                                                <tbody>
+                                                                    <tr class="odd">
+                                                                        <td>Subtotal</td>
+                                                                        <td><span class="textrp">Rp.</span>&nbsp;<span id="end_subtotal">246,336,675</span></td>
+                                                                    </tr>
+                                                                    <tr class="even">
+                                                                        <td>Agency Service Fee 10%</td>
+                                                                        <td><span class="textrp">Rp.</span>&nbsp;<span id="end_asf">24,633,668</span></td>
+                                                                    </tr>
+                                                                    <tr class="odd">
+                                                                        <td>VAT (10% x (Sub Total + ASF))</td>
+                                                                        <td class="bopcapro"><span class="textrp">Rp.</span>&nbsp;<span id="end_vat">24,633,668</span></td>
+                                                                    </tr>
+                                                                    <tr class="even">
+                                                                        <td>Grand Total</td>
+                                                                        <td><span class="textrp"><b>Rp.</b></span>&nbsp;<span id="end_gradtotal">295,604,011</span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            <!--end inner arcodian body-->
+
+                                        </div>
+                                        <!--end arcodian body-->
+                                    </div>
+                                    <!--end:: vendor 2 Item-->
+                                    <!--begin:: vendor 3 Item-->
+                                    <div class="m-accordion__item" id="vendor3">
+                                        <div class="m-accordion__item-head" role="tab" id="m_accordion_4_item_3_head" data-toggle="collapse" href="#m_accordion_4_item_3_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title"><span id="vendor_text_2">Vendor 3 Information</span></span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="m_accordion_4_item_3_body" role="tabpanel" aria-labelledby="m_accordion_4_item_3_head" data-parent="#m_accordion_4" style="">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Vendor :</label>
+                                                            <input id="company_id" name="vendor_id" style="width: 100%;height:100%" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label class="">Ship To :</label>
+                                                            <input type="text" id="delivery_address" name="delivery_address" class="form-control form-control-sm m-input"
+                                                                   placeholder="Enter Delivery Place">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Term Of Payment :</label>
+                                                            <input type="text" id="term_of_payment" name="term_of_payment" class="form-control form-control-sm m-input"
+                                                                   placeholder="Enter Exchange Rate">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Delivery Date :</label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <input type="text" class="form-control m-input marvel-datepicker" readonly placeholder="Select Date & Time" name="delivery_date" id="delivery_date" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Expire Quotation :</label>
+                                                            <div class="input-group input-group-sm date">
+                                                                <input type="text" class="form-control m-input marvel-datepicker" readonly placeholder="Select Date & Time" name="expiry_date" id="expiry_date" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Exchange Rate :</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <input id="currency_id" class="form-control" name="currency_id" style="width:auto;height:auto;" />
+                                                                </div>
+                                                                <input type="number" id="exchange_rate" name="exchange_rate" class="form-control form-control-sm m-input"
+                                                                       placeholder="Rate" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 m-form__group-sub">
+                                                        <div class="form-group">
+                                                            <label>Amount :</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <input type="number" name="amount" id="amountr" class="form-control form-control-sm m-input" style="width:150px!important"
+                                                                           placeholder="Amount" />
+                                                                </div>
+                                                                <input type="number" name="discount" id="discountr" class="form-control form-control-sm m-input" style="width:150px!important"
+                                                                       placeholder="Discount" />
+                                                                <button type="button" class="btn btn-sm btn-success" onclick="calculateTotalAmount();">Calculate</button>
+                                                            </div>
+                                                            <span class="m-form__help">Please fill discount and amount.</span>
+                                                        </div>
+                                                        <h6 class="m--font-success">Total : <b>Rp.</b> <label id="total_final_amount">0</label></h6>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="m-accordion__item-body show">
+                                                    <br />
+                                                    <h5><i class="fa flaticon-list"></i> Details</h5>
+                                                    <div id="grid"></div>
+                                                    <script type="text/x-kendo-template" id="template">
+                                                        <div class="col-lg-3">
+                                                            <div class="k-upload-init-progress">
+                                                                <h6>Loading...</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="file-upload " id="files_#=id #" type="file" style="display:none"></div>
+                                                    </script>
+                                                    <script id="attachment" type="text/x-kendo-template">
+                                                        <div class="m-list-search">
+                                                            <div class="m-list-search__results">
+                                                                <span class="m-list-search__result-category m-list-search__result-category--first">
+                                                                    Attachment Request For Quotation
+                                                                </span>
+
+                                                                # if(items.length > 0){ #
+                                                                # for (var i = 0; i < items.length; i++) { #
+                                                                <a href='${$.helper.resolveApi("~/core/FileUpload?id=")}${items[i].id}&x-token=${$.helper.getTokenData().Token}' class="m-list-search__result-item ">
+                                                                    <span class="m-list-search__result-item-icon"><i class="flaticon-attachment m--font-warning"></i></span>
+
+                                                                    <span class="m-list-search__result-item-text"> ${ items[i].name }</span>
+                                                                </a>
+                                                                # } #
+
+                                                                # } else {#
+                                                                <div class="alert m-alert--warning" role="alert">
+                                                                    <strong>Nothing Attachment</strong>
+                                                                </div>
+                                                                #} #
+
+                                                            </div>
+                                                        </div>
+                                                    </script>
+
+                                                    <script id="fileTemplate" type="text/x-kendo-template">
+                                                        <span class="k-progress"></span>
+                                                        <span class="k-file-extension-wrapper">
+                                                            <span class="k-file-extension">#=files[0].extension#</span>
+                                                            <span class="k-file-state"></span>
+                                                        </span>
+                                                        <span class="k-file-name-size-wrapper">
+                                                            <a href="javascript: void (0)" data-id="#=files[0].id#" class="link_#=files[0].uid# link-download">
+                                                                <span class="k-file-name" title="#=name#">#=name#</span>
+                                                                <span class="m-badge m-badge--info m-badge--wide">Request to vendor</span>
+                                                            </a>
+                                                        </span>
+                                                        <strong class="k-upload-status">
+                                                            <button type="button" class="k-button k-upload-action" aria-label="Remove">
+                                                                <span class="k-icon k-i-close k-i-x" title="Remove"></span>
+                                                            </button>
+                                                        </strong>
+
+                                                    </script>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <table class="table table-stripped table-bordered table-condensed ">
+                                                                <tbody>
+                                                                    <tr class="odd">
+                                                                        <td>Subtotal</td>
+                                                                        <td><span class="textrp">Rp.</span>&nbsp;<span id="end_subtotal">246,336,675</span></td>
+                                                                    </tr>
+                                                                    <tr class="even">
+                                                                        <td>Agency Service Fee 10%</td>
+                                                                        <td><span class="textrp">Rp.</span>&nbsp;<span id="end_asf">24,633,668</span></td>
+                                                                    </tr>
+                                                                    <tr class="odd">
+                                                                        <td>VAT (10% x (Sub Total + ASF))</td>
+                                                                        <td class="bopcapro"><span class="textrp">Rp.</span>&nbsp;<span id="end_vat">24,633,668</span></td>
+                                                                    </tr>
+                                                                    <tr class="even">
+                                                                        <td>Grand Total</td>
+                                                                        <td><span class="textrp"><b>Rp.</b></span>&nbsp;<span id="end_gradtotal">295,604,011</span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            <!--end inner arcodian body-->
+
+                                        </div>
+                                        <!--end arcodian body-->
+                                    </div>
+                                    <!--end:: vendor 3 Item-->
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End: Payment -->
+                    </form>
+                    <!--end::Form-->
+                    <hr /><br />
+                    <div style="text-align: right;">
+                        <button type="button" id="btn-save" class="btn btn-info"><i class="fa fa-save"></i>  Save</button>
+                        <button type="button" id="btn-submit" class="btn btn-success"><i class="fa fa-location-arrow"></i>  Submit</button>
+                        <a href="@Url.Content("~/Finance/VendorQuotation")" class="btn btn-danger"><i class="fa fa-times-circle "></i>  Cancel</a>
+                    </div>
+                </div>
+            </div>
+
+            <!--end::Portlet-->
+        </div>
+        <!--END::NEW-->
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div class="modal-container"></div>
+
+@section Scripts{
+    <script src="~/demo/demo_12/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="~/Areas/Finance/Scripts/VendorQuotation.Detail.Multiple.js?@DateTime.Now" asp-append-version="true"></script>
+}

@@ -1,0 +1,372 @@
+﻿@model PhoenixERPWebApp.Models.Finance.FinanceReport.TimeSheetReportByBusinessUnit
+@{
+    ViewData["Title"] = "Time Sheet Report By Business Unit";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+@*<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>*@
+
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Time Sheet</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="IndexReportByBusinessUnit" asp-controller="TimeSheetGridReport" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">TimeSheet Grid Report By Business Unit</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="ReportByBusinessUnit" asp-controller="TimeSheetGridReport" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="ReportByBusinessUnit" asp-controller="TimeSheetGridReport" asp-area="finance" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="reportForm">
+                        <div class="row">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="CreatedBy" />
+                            <input type="hidden" asp-for="CreatedOn" />
+                            <input type="hidden" asp-for="ModifiedBy" />
+                            <input type="hidden" asp-for="ModifiedOn" />
+                            <input type="hidden" asp-for="ApprovedBy" />
+                            <input type="hidden" asp-for="ApprovedOn" />
+                            <input type="hidden" asp-for="IsActive" />
+                            <input type="hidden" asp-for="IsLocked" />
+                            <input type="hidden" asp-for="IsDefault" />
+                            <input type="hidden" asp-for="IsDeleted" />
+                            <input type="hidden" asp-for="OwnerId" />
+                            <input type="hidden" asp-for="DeletedBy" />
+                            <input type="hidden" asp-for="DeletedOn" />
+                            <input type="hidden" asp-for="Status" />
+                            <input type="hidden" asp-for="UserId" />
+                            <input type="hidden" asp-for="MonthPeriod" />
+                            <input type="hidden" asp-for="YearPeriod" />
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="StartDate"></label>
+                                    @(Html.Kendo().DatePickerFor(x=>x.StartDate)
+                                                                //.Value(DateTime.Today)
+                                                                .HtmlAttributes(new { style = "width: 50%", title = "datepicker" })
+                                                                .Min(DateTime.Now.AddDays(-90))
+                                                                .Max(DateTime.Now.AddDays(+90))
+                                                                //                         .Events(e =>
+                                                                //                         {
+                                                                //    e.Change("dateChange");
+                                                                //})
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                     )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="EndDate"></label>
+                                    @(Html.Kendo().DatePickerFor(x=>x.EndDate)
+                                                                //.Value(DateTime.Today.AddDays(+30))
+                                                                .HtmlAttributes(new { style = "width: 50%", title = "datepicker" })
+                                                                .Min(DateTime.Now.AddDays(-90))
+                                                                .Max(DateTime.Now.AddDays(+90))
+                                                                //                         .Events(e =>
+                                                                //                         {
+                                                                //    e.Change("dateChange");
+                                                                //})
+                                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                    )
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label asp-for="LegalEntityId"></label>
+                                        @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="JobId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.JobId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetJobId", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.JobId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                                </div>
+                            </div>
+                            <div class="col-lg-4 m-form__group-sub">
+                                <div class="form-group">
+                                    <label asp-for="CompanyId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CompanyId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetCompanys", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.CompanyId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <button type="button" id="btnGenerate" class="btn btn-primary edit" style="padding:7px;"> Generate</button>
+                                    <button type="button" id="btnSave" class="btn btn-success" style="padding:7px;" disabled>Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="generateResult" style="display:none">
+                        @(Html.Kendo().Grid(Model.Detail)
+                      .Name("grid")
+                      //.AutoBind(false)
+                      .Columns(column =>
+                      {
+                          column.Bound("").Title("No").Width(30).ClientTemplate("#= renderNumber(data) #");
+                          column.Bound(p => p.UserId).Width(300).Title("Employee Id");
+                          column.Bound(p => p.EmployeeName).Width(300).Title("Employee Name");
+                          column.Bound(p => p.LegalEntityName).Width(300).Title("Legal Entity");
+                          column.Bound(p => p.DivisionName).Width(300).Title("Division");
+                          column.Bound(p => p.StartDate).Width(300).Title("Start Date");
+                          column.Bound(p => p.EndDate).Width(300).Title("End Date");
+                          column.Bound(p => p.TotalHours).Width(300).Title("Total Hours");
+                          column.Group(group => group
+                                        .Title("Job (Percentage)")
+                                        .Columns(info =>
+                                        {
+                                            info.Bound(p => p.Bu1).Width(150).Title("Interface");
+                                            info.Bound(p => p.Bu2).Width(150).Title("Creative");
+                                            info.Bound(p => p.Bu3).Width(150).Title("Pathfinder");
+                                            info.Bound(p => p.Bu4).Width(150).Title("Central");
+                                            info.Bound(p => p.Bu5).Width(150).Title("Public Relations");
+                                            info.Bound(p => p.Bu6).Width(150).Title("Nava Charges");
+                                            info.Bound(p => p.Bu7).Width(150).Title("SKOR");
+                                            info.Bound(p => p.Bu8).Width(150).Title("Integrated Marketing Communications");
+                                            info.Bound(p => p.Bu9).Width(150).Title("Trade Marketing");
+                                            info.Bound(p => p.Bu10).Width(150).Title("Experential");
+                                            info.Bound(p => p.Bu11).Width(150).Title("Marketing Services");
+                                            info.Bound(p => p.Bu12).Width(150).Title("Relationship Marketing");
+
+                                        })
+                                        );
+                          column.Group(group => group
+                                       .Title("Non Job (Percentage)")
+                                       .Columns(info =>
+                                       {
+                                           info.Bound(p => p.BuNonJob).Width(150).Title("Central (NAVA+)");
+                                       })
+                                       );
+
+                          column.Bound(p => p.TotalPercentage).Width(150).Title("Total Percentage");
+                          //column.Bound(p => p.Pathfinder).Width(150).Title("Pathfinder").ClientTemplate("#= (Pathfinder == null || Pathfinder == '' ) ? '00:00' : Pathfinder #");
+                          //column.Bound(p => p.Central).Width(150).Title("Central").ClientTemplate("#= (Central == null || Central == '' ) ? '00:00' : Central #");
+                          //column.Bound(p => p.Nava_Charges).Width(150).Title("Nava Charges").ClientTemplate("#= (Nava_Charges == null || Nava_Charges == '' ) ? '00:00' : Nava_Charges #");
+                          //column.Bound(p => p.SKOR).Width(150).Title("SKOR").ClientTemplate("#= (SKOR == null || SKOR == '' ) ? '00:00' : SKOR #");
+                          //column.Bound(p => p.Integrated_Marketing_Communications).Width(150).Title("Integrated Marketing Communications").ClientTemplate("#= (Integrated_Marketing_Communications == null || Integrated_Marketing_Communications == '' ) ? '00:00' : Integrated_Marketing_Communications #");
+                          //column.Bound(p => p.Trade_Marketing).Width(150).Title("Trade Marketing").ClientTemplate("#= (Trade_Marketing == null || Trade_Marketing == '' ) ? '00:00' : Trade_Marketing #");
+                          //column.Bound(p => p.Experential).Width(150).Title("Experential").ClientTemplate("#= (Experential == null || Experential == '' ) ? '00:00' : Experential #");
+                          //column.Bound(p => p.Marketing_Services).Width(150).Title("Marketing Services").ClientTemplate("#= (Marketing_Services == null || Marketing_Services == '' ) ? '00:00' : Marketing_Services #");
+                          //column.Bound(p => p.Relationship_Marketing).Width(150).Title("Relationship Marketing").ClientTemplate("#= (Relationship_Marketing == null || Relationship_Marketing == '' ) ? '00:00' : Relationship_Marketing #");
+                      })
+                      .ToolBar(toolBar =>
+                      {
+                          toolBar.Excel();
+                          toolBar.Pdf();
+                      })
+                     .Excel(excel => excel
+                        .FileName("ReportTimeSheetbyBusinessUnit.xlsx")
+                        .Filterable(true)
+                        .AllPages(true)
+                        .ProxyURL(Url.Action("Excel_Export_Save", "TimeSheetGridReport"))
+                    ) .Pdf(pdf => pdf
+                                            .AllPages()
+                                            .AvoidLinks()
+                                            .PaperSize("A0")
+                                            .Margin("5.5cm", "1cm", "1cm", "1cm")
+                                            .Landscape()
+                                            .RepeatHeaders()
+                                            .TemplateId("page-template")
+                                            .FileName("ReportTimeSheetbyBusinessUnit.pdf")
+                                        )
+                    .NoRecords()
+                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                    .Resizable(rsz => rsz.Columns(true))
+                              .Events(a => a.DataBound("gridDatabound"))
+                              .DataSource(dataSource => dataSource
+                              .Ajax()
+                              .Events(events => events.Error("errorHandler"))
+                                                           .Model(model =>
+                                                           {
+                                                               model.Id(p => p.TimesheetReportByBusinessUnitId);
+                                                           })
+                              //.PageSize(10)
+                              .Read(read => read.Action("ReadTimeSheetByBusinessUnit", "TimeSheetGridReport").Data("grid_report_params"))
+                       )
+        )
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var rowNumber = 0;
+
+    function gridDatabound() {
+        rowNumber = 0;
+    }
+
+    function renderNumber(data) {
+        return ++rowNumber;
+    }
+
+    function grid_report_params() {
+        var startdate = $("#StartDate").data("kendoDatePicker").value();
+        var enddate = $("#EndDate").data("kendoDatePicker").value();
+        var legalentity = $("#LegalEntityId").data("kendoDropDownList").value();
+        var jobid = $("#JobId").data("kendoDropDownList").value();
+        var companyid = $("#CompanyId").data("kendoDropDownList").value();
+        if (startdate === null) {
+            startdate = new Date()
+        }
+
+        if (enddate === null) {
+            enddate = new Date()
+        }
+        return {
+            jobId: jobid,
+            clientId: companyid,
+            startDate: startdate,
+            endDate: enddate,
+            legalEntityId: legalentity
+        }
+    }
+
+    $('#btnGenerate').click(function () {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+        //alert('ok')
+        var startdate = $("#StartDate").data("kendoDatePicker").value();
+        var enddate = $("#EndDate").data("kendoDatePicker").value();
+
+        if (startdate === null && enddate === null) {
+            swal('Error', "Please fill start date and end date before filtering data", 'error');
+            $('#btnSave').prop('disabled', true);
+            $('#generateResult').hide();
+            mApp.unblock("#m_blockui_list");
+            return false;
+        } else {
+            $('#generateResult').show();
+            $('#btnSave').prop('disabled', false);
+            $('#grid').data('kendoGrid').dataSource.read();
+            $('#grid').data('kendoGrid').refresh();
+        }
+
+        mApp.unblock("#m_blockui_list");
+    });
+
+    $('#btnSave').click(function () {
+        var gridDetail = $("#grid").data("kendoGrid");
+
+        gridDetail.saveRow();
+
+        var dataList = {
+            Detail: gridDetail.dataSource.data(),
+         }
+        callAction({ formId: "reportForm", title: "save", type: "POST", url: '@Url.Action("ProcessReportTimeSheetByBusinessUnit", "TimeSheetGridReport")', objects: dataList });
+    });
+
+    $(function () {
+        if ('@Model.Id' !== '') {
+            $('#generateResult').show();
+            $('#btnSave').prop('disabled', false);
+        }
+    })
+</script>

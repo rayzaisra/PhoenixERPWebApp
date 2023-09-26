@@ -1,0 +1,925 @@
+﻿@using PhoenixERPWebApp.Helper
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark " m-menu-vertical="1" m-menu-scrollable="1" m-menu-dropdown-timeout="500" style="position: relative;">
+
+    <ul class="m-menu__nav ">
+        <hr />
+        @*        @Html.Raw(@Html.BuildMenu("Finance"))*@
+        <li class="m-menu__item  " aria-haspopup="true">
+            <a href="/" class="m-menu__link ">
+                <i class="m-menu__link-icon flaticon-home"></i>
+                <span class="m-menu__link-text">Home</span>
+            </a>
+        </li>
+        <li class="m-menu__item  " aria-haspopup="true">
+            <a href="/ApprovalFinance/List" class="m-menu__link fakelink">
+                <i class="m-menu__link-icon flaticon-home"></i>
+                <span class="m-menu__link-text">Approvals Request</span>
+            </a>
+        </li>
+        <!-- Begin : Finance View -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-file-invoice-dollar"></i>
+                <span class="m-menu__link-text">PE (Finance View)</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Company/JobClosing")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Job Closing (N/A)</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Company/JobCard")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Job Card (N/A)</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <!-- End : Finance View -->
+        <!-- Begin : Master Data -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-cog fa-fw"></i>
+                <span class="m-menu__link-text">Master Data</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item  m-menu__item--parent" aria-haspopup="true">
+                        <span class="m-menu__link">
+                            <span class="m-menu__link-text">Master Data</span>
+                        </span>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/Affiliation")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Affiliation</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/Account")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Account</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/AccountGroup")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Account Group</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/ApprovalStatus")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Approval Status</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/Bank")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Bank</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/PaymentMethod")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Bank Payment Method</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/BankPaymentStatus")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Bank Payment Status</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/BankPaymentType")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Bank Payment Type</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/BankReceivedStatus")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Bank Received Status</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/BusinessUnit")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Business Unit</span>
+                        </a>
+                    </li>
+
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/BusinessUnitType")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Business Unit Type</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/CashAdvanceStatus")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Cash Advance Status</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/City")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">City</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Company/Client")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Clients</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/Country")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Country</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/Currency")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Currency</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/CurrencyExchange")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Currency Exchange</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/FinancialDocumentType")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Financial Document Type</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/FinancialTransactionType")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Financial Transaction Type</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/FinancialYear")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Financial Year</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/GeneralAdjustmentType")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">General Adjustment Type</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/InvoicePayableStatus")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Invoice Received Status</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/InvoiceType")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Invoice Type</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/Item")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Item</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/ItemCategory")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Item Category</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Company/ItemStock")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Item Stock</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/LegalEntity")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Legal Entity</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/PurchaseOrderStatus")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Purchase Order Status</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/SalesOrderStatus")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Sales Order Status</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/RequestType")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Request Type (N/A)</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/UnitOfMeasure")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Unit Of Measure</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/UnitOfMeasureConversion")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Unit Of Measure Conversion</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Company/Vendor")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Vendors</span>
+                        </a>
+                    </li>
+
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Finance/Voucher")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Voucher</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/Warehouse")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Warehouse</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </li>
+        <!-- End : Master Data-->
+        <!-- Begin : Finance -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-suitcase"></i>
+                <span class="m-menu__link-text">Finance</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/ApprovalTemplate")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Approval Template</span>
+                        </a>
+                    </li>
+
+                    <!-- Begin: Cash & Bank -->
+                    <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Cash & Bank</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                                    <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Cash Advance Request</span>
+                                        <i class="m-menu__ver-arrow la la-angle-right"></i>
+                                    </a>
+                                    <div class="m-menu__submenu " m-hidden-height="160" style="">
+                                        <span class="m-menu__arrow"></span>
+                                        <ul class="m-menu__subnav">
+                                            <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                                <a href="@Url.Content("~/Finance/CashAdvanceNonProject/Index")" class="m-menu__link ">
+                                                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="m-menu__link-text">Cash Advance</span>
+                                                </a>
+                                            </li>
+                                            <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                                <a href="@Url.Content("~/Finance/CashAdvanceProject/Index")" class="m-menu__link ">
+                                                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="m-menu__link-text">Cash Advance Project</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                <li class="m-menu__item " aria-haspopup="true">
+                                    <a href="@Url.Content("~/Finance/BankPayment")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Bank Payment</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- End: Cash & Bank -->
+                    <!-- Begin: Account Payables -->
+                    <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Account Payable</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/AccountPayable")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Account Payable List</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/InvoiceReceived")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Invoice Received</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/PettyCash")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Petty Cash Settlement</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- End: Account Payables -->
+                    <!-- Begin: Account Receivable -->
+                    <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Account Receivable</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/AccountReceivable")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Account Receivable</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/JobClosing")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">List Of Job Closing (N/A)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- End: Account Receivable -->
+                    <!-- Begin: Amortisasi -->
+                    <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Amortisasi</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Company/Depreciation")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Depreciation (N/A)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- End: Amortisasi -->
+                    <!-- Begin: Accounting -->
+                    <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Accounting</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/JournalEntry")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Journal Entry</span>
+                                    </a>
+                                </li>
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/CoaBalance")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">COA Balance</span>
+                                    </a>
+                                </li>
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/AdjustmentJournalEntry")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Adjustment Journal Entry</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- End: Accounting -->
+                </ul>
+            </div>
+        </li>
+
+        <!-- End : Finance -->
+        <!-- Begin : Procurement & Expenses -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-cart"></i>
+                <span class="m-menu__link-text">Procurement & Expenses</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item  m-menu__item--parent" aria-haspopup="true">
+                        <span class="m-menu__link">
+                            <span class="m-menu__link-text">Procurement & Expenses</span>
+                        </span>
+                    </li>
+                    <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Procurement</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <!-- Purchase Request -->
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/PurchaseRequest")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Purchase Request</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- RFQ -->
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/RequestForQuotation")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Request For Quotation</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/VendorQuotation")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Vendor Quotation</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Purchase Order -->
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/PurchaseOrder")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Purchase Order</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover" m-menu-link-redirect="1">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">GR/Inspection/BAST</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/GoodReceipt")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Good Receipt</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-menu__submenu " m-hidden-height="160" style="">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                                    <a href="@Url.Content("~/Finance/GoodReceived")" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Good Received</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <!-- End : Procurment & Expenses -->
+        <!-- Begin : Report -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-line-graph"></i>
+                <span class="m-menu__link-text">Report</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item  m-menu__item--parent" aria-haspopup="true">
+                        <span class="m-menu__link">
+                            <span class="m-menu__link-text">Report</span>
+                        </span>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Company/LKJReport")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">LKJ Report</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/PhoenixReport/Finance/BalanceSheet")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Balance Sheet</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/PhoenixReport/Finance/GeneralLedger")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">General Ledger</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <!-- End : Report -->
+
+        <li class="m-menu__section ">
+            <h4 class="m-menu__section-text">System</h4>
+            <i class="m-menu__section-icon flaticon-more-v2"></i>
+        </li>
+
+        <!-- Begin : Application -->
+        @*<li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fas fa-gavel"></i>
+                <span class="m-menu__link-text">Application</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item  m-menu__item--parent" aria-haspopup="true">
+                        <span class="m-menu__link">
+                            <span class="m-menu__link-text">Application</span>
+                        </span>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Settings/User")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">User Management</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/ApplicationRole")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Application Role</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Settings/Organization")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Organization</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/Menu")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Menu Setup</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/MenuCategory")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Menu Category</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/Team")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Team</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Core/RoleAccess")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Role Access</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>*@
+
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fas fa-gavel"></i>
+                <span class="m-menu__link-text">Application</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item  m-menu__item--parent" aria-haspopup="true">
+                        <span class="m-menu__link">
+                            <span class="m-menu__link-text">Application</span>
+                        </span>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Um/ManageUser")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">User Management</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Um/ManageGroup")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Manage Group</span>
+                        </a>
+                    </li>
+
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Um/ManageMenu")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Manage Menu</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Um/ManageGroupAccess")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Manage Group Access</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="@Url.Content("~/Um/ManageUserAccess")" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Manage User Access</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <!-- End : Application -->
+    </ul>
+</div>

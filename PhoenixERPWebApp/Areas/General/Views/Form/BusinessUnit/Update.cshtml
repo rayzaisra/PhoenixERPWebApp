@@ -1,0 +1,96 @@
+@{
+    ViewData["Title"] = "BusinessUnit";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="BusinessUnitFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="business_unit_type_id">business_unit_type_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="business_unit_type_id" id="business_unit_type_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="default_team">default_team</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="default_team" id="default_team" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="latitude">latitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="latitude" id="latitude"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="longitude">longitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="longitude" id="longitude"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="organization_id">organization_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="organization_id" id="organization_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="parent_unit">parent_unit</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="parent_unit" id="parent_unit"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_address">unit_address</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="unit_address" id="unit_address"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_code">unit_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="unit_code" id="unit_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_description">unit_description</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="unit_description" id="unit_description"  maxlength="255" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_email">unit_email</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="unit_email" id="unit_email"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_fax">unit_fax</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="unit_fax" id="unit_fax"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_name">unit_name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="unit_name" id="unit_name" required maxlength="350" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="unit_phone">unit_phone</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="unit_phone" id="unit_phone"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/BusinessUnit" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/BusinessUnit.update.js"></script>
+}

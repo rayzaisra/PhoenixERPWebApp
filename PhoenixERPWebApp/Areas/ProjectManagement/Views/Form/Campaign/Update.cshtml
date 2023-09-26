@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Campaign";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="CampaignFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="campaign_code">campaign_code</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="campaign_code" id="campaign_code"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="campaign_name">campaign_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="campaign_name" id="campaign_name"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/ProjectManagement/Campaign" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Campaign.update.js"></script>
+}

@@ -1,0 +1,22 @@
+@{
+    ViewBag.ModalTitle = "ApprovalType";
+    ViewBag.ModalId = "ApprovalTypeModalCreate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="ApprovalTypeFormCreate" method="post">
+    
+
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="approval_type">Approval Type</span> </label>
+                <input class="md-input" name="approval_type" id="approval_type"  maxlength="50" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

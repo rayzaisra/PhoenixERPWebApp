@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "JobTitle";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+
+    <style>
+        .m-margin__top-20 {
+            margin-top: 20px !important;
+        }
+    </style>
+    <form id="JobTitleFormCreate" method="post">
+       
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="title_code">Job Title Code</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="title_code" id="title_code" maxlength="50" type="text" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="title_name">Job Title Name</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="title_name" id="title_name" maxlength="50" type="text" required>
+                </div>
+            </div>
+        </div>
+        
+
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/Hris/TitleMaster" class="fakelink btn btn-secondary">Close</a>
+            </div>
+
+        </div>
+    </form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/TitleMaster.create.js"></script>
+}

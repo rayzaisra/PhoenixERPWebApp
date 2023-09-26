@@ -1,0 +1,184 @@
+@{
+    ViewData["Title"] = "Career";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    @*<a href="@Url.Content("~/Hris/JobPostingRequisition/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>*@
+}
+
+@section Paneltools{
+    @*<a data-target="#JobPostingRequisitionModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>*@
+}
+@section Panelbody{
+    <legend>Input Personal Data</legend>
+    <form id="CareerFormCreate" name="CareerFormCreate" method="post">
+        <input value="@ViewBag.RecordID" type="hidden" name="job_vacancy_id" id="job_vacancy_id" />
+        <input value="0" type="hidden" name="applicant_progress_id" id="applicant_progress_id" />
+        <input value="0" type="hidden" name="applicant_move_stage_id" id="applicant_move_stage_id" />
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>First Name </label><span style="color:red">* : </span>
+                    <input type="text" class="form-control" name="first_name" id="first_name" required />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Last Name </label><span style="color:red">* : </span>
+                    @*<label><span class="translate" data-args="Last Name">Last Name</span> :</label>*@
+                    <input type="text" class="form-control" name="last_name" id="last_name" required />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Nick Name">Nick Name</span> <span style="color:red;">*</span>:</label>
+                    <input type="text" class="form-control" name="nick_name" id="nick_name" required/>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Gender">Gender</span> <span style="color:red">*</span> :</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" name="gender" id="gender" value="male" required/> Male
+                    <input type="radio" name="gender" id="gender" value="female" required/> Female
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Birth Place">Birth Place</span> <span style="color:red">*</span> :</label>
+                    <input type="text" class="form-control" name="birth_place" id="birth_place" required/>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="date_birth">Date of Birth <span style="color:red">*</span></label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" data-date-format="yyyy-mm-dd" id="date_birth" name="date_birth" required>
+                        <span class="input-group-btn">
+                            <button class="btn default" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Last Education">Last Education</span> <span style="color:red">*</span> :</label>
+                    <select class="form-control form-control-sm m-input m-input--square" name="last_education" id="last_education" required></select>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Year Experience">Year Experience</span> :</label>
+                    <input type="text" class="form-control" name="year_experience" id="year_experience">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @*<label><span class="translate" data-args="Mobile Phone">Mobile Phone</span> :</label>*@
+                    <label>Mobile Phone</label> <span style="color:red;">*</span>
+                    <input type="number" class="form-control" name="phone_number" id="phone_number" required />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <div class="form-group">
+                        @*<label><span class="translate" data-args="Email">Email</span> :</label>*@
+                        <label>Email</label> <span style="color:red;">*</span>
+                        <input type="email" class="form-control" name="email" id="email" required />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @*<label><span class="translate" data-args="Willing Work With Alcohol Brand">Willing Work With Alcohol Brand</span> :</label>*@
+                    <label>Willing Work With Alcohol Brand</label> <span style="color:red;">*</span>
+                </div>
+                <div class="form-group">
+                    <input type="radio" name="alcohol_willing" id="alcohol_willing" value="true" required /> Yes
+                    <input type="radio" name="alcohol_willing" id="alcohol_willing" value="false" required/> No
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label><span class="translate" data-args="Source">Source</span> </label>
+                        <select type="text" class="form-control" name="source" id="source">
+                            <option value="JobStreet">JobStreet</option>
+                            <option value="Linkedin">Linkedin</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="JobDb">JobDb</option>
+                            <option value="Others">Others</option>
+                            <option value="Internal">Internal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Address">Address </span><span style="color:red">*</span> </label>
+                    <textarea name="address" id="adress" class="form-control" required></textarea>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label><span class="translate" data-args="CV/Resume">CV/Resume </span><span style="color:red;">*</span></label>
+                        <div id="divcvplace"><input type="text" class="form-control" name="cv" id="cv" required/></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @*<label><span class="translate" data-args="Willing to Work Out of Town">Willing to Work Out of Town</span>*</label>*@
+                    <label>Willing to Work Out of Town</label><span style="color:red;">*</span>
+
+                </div>
+                <div class="form-group">
+                    <input type="radio" name="out_of_town_willing" id="out_of_town_willing" value="true" required /> Yes
+                    <input type="radio" name="out_of_town_willing" id="out_of_town_willing" value="false" required/> No
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Photo">Photo </span><span style="color:red;">*</span> :</label>
+                    <div id="divphotoplace"><input type="text" class="form-control" name="photo" id="photo" required/></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label><span class="translate" data-args="Portfolio">Portfolio</span>:</label>
+                        <div id="divportfolioplace"><input type="text" class="form-control" name="portfolio" id="portfolio" /></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                <a href="~/Hris/JobPosting" class=" btn btn-secondary">Close</a>
+            </div>
+        </div>
+
+    </form>
+    @*<table class="table table-striped table-bordered table-hover table-checkable" id="JobPostingRequisitionList"></table>*@
+    @*@Html.Partial("JobPostingRequisition/Search")*@
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/JobPostingRequisition.js"></script>
+}
+

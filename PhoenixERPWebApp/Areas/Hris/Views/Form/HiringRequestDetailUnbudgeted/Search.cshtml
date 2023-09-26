@@ -1,0 +1,37 @@
+@{
+    ViewBag.ModalTitle = "HiringRequestDetailUnbudgeted";
+    ViewBag.ModalId = "HiringRequestDetailUnbudgetedModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="HiringRequestDetailUnbudgetedFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="employment_status">employment_status</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employment_status" id="search_employment_status"  maxlength="255" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="mpp_budged_id">mpp_budged_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_mpp_budged_id" id="search_mpp_budged_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="ttf">ttf</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_ttf" id="search_ttf"  maxlength="255" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnHiringRequestDetailUnbudgeted.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnHiringRequestDetailUnbudgeted.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

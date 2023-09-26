@@ -1,0 +1,179 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Manage User Access</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">System</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Application</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Um/ManageGroupAccess")" class="m-nav__link">
+                        <span class="m-nav__link-text">Manage User Access</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <a href="javascript:openForm()" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @*<div class="m-portlet__body" id="m_blockui_list" style="max-height:400px;overflow-x:auto">*@
+                    <!--begin: Datatable -->
+                    <div class="form-group">
+                        <label class="label-block">CHOOSE GROUP</label><br />
+                        <select id="ddlGroup" name="ddlGroup" class="form-control form-control-sm" style="width:40%"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-block">CHOOSE USER</label><br />
+                        <select id="ddlUser" name="ddlUser" class="form-control form-control-sm" style="width:40%"></select>
+                        <button class="btn btn-primary btn-sm pull-right btn-save-data" style="display:none">
+                            <i class="fa fa-save"></i> SUBMIT
+                        </button>
+                    </div>
+                    <br />
+                    <div class="clearfix"></div>
+                    <br />
+                    <div class="col-lg-12" id="dvLgm">
+
+                    </div>
+                    @*<table class="table table-striped- table-bordered table-hover table-checkable" id="dt_basic">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand lb-head">
+                                            <input type="checkbox" value="" class="m-group-checkable cb-head" name="cbSelectALl" id="cbSelectALl">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th>#MENU NAME</th>
+                                    <th>
+                                        READ ALL<br />
+                                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand lb-readall">
+                                            <input type="checkbox" value="" class="m-group-checkable cb-head" name="cbReadAll" id="cbReadAll">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        ADD ALL<br />
+                                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand lb-addall">
+                                            <input type="checkbox" value="" class="m-group-checkable cb-head" name="cbAddAll" id="cbAddAll">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        EDIT ALL<br />
+                                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand lb-editall">
+                                            <input type="checkbox" value="" class="m-group-checkable cb-head" name="cbEditAll" id="cbEditAll">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        DELETE ALL<br />
+                                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand lb-deleteall">
+                                            <input type="checkbox" value="" class="m-group-checkable cb-head" name="cbDeleteAll" id="cbDeleteAll">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>*@
+
+                    <div class="clearfix"></div>
+                    <button class="btn btn-primary btn-sm pull-right btn-save-data">
+                        <i class="fa fa-save"></i> SUBMIT
+                    </button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script src="~/Areas/Um/Scripts/TmUserAccess-v2.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            var pun = $('#hidPageUniqueName').val();
+            if (pun === '' || pun === undefined || pun === null) {
+                sessionStorage.removeItem('uniquePage');
+            }
+            else {
+                let urlApi = $.helper.resolveApi("~ManageUserAccess/GetMenuAccessByUniqueName/" + pun);
+                $.ajax({
+                    type: "GET",
+                    dataType: 'json',
+                    url: urlApi,
+                    success: function (data) {
+                        sessionStorage.setItem('uniquePage', JSON.stringify(data));
+                        var dt = sessionStorage.getItem('uniquePage');
+                        dt = JSON.parse(dt);
+                        if (dt !== null) {
+                            if (dt.isAdd === false) {
+                                $('.btn-save-data').hide();
+                            }
+                        }
+                    },
+                    error: function (e, t, s) {
+                        console.error('Error Getting INformation Page Unique Name FOr User Access');
+                        console.log(e);
+                        console.log(t);
+                        console.log(s);
+                    }
+                });
+            }
+
+
+
+        });
+    </script>
+
+
+}
+
+

@@ -1,0 +1,279 @@
+﻿@model PhoenixERPWebApp.Models.RequestForQuotation
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+
+    .modal .modal-content .modal-header {
+        padding: 15px;
+    }
+</style>
+
+<div class="modal fade" id="modalVendor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <label id="lblInfo">Add</label> Vendor Price
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBodyVendor">                 
+                <input type="hidden" asp-for="RequestForQuotationVendor.CreatedBy" /> 
+                <input type="hidden" asp-for="RequestForQuotationVendor.CreatedOn" /> 
+                <input type="hidden" asp-for="RequestForQuotationVendor.ModifiedBy" /> 
+                <input type="hidden" asp-for="RequestForQuotationVendor.ModifiedOn" /> 
+                <input type="hidden" asp-for="RequestForQuotationVendor.Id" id="TempId" />  
+                <input type="hidden" asp-for="RequestForQuotationVendor.VendorName" id="TempVendorName" />            
+                <div class="row ">
+                    <div class="col-lg-2"><label asp-for="RequestForQuotationVendor.VendorId"></label><span class="req">*</span> : </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @(Html.Kendo().DropDownListFor(x=>x.RequestForQuotationVendor.VendorId)
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.RequestForQuotationVendor.VendorId)}")
+                                .HtmlAttributes(new { style = "width:100%;", @id= "VendorId" })
+                                .Height(400)
+                                .Popup(x => x.AppendTo("#modalBodyVendor"))
+                                .Filter(FilterType.Contains)
+                                .DataSource(source => source
+                                    .Custom()
+                                    .Transport(transport => transport
+                                    .Read(read =>
+                                    {
+                                        read.Action("GetDDLVendor", "Dropdown", new { area = "Finance" });
+                                    }))
+                                    .ServerFiltering(false))
+                                .AutoBind(true) 
+                            )
+                        </div>
+                    </div>
+                      <div class="col-lg-2"><label asp-for="RequestForQuotationVendor.CurrencyRequestId"></label><span class="req">*</span> : </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @(Html.Kendo().DropDownListFor(x=>x.RequestForQuotationVendor.CurrencyRequestId)
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.RequestForQuotationVendor.CurrencyRequestId)}")
+                                .HtmlAttributes(new { style = "width:100%;",
+                                        @id = "CurrencyRequestId",
+                                        @readonly = "readonly",
+                                })
+                                .Height(400)
+                                .Popup(x => x.AppendTo("#modalBodyVendor"))
+                                .Filter(FilterType.Contains)
+                                .DataSource(source => source
+                                    .Custom()
+                                    .Transport(transport => transport
+                                    .Read(read =>
+                                    {
+                                        read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                    }))
+                                    .ServerFiltering(false))
+                                .AutoBind(true)
+                            )
+                        </div>
+                    </div>
+                </div> 
+                <div class="row ">
+                    <div class="col-lg-2"><label asp-for="RequestForQuotationVendor.Description"></label> : </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @Html.TextAreaFor(x => x.RequestForQuotationVendor.Description, new { style = "height:50px;width:100%", @id = "Description" })
+                        </div>
+                    </div>
+                      <div class="col-lg-2"><label asp-for="RequestForQuotationVendor.ExchangeRateRequest"></label><span class="req">*</span> : </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @(Html.Kendo().NumericTextBoxFor(m => m.RequestForQuotationVendor.ExchangeRateRequest)
+                                    .Spinners(false)
+                                    .Events(evt => evt.Change("calculaterequest_change"))
+                                    .Format("{0:N2}")
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:100%",
+                                        @id= "ExchangeRateRequest",
+                                        @readonly = "readonly",
+                                    }
+                                ))
+                        </div>
+                    </div>
+                </div>
+                   
+                 <div class="row " style="display:none;">
+                    <div class="col-lg-2"><label asp-for="RequestForQuotationVendor.OperatorRequest"></label><span class="req">*</span> : </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                           @(Html.Kendo().DropDownListFor(x => x.RequestForQuotationVendor.OperatorRequest)
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.RequestForQuotationVendor.OperatorRequest)}")
+                                .Popup(x => x.AppendTo("#modalBodyVendor"))
+                                .HtmlAttributes(new {
+                                    style = "width:100%;",
+                                    @id= "OperatorRequest",
+                                    @readonly = "readonly",
+                                })
+                                .Filter(FilterType.Contains)
+                                .DataSource(source => source
+                                    .Custom()
+                                    .Transport(transport => transport
+                                    .Read(read =>
+                                    {
+                                        read.Action("GetDDLOperator", "Dropdown", new { area = "Pm" });
+                                    }))
+                                    .ServerFiltering(false)
+                                ))
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group m-form__group row m-row--no-padding">
+                            <div class="col-lg-12 m-row--no-padding" id="m_blockui_list"> 
+                                @(Html.Kendo().TreeList<PhoenixERPWebApp.Models.RequestForQuotationDetail>()
+                                    .Name("treelist-RequestforQuotationDetailList")
+                                    .Columns(columns =>
+                                    {
+                                        if (ViewBag.isRequestor == true)
+                                        { 
+                                            columns.Add().Width(90).Title("Action").HtmlAttributes(new { style = "text-align:center;" })
+                                            .Command(c =>
+                                            {
+                                                c.CreateChild().Text(" ");
+                                                c.Edit().Text(" ");
+                                                c.Destroy().Text(" ");
+                                            });
+                                        }
+
+                                        columns.Add().Field(p => p.ItemTypeId).Expandable(true).Template("#if(ItemTypeId!=null){# #=ItemTypeName# #}#").Width(150);
+                                        columns.Add().Field(p => p.ItemId).Template("#if(ItemCode!=null){# #=ItemCode# - #=ItemName# #}#").Width(150);
+                                        columns.Add().Field(p => p.Task).Width(200);
+                                        columns.Add().Field(p => p.Qty).Width(80).Editor("IntegerEditor").HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Add().Field(p => p.UomId).Template("#=UomName#").Editor("UoMIdEditor").Width(100);
+                                        //columns.Add().Field(p => p.RemainingBudget).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Add().Field(p => p.UnitPrice).Template("#if(CurrencySymbolRequest!=null && UnitPrice!=null){# #=CurrencySymbolRequest# #}# #if(UnitPrice!=null){# #=kendo.format('{0:n2}', UnitPrice)# #}#").Width(140).Editor("DecimalEditor").HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Add().Field(p => p.Amount).Template("#if(CurrencySymbolRequest!=null && Amount!=null){# #=CurrencySymbolRequest# #}# #if(Amount!=null){# #=kendo.format('{0:n2}', Amount)# #}#").Width(140).Editor("DecimalReadonlyEditor").HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Add().Field(p => p.TotalExchangeAmount).Template("#if(CurrencySymbol!=null && TotalExchangeAmount!=null){# #=CurrencySymbol# #}# #if(TotalExchangeAmount!=null){# #=kendo.format('{0:n2}', TotalExchangeAmount)# #}#").Width(170).Editor("DecimalReadonlyEditor").HtmlAttributes(new { style = "text-align:right;" });
+                                        //columns.Add().Field(p => p.RemainingBudget).Template("#if(CurrencySymbol!=null){# #=CurrencySymbol# #}# #if(RemainingBudget!=null){# #=kendo.format('{0:n2}', RemainingBudget)# #}#").Width(140).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Add().Field(p => p.TotalRequest).Template("#if(ParentTaskId==null){# #if(CurrencySymbolRequest!=null){# #=CurrencySymbolRequest# #}# #if(TotalRequest!=null){# #=kendo.format('{0:n2}', TotalRequest)# #}# #}#").Width(190).HtmlAttributes(new { style = "text-align:right;" });
+                                        columns.Add().Field(p => p.TotalExchangeRequest).Template("#if(ParentTaskId==null){# #if(CurrencySymbol!=null){# #=CurrencySymbol# #}# #if(TotalExchangeRequest!=null){# #=kendo.format('{0:n2}', TotalExchangeRequest)# #}# #}#").Width(190).HtmlAttributes(new { style = "text-align:right;" });
+
+                                    }) 
+                                    .Scrollable(true)
+                                    .Resizable(true)
+                                    .Editable(e => e.Mode(TreeListEditMode.InLine))//.TemplateName("Pm/Pca/Task"))
+                                    .DataSource(dataSource => dataSource
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(m =>
+                                        {
+                                            m.Id(f => f.TaskId);
+                                            m.ParentId(f => f.ParentTaskId).Nullable(true);
+                                            m.Expanded(true);
+                                            m.Field(p => p.ItemTypeId).Editable(false);
+                                            m.Field(p => p.ItemId).Editable(false);
+                                            //m.Field(p => p.Task).Editable(false);
+                                            //m.Field(p => p.Qty).Editable(false);
+                                            //m.Field(p => p.UomId).Editable(false);
+                                            m.Field(p => p.RemainingBudget).Editable(false);
+                                            m.Field(p => p.TotalRequest).Editable(false);
+                                            m.Field(p => p.TotalExchangeRequest).Editable(false);
+                                        })
+                                        .Read(read => read.Action("ReadDetail", "RequestForQuotation").Data("treeList_params"))
+                                        .Create(create => create.Action("CreateDetail", "RequestForQuotation"))
+                                        .Update(update => update.Action("UpdateDetail", "RequestForQuotation"))
+                                        .Destroy(destroy => destroy.Action("DeleteDetail", "RequestForQuotation"))
+                                    )
+                                    .Events(e => e.Save("saveDetailVendor_event").Edit("editDetailVendor_event").DataBound("boundDetailVendor_event").Cancel("cancelDetailVendor_event"))
+                                )
+                                <script type="text/x-kendo-template" id="template">
+                                    <div class="col-lg-3">
+                                        <div class="k-upload-init-progress">
+                                            <h6>Loading...</h6>
+                                        </div>
+                                    </div>
+                                    <input name="files" class="file-upload" id="files_#=id #" type="file" style="display:none" />
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-lg-8"><div class="pull-right">Sub Total</div></div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @(Html.Kendo().NumericTextBoxFor(x=>x.RequestForQuotationVendor.SubTotalVendor)
+                                .Spinners(false)
+                                .HtmlAttributes(new { style = "width:100%", @readonly = "readonly", @id = "Subtotal" })
+                            )
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-lg-8"><div class="pull-right"><label asp-for="RequestForQuotationVendor.VatPercent"></label><span class="req">*</span></div></div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            @(Html.Kendo().NumericTextBoxFor(x=>x.RequestForQuotationVendor.VatPercent)
+                                .Spinners(false)
+                                .Format("## \\%")
+                                .Events(x => x.Change("VatPercent_Change"))
+                                .HtmlAttributes(new { style = "width:100%", @id = "VatPercent" })
+                            )
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            @(Html.Kendo().NumericTextBoxFor(x=>x.RequestForQuotationVendor.Vat)
+                                .Spinners(false)
+                                .HtmlAttributes(new { style = "width:100%", @readonly = "readonly", @id = "Vat" })
+                            )
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-lg-8"><div class="pull-right">Total</div></div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @(Html.Kendo().NumericTextBoxFor(x=>x.RequestForQuotationVendor.TotalAmountVendor)
+                                .Spinners(false)
+                                .HtmlAttributes(new { style = "width:100%", @readonly = "readonly", @id = "GrandTotal" })
+                            )
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-lg-8"><div class="pull-right">Attachment :</div></div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <div id="divAttachmentFile"></div>
+                            <div style="width:100%">
+                                <input type="hidden" asp-for="RequestForQuotationVendor.FilemasterId" id="FilemasterId" />
+                                <input type="hidden" asp-for="RequestForQuotationVendor.FilemasterName" id="FilemasterName" />
+                                <a href='javascript: void(0);' id="linkdetailAttachmentDownloadFile" onclick='downloadAttachmentFile()'></a> &nbsp;
+                                <a href='javascript: void(0);' id="linkdetailAttachmentRemoveFile"  onclick='removeAttachmentFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <div class="modal-footer">
+                @if (ViewBag.isRequestor == true)
+                {
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="saveDetailVendor()">Submit</button>
+                }
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,351 @@
+﻿@{
+    ViewBag.ModalTitle = "Interview Update";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    @*<a href="@Url.Content("~/Hris/Activity/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>*@
+}
+
+@section Paneltools{
+    @*<a  data-target="#ActivityModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>*@
+}
+@section Panelbody{
+    <script>
+        $('#xbreadcrumb').hide();
+    </script>
+    <legend>Applicant Detail Info</legend>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+
+
+                &nbsp;
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                &nbsp;
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="form-group">
+                <a href="#" class="btn btn-secondary" onclick="ApprovedData()">Approved</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/Interview/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-primary">Interview</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/Comment/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-secondary">Comment</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/Training/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-secondary">Screening Test</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/ApplicantReject/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-secondary">Reject</a>
+                <a href="@Url.Content("~/Hris/ApplicantDetail/ApplicantMoveStage/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" class="btn btn-secondary">Move Stage</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Applicant ID">Applicant ID</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="applicant_code" id="applicant_code" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Posting Code">Posting Code</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="posting_code" id="posting_code" readonly />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Status">Status</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="posting_status" id="posting_status" readonly />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Recruitment Status">Recruitment Status</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="recruitment_status" id="recruitment_status" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Vacancy">Vacancy</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="vacancy_name" id="vacancy_name" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+    </div>
+    <hr />
+    <legend>Interview Applicant</legend>
+    <style>
+        .m-margin__top-25 {
+            margin-top: 30px !important;
+        }
+
+        #mapid {
+            height: 480px;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="~/assets/plugins/leaflet/leaflet.css">
+    <link rel="stylesheet" href="~/assets/plugins/leaflet/MarkerCluster.Default.css">
+    <form id="InterviewFormUpdate" method="post">
+        <input value="@ViewBag.RecordIDSec" type="hidden" name="job_vacancy_id" id="job_vacancy_id" />
+        <input value="@ViewBag.RecordID" type="hidden" name="id" id="id" />
+        <input value="@ViewBag.RecordIDThd" type="hidden" name="candidate_recruitment_id" id="candidate_recruitment_id" />
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="date_birth">Date of Interview <span style="color:red">*</span></label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" data-date-format="yyyy-mm-dd" id="date_interview" name="date_interview" required>
+                        <span class="input-group-btn">
+                            <button class="btn default" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Interviewer">Interviewer</span> :</label>
+                    <input name="interviewer" id="interviewer" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="To">To</span> :</label>
+                    <input name="interview_to" id="interview_to" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Subject">Subject</span> :</label>
+                    <input name="subject" id="subject" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Action">Action</span> :</label>
+                    <select name="action_plan" id="action_plan" class="form-control" onchange="changeinterview(this.value)">
+                        <option value="1st Interview">Invite 1st Interview</option>
+                        <option value="Nextstage Interview">Invite Nextstage Interview</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @*<label><span class="translate" data-args="Time">Time</span> </label>*@
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label><span class="translate"></span> Time</label>
+                            <div class="input-group">
+                                <input name="time_from_hour" id="time_from_hour" class="form-control" type="number">
+                                <input name="time_from_minutes" id="time_from_minutes" class="form-control" type="number"> &nbsp;&nbsp; &mdash;
+                                &nbsp; &nbsp;
+                                <input name="time_to_hour" id="time_to_hour" class="form-control" type="number">
+                                <input name="time_to_minutes" id="time_to_minutes" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate .m-margin__top-5" data-args="From">From</span> :</label>
+                    <input name="interview_from" id="interview_from" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Location">Location</span> :</label>
+                    @*<select name="master_location_id" id="master_location_id" class="form-control" onchange="getDataLocation(this.value)">
+                        </select>*@
+                    <select class="form-control form-control-sm m-input m-input--square" name="master_location_id" id="master_location_id" onchange="getDataLocation(this.value)"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Location">Location</span> :</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Lat</span>
+                        </div>
+                        <input name="map_lat" id="map_lat" class="form-control" type="text" readonly>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Long</span>
+                        </div>
+                        <input name="map_long" id="map_long" class="form-control" type="text" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary m-margin__top-25" id="sendInvitation"><span class="translate" data-args="Send Invitation Again">Send Invitation Again</span></button>
+                    <button type="button" class="btn btn-primary m-margin__top-25" id="insert_tempalte"><span class="translate" data-args="Insert Template">Insert Template</span></button>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <div id="mapid"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Content">Content</span> :</label>
+                    <textarea name="content" id="content" class="form-control col-lg-12" rows="15"></textarea>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-primary" onclick="submitInterviewUpdate()"><span class="translate" data-args="Save">Save</span></button>
+                <a href="~/hris/ApplicantDetail/Interview/@ViewBag.RecordIDThd/@ViewBag.RecordIDSec" class="fakelink btn btn-secondary">Closed</a>
+            </div>
+
+        </div>
+    </form>
+    <script type="text/javascript">
+
+        $(function () {
+            $("#insert_tempalte").click(function (e) {
+                e.preventDefault();
+                InsertTemplateEmail();
+            })
+            function markerOnClick(e) {
+                var title = this.options.title
+                console.log(this.options);
+                alert(title);
+                //--------nanti diganti kalau butuh on marker click
+
+            }
+
+            $("#sendInvitation").click(function (e) {
+                e.preventDefault();
+                var mailTo = $('#interview_to').val();
+                var mailSubject = $('#subject').val();
+                var mailFrom = $('#interview_from').val();
+                var mailBody = $('#content').val();
+
+                if (mailTo === "") {
+                    DangerNotif("The destination email is empty, please fill the 'To : ' field");
+                    return false;
+                }
+
+                if (mailSubject === "") {
+                    DangerNotif("The subject email is empty, please fill the 'Subject : ' field");
+                    return false;
+                }
+
+                if (mailFrom === "") {
+                    DangerNotif("The sender email is empty, please fill the 'From : ' field");
+                    return false;
+                }
+
+                if (mailBody === "") {
+                    DangerNotif("The body email is empty, please fill the 'Content : ' field");
+                    return false;
+                }
+
+                let model = {
+                    MailTo: mailTo,
+                    MailSubject: mailSubject,
+                    MailFrom: mailFrom,
+                    MailBody: mailBody,
+
+                };
+                let urlApi = $.helper.resolveApi("~ManageTransApproval/SendEmailInvitation");
+
+                $.ajax({
+                    type: 'POST',
+                    url: urlApi,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(model),
+                    success: function (result) {
+                        mApp.unblock("#m_blockui_list");
+                        SuccessNotif("Email Send Succesfully");
+                    },
+                    error: function (e, t, s) {
+                        console.log(e)
+                        mApp.unblock("#m_blockui_list");
+                    }
+                });
+            })
+
+            //var mymap = L.map('mapid').setView([-7.614, 108.5600833], 10);
+            // L.marker([-7.614, 108.5600833]).addTo(mymap);
+        });
+
+
+
+        function LoadMapId(lat, long) {
+            var container = L.DomUtil.get('mapid');
+            if (container != null) {
+                container._leaflet_id = null;
+            }
+            var mymap = L.map('mapid').setView([lat, long], 10);
+            L.marker([lat, long]).addTo(mymap);
+
+            var LeafIcon = L.Icon.extend({
+
+            });
+
+            var greenIcon = new LeafIcon({ iconUrl: WEB + '/assets/img/marker.png' });
+
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(mymap);
+
+            //ambil titik (nantinya di bungkus ajax)
+            //if (markers !== undefined) {
+            //    mymap.removeLayer(markers);
+            //}
+
+            markers = new L.markerClusterGroup();
+            //var resp = itemmarker;
+            //$.each(resp, function (index, item) {
+
+            //    var icondata = greenIcon;
+            //    var marker = L.marker([item.lintang, item.bujur], { icon: icondata, title: item.nama }).on('click', markerOnClick);
+            //    markers.addLayer(marker);
+            //});
+            mymap.addLayer(markers);
+
+        }
+        function getDataLocation(id) {
+            if (id === null || id === undefined || id === "") {
+
+                $("#map_lat").val("");
+                $("#map_long").val("");
+                LoadMapId("", "");
+            } else {
+                ajaxGet(API + "/Hris/MasterLocation/Get/" + id, {}, function (response) {
+                    response = parseJson(response);
+                    //console.log(response);
+                    $("#map_lat").val(response.data.map_lat);
+                    $("#map_long").val(response.data.map_long);
+                    LoadMapId(response.data.map_lat, response.data.map_long);
+                });
+            }
+
+        }
+        function InsertTemplateEmail() {
+            $("#content").html("Dear Khaerudin" +
+                "As a result of your application, we would like to invite you to attend an interview on"
+                + "Thursday, October 18th, at 5: 00 pm"
+                + "at our office in Graha Mas Fatmawati Jl.Fatmawati Blok A No 51A RT2 / RT5 Kebayoran Bayu, Kota Jakarta Selatan 12410"
+                + "You will have an interview with our HRD, Mrs.Ria Damyari.The interview will last about 30 minutes.Please bring your working credential / portfolio to the interview."
+                + "Regards Nava Plus HRD Recruitment");
+        }
+
+    </script>
+    <script src="~/assets/plugins/leaflet/leaflet.js"></script>
+    <script src="~/assets/plugins/leaflet/leaflet.markercluster.js"></script>
+
+
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/ApplicantDetail.interview.update.js"></script>
+}

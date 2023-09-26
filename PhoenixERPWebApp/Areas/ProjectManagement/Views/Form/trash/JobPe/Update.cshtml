@@ -1,0 +1,63 @@
+@{
+    ViewBag.ModalTitle = "JobPe";
+    ViewBag.ModalId = "JobPeModalUpdate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="JobPeFormUpdate" method="POST">
+<input value="" type="hidden" name="id" />
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="approval_id">Approval Id</span> </label>
+                <input class="md-input" name="approval_id" id="approval_id"  maxlength="1" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="ca_number">Ca Number</span> </label>
+                <input class="md-input" name="ca_number" id="ca_number"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="child_pce_number">Child Pce Number</span> </label>
+                <input class="md-input" name="child_pce_number" id="child_pce_number"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="detail">Detail</span> </label>
+                <input class="md-input" name="detail" id="detail"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                                        <label for="due_date"><span class="translate"  data-args="due_date">Due Date</span></label>
+                                        <input class="md-input" type="text" name="due_date" id="due_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_id">File Id</span> </label>
+                <input class="md-input" name="file_id" id="file_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="job_detail_id">Job Detail Id</span> </label>
+                <input class="md-input" name="job_detail_id" id="job_detail_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="job_pa_id">Job Pa Id</span> </label>
+                <input class="md-input" name="job_pa_id" id="job_pa_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="margin">Margin</span> </label>
+                <input class="md-input" name="margin" id="margin"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="pe_cost">Pe Cost</span> </label>
+                <input class="md-input" name="pe_cost" id="pe_cost"   type="text">
+            </div>            <div class="uk-form-row">
+                                        <label for="pe_date"><span class="translate"  data-args="pe_date">Pe Date</span></label>
+                                        <input class="md-input" type="text" name="pe_date" id="pe_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="pe_line_item">Pe Line Item</span> </label>
+                <input class="md-input" name="pe_line_item" id="pe_line_item"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="pe_number">Pe Number</span> </label>
+                <input class="md-input" name="pe_number" id="pe_number"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="proc_number">Proc Number</span> </label>
+                <input class="md-input" name="proc_number" id="proc_number"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="submitted_by">Submitted By</span> </label>
+                <input class="md-input" name="submitted_by" id="submitted_by"  maxlength="50" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

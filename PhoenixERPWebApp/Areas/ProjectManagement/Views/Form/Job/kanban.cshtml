@@ -1,0 +1,163 @@
+@{
+    ViewData["Title"] = "Assign PM";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+
+
+
+
+@section Panelhead{
+    <div class="btn-group">
+        <button class="btn btn-primmary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-tools"></i> Manage
+        </button>
+        <div class="dropdown-menu">
+            <a href="@Url.Content("~/ProjectManagement/job/assignmember/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Assign PM & Member
+            </a>
+
+            <a href="@Url.Content("~/ProjectManagement/job/task/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Assign Task & Subtask
+            </a>
+
+            <a href="@Url.Content("~/ProjectManagement/job/kanban/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Kanban
+            </a>
+            <a href="@Url.Content("~/ProjectManagement/status?job_id="+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Set Status
+            </a>
+            <a href="@Url.Content("~/ProjectManagement/job/task_timeline/"+ViewBag.RecordID)" class="fakelink dropdown-item">
+                Job Timeline
+            </a>
+        </div>
+    </div>
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <link rel="stylesheet" href="~/assets/plugins/muuri/kanban.css">
+    <style>
+
+        .nopadding {
+            padding: 0px !important;
+        }
+
+        .portbody {
+            word-wrap: break-word;
+            padding: 5px !important;
+        }
+
+        .taskdiv {
+            margin: 2px 5px 5px 5px;
+            padding: 5px;
+            background-color: #e8e5e5;
+            border: 1px solid #ddd;
+        }
+
+        .tab-content {
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .taskmakerbox {
+            margin: 0 auto;
+            min-width: 50%;
+        }
+
+        .taskfield {
+            background-color: #e8e5e5;
+            margin: 2px 0px 5px 0px;
+            padding: 5px;
+        }
+
+        .taskfieldnp {
+            background-color: #e8e5e5;
+            padding: 5px;
+        }
+
+        .taskmakerbox .modal-dialog {
+            min-width: 50%;
+        }
+
+        .taskmakerbox .modal-body {
+            padding-top: 2px !important;
+        }
+
+        .tab-content .tab-pane {
+            padding: 10px;
+        }
+
+        .nav-tabs {
+            margin-bottom: 0;
+        }
+
+        .board-width {
+            width: 220px;
+        }
+    </style>
+    <div id="Jobassignboardcontent" style="display:none">
+        <form action="#" method="post" id="JobassignboardForm">
+            <input value="@ViewBag.RecordID" type="hidden" name="id" />
+            <div class="row m-row--col-separator-xl">
+                <div class="col-lg-4">
+                    <div class="m-form__group-sub m--margin-bottom-30">
+                        <h3 id="company_name"></h3>
+                        <span id="brand_name"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Campaign Name</h5>
+                    <h6 id="campaign_name">-</h6>
+                    <hr />
+                    <h5>Job Name</h5>
+                    <h6 id="job_name">-</h6>
+                    <hr />
+                    <h5>Job Number</h5>
+                    <h6 id="job_number">-</h6>
+                    <hr />
+                </div>
+                <div class="col-lg-4">
+                    <h5>Account Manager</h5>
+                    <div id="accountmanagerlist" style="margin-left:10px">-</div>
+                    <hr />
+                    <h5>Deadline</h5>
+                    <h6 id="deadline" class="xdatetime">-</h6>
+                    <hr />
+                    <h5>Final Delivery</h5>
+                    <h6 id="final_delivery" class="xdatetime">-</h6>
+                    <hr />
+                </div>
+            </div>
+            <hr />
+            <div class="kanban-board">
+                <div class="kboard-area">
+                    <div class="board" id="jobtasksrc">
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="~/projectmanagement/job/detail/@ViewBag.RecordID" class="fakelink btn btn-secondary">back</a>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+    <div id="Jobassignboardinit" style="display:block;">
+        <div class="m-loader m-loader--lg" style="width:100%; display: inline-block;"></div>
+    </div>
+
+}
+
+@section Panelscript{
+    <script>
+        var RecordID="@ViewBag.RecordID"
+    </script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Job/kanban.js" asp-append-version="true"></script>
+}

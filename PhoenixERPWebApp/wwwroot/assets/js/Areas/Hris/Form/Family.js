@@ -1,0 +1,177 @@
+var ajaxUrl = API + "/Hris/Family";
+var ajaxUrlList = ajaxUrl + "/List";
+var ajaxUrlUpdate = ajaxUrl + "/Update";
+var ajaxUrlCreate = ajaxUrl + "/Create";
+var ajaxUrlDelete = ajaxUrl + "/Delete";
+
+var tableList = "FamilyList";
+var formSearch = "FamilyFormSearch";
+var modalSearch = "FamilyModalSearch";
+var pageheader = "";
+var paramsSearchIndex = function () {
+    var searchdata = $("#" + formSearch).serializeArray();
+    var data = {};
+    $(searchdata).each(function (index, obj) {
+        if (obj.name != "__RequestVerificationToken") {
+            data[obj.name] = obj.value;
+        }
+    });
+
+    return data;
+}
+var columnsIndex = [
+    {
+        "data": null,
+        "title": "#",
+        "sClass": "actioncol",
+        orderable: false,
+        "render": function (data, type, row, meta) {
+            return meta.row + meta.settings._iDisplayStart + 1;
+        }
+    }    ,{
+        "data": "address",
+        "title": "address",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "birthday",
+        "title": "birthday",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "description",
+        "title": "description",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "education_id",
+        "title": "education_id",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "employee_basic_info_id",
+        "title": "employee_basic_info_id",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "family_status_id",
+        "title": "family_status_id",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "gender",
+        "title": "gender",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "institution_id",
+        "title": "institution_id",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "married_status_id",
+        "title": "married_status_id",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "name",
+        "title": "name",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "other_no",
+        "title": "other_no",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "phone_no",
+        "title": "phone_no",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "place_birth",
+        "title": "place_birth",
+        "sClass": "",
+        orderable: true
+    }    ,{
+        "data": "religion_id",
+        "title": "religion_id",
+        "sClass": "",
+        orderable: true
+    },
+    {
+        "data": null,
+        "title": "<span class='translate'  data-args='app-action'>Actions</span>",
+        "sClass": "actioncol",
+        orderable: false,
+        "render": function (data, type, row) {
+            retval = '';
+            retval += '<span class="dropdown">';
+            retval += '<a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" aria-expanded="true">';
+            retval += '<i class="la la-ellipsis-h"></i>';
+            retval += '</a>';
+            retval += '<div class="dropdown-menu dropdown-menu-right">';
+            retval += '<a class="dropdown-item fakelink" href="/Hris/Family/update/' + row.id + '"><i class="la la-edit"></i> Details</a>';
+            retval += '<a class="dropdown-item" onClick="fnFamily.delete(\'' + row.id + '\')" href="javascript:void(0)"><i class="la la-trash"></i> Delete</a>';
+            retval += '</div>';
+            retval += '</span>';
+            return retval;
+
+        }
+    }   
+];
+
+fnFamily = {
+    generatelist: function () {
+        InitTable(tableList, ajaxUrlList, paramsSearchIndex, columnsIndex, 'id', 'asc');
+        setcolvis(tableList, columnsIndex)
+    },
+    reloadlist: function () {
+        TABLES[tableList].ajax.reload(null, false);
+    },
+    search: function () {
+        $("#" + modalSearch).show();
+    },
+    initsearch: function (x) {
+        if (x == "reset") {
+            $("#" + formSearch)[0].reset();
+        }
+        TABLES[tableList].ajax.reload();
+        $("#" + modalSearch).modal('hide');
+    },
+    delete: function (id) {
+        var text = t_delete;
+        swal({
+            title: "Confirmation",
+            text: t_delete,
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: !0
+        }).then(function (e) {
+            if (e.value) {
+                ajaxDelete(ajaxUrlDelete + "/" + id, {}, function (response) {
+                    response = parseJson(response);
+                    if (response.success) {
+                        SuccessNotif(t_deletesuccess);
+                        fnFamily.reloadlist();
+                        hideAllModal();
+                    } else {
+                        DangerNotif(response.message);
+                    }
+                });
+            }
+
+
+        });
+
+    }
+};
+
+$(function () {
+    fnFamily.generatelist();
+    initlanguage(lang_hr);
+});
+ 
+

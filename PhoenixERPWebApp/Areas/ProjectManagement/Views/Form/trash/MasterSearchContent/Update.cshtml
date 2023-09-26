@@ -1,0 +1,36 @@
+@{
+    ViewBag.ModalTitle = "MasterSearchContent";
+    ViewBag.ModalId = "MasterSearchContentModalUpdate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="MasterSearchContentFormUpdate" method="POST">
+<input value="" type="hidden" name="id" />
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                                        <label for="created_date"><span class="translate"  data-args="created_date">Created Date</span></label>
+                                        <input class="md-input" type="text" name="created_date" id="created_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="isdeleted">Isdeleted</span> </label>
+                <input class="md-input" name="isdeleted" id="isdeleted"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="screen">Screen</span> </label>
+                <input class="md-input" name="screen" id="screen"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="search_content">Search Content</span> </label>
+                <input class="md-input" name="search_content" id="search_content"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="updated_by">Updated By</span> </label>
+                <input class="md-input" name="updated_by" id="updated_by"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                                        <label for="updated_date"><span class="translate"  data-args="updated_date">Updated Date</span></label>
+                                        <input class="md-input" type="text" name="updated_date" id="updated_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

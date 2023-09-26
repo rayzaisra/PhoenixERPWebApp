@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Client Brief";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+
+@section Panelhead{
+    <link href="~/assets/plugins/gantt/gantt.css" rel="stylesheet" />
+  
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <script>
+    var RecordId = "@ViewBag.RecordID";
+
+    </script>
+    <div id="divxactive" style="display:none">
+        <form action="#" method="post" id="JobTimeline">
+            <input value="@ViewBag.RecordID" type="hidden" name="id" />
+            <div class="row m-row--col-separator-xl">
+                <div class="col-lg-4">
+                    <div class="m-form__group-sub m--margin-bottom-30">
+                        <h3 id="company_name"></h3>
+                        <span id="brand_name"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Campaign Name</h5>
+                    <h6 id="campaign_name">-</h6>
+                    <hr />
+                    <h5>Job Name</h5>
+                    <h6 id="job_name">-</h6>
+                    <hr />
+                    <h5>Job Number</h5>
+                    <h6 id="job_number">-</h6>
+                    <hr />
+                </div>
+                <div class="col-lg-4">
+                    <h5>Account Manager</h5>
+                    <div id="accountmanagerlist" style="margin-left:10px">-</div>
+                    <hr />
+                    <h5>Deadline</h5>
+                    <h6 id="deadline" class="xdatetime">-</h6>
+                    <hr />
+                    <h5>Final Delivery</h5>
+                    <h6 id="final_delivery" class="xdatetime">-</h6>
+                    <hr />
+                </div>
+            </div>
+            <hr />
+            <div id="gantt_chart"></div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+                    <a href="~/projectmanagement/job/detail/@ViewBag.RecordID" class="fakelink btn btn-secondary">back</a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div id="divxloader" style="display:block">
+        <div class="m-loader m-loader--lg" style="width:100%; display: inline-block;"></div>
+    </div>
+
+
+
+}
+@section Panelscript{
+
+
+
+    <script src="~/assets/plugins/gantt/velocity.min.js"></script>
+    <script src="~/assets/plugins/gantt/velocity.ui.min.js"></script>
+    <script src="~/assets/plugins/gantt/jquery-ui.min.js"></script>
+
+    <script src="~/assets/plugins/gantt/gantt_chart.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Job.timeline.js"></script>
+}
+

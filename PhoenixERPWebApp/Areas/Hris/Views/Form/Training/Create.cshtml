@@ -1,0 +1,129 @@
+@{
+    ViewData["Title"] = "Training";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="TrainingFormCreate" method="post">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label><span class="translate" data-args="Training Category">Training Category</span> :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="category" id="category">
+                    <option value="Development">Development</option>
+                    <option value="Business">Business</option>
+                    <option value="IT and Software">IT and Software</option>
+                    <option value="Office Productivity">Office Productivity</option>
+                    <option value="Personal Development">Personal Development</option>
+                    <option value="Design">Design</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Lifestlye">Lifestlye</option>
+                    <option value="Photography">Photography</option>
+                    <option value="Health and Fitness">Health and Fitness</option>
+                    <option value="Teacher Training">Teacher Training</option>
+                    <option value="Music">Music</option>
+                    <option value="Academics">Academics</option>
+                    <option value="Language">Language</option>
+                    <option value="Test Preparation">Test Preparation</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label><span class="translate" data-args="Training Subject">Training Subject</span> :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="subject" id="subject">
+                    <option value="Finance">Finance</option>
+                    <option value="Enterpreneurship">Enterpreneurship</option>
+                    <option value="Communications">Communications</option>
+                    <option value="Management">Management</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Strategy">Strategy</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label><span class="translate" data-args="Training Type">Training Type</span> :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="training_type" id="training_type">    .
+                    <option value="In House Training">In House Training</option>
+                    <option value="Public Training">Public Training</option>
+                    <option value="Online">Online</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label><span class="translate" data-args="Training Course Name">Training Course Name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="name" id="name" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label><span class="translate" data-args="Training Cost">Training Cost</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="training_cost" id="training_cost" type="number" onblur="ShowBonding()">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="">Training Cost more than 15.000.000 need to fill bonding detail bellow</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-group" id="bonding_detail_div" style="display:none">
+                <label><span class="translate" data-args="Bonding Detail">Bonding Detail</span> :</label>
+                <textarea class="form-control form-control-sm m-input m-input--square" name="bonding_detail" id="bonding_detail" rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label><span class="translate" data-args="Recruitment">Recruitment</span> :</label>
+                <textarea class="form-control form-control-sm m-input m-input--square" name="recruitment" id="recruitment" rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label><span class="translate" data-args="Description / Note">Description / Note</span> :</label>
+                <textarea class="form-control form-control-sm m-input m-input--square" name="description" id="description" rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label><span class="translate" data-args="Target Audiance">Target Audiance</span> :</label>
+                <textarea class="form-control form-control-sm m-input m-input--square" name="target_audiance" id="target_audiance" rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/TrainingRequisition" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Training.create.js"></script>
+}

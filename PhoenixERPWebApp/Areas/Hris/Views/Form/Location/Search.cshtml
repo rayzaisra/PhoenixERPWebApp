@@ -1,0 +1,42 @@
+@{
+    ViewBag.ModalTitle = "Location";
+    ViewBag.ModalId = "LocationModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="LocationFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="client_brief_id">client_brief_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_client_brief_id" id="search_client_brief_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="lattitude">lattitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_lattitude" id="search_lattitude"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="location_name">location_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_location_name" id="search_location_name"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="longitude">longitude</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_longitude" id="search_longitude"   type="number">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnLocation.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnLocation.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

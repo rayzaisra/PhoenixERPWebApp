@@ -1,0 +1,384 @@
+@model PhoenixERPWebApp.Models.ChartofAccount
+@{
+    ViewData["Title"] = "Master Chart Of Account Level 4";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Master Chart Of Account Level 4</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Master Data</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="chartofaccountlv4" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Master Chart Of Account Level 4</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="chartofaccountlv4" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="chartofaccountlv4" asp-area="finance" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">@ViewBag.Header Master Chart Of Account Level 4</h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="formchartofaccountlv4" class="form-horizontal form-bordered" role="form" asp-action="submit" asp-controller="chartofaccountlv4" asp-area="Finance">
+                        <div class="row ">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="CreatedBy" />
+                                <input type="hidden" asp-for="CreatedOn" />
+                                <input type="hidden" asp-for="ModifiedBy" />
+                                <input type="hidden" asp-for="ModifiedOn" />
+                                <input type="hidden" asp-for="ApprovedBy" />
+                                <input type="hidden" asp-for="ApprovedOn" />
+                                <input type="hidden" asp-for="DeletedBy" />
+                                <input type="hidden" asp-for="DeletedOn" />
+                                <input type="hidden" asp-for="IsActive" />
+                                <input type="hidden" asp-for="IsLocked" />
+                                <input type="hidden" asp-for="IsDefault" />
+                                <input type="hidden" asp-for="IsDeleted" />
+                                <input type="hidden" asp-for="OwnerId" />
+                                <input type="hidden" asp-for="Name1" />
+                                <input type="hidden" asp-for="Name2" />
+                                <input type="hidden" asp-for="Name3" />
+
+                                <div class="row ">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>ID COA Level 1</label>  :
+                                            @(Html.Kendo().MaskedTextBox().Name("txtRec1").Mask("0.0.00.00.00")
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:100%",
+                                                           maxlength = 20,
+                                                           placeholder = $"0.0.00.00.00",
+                                                           @readonly = "readonly"
+                                                       }
+                                                   ))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="Name1"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DropDownListFor(x => x.CodeRec1)
+                                                       .DataTextField("Text")
+                                                       .DataValueField("Value")
+                                                       .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.Name1)}")
+                                                       .Events(evt => evt.Select("CoaLv1_SelectEvent"))
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:100%;",
+                                                           required = "required",
+                                                           validationmessage = $"{Html.DisplayNameFor(m => m.Name1)} is required"
+                                                       })
+                                                       .Filter(FilterType.Contains)
+                                                       .DataSource(source => source
+                                                           .Custom()
+                                                           .Transport(transport => transport
+                                                           .Read(read =>
+                                                           {
+                                                               read.Action("GetDDLCOACodeByNameLv1", "Dropdown", new { area = "finance" });
+                                                           }))
+                                                           .ServerFiltering(false)
+                                                       )
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row ">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>ID COA Level 2</label>  :
+                                            @(Html.Kendo().MaskedTextBox().Name("txtRec2").Mask("0.0.00.00.00")
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:100%",
+                                                           maxlength = 20,
+                                                           placeholder = $"0.0.00.00.00",
+                                                           @readonly = "readonly"
+                                                       }
+                                                   ))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="Name2"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DropDownListFor(x => x.CodeRec2)
+                                                       .DataTextField("Text")
+                                                       .DataValueField("Value")
+                                                       .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.Name2)}")
+                                                       .Events(evt => evt.Select("CoaLv2_SelectEvent"))
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:100%;",
+                                                           required = "required",
+                                                           validationmessage = $"{Html.DisplayNameFor(m => m.Name2)} is required"
+                                                       })
+                                                       .Filter(FilterType.Contains)
+                                                       .DataSource(source => source
+                                                           .Custom()
+                                                           .Transport(transport => transport
+                                                           .Read(read =>
+                                                           {
+                                                               read.Action("GetDDLCOACodeByNameLv2", "Dropdown", new { area = "finance" }).Data("CodeRec2_params");
+                                                           }))
+                                                           .ServerFiltering(true)
+                                                       ).CascadeFrom("CodeRec1")
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row ">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>ID COA Level 3</label>  :
+                                            @(Html.Kendo().MaskedTextBox().Name("txtRec3").Mask("0.0.00.00.00")
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:100%",
+                                                           maxlength = 20,
+                                                           placeholder = $"0.0.00.00.00",
+                                                           @readonly = "readonly"
+                                                       }
+                                                   ))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="Name3"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().DropDownListFor(x => x.CodeRec3)
+                                                       .DataTextField("Text")
+                                                       .DataValueField("Value")
+                                                       .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.Name3)}")
+                                                       .Events(evt => evt.Select("CoaLv3_SelectEvent"))
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:100%;",
+                                                           required = "required",
+                                                           validationmessage = $"{Html.DisplayNameFor(m => m.Name3)} is required"
+                                                       })
+                                                       .Filter(FilterType.Contains)
+                                                       .DataSource(source => source
+                                                           .Custom()
+                                                           .Transport(transport => transport
+                                                           .Read(read =>
+                                                           {
+                                                               read.Action("GetDDLCOACodeByNameLv3", "Dropdown", new { area = "finance" }).Data("CodeRec3_params");
+                                                           }))
+                                                           .ServerFiltering(true)
+                                                       ).CascadeFrom("CodeRec2")
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row ">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <div class="col-lg-12" style="padding:0px">
+                                                <label>ID COA Level 4</label>  :
+                                            </div>
+                                            @(Html.Kendo().MaskedTextBoxFor(m => m.CodeRec).Mask("0.0.00.00.00")
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:80%",
+                                                           maxlength = 20,
+                                                           placeholder = $"0.0.00.00.00",
+                                                           required = "required",
+                                                           validationmessage = $"{Html.DisplayNameFor(m => m.CodeRec)} is required",
+                                                           @readonly = "readonly"
+                                                       }
+                                                    ))
+
+                                            @(Html.Kendo().NumericTextBox().Name("code")
+                                                       .Spinners(false)
+                                                       .Min(1)
+                                                       .Max(99)
+                                                       .Format("n0")
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:19%",
+                                                           maxlength = 2,
+                                                           required = "required",
+                                                       }
+                                                    ))
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="Name4"></label> <span class="req">*</span>  :
+                                            @(Html.Kendo().TextBoxFor(m => m.Name4)
+                                                       .HtmlAttributes(new
+                                                       {
+                                                           style = "width:100%",
+                                                           maxlength = 20,
+                                                           placeholder = $"Input type a {Html.DisplayNameFor(m => m.Name4)}",
+                                                           required = "required",
+                                                           validationmessage = $"{Html.DisplayNameFor(m => m.Name4)} is required"
+                                                       }
+                                                   ))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">
+                                    <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                                    <a asp-action="index" asp-controller="chartofaccountlv4" asp-area="finance" class="fakelink btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var code = "@Model.CodeRec";
+        var code1 = "@Model.CodeRec1";
+        var code2 = "@Model.CodeRec2";
+        var code3 = "@Model.CodeRec3";
+
+        if (code != "") {
+            var array = code.split(".");
+            $("#code").data("kendoNumericTextBox").value(array[3]);
+        }
+
+        if (code1 != "") {
+            $("#txtRec1").data("kendoMaskedTextBox").value(code1);
+        }
+
+        if (code2 != "") {
+            $("#txtRec2").data("kendoMaskedTextBox").value(code2);
+        }
+
+        if (code3 != "") {
+            $("#txtRec3").data("kendoMaskedTextBox").value(code3);
+        }
+    });
+
+    $("#code").keyup(function () {
+        var array = $("#CodeRec").data("kendoMaskedTextBox").value().split(".");
+        var value = this.value;
+        if (value.length == 1) value = "0" + value;
+        $("#CodeRec").data("kendoMaskedTextBox").value(array[0] + '.' + array[1] + '.' + array[2] + '.' + value + ".00");
+    });
+
+    function CodeRec2_params(){
+        return {
+            CodeRec: $("#CodeRec1").val()
+        }
+    }
+
+    function CodeRec3_params() {
+        return {
+            CodeRec: $("#CodeRec2").val()
+        }
+    }
+
+    $('#btn-save').click(function () {
+        callAction({ formId:"formchartofaccountlv4", title: "save", type:"POST"});
+    });
+
+    function CoaLv1_SelectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $("#Name1").val(dataItem.Text);
+            $("#Name2").val("");
+            $("#Name3").val("");
+            $("#txtRec1").data("kendoMaskedTextBox").value(dataItem.Value);
+            $("#txtRec2").data("kendoMaskedTextBox").value(dataItem.Value);
+            $("#txtRec3").data("kendoMaskedTextBox").value(dataItem.Value);
+            $("#CodeRec").data("kendoMaskedTextBox").value(dataItem.Value);
+            var array = dataItem.Value.split(".");
+            SetCode(array);    
+        }
+    }
+
+    function CoaLv2_SelectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $("#Name2").val(dataItem.Text);
+            $("#Name3").val(""); 
+            $("#txtRec2").data("kendoMaskedTextBox").value(dataItem.Value);
+            $("#txtRec3").data("kendoMaskedTextBox").value(dataItem.Value);
+            $("#CodeRec").data("kendoMaskedTextBox").value(dataItem.Value);
+            var array = dataItem.Value.split(".");
+            SetCode(array);    
+        }
+    }
+
+    function CoaLv3_SelectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $("#Name3").val(dataItem.Text);
+            $("#txtRec3").data("kendoMaskedTextBox").value(dataItem.Value);
+            var array = dataItem.Value.split(".");
+            SetCode(array);    
+        }
+    }
+    function SetCode(array) {
+        var value = "00";
+        if ($("#code").data("kendoNumericTextBox").value() != null) {
+            value = $("#code").data("kendoNumericTextBox").value().toString();
+            if (value.length == 1) value = "0" + value;
+        }
+        $("#CodeRec").data("kendoMaskedTextBox").value(array[0] + '.' + array[1] + '.' + array[2] + '.' + value + ".00");
+    }
+</script>

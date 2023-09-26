@@ -1,0 +1,219 @@
+﻿@model PhoenixERPWebApp.Models.InvoiceDeliveryNotes
+<style>
+    .modallargewidth {
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    .has-danger label:not([class]) {
+        color: #f4516c;
+    }
+</style>
+
+<div class="modal fade" id="modal-invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modallargewidth">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Invoice</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"  id="modalBodyInvoice">
+                <form id="formVendor" class="form-horizontal form-bordered" role="form" enctype="multipart/form-data">
+                    <div class="m-form__group">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label>Invoice No</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        @Html.Kendo().TextBox().Name("_InvNo").HtmlAttributes(new
+                                            {
+                                                style = "width:100%",
+                                                @class = "m-input"
+                                            })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Legal Entity</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            @(Html.Kendo().DropDownList().Name("_LegalId")
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel("Choose a Legal Entity")
+                                                .HtmlAttributes(new { style = "width:100%;" })
+                                                .Filter(FilterType.Contains)
+                                                .Popup(x => x.AppendTo("#modalBodyInvoice"))
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                                    }))
+                                                    .ServerFiltering(false)
+                                                ))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Client</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            @(Html.Kendo().DropDownList().Name("_ClientId")
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel("Choose a Client")
+                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                .Filter(FilterType.Contains)
+                                                .Popup(x => x.AppendTo("#modalBodyInvoice"))
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLClient", "Dropdown", new { area = "Finance" });
+                                                    }))
+                                                    .ServerFiltering(false)
+                                                ))
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Business Unit</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            @(Html.Kendo().DropDownList().Name("_DivisionId")
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel("Choose a Business Unit")
+                                                .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                .Filter(FilterType.Contains)
+                                                .Popup(x => x.AppendTo("#modalBodyInvoice"))
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                                    }))
+                                                    .ServerFiltering(false)
+                                                ))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Client Brand</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            @(Html.Kendo().DropDownList().Name("_Brand")
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .OptionLabel("Choose a Client Brand")
+                                                .HtmlAttributes(new { style = "width:100%;", required = "required", @class = "ddlClass" })
+                                                .Filter(FilterType.Contains)
+                                                .Popup(x => x.AppendTo("#modalBodyInvoice"))
+                                                .DataSource(source => source
+                                                    .Custom()
+                                                    .Transport(transport => transport
+                                                    .Read(read =>
+                                                    {
+                                                        read.Action("GetDDLBrand", "Dropdown");
+                                                    }))
+                                                    .ServerFiltering(false)
+                                                ))
+                                        </div>
+                                        </div>
+                                    </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <button class="btn btn-primary" type="button" onclick="SearchInvoiceList()">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group m-form__group row m-row--no-padding">
+                                        <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.AccountReceivable>()
+                                                .Name("grid-choice-invoice")
+                                                .Columns(columns =>
+                                                {
+                                                    columns.Select().ClientHeaderTemplate(" ").Width(40).HtmlAttributes(new { style = "text-align:center;" });
+                                                    columns.Bound(p => p.Id).Width(150).Title("Invoice No");
+                                                    columns.Bound(p => p.TransactionDate).Title("Date Invoice").Width(120);
+                                                    columns.Bound(p => p.CurrencyName).Title("Currency").Width(120);
+                                                    columns.Bound(p => p.TotalAmount).ClientTemplate("#if(CurrencySymbol!=null && TotalAmount!=null){# #=CurrencySymbol# #}# #if(TotalAmount!=null){# #=kendo.format('{0:n2}', TotalAmount)# #}#").Title("Total Amount").Width(150);
+                                                    columns.Bound(p => p.VATAmount).ClientTemplate("#if(CurrencySymbol!=null && VATAmount!=null){# #=CurrencySymbol# #}# #if(VATAmount!=null){# #=kendo.format('{0:n2}', VATAmount)# #}#").Title("VAT Amount").Width(150);
+                                                    columns.Bound(p => p.Amount).ClientTemplate("#if(CurrencySymbol!=null && Amount!=null){# #=CurrencySymbol# #}# #if(Amount!=null){# #=kendo.format('{0:n2}', Amount)# #}#").Title("Grand Total").Width(150);
+                                                    columns.Bound(p => p.VatNo).Title("VAT No").Width(160);
+                                                    columns.Bound(p => p.ClientName).Title("Client Name").Width(150);
+                                                    columns.Bound(p => p.ClientBrand).Width(150).Title("Client Brand");
+                                                    columns.Bound(p => p.LegalEntity).Width(150).Title("Legal Entity");
+                                                    columns.Bound(p => p.BusinessUnitName).Width(150).Title("Business Unit"); 
+                                                })
+                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                .Pageable(pageable => pageable
+                                                .Refresh(true)
+                                                .PageSizes(true)
+                                                .ButtonCount(5))
+                                                .AutoBind(false)
+                                                .DataSource(dataSource => dataSource
+                                                    .Ajax()
+                                                    .PageSize(10)
+                                                    .Events(events => events.Error("errorHandler"))
+                                                    .Sort(sort=>sort.Add(p=>p.TransactionDate).Descending())
+                                                    .Model(model => { model.Id(p => p.Id); })
+                                                    .Read(read => read.Action("GetInvoiceChoiceList", "InvoiceDeliveryNotes").Data("grid_choice_invoice_params"))
+                                                )
+                                                .NoRecords()
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save-detail" onclick="SaveSelectedInvoice()">Save</button>@*onclick="saveDetailVendor()"*@
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="pce-template" type="text/x-kendo-template">
+    <span'>#=PceId# </span'>
+</script>
+<script id="div-template" type="text/x-kendo-template">
+    <span'>#=Division# </span'>
+</script>
+
+<script id="legal-template" type="text/x-kendo-template">
+    <span'>#=LegalEntity# </span'>
+</script>
+
+

@@ -1,0 +1,182 @@
+﻿<input hidden id="detail-id" value="@ViewBag.RecordID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Good Received</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Procurment & Expenses</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/GoodReceived")" class="m-nav__link">
+                        <span class="m-nav__link-text">Good Received</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <h5>Good Received <span style="width: 100px;" id="status"></span></h5>
+                        
+                        <form id="form-GoodReceived" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input hidden name="id" value="@ViewBag.RecordID" />
+                            <div class="row">
+                                <!-- Begin: GR Number -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Good Received Number :</label>
+                                        <input id="gr_number" name="gr_number" type="text" class="form-control form-control-sm m-input" readonly>
+                                    </div>
+                                </div>
+                                <!-- End: GR Number -->
+                                <!-- Begin: PO Number -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>PO Number :</label>
+                                        <select id="purchase_order_number" name="purchase_order_number" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <!-- End: PO Number -->
+                                <!-- Begin: PO Status -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>PO Status :</label>
+                                        <select id="purchase_order_status" name="purchase_order_status" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <!-- End: PO Status -->
+                                <!-- Begin: Vendor -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Vendor :</label>
+                                        <select id="company_id" name="company_id" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <!-- End: Vendor -->
+                            </div>
+                            <div class="row">
+                                <!-- Begin: GR Date -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <label class="form-control-label">Good Received Date :</label>
+                                    <div class="input-group input-group-sm date">
+                                        <input type="text" class="form-control form-control-sm m-input" name="gr_date" readonly="" placeholder="Select Date" id="m_datetimepicker_2">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="la la-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: GR Date -->
+                                <!-- Begin: GR Type -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Type :</label>
+                                        <select id="gr_type" name="gr_type" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <!-- End: GR Type -->
+                                <!-- Begin: Delivery Place -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Delivery Place :</label>
+                                        <input id="delivery_place" name="delivery_place" type="text" class="form-control form-control-sm m-input" placeholder="Enter Delivery Place">
+                                    </div>
+                                </div>
+                                <!-- End: Delivery Place -->
+                                <!-- Begin: Receipt By -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label>Receipt By :</label>
+                                            <select id="receipt_by" name="receipt_by" class="form-control form-control-sm m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Receipt By -->
+                            </div>
+                            <div class="row">
+                                <!-- Begin: Term -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Term :</label>
+                                        <input id="term" name="term" type="text" class="form-control form-control-sm m-input" placeholder="Enter Term">
+                                    </div>
+                                </div>
+                                <!-- End: Term -->
+                                <!-- Begin: Delivery Order Number -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Delivery Order Number :</label>
+                                        <input id="delivery_order_number" name="delivery_order_number" type="text" class="form-control form-control-sm m-input" readonly>
+                                    </div>
+                                </div>
+                                <!-- End: Delivery Order Number -->
+                            </div>
+                        </form>
+                     
+                    </div>
+                    <div class="form-group m-form__group row m-row--no-padding">
+                        <div class="col-lg-12 m-row--no-padding" id="m_blockui_list">
+                            <h5>Good Received Details</h5>
+
+                            <table id="dgdetail" class="easyui-datagrid" style="width:100%">
+                                <thead>
+                                </thead>
+                            </table>
+
+                            <div id="tb" style="height:auto">
+                                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" id="btn-append">New</a>
+                                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" id="btn-removeit">Remove</a>
+                                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" id="btn-accept">Accept</a>
+                                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" id="btn-reject">Reject</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" id="btn-save" class="btn btn-sm btn-success">Save to Draft</button>
+                            <button type="button" id="btn-submit" class="btn btn-sm btn-primary">Submit</button>
+                            <a href="@Url.Content("~/Finance/GoodReceived")" class="fakelink btn btn-sm btn-secondary">Close</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div class="modal-container"></div>
+
+@section Scripts{
+    <script src="~/demo/demo_12/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="~/vendors/custom/momenjs/moment.min.js"></script>
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Finance/Scripts/GoodReceived.Detail.js?@DateTime.Now" asp-append-version="true"></script>
+}

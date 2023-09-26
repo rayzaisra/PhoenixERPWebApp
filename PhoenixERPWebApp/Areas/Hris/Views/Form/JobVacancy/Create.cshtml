@@ -1,0 +1,225 @@
+@{
+    ViewData["Title"] = "JobVacancy";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <span class="translate" data-args="Create Job Vacancy">Create Job Vacancy</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <form id="JobVacancyFormCreate" method="post">
+        <input type="hidden" id="template_approval_id" name="template_approval_id"  class="form-control">
+        <fieldset>
+            <span id="tmpjobsouce"></span>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="first_name">Posting Code <span style="color:red">*</span></label>
+                        <input type="text" class="form-control" id="code" name="code" required />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="first_name">Req Code <span style="color:red">*</span></label>
+                        <select class="form-control" id="hiring_request_id" name="hiring_request_id" onchange="GetDataHiringRequest(this.value)" required></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="first_name">Posting Status <span style="color:red">*</span></label>
+                        <input type="text" class="form-control" id="posting_status" name="posting_status" value="Draft" readonly />
+                        @*<select class="form-control" id="posting_status" name="posting_status" required>
+            <option value="0">DRAFT</option>
+            <option value="3">Post/Unpublished</option>
+            <option value="4">Post/Published</option>
+            <option value="5">Closed</option>
+        </select>*@
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <hr />
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" href="#vacancy_detail" role="tab" data-toggle="tab">Vacancy Detail</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#job_souce" role="tab" data-toggle="tab">Job Source</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="vacancy_detail">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="first_name">Vacancy Name <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" id="vacancy_name" name="vacancy_name" required/>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="first_name">Location <span style="color:red">*</span></label>
+                            <select class="form-control" id="master_location_id" name="master_location_id" required></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="first_name">Closing Date <span style="color:red">*</span></label>
+                            <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                                <input type="text" class="form-control" id="closing_date" name="closing_date" required>
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>  
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <hr />
+
+                <div class="row" id="budgeted_div" style="display:none">
+                    <div class="col-lg-12 m-form__group-sub">
+                        <div class="form-group">
+                            <label>
+                                <span id="head_main_paper"><h5>Man Power Request</h5></span>
+                            </label>
+                            <div class="m-section__content">
+                                <div class="m-demo" data-code-preview="true" data-code-html="true"
+                                     data-code-js="false">
+                                    <div class="m-demo__preview" id="employee_hiring">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="first_name">Requestor <span style="color:red">*</span></label>
+                                                    <input type="text" class="form-control" id="requester_id" name="requester_id" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="first_name">Title <span style="color:red">*</span></label>
+                                                    <input type="hidden" class="form-control" id="job_title_id" name="job_title_id" />
+                                                    <input type="text" class="form-control" id="job_title_name" name="job_title_name" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="first_name">Division <span style="color:red">*</span></label>
+                                                    <input type="hidden" class="form-control" id="business_unit_id" name="business_unit_id" />
+                                                    <input type="text" class="form-control" id="business_unit_name" name="business_unit_name" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <!-- begin: Datatable -->
+                                                <table class="table table-striped- table-bordered table-hover table-checkable"
+                                                       id="dt_basic">
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th>Job Title</th>
+                                                            <th>Grade</th>
+                                                            <th id="tff_head">TTF</th>
+                                                            <th id="employment_status_head">Employment Status</th>
+                                                            <th>Budget Source</th>
+                                                            <th id="mpp_head">MPP Budget</th>
+                                                            <th>Date Joining</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                                <!-- end:: Datatable -->
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <br />
+
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="job_souce">
+                <div class="row m-row--col-separator-xl">
+                    <div class="col-sm-11"></div>
+                    <div class="col-sm-1"> <a data-toggle="modal" data-target="#JobVacancyModalDetail" class="fakelink  m-btn btn btn-primary btn-sm m-btn--sm" onclick="ClearModal()"><i class="la la-plus"></i>Add</a></div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- begin: Datatable -->
+                        <table class="table table-striped- table-bordered table-hover table-checkable"
+                               id="dt_basic_job_posting">
+                            <thead>
+                                <tr>
+
+                                    <th>Posting Code</th>
+                                    <th>Source</th>
+                                    <th>Files</th>
+                                    <th>Link Posting (URL)</th>
+                                    <th>Date Posting</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <!-- end:: Datatable -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <input type="hidden" id="template_approval_id" name="template_approval_id">
+            <div class="col-lg-12 m-form__group-sub">
+                <div class="form-group">
+                    <label>
+                        <h5>Approval</h5>
+                    </label>
+                    <div class="m-section__content">
+                        <table class="table table-striped table-bordered table-hover table-checkable" id="VacancyApprover">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Title</th>
+                                    <th>Approver Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="no_data">
+                                    <td colspan="3">No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" id="btn-save" class="btn btn-primary">Submit</button>
+                <a href="~/Hris/JobVacancy" class="fakelink btn btn-secondary">Close</a>
+            </div>
+        </div>
+    </form>
+    @Html.Partial("JobVacancy/Detail")
+
+}
+@section Panelscript{
+    <script src="~/approval/gmApproval.js"></script>
+    <script src="~/assets/js/Areas/Hris/Form/JobVacancy.create.js"></script>
+}

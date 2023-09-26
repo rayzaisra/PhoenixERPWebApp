@@ -1,0 +1,144 @@
+@{
+    ViewData["Title"] = "Rate Card";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+@section Panelhead{
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <style>
+        .xcount {
+            text-align: right;
+            direction: rtl;
+            width:100%;
+        }
+        .xrght{
+            width:20px;
+            margin-top:6px!important;
+        }
+        .xrght i{
+
+            padding-top: 10px !important;
+        }
+        .xtext {
+            width: 100%;
+        }
+        .tblnopadding tbody tr td {
+            padding: 0px !important;
+        }
+        .tblnopadding tfoot tr td {
+            padding: 0px !important;
+        }
+        #tablePce .xcategory {
+            width:160px;
+        }
+        #tablePce .select2-results__options li.select2-results__option{
+            font-size: 10px !important;
+        }
+        .bigselect {
+            width: 400px !important;
+            font-size: 10px !important;
+        }
+        #tablePce .select2-results__options {
+            font-size: 10px !important;
+        }
+        #tablePce .select2-selection__rendered {
+            font-size: 10px !important;
+            min-height:28px;
+            padding-top:5px;padding-bottom:5px;
+        }
+        #tablePce .select2-selection__clear{
+            z-index:1000;
+        }
+
+    </style>
+    <form action="#" method="post" id="PceFormCreate">
+
+        <div class="row m-row--col-separator-xl">
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="name"></span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" required name="name" id="name" required maxlength="50" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Unit Group"></span> :</label>
+                    <select id="business_unit_id" name="business_unit_id" style="width:100%"></select>
+                </div>
+
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Currency"></span> :</label>
+                    <select id="currency" name="currency" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="description"></span> :</label>
+                    <textarea class="form-control form-control-sm m-input m-input--square" required name="description" id="description"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Code"></span> :</label>
+                    <input readonly class="form-control form-control-sm m-input m-input--square" required name="code" id="code" value="-" maxlength="50" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="rev"></span> :</label>
+                    <input readonly class="form-control form-control-sm m-input m-input--square" required name="revision" id="revision" value="0" maxlength="50" type="text">
+                </div>
+                <div class="m-form__group-sub m--margin-bottom-20" style="text-align:right">
+                    <h6 id="company_name">Total Amount</h6>
+                    <h3 class="m--font-info"><span id="totalAmount">0</span></h3>
+                </div>
+            </div>
+        </div><hr />
+        <div style="height: auto;" id="showdetil" class="datagrid-toolbar">
+            <a class="btn btn-outline-success m-btn m-btn--icon btn-sm m-btn--air fakelink" onclick="fnPce.addtask()" href="javaascript:void(0)"><i class="fa fa-plus"></i> Add </a>
+        </div>
+        <table id="tablePce" class="tblnopadding table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th style="width:90px"> </th>
+
+                    <th colspan="2">task </th>
+                    <th>Category </th>
+                    <th style="width:80px">Remarks </th>
+                    <th style="width:100px">Brand </th>
+                    <th style="width:80px">Sub Brand </th>
+                    <th style="width:10px">Qty </th>
+                    <th style="width:100px">Price</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8" align="right"></td>
+                    <td><input id="total" class="xcount form-control-sm m-input m-input--square " required type="text"></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <hr />
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+        <a href="~/ProjectManagement/Pce" class="fakelink btn btn-secondary">Close</a>
+
+
+
+    </form>
+ 
+
+}
+@section Panelscript{
+
+    <script src="~/assets/plugins/jquery.mask/jquery.mask.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Pce/create.js"></script>
+}
+

@@ -1,0 +1,240 @@
+@{
+    ViewData["Title"] = "Employee Loan Coop";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Employee Loan Coop</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="employeeloancoop" asp-area="hrisnew" class="m-nav__link"><span class="m-nav__link-text">Employee Loan Coop</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <a asp-action="addedit" asp-controller="employeeloancoop" asp-area="hrisnew" class="m-btn btn btn-primary btn-sm m-btn--sm" title="Add New Record"><i class="la la-plus"></i></a>
+                                @*<button id="btn-delete" type="button" class="m-btn btn btn-danger btn-sm m-btn--sm" title="Delete Selection"><i class="la la-trash"></i></button>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.EmployeeLoan>()
+                        .Name("grid")
+                        .Columns(columns =>
+                        {
+                            columns.Bound("").ClientTemplateId("btnAction-template").Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                            columns.Bound("").Width(100).ClientTemplateId("btnEarlyPaid-template").Title("Early Paid").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                           columns.Bound("").Title("#").Width(50).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.Id).Width(150);
+                            columns.Bound(p => p.infoEmployee.EmployeeName).Width(200);
+                            columns.Bound(p => p.LoanCategoryName).Width(200);
+                            columns.Bound(p => p.DateLoan).Width(200).Filterable(x => x.Extra(true));
+                            columns.Bound(p => p.Value).Title("Total Loan (Rp)").Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                            columns.Bound(p => p.Remaining).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                            columns.Bound(p => p.PayrollDeduction).Width(200);
+                            columns.Bound(p => p.RepaymentStartDate).Width(200);
+                            columns.Bound(p => p.RepaymentEndDate).Width(200);
+                            columns.Bound(p => p.StatusDesc).Width(200);
+                            columns.Bound(p => p.Status).Hidden(true);
+                        })
+                        .NoRecords()
+                        .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5))
+                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                            .Extra(false)
+                            .Operators(operators => operators
+                            .ForString(str => str.Clear()
+                                .Contains("Contains")
+                                .StartsWith("Start sWith")
+                                .EndsWith("End sWith")
+                            )))
+                        .Scrollable(s => s.Enabled(true).Height("auto"))
+                        .Resizable(rsz => rsz.Columns(true))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("errorHandler"))
+                            .Model(model => { model.Id(p => p.Id); })
+                            .Read(read => read.Action("Read", "EmployeeLoanCoop"))
+                        )
+                        .Events(e => e.DataBound("dataBoundEvent"))
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detail Loan Info</h4>
+            </div>
+            <div class="modal-body">
+				<form id="formDtl">
+					<input type="hidden" id="LoanCategoryId" name="LoanCategoryId"/>
+					<input type="hidden" id="LoanCategoryId" name="LoanCategoryId" />					
+				</form>
+                <div id="gridDetail"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script id="btnAction-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='editGridRow(this)' title='Edit' class='edit'><span style='color:green'><i class='fa fa-edit'></i></span></a>
+    #if(Status == '0' ) {
+    if(isPaid==false){ #
+    <a href='javascript: void(0);' onclick='deleteGridRow(this)' title='Delete' class='delete'><span style='color:maroon'><i class='fa fa-trash-alt'></i></span></a>
+    #}
+    }#
+
+</script>
+
+<script id="btnEarlyPaid-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='showDetail(this)' title='View'><span style="text-decoration:underline; color:blue;">View</span></a>
+</script>
+<script>
+    $(document).ready(function () {
+
+    });
+
+    function editGridRow(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("AddEdit", "EmployeeLoanCoop")?Id=' + item.Id;
+    }
+
+    function deleteGridRow(e) {
+        deleteRow(e, '@Url.Action("Delete", "EmployeeLoanCoop")');
+    }
+
+    function showDetail(e) {
+        var item = dataItem(e);
+        $('#myModal').modal('show');
+
+        var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: '@Url.Action("ReadLoanPaid", "EmployeeLoanCoop")?id='+ item.Id,
+                type: "json"
+                @*read: function (options) {
+                    $.ajax({
+                        url: '@Url.Action("ReadLoanPaid", "EmployeeLoan")?id='+ item.Id,
+                        dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                        success: function (result) {
+                            // notify the data source that the request succeeded
+                            options.success(result);
+                            //$.each(result.data, function (i, val) {
+                            //    options.data[i] = val;
+                            //});
+                        },
+                        error: function (result) {
+                            // notify the data source that the request failed
+                            options.error(result);
+                        }
+                    });
+                }*@
+            },
+            schema: {
+                model: {
+                    fields: {
+                        DatePaid: { type: "datetime" },
+                        Value: { type: "number" },
+                        StatusDesc: { type: "string" }
+                    }
+                }
+            },
+            pageSize: 10
+        });
+
+    	//var EmployeeLoanId = item.Id;
+    	//var EmployeeBasicInfoId = item.EmployeeBasicInfoId;
+
+        $("#gridDetail").kendoGrid({
+            type: "data",
+            dataSource: dataSource,
+            dataBound: dataBoundEvent,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            columns: [
+                { command: [{ name: "edit", text: " ", update: " ", cancel: " " }, { name: "destroy", text: " ", update: " ", cancel:" " }], title: "Action", width: "90px", attributes: { style: "text-align:center;" } },
+                { field: "", title: "#", width: 35, attributes: { "class": "row-number", style: "text-align: center;"} },
+                { field: "DatePaid", title: "Month", width: 200, template: "#= kendo.toString(kendo.parseDate(DatePaid, 'yyyy-MM-dd'), 'MMMM yyyy') #" },
+                { field: "Value", title:"Value (Rp)", width: 200, format: "{0:n0}" },
+                { field: "StatusDesc", title: "Status", width: 200 },
+                { field: "EarlyPaidDate", title: "Early Paid", width: 200, editor: customBoolEditor },
+				{ field: "EmployeeLoanId", title: "Employee Load ID", width: 200, visible :false },
+				{ field: "EmployeeBasicInfoId", title: "Emp Basic Info ID", width: 200, visible: false },
+
+            ],
+            editable: "inline"
+        });
+    }
+    function customBoolEditor(container, options) {
+        var guid = kendo.guid();
+        $('<input type="textbox" name="Discontinued" data-bind="checked:EarlyPaidDate">').appendTo(container);
+        //$('<label class="k-checkbox-label" for="' + guid + '">&#8203;</label>').appendTo(container);
+    }
+
+    $('#btnSave').click(function () {
+        var data = { dtl: $("#gridDetail").data("kendoGrid").dataSource.data() };
+        callAction({ formId: "formDtl", title: "save", type: "POST", url: '@Url.Action("save", "massleave")', objects: data });
+    });
+</script>

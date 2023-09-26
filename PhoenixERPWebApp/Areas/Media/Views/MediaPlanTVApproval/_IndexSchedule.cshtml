@@ -1,0 +1,257 @@
+﻿@model PhoenixERPWebApp.Models.Media.MediaPlanTV.MediaPlanTVDetailList
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Schedule</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="m-form__group">
+                <form id="formDetail" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CreatedBy" />
+                    <input type="hidden" asp-for="CreatedOn" />
+                    <input type="hidden" asp-for="ModifiedBy" />
+                    <input type="hidden" asp-for="ModifiedOn" />
+                    <input type="hidden" asp-for="ApprovedBy" />
+                    <input type="hidden" asp-for="ApprovedOn" />
+                    <input type="hidden" asp-for="IsActive" />
+                    <input type="hidden" asp-for="IsLocked" />
+                    <input type="hidden" asp-for="IsDefault" />
+                    <input type="hidden" asp-for="IsDeleted" />
+                    <input type="hidden" asp-for="OwnerId" />
+                    <input type="hidden" asp-for="DeletedBy" />
+                    <input type="hidden" asp-for="DeletedOn" />
+                    <input hidden name="id" value="@ViewBag.RecordID" />
+                    <div class="row">
+                        <div class="col-lg-12 m-row--no-padding">
+                            <div class="m-section__content">
+                                <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                    <div class="m-demo__preview">
+                                        <div class="row">
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="VendorId"></label> <span class="req">*</span> :
+                                                    @(Html.Kendo().DropDownListFor(m => m.VendorId)
+                                                                                    .DataTextField("Text")
+                                                                                    .DataValueField("Value")
+                                                                                    .Filter(FilterType.Contains)
+                                                                                    .DataSource(source =>
+                                                                                    {
+                                                                                        source.Read(read =>
+                                                                                        {
+                                                                                            read.Action("GetDDLBrand", "DropDown", new { area = "Media" });
+                                                                                        });
+                                                                                    })
+                                                                                    .OptionLabel(new
+                                                                                    {
+                                                                                        Text = "Select Vendor...",
+                                                                                        Value = 0
+                                                                                    })
+                                                                                    .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                    )
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="TmProgramTypeId"></label> <span class="req">*</span> :
+                                                    @(Html.Kendo().DropDownListFor(m => m.TmProgramTypeId)
+                                                                                            .DataTextField("Text")
+                                                                                            .DataValueField("Value")
+                                                                                            .Filter(FilterType.Contains)
+                                                                                            .DataSource(source =>
+                                                                                            {
+                                                                                                source.Read(read =>
+                                                                                                {
+                                                                                                    read.Action("GetDDLProgramType", "DropDown", new { area = "Media" });
+                                                                                                });
+                                                                                            })
+                                                                                            .OptionLabel(new
+                                                                                            {
+                                                                                                Text = "Select Program Type...",
+                                                                                                Value = 0
+                                                                                            })
+                                                                                            .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                    )
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="TmMediaTypeId"></label> <span class="req">*</span> :
+                                                    @(Html.Kendo().DropDownListFor(m => m.TmMediaTypeId)
+                                                                                    .DataTextField("Text")
+                                                                                    .DataValueField("Value")
+                                                                                    .Filter(FilterType.Contains)
+                                                                                    .DataSource(source =>
+                                                                                    {
+                                                                                        source.Read(read =>
+                                                                                        {
+                                                                                            read.Action("GetDDLMediaType", "DropDown", new { area = "Media" });
+                                                                                        });
+                                                                                    })
+                                                                                    .OptionLabel(new
+                                                                                    {
+                                                                                        Text = "Select Media Type...",
+                                                                                        Value = 0
+                                                                                    })
+                                                                                    .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="Duration"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().TextBoxFor(m => m.Duration).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="Currency"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().TextBoxFor(m => m.Currency).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="TmProgramPositionId"></label> <span class="req">*</span> :
+                                                    @(Html.Kendo().DropDownListFor(m => m.TmProgramPositionId)
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .Filter(FilterType.Contains)
+                                                                .DataSource(source =>
+                                                                {
+                                                                    source.Read(read =>
+                                                                    {
+                                                                        read.Action("GetDDLProgramPosition", "DropDown", new { area = "Media" });
+                                                                    });
+                                                                })
+                                                                .OptionLabel(new
+                                                                {
+                                                                    Text = "Select Program Position...",
+                                                                    Value = 0
+                                                                })
+                                                                .HtmlAttributes(new { style = "width:100%;", @readonly = true })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="BaseRate30"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.BaseRate30).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    @*<label asp-for="MediaPlanNo"></label> <span class="req">*</span> :*@
+                                                    <label>Gross 60 Rate</label>
+                                                    @Html.Kendo().TextBox().Name("Gross60Rate").HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="Disc"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.Disc).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="NetRate"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.NetRate).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="Bvc"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.Bvc).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="Tvr"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.Tvr).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="Cprp"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.Cprp).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="TotalSpot"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.TotalSpot).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 m-row--no-padding">
+                                                <div class="form-group">
+                                                    <label asp-for="TotalTarps"></label> <span class="req">*</span> :
+                                                    @Html.Kendo().NumericTextBoxFor(m => m.TotalTarps).HtmlAttributes(new { @class = "m-input", style = "width:100%", @readonly = true })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Media.MediaPlanTV.MediaPlanTVDetailScheduleList>()
+                                .Name("gridSchedule")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound("").ClientTemplate("#= runningNumber(data, 'gridSchedule') #").Title("#").Width(50);
+                                    columns.Bound(p => p.Bulan).Width(200);
+                                    columns.Bound(p => p.Tanggal).Width(200);
+                                    columns.Bound(p => p.Tahun).Width(200);
+                                    columns.Bound(p => p.SpotValue).Width(200);
+                                    columns.Bound(p => p.Reason).Width(200);
+                                })
+                                .NoRecords()
+                                .Pageable(pageable => pageable
+                                    .Refresh(true)
+                                    .PageSizes(true)
+                                    .ButtonCount(5))
+                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                    .Extra(false)
+                                    .Operators(operators => operators
+                                    .ForString(str => str.Clear()
+                                        .Contains("Contains")
+                                        .StartsWith("Start sWith")
+                                        .EndsWith("End sWith")
+                                    )))
+                                .Scrollable(s => s.Enabled(true).Height("auto"))
+                                .Resizable(rsz => rsz.Columns(true))
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(10)
+                                    .Events(events => events.Error("errorHandler"))
+                                    .Model(model => { model.Id(p => p.Id); })
+                                    .Read(read => read.Action("ReadDetailSchedule", "MediaPlanTVApproval", new { Id = Model.Id }))
+                                )
+                            )
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+        </div>
+    </div>
+</div>

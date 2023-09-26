@@ -1,0 +1,51 @@
+﻿@model PhoenixERPWebApp.Models.Termination
+<input type="hidden" asp-for="TerminationInterviewDate" />
+<input type="hidden" asp-for="ExitInterviewFiles" />
+<input type="hidden" asp-for="EffectiveResignDate" />
+<input type="hidden" asp-for="WarningLetter" />
+<input type="hidden" asp-for="WarningLetterDate" />
+
+<hr/>
+<div class="row">
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="LastDayDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.LastDayDate)
+                .Format("dd MMM yyyy")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    @readonly = "readonly"
+                })
+            )
+        </div>
+    </div>
+
+    <div class="col-lg-4 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="TerminationDate"></label> <span class="req">*</span> :
+            @(Html.Kendo().DatePickerFor(m => m.TerminationDate)
+                .Format("dd MMM yyyy")
+                .HtmlAttributes(new
+                {
+                    style = "width:100%",
+                    @class = "form-control form-control-sm m-input",
+                    @readonly = "readonly"
+                })
+            )
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 m-form__group-sub">
+        <div class="form-group">
+            <label asp-for="Notes"></label> <span class="req">*</span> :
+            @(Html.Kendo().EditorFor(x => x.Notes)
+                .HtmlAttributes(new { style = "width:100%", aria_label = "editor", @readonly = "readonly" })
+                .Resizable(resizable => resizable.Content(true).Toolbar(false))
+            )
+        </div>
+    </div>
+</div>

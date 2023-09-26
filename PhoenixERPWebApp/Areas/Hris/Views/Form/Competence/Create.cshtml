@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Competence";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="CompetenceFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="competence_name">competence_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="competence_name" id="competence_name"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="level1">level1</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="level1" id="level1"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="level2">level2</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="level2" id="level2"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="level3">level3</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="level3" id="level3"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="level4">level4</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="level4" id="level4"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="level5">level5</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="level5" id="level5"  maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Competence" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Competence.create.js"></script>
+}

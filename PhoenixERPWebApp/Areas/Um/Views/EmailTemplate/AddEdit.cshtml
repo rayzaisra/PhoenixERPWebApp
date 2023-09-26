@@ -1,0 +1,216 @@
+﻿@model PhoenixERPWebApp.Models.Um.TmEmailTemplate
+@{
+    ViewData["Title"] = "Email Template Add Edit";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">@ViewData["Title"]</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Um</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="EmailTemplate" asp-area="Um" class="m-nav__link"><span class="m-nav__link-text">@ViewData["Title"]</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="AddEdit" asp-controller="EmailTemplate" asp-area="Um" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                    else
+                    {
+                        <a asp-action="AddEdit" asp-controller="EmailTemplate" asp-area="Um" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <form id="formEmailTemplate" class="form-horizontal form-bordered" role="form">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="CreatedBy" />
+                            <input type="hidden" asp-for="CreatedOn" />
+                            <input type="hidden" asp-for="ModifiedBy" />
+                            <input type="hidden" asp-for="ModifiedOn" />
+                            <input type="hidden" asp-for="IsActive" />
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label asp-for="EmailTemplateDescription"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().TextBoxFor(m => m.EmailTemplateDescription)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.EmailTemplateDescription)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.EmailTemplateDescription)} is required"
+                                            }
+                                         ))
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label asp-for="MenuId"></label><span class="req">*</span> :
+                                        @(Html.Kendo().DropDownListFor(m => m.MenuId)
+                                                            .DataTextField("Text")
+                                                            .DataValueField("Value")
+                                                            .OptionLabel("N/A")
+                                                            
+                                                            .HtmlAttributes(new
+                                                            {
+                                                                style = "width:100%;",
+                                                            })
+                                                            .Height(400)
+                                                            .Filter(FilterType.Contains)
+                                                            .DataSource(source => source
+                                                                .Custom()
+                                                                
+                                                                .Transport(transport => transport
+                                                                    .Read(read =>
+                                                                    {
+                                                                        read.Action("GetDDLMenu", "Dropdown", new { area = "hrisnew" });
+                                                                    })
+                                                                    )
+                                                            .ServerFiltering(false))
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label asp-for="Subject"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().TextBoxFor(m => m.Subject)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            maxlength = 50,
+                                            placeholder = $"Input type a {Html.DisplayNameFor(m => m.Subject)}",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.Subject)} is required"
+                                            }
+                                         ))
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label asp-for="Body"></label> <span class="req">*</span> :
+                                        @(Html.Kendo().EditorFor(x => x.Body)
+                                            .HtmlAttributes(new { style = "width:100%", aria_label = "editor", required = "required" })
+                                            .Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                            .Placeholder($"Type your {Html.DisplayNameFor(m => m.Body)} here")
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <div class="form-group">
+                                        @(Html.Kendo().CheckBoxFor(m => m.IsHtml).Label("Html"))
+                                        <input type = "hidden" asp-for="IsHtmlVal" />
+                                    @*@Html.CheckBoxFor(m => m.IsHtml, new { @checked = "checked" });*@
+                                    @*@Html.Kendo().CheckBoxFor(m => m.IsHtml).HtmlAttributes(new { @class = "k-checkbox" })*@
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="button" id="btn-save" class="btn btn-sm btn-success">Save</button>
+                                    <a asp-action="Index" asp-controller="EmailTemplate" asp-area="Um" class="fakelink btn btn-sm btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if ($('#IsHtml').prop('checked') == true) {
+            //do something
+            //alert("tax checked");
+            $("#IsHtmlVal").val(true);
+        } else {
+            //alert("tax unchecked");
+            $("#IsHtmlVal").val(false);
+        }
+        var editor = $("#Body").data("kendoEditor");
+        var valueEditor2 = editor.value();
+        var txt = $("<div>").html(valueEditor2).text();
+        editor.value(txt);
+
+        $(document).on('change', '#IsHtml', function () {
+            // your code
+            if ($(this).prop('checked') == true) {
+                //do something
+                //alert("po checked");
+                $("#IsHtmlVal").val(true);
+            } else {
+                //alert("po unchecked");
+                $("#IsHtmlVal").val(false);
+            }
+        });
+    });
+    
+    $('#btn-save').click(function () {
+        callAction({ formId: "formEmailTemplate", title: "Submit", type: "POST", url: '@Url.Action("Submit", "EmailTemplate")' });
+    });
+</script>
+

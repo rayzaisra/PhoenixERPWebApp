@@ -1,0 +1,16 @@
+﻿@model object
+@(Html.Kendo().DropDownListFor(x => x)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { style = "width:100%;", required = "required" })
+    .DataSource(source => source
+        .Custom()
+        .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Action("GetDDLUnit", "Dropdown", new { area = "Pm" });
+        }))
+        .ServerFiltering(false)
+    )
+    .AutoBind(true)
+)

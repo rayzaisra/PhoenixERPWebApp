@@ -1,0 +1,38 @@
+@{
+    ViewBag.ModalTitle = "PeFile";
+    ViewBag.ModalId = "PeFileModalCreate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="PeFileFormCreate" method="post">
+    
+
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_name">File Name</span> </label>
+                <input class="md-input" name="file_name" id="file_name"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_path">File Path</span> </label>
+                <input class="md-input" name="file_path" id="file_path"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_size">File Size</span> </label>
+                <input class="md-input" name="file_size" id="file_size"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_type">File Type</span> </label>
+                <input class="md-input" name="file_type" id="file_type"  maxlength="250" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="flag">Flag</span> </label>
+                <input class="md-input" name="flag" id="flag"   type="text">
+            </div>            <div class="uk-input-group">
+                                        <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-clock-o"></i></span>
+                                        <label for="upload_date"><span class="translate"  data-args="upload_date">Upload Date</span></label>
+                                        <input class="md-input" type="text" name="upload_date" id="upload_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

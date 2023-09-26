@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "SalaryProcessComponent";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="SalaryProcessComponentFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="component_name">component_name</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="component_name" id="component_name"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="month">month</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="month" id="month"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="tax_id">tax_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="tax_id" id="tax_id"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="type">type</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="type" id="type"  maxlength="100" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="value">value</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="value" id="value"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="value_year">value_year</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="value_year" id="value_year"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="year">year</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="year" id="year"   type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/SalaryProcessComponent" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/SalaryProcessComponent.create.js"></script>
+}

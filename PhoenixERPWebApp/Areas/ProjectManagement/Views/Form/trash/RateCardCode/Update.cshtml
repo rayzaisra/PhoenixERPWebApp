@@ -1,0 +1,24 @@
+@{
+    ViewBag.ModalTitle = "RateCardCode";
+    ViewBag.ModalId = "RateCardCodeModalUpdate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="RateCardCodeFormUpdate" method="POST">
+<input value="" type="hidden" name="id" />
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="code">Code</span> </label>
+                <input class="md-input" name="code" id="code"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="description">Description</span> </label>
+                <input class="md-input" name="description" id="description"  maxlength="250" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "RoleAccess";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="RoleAccessFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="access_activate">access_activate</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_activate" id="access_activate"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_append">access_append</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_append" id="access_append"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_approve">access_approve</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_approve" id="access_approve"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_create">access_create</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_create" id="access_create" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_delete">access_delete</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_delete" id="access_delete" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_level">access_level</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_level" id="access_level"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_lock">access_lock</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_lock" id="access_lock"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_read">access_read</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_read" id="access_read" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_share">access_share</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_share" id="access_share"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="access_update">access_update</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="access_update" id="access_update" required  type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="application_entity_id">application_entity_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="application_entity_id" id="application_entity_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="application_role_id">application_role_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="application_role_id" id="application_role_id" required maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/General/RoleAccess" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/General/Form/RoleAccess.update.js"></script>
+}

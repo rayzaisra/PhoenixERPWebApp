@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "Delegate Of Authority";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/bundles/css/datatable.min.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />*@
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Delegate Of Authority</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-gear"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">HRIS</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Hrisnew/DelegateOfAuthority")" class="m-nav__link">
+                        <span class="m-nav__link-text">Delegate Of Authority</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                                <a href="javascript:backtolist()" class="m-btn btn btn-primary btn-sm m-btn--sm"><i class="fa fa-undo"></i></a>
+                                &nbsp;&nbsp;<h5>Form Request Delegate Of Authority</h5>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input type="hidden" id="hidId" value="0" />
+                            <label class="uk-form-label">DELEGATE TO</label><br />
+                            <select id="ddlEmpApp" class="form-control form-control-sm"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="uk-form-label">START FROM</label>
+                            <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input tgl-mulai" data-target="#datetimepicker4" />
+                                <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="uk-form-label">END TO</label>
+                            <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input tgl-selesai" data-target="#datetimepicker5" />
+                                <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="uk-form-label">REASON</label>
+                            <textarea rows="5" maxlength="500" class="form-control form-control-sm" id="Tbreason"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-sm btn-primary md-btn-small bnt-save-req">SAVE</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/Areas/HrisNew/Scripts/delegateoa.js" asp-append-version="true"></script>
+    <script>
+        moment().format('DD/MM/YYYY');  
+        $(function () {
+            $('#datetimepicker4').datetimepicker({
+                format: 'L',
+                locale: 'id',
+                Default: 'dd/MM/YYYY',
+                daysOfWeekDisabled: [0, 6]
+            });
+
+            $('#datetimepicker5').datetimepicker({
+                format: 'L',
+                locale: 'id',
+                Default: 'dd/MM/YYYY',
+                daysOfWeekDisabled: [0, 6],
+                useCurrent: false
+            });
+            $("#datetimepicker4").on("change.datetimepicker", function (e) {
+                $('#datetimepicker5').datetimepicker('minDate', e.date);
+            });
+            $("#datetimepicker5").on("change.datetimepicker", function (e) {
+                console.log(e.date);
+                $('#datetimepicker4').datetimepicker('maxDate', e.date);
+            });
+            $('.bnt-save-req').on('click', function () {
+                saveRequest();
+            });
+            $('#ddlEmpApp').select2({
+                allowClear: true,
+                placeholder:'select employee to delegate'
+            });
+
+            bindEmpAppSelect();
+            var idx = sessionStorage.getItem('codex');
+            if (idx !== '0' && idx !== '' && idx !== null)
+                bindEditRequest();
+        });
+
+    </script>
+}
+
+

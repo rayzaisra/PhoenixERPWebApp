@@ -1,0 +1,241 @@
+@model PhoenixERPWebApp.Models.Family
+<!-- BEGIN: Subheader -->
+<!-- MODAL REMOTE -->
+<style>
+	.k-animation-container, .k-widget, .k-widget *, .k-animation-container *, .k-widget *:before, .k-animation-container *:after {
+		box-sizing: border-box !important;
+	}
+
+	/*k-popup-edit-form k-window-content k-content*/
+	.k-window-titlebar k-header, div.k-edit-form-container{
+		width: 820px;
+		/*padding:0px !important;*/
+	}
+
+	table {
+		border: none;
+		padding: 5px 20px;
+		width: 100%;
+		position:center;
+	}
+
+		table tr > td {
+			width: 50%;
+			padding: 0px 20px;
+		}
+</style>
+<div class="k-content">
+	<div class="row">
+		<div class="col-sm-12">
+			<table>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="fName"></label><span class="req">*</span> :
+							@(Html.Kendo().TextBoxFor(x => x.fName).HtmlAttributes(new { style = "width:100%", required = "required" }))
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="fPhoneNo"></label> :
+							@(Html.Kendo().TextBoxFor(x => x.fPhoneNo).HtmlAttributes(new { style = "width:100%" }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="Birthday"></label><span class="req">*</span> :
+							@(Html.Kendo().DatePickerFor(m => m.Birthday)
+								.Format("dd MMM yyyy")
+								.HtmlAttributes(new
+								{
+									style = "width:50%",
+									@class = "form-control form-control-sm m-input",
+								}))
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="fOtherNo"></label> :
+							@(Html.Kendo().TextBoxFor(x => x.fOtherNo).HtmlAttributes(new { style = "width:100%" }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="fEducationLevelId"></label> :
+							@(Html.Kendo().DropDownListFor(m => m.fEducationLevelId)
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.OptionLabel($"choose a {Html.DisplayNameFor(m => m.fEducationLevelId)}")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;"
+								})
+								.Height(400)
+								.Filter(FilterType.Contains)
+								.DataSource(source => source
+									.Custom()
+									.Transport(transport => transport
+										.Read(read =>
+										{
+											read.Action("GetDDLeducationlevel", "Dropdown", new { area = "hrisnew" });
+										}))
+								.ServerFiltering(false))
+							)
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="PlaceBirth"></label><span class="req">*</span> :
+							@(Html.Kendo().TextBoxFor(x => x.PlaceBirth).HtmlAttributes(new { style = "width:100%", required = "required", maxlength = "50" }))
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="FamilyStatusId"></label><span class="req">*</span> :
+							@(Html.Kendo().DropDownListFor(m => m.FamilyStatusId)
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.OptionLabel($"choose a {Html.DisplayNameFor(m => m.FamilyStatusId)}")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;",
+									required = "required",
+									validationmessage = $"{Html.DisplayNameFor(m => m.FamilyStatusId)} is required"
+								})
+								.Height(400)
+								.Filter(FilterType.Contains)
+								.DataSource(source => source
+									.Custom()
+									.Transport(transport => transport
+										.Read(read =>
+										{
+											read.Action("GetDDLFamilyStatus", "Dropdown", new { area = "hrisnew" });
+										}))
+								.ServerFiltering(false))
+							)
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label for="fReligionId">Religion</label><span class="req">*</span> :
+							@(Html.Kendo().DropDownList().Name("fReligion")
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.OptionLabel($"choose a religion")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;",
+									required = "required",
+									validationmessage = $"religion is required"
+								})
+								.Height(400)
+								.Filter(FilterType.Contains)
+								.DataSource(source => source
+									.Custom()
+									.Transport(transport => transport
+										.Read(read =>
+										{
+											read.Action("GetDDLReligion", "Dropdown", new { area = "hrisnew" });
+										}))
+								.ServerFiltering(false))
+							)
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="fGender"></label><span class="req">*</span> :<br />
+							<span style="margin-right:20px">@(Html.Kendo().RadioButtonFor(m => m.fGender).Label("Male").Value("Male"))</span>
+							@(Html.Kendo().RadioButtonFor(m => m.fGender).Label("Female").Value("Female"))
+							@*<label for="fGender">Gender</label><span class="req">*</span> :
+							@(Html.Kendo().DropDownList().Name("fGender")
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.BindTo(new List<SelectListItem>() {
+										new SelectListItem() { Text = "Choose a Gender", Value = "" },
+										new SelectListItem() { Text = "Male", Value = "Male" },
+										new SelectListItem() { Text = "Female", Value = "Female" }
+								})
+								.HtmlAttributes(new { style = "width: 100%", required = "required", validationmessage = $"Gender is required" })
+							)*@
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="fAddress"></label> :
+							@Html.TextAreaFor(x => x.fAddress, new { @class = "k-textbox", @maxlength = 2000, style = "width: 100%;padding:0.5em" })
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+						<label asp-for="fInstitutionId"></label>:
+						@(Html.Kendo().DropDownListFor(m => m.fInstitutionId)
+							.DataTextField("Text")
+							.DataValueField("Value")
+							.OptionLabel($"choose a {Html.DisplayNameFor(m => m.fInstitutionId)}")
+							.HtmlAttributes(new
+							{
+								style = "width:100%;",
+								validationmessage = $"{Html.DisplayNameFor(m => m.fInstitutionId)} is required"
+							})
+							.Height(400)
+							.Filter(FilterType.Contains)
+							.DataSource(source => source
+								.Custom()
+								.Transport(transport => transport
+									.Read(read =>
+									{
+										read.Action("GetDDLInstitution", "Dropdown", new { area = "hrisnew" });
+									}))
+							.ServerFiltering(false))
+						)
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<label asp-for="Description"></label> :
+							@Html.TextAreaFor(x => x.Description, new { @class = "k-textbox", @maxlength = 2000, style = "width: 100%;padding:0.5em" })
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<label asp-for="fMarriedStatusId"></label> : @*<span class="req">*</span> :*@
+							@(Html.Kendo().DropDownListFor(m => m.fMarriedStatusId)
+								.DataTextField("Text")
+								.DataValueField("Value")
+								.OptionLabel($"choose a {Html.DisplayNameFor(m => m.fMarriedStatusId)}")
+								.HtmlAttributes(new
+								{
+									style = "width:100%;",
+									validationmessage = $"{Html.DisplayNameFor(m => m.fMarriedStatusId)} is required"
+								})
+								.Height(400)
+								.Filter(FilterType.Contains)
+								.DataSource(source => source
+									.Custom()
+									.Transport(transport => transport
+										.Read(read =>
+										{
+											read.Action("GetDDLMarriedStatus", "Dropdown", new { area = "hrisnew" });
+										}))
+								.ServerFiltering(false))
+							)
+						</div>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

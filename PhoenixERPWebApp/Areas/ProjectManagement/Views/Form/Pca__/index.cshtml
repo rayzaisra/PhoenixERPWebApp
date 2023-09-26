@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "PCA";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+@section Panelhead{
+    <a href="@Url.Content("~/ProjectManagement/PCA/manage")" class="fakelink  m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Create PCA</a>
+    <a href="@Url.Content("~/ProjectManagement/PCA/motherpca")" class="fakelink  m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i>Create Mother PCA</a>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <table class="table table-striped table-bordered table-hover table-checkable" id="PCAList"></table>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/ProjectManagement/Form/PCA.js"></script>
+}
+

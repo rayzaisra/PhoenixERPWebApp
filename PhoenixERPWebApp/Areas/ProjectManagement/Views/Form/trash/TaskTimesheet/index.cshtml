@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "TaskTimesheet";
+}
+
+<div id="page_content_inner" >
+    <div class="md-card">
+        <div class="md-card-content">
+            <form action="#" method="post">
+                <div class="md_border_content">
+ 
+                    <div class="uk-grid uk-grid-divider" data-uk-grid-margin="">
+                        <div class="uk-width-medium-1-2 uk-row-first">
+                            <ul id="breadcrumbs">
+                                <li>
+                                    <a href="~/" style="font-size:14px !important">Home</a>
+                                </li>
+                                <li>
+                                    <span style="font-size:14px !important">TaskTimesheet</span>
+                                </li>
+                            </ul>
+
+                            <div class="md-card-toolbar" style="text-align:left; padding: 0px !important">
+                                <h1 class="md-card-toolbar-heading-text md_header_text">
+                                    TaskTimesheet
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="uk-width-medium-1-2" style="border-left: 0px !important;">
+                            <div class="md-btn-group" style="float:right">
+                                <button type="button" onClick="fnTaskTimesheet.create()" class="md-btn  md-btn-primary">
+                                    <i class="uk-icon-plus"></i> <span class="translate"  data-args="app-add">Add</span>
+                                </button>
+                                <button type="button" onClick="fnTaskTimesheet.search()" class="md-btn  md-btn-warning">
+                                    <i class="uk-icon-search"></i> <span class="translate"  data-args="app-search">Search</span>
+                                </button>
+                                <div class="uk-button-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
+                                    <button type="button" class="md-btn  md-btn-success"><i class="uk-icon-check-square-o"></i> <span class="translate"  data-args="app-column">Column</span> <i class="material-icons">&#xE313;</i></button>
+                                    <div class="uk-dropdown">
+                                        <ul class="uk-nav uk-nav-dropdown" id="colvischeck">
+                                     
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                </div>
+                            </div>
+                    </div>
+                    <div class="uk-overflow-container">
+                        <table id="TaskTimesheetList" class="uk-table uk-table-striped uk-head-grey" cellspacing="0" width="100%"></table>
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</div>
+@Html.Partial("TaskTimesheet/Create")
+@Html.Partial("TaskTimesheet/Update")
+@Html.Partial("TaskTimesheet/Search")
+
+   <script src="~/assets/js/Areas/ProjectManagement/Form/TaskTimesheet.js"></script>

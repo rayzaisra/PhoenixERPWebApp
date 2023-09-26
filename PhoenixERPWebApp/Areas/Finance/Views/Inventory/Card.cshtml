@@ -1,0 +1,179 @@
+﻿@{
+    ViewData["Title"] = "Inventory Stock Card";
+}
+
+
+<input hidden id="detail-id" value="@ViewBag.RecordID" />
+<input hidden id="entity_id" value="@ViewBag.EntityID" />
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Inventory Stock Card</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Inventory</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/Inventory/In")" class="m-nav__link">
+                        <span class="m-nav__link-text">Inventory Stock Card</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__body">
+
+                    <div class="m-form__group">
+                        <h5>Inventory Stock Card <span style="width: 100px;" id="status"></span></h5>
+
+                        <!--begin::Form-->
+                        <input hidden name="approval_id" />
+                        <form id="form-financial_transaction" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input hidden name="id" value="@ViewBag.RecordID" />
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Inventory Code :</label>
+                                        <select id="inventory_code" name="inventory_code" class="form-control form-control-sm m-input m-input--square"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Brand :</label>
+                                        <select class="form-control form-control-sm" readonly name="brand" id="brand"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Reorder Level (unit) :</label>
+                                        <input id="reorder_level" name="reorder_level" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Remark:</label>
+                                        <textarea id="remark" name="remark" class="form-control form-control-sm"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Inventory Name :</label>
+                                        <input id="name" name="name" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Sub Brand :</label>
+                                        <input id="sub_brand" name="sub_brand" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Stock On Hand :</label>
+                                        <input id="stock" name="stock" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Category :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="category" name="category" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Lead Time (day) :</label>
+                                        <input id="lead_time" name="lead_time" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Status :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="status" name="status" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label>Inventory Type :</label>
+                                        <div class="input-group input-group-sm">
+                                            <select id="inventory_type" name="inventory_type" class="form-control m-input m-input--square"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                        <!--end::Form-->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="@Url.Content("~/Finance/AccountPayable/Detail/")" class="m-btn btn btn-primary btn-sm m-btn--sm">add <i class="la la-plus"></i></a>
+                            <div id="gridDetail"></div>
+                            <script type="text/x-kendo-template" id="grid_template">
+                                <div class="grid-detail-marvel">
+                                    <div class="col-lg-6">
+                                        <div class="status-approval"></div>
+
+                                    </div>
+
+                                </div>
+                            </script>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 pull-right">
+                            <span class="pull-right">
+                                <button type="button" id="btn-save" class="btn btn-sm btn-success"><i class="la-save"></i>Save</button>
+                                <button type="button" id="btn-submit" class="btn btn-sm btn-primary" disabled="disabled">Submit</button>
+                                <a href="@Url.Content("~/Finance/AccountPayable")" class="fakelink btn btn-sm btn-secondary">Cancel</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script src="~/Vendors/custom/KendoUI/js/kendo.all.min.js"></script>
+
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Finance/Scripts/Inventory.Card.js?@DateTime.Now" asp-append-version="true"></script>
+    <script src="~/vendors/custom/query-builder/js/doT.min.js"></script>
+    <script src="~/vendors/custom/query-builder/js/jQuery.extendext.js"></script>
+    <script src="~/vendors/custom/query-builder/src/interact.min.js"></script>
+    <script src="~/vendors/custom/query-builder/src/query-builder.standalone.js?@DateTime.Now" asp-append-version="true"></script>
+}

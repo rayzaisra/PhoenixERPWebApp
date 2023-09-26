@@ -1,0 +1,55 @@
+@{
+    ViewBag.ModalTitle = "Education Info Create";
+    ViewBag.ModalId = "EducationInfoModalCreate";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<script>
+    $('#xbreadcrumb').hide();
+</script>
+<form id="EducationInfoFormCreate" method="post">
+    <input name="candidate_recruitment_id" id="candidate_recruitment_id" type="hidden">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label><span class="translate" data-args="Last Education">Last Education</span> :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="education_level_id" id="education_level_id"></select>
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="Year">Year</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="year" id="year" type="hidden">
+                <input class="form-control form-control-sm m-input m-input--square" name="year_from" id="year_from" type="number" placeholder="From">
+                <input class="form-control form-control-sm m-input m-input--square" name="year_to" id="year_to" type="number" placeholder="To">
+
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="Major">Major</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="major" id="major" maxlength="50" type="text">
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label><span class="translate" data-args="Institution Name">Institution Name</span> :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="institution_id" id="institution_id"></select>
+            </div>
+
+            <div class="form-group">
+                <label><span class="translate" data-args="Location">Location</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="location" id="location" type="text">
+            </div>
+
+
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" id="btn-save" class="btn btn-primary" onclick="submitEducationDate()">Save</button>
+            <button type="button" data-dismiss="modal" class="fakelink btn btn-secondary">Closed</button>
+        </div>
+
+    </div>
+</form>

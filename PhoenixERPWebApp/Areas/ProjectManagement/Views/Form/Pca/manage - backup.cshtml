@@ -1,0 +1,324 @@
+@{
+    ViewData["Title"] = "PCA";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+@section Panelhead{
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+
+    <style>
+        .tasktitle {
+            font-size: 12px;
+        }
+
+        .tbldetilpca .easyui-fluid {
+            width: 100% !important;
+        }
+
+        .easyui-fluid .textbox-text {
+            width: 100% !important;
+        }
+
+        .tasktitle .titletop {
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
+        .tasktitle .titleno {
+            font-weight: bold;
+            float: left;
+        }
+
+        .tasktitle .titlebottom {
+            margin-left: 23px;
+        }
+
+        .tblnopadding tbody tr td {
+            padding: 0px !important;
+        }
+
+        .tblnopadding tfoot tr td {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+
+        .lbltbl {
+            padding: 5px 2px 2px 2px;
+        }
+
+        .tblnopadding tbody tr td input.xcount {
+            direction: rtl;
+        }
+
+        .centericon {
+            text-align: center;
+            vertical-align: central;
+        }
+
+        .tblnopadding tbody tr td div.xtotalnew {
+            font-size: 11px !important;
+            font-weight: bold;
+            padding-top: 5px;
+            width: 100%;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .tblnopadding tbody tr td div.xtotal {
+            font-size: 11px !important;
+            font-weight: bold;
+            padding-top: 5px;
+            width: 100%;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .tblnopadding tfoot tr td div.xtotal {
+            font-size: 11px !important;
+            font-weight: bold;
+            padding-top: 5px;
+            width: 100%;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .tbldetilpca tbody tr td {
+            padding: 2px;
+        }
+
+        .xcount {
+            text-align: right;
+        }
+
+        .xcountpca {
+            text-align: right;
+        }
+
+        .xtotal {
+            text-align: right;
+        }
+
+        .xtotalpca {
+            text-align: right;
+            padding-right: 5px;
+            min-width: 150px;
+        }
+
+        .xtemplate {
+            display: none;
+        }
+
+        #tbltaskdetil {
+        }
+
+        .stask {
+            width: 200px;
+        }
+    </style>
+    <form action="#" method="post" id="PCAForm">
+
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label><span class="translate" data-args="job_number">job_number</span> :</label>
+                    <select id="job_detail_id" name="job_detail_id" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="mother_pca">mother_pca</span> :</label>
+                    <select id="mother_pca" name="mother_pca" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="pca_number">pca_number</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" required name="pa_number" id="pa_number" required maxlength="50" type="text">
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <h5>Campaign Name</h5>
+                <h6 id="campaign_name">-</h6>
+                <hr />
+                <h5>Job Name</h5>
+                <h6 id="job_name">-</h6>
+                <hr />
+                <h5>Job Number</h5>
+                <h6 id="job_number">-</h6>
+                <hr />
+            </div>
+            <div class="col-lg-3">
+                <h5>Account Manager</h5>
+                <div id="accountmanagerlist" style="margin-left:10px">-</div>
+                <hr />
+                <h5>Deadline</h5>
+                <h6 id="deadline" class="xdatetime">-</h6>
+                <hr />
+                <h5>Final Delivery</h5>
+                <h6 id="final_delivery" class="xdatetime">-</h6>
+                <hr />
+            </div>
+            <div class="col-lg-3">
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="currency">currency</span> :</label>
+                    <select id="currency" name="currency" style="width:100%">
+                        <option value="rp">Rp  (Rupiah)</option>
+                        <option value="usd">$ (US dolar)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="rate_card_id">rate_card_id</span> :</label>
+                    <select id="rate_card_id" name="rate_card_id" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Prepared by">Prepared by</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="prepared" id="prepared" required maxlength="50" type="text">
+                </div>
+            </div>
+        </div><hr />
+        <div style="height: auto;" id="showdetil" class="datagrid-toolbar">
+            <a id="btn-append" onclick="shownewtask()" data-options="iconCls:'icon-edit',plain:true" class="easyui-linkbutton l-btn l-btn-small l-btn-plain" href="javascript:void(0)" group="">Manage </a>
+
+            <button id="btn-accept" data-options="iconCls:'icon-save',plain:true" class="easyui-linkbutton l-btn l-btn-small l-btn-plain" type="submit" group="">Save</button>
+            <a href="#" class="easyui-menubutton" data-options="menu:'#mm3',iconCls:'icon-help'">Request</a>
+            <div id="mm3" style="width:200px;">
+                <div onclick="showrequestbox('ca')">Cash Advance</div>
+                <div>
+                    <span>RFQ/Procurement</span><div>
+                        <div onclick="showrequestbox('vs')">
+                            Vendor Selection
+                        </div>
+                        <div onclick="showrequestbox('p')">
+                            Prefered
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table id="tablepca" class="tblnopadding table" style="width:100%">
+            <thead>
+                <tr>
+                    <th class=" channelpcah">Channel/ dept </th>
+                    <th class="w300px ">Task Name </th>
+                    <th style="width:90px">Cost</th>
+                    <th style="width:50px">%</th>
+                    <th style="width:90px">Margin</th>
+                    <th style="width:90px">Total Price</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr><td colspan="5" align="right">Sub Total</td><td><div id="subtotal" class="xtotalpca"></div></td></tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="3" align="right">
+                        <select id="feetype" name="feetype" style="width:100%">
+                            <option value="Retainer Fee">Retainer Fee</option>
+                            <option value="Agency Service Fee">Agency Service Fee</option>
+                        </select>
+                    </td>
+                    <td><input id="feetotal" class="xcountpca form-control form-control-sm m-input m-input--square"></td>
+                </tr>
+                <tr><td colspan="5" align="right">VAT (10% x Sub Total)</td><td><div id="vat" class="xtotalpca"></div></td></tr>
+                <tr><td colspan="5" align="right">Grand Total</td><td><div id="grandtotal" class="xtotalpca"></div></td></tr>
+            </tfoot>
+        </table>
+
+        <div id="tmpl_taskaccordeon" class="xtemplate">
+            <div class="m-accordion m-accordion--default m-accordion--toggle-arrow" role="tablist">
+                <div class="m-accordion__item" id="taskaccordeonitem">
+                    {{loopdata}}
+                </div>
+            </div>
+        </div>
+
+        <div id="tmpl_taskaccordeondetil" class="xtemplate">
+
+            <div class="m-accordion__item-head collapsed" role="tab" id="m_task_head_{{id}}" data-toggle="collapse" href="#m_task_body{{id}}" aria-expanded="false">
+
+                <span class="m-accordion__item-title">{{taskname}}</span>
+                <span class="m-accordion__item-mode"></span>
+            </div>
+            <div class="m-accordion__item-body collapse" id="m_task_body{{id}}" role="tabpanel" aria-labelledby="m_task_head_{{id}}">
+                <div class="m-accordion__item-content">
+                    <table id="tabledetilpca{{id}}" tbl-id="{{id}}" tbl-unit="{{unit}}" class="tblnopadding tbldetilpca table  table-bordered table-hover dataTable " style="width:100%">
+                        <thead>
+                            <tr>
+                                <th><a href="javascript:void(0)" onclick="addnewsubtask(this)"><i class="fa fa-plus-circle m--font-info"></i></a> </th>
+                                <th class="stask">Sub Task</th>
+                                <th>Category </th>
+                                <th>Brand</th>
+                                <th>Sub Brand</th>
+                                <th>Remarks</th>
+                                <th style="width:50px">Quantity</th>
+                                <th style="width:30px">Unit</th>
+                                <th style="width:90px">Price per Quality</th>
+                                <th style="width:90px">PPN</th>
+                                <th style="width:90px">ASF</th>
+                                <th style="width:90px">PPH</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot><tr><td colspan="11" align="right">Sub Total</td><td colspan="2"><div class="xtotal tasktotal" id="tasktotal_{{id}}"></div></td></tr></tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tmpl_taskaccordeonrequest" class="xtemplate">
+
+            <div class="m-accordion__item-head collapsed" role="tab" id="m_task_head_{{id}}" data-toggle="collapse" href="#m_task_body{{id}}" aria-expanded="false">
+
+                <span class="m-accordion__item-title">{{taskname}}</span>
+                <span class="m-accordion__item-mode"></span>
+            </div>
+            <div class="m-accordion__item-body collapse" id="m_task_body{{id}}" role="tabpanel" aria-labelledby="m_task_head_{{id}}">
+                <div class="m-accordion__item-content">
+                    <table id="tablerequest{{id}}" tbl-id="{{id}}" tbl-unit="{{unit}}" class="tblnopadding tbldetilpca table  table-bordered table-hover dataTable " style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>&nbsp; </th>
+                                <th class="stask">Sub Task</th>
+                                <th>Category </th>
+                                <th>Brand</th>
+                                <th>Sub Brand</th>
+                                <th>Remarks</th>
+                                <th style="width:50px">Quantity</th>
+                                <th style="width:30px">Unit</th>
+                                <th style="width:90px">Price per Quality</th>
+                                <th style="width:90px">PPN</th>
+                                <th style="width:90px">ASF</th>
+                                <th style="width:90px">PPH</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot><tr><td colspan="11" align="right">Sub Total</td><td colspan="2"><div class="xtotal tasktotal" id="tasktotal_{{id}}"></div></td></tr></tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </form>
+    @Html.Partial("Pca/newtask")
+    @Html.Partial("Pca/requestbox")
+
+}
+@section Panelscript{
+    <script>
+        var RecordID = "@ViewBag.RecordID";
+    </script>
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script>
+
+    </script>
+    <script src="~/assets/plugins/jquery.mask/jquery.mask.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/PCA.manage.js"></script>
+}
+

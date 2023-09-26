@@ -1,0 +1,20 @@
+@*@model decimal?
+@Html.Kendo().NumericTextBoxFor(x => x).Min(5).Max(100).Format("n2").HtmlAttributes(new { style = "width:100%;", required = "required" }).Events(x=>x.Change("weight_change"))*@
+@model object
+@(Html.Kendo().DropDownListFor(m => m)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .OptionLabel("-- Select --")
+    .HtmlAttributes(new { style = "width:100%;", required = "required" })
+    .Height(250)
+    .Filter(FilterType.Contains)
+    .Events(x => x.Change("weight_change"))
+    .DataSource(source => source
+        .Custom()
+        .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Action("GetDDLPDRWeight", "Dropdown", new { area = "HrisNew" });
+        }))
+        .ServerFiltering(false))
+)

@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Job Detail";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+
+
+
+@section Panelhead{
+    <link href="~/assets/plugins/gantt/dhtmlxgantt.css" rel="stylesheet" />
+    <style>
+        .onright {
+            position: absolute;
+            right: 0px;
+        }
+    </style>
+    <div style="left:0;">
+        <h4 id="title_task">Job Name: {JobName}&nbsp; &nbsp; Job Number : <a href='/projectmanagement/job/detail/{JobNumber}'> {JobNumber}</a>   &nbsp; &nbsp; Division : {Division}</h4>
+    </div>
+}
+
+@section Paneltools{
+    
+}
+@section Panelbody{
+    <label><input type="radio" name="scale" value="day" checked />Day scale</label>
+    <label><input type="radio" name="scale" value="week" />Week scale</label>
+    <label><input type="radio" name="scale" value="month" />Month scale</label>
+    <label><input type="radio" name="scale" value="year" />Year scale</label>
+
+    <div id="gantt_place" style='width:100%; height:450px;'></div>
+    @Html.Partial("job/_task")
+    @Html.Partial("job/_userlist")
+    @Html.Partial("job/_subtask")
+    @Html.Partial("job/_edituser")
+    @Html.Partial("job/_edittask")
+    @Html.Partial("job/_editsubtask")
+}
+
+@section Panelscript{
+    <script src="~/assets/plugins/gantt/dhtmlxgantt.js"></script>
+    <script type="text/javascript">
+        var RecordID = "@ViewBag.RecordID";
+    </script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Job/task.js"></script>
+}

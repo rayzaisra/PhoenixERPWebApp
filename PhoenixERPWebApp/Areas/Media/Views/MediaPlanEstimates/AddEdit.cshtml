@@ -1,0 +1,1246 @@
+﻿@model PhoenixERPWebApp.Models.Media.MediaPlanEstimates.MediaPlanHeader
+@{
+    ViewData["Title"] = "Media Plan Estimates";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Media Plan Estimates</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon fa fa-cog fa-fw"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Media</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="mediaplanestimates" asp-area="media" class="m-nav__link"><span class="m-nav__link-text">Media Plan Estimates</span></a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    @if (string.IsNullOrEmpty(Model.Id))
+                    {
+                        <a asp-action="addedit" asp-controller="mediaplanestimates" asp-area="media" class="m-nav__link"><span class="m-nav__link-text"> Add New Media Plan Estimates</span></a>
+
+                    }
+                    else
+                    {
+                        <a asp-action="addedit" asp-controller="mediaplanestimates" asp-area="media" asp-route-Id="@Model.Id" class="m-nav__link"><span class="m-nav__link-text"> @ViewBag.Header</span></a>
+
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="modal-container"></div>
+<!-- MODAL REMOTE -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                                @if (Model.StatusID == "0" && Model.Id != "")
+                                {
+                                    @*<div id="status-view-mediaplan" class="btn btn-focus m-btn m-btn--air" style="background: green;font-weight: bold;font-size: 15px; margin-left:15px;">Open</div>*@
+                                    <span class="m-badge m-badge--info m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.MediaOrderStatus.StatusDescMedia(PhoenixERPWebApp.Models.Enum.MediaOrderStatus.Draft)</span>
+                                }
+
+                                @if (Model.StatusID == "2")
+                                {
+                                    <span class="m-badge m-badge--warning m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.MediaOrderStatus.StatusDescMedia(PhoenixERPWebApp.Models.Enum.MediaOrderStatus.WaitingApproval)</span>
+                                    @*<div id="status-view-mediaplan" class="btn btn-focus m-btn  m-btn--air" style="background: yellow;font-weight: bold;font-size: 15px; margin-left:15px;">Waiting Approval</div>*@
+                                }
+
+                                @if (Model.StatusID == "3")
+                                {
+                                    <span class="m-badge m-badge--success m-badge--wide" id="status">@PhoenixERPWebApp.Models.Enum.MediaOrderStatus.StatusDescMedia(PhoenixERPWebApp.Models.Enum.MediaOrderStatus.Approved) &nbsp;&nbsp;&nbsp;</span>
+                                    @*<div id="status-view-mediaplan" class="btn btn-focus m-btn  m-btn--air" style="background: green;font-weight: bold;font-size: 15px; margin-left:15px;">Approved</div>*@
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="form-header-media-plan" class="form-horizontal form-bordered" asp-action="submit" asp-controller="mediaplanestimates" asp-area="media" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="StatusID" id="statusIDHeader" />
+                        <input type="hidden" asp-for="CheckedFlag" id="CheckedFlag" />
+
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+
+                        @*<input type="hidden" asp-for="Campaign" id="campaignValue" />*@
+
+                        @*@Html.Kendo().TextBoxFor(m => m.CampaignValue).HtmlAttributes(new { @Style = "display:none;" })*@
+
+                        @Html.Kendo().TextBoxFor(m => m.Id).HtmlAttributes(new { @class = "hidden", @readonly = "readonly", @Style = "display:none;" })
+                        <div class="row ">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Media Plan Number</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @Html.Kendo().TextBoxFor(m => m.PlanNo).HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                        @*@Html.Kendo().TextBox().Name("PlanNo").HtmlAttributes(new { @class = "form-control form-control-sm", @readonly = "readonly" })*@
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Job-ID Name</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @(Html.Kendo().DropDownListFor(m => m.JobID)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                read.Action("GetDDLJobId", "DropDown", new { area = "Finance" });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">MainService Category</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @(Html.Kendo().DropDownListFor(m => m.MainServiceCategoryID)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                read.Action("GetCascadeFromJob", "DropDown", new { area = "Media" }).Data("FilterMainServiceCategory");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }).ServerFiltering(true); ;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Enable(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .AutoBind(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .CascadeFrom("JobID")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .OptionLabel("Select Main Service Category...")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Events(e =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            e.DataBound("onDataBoundDDlCascadeJob");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                        <script>
+                                            function FilterMainServiceCategory() {
+                                                return {
+                                                    jobid: $("#JobID").val(),
+                                                    casedata: "MainServiceCategory"
+                                                    //MainServiceCategoryFilter: $("#MainServiceCategory").data("kendoDropDownList").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Division</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                read.Action("GetCascadeFromJob", "DropDown", new { area = "Media" })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Data("FilterDivision");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }).ServerFiltering(true); ;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Enable(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .AutoBind(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .CascadeFrom("JobID")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .OptionLabel("Select Division...")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Events(e =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            e.DataBound("onDataBoundDDlCascadeJob");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                        <script>
+                                            function FilterDivision() {
+                                                return {
+                                                    jobid: $("#JobID").val(),
+                                                    casedata: "Division"
+                                                    //DivisionFilter: $("#Division").data("kendoDropDownList").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Legal Entity</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @(Html.Kendo().DropDownListFor(m => m.LegalEntityID)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                read.Action("GetCascadeFromJob", "DropDown", new { area = "Media" })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Data("FilterLegalEntity");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }).ServerFiltering(true); ;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Enable(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .AutoBind(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .CascadeFrom("JobID")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .OptionLabel("Select Legal Entity...").Events(e =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            e.DataBound("onDataBoundDDlCascadeJob");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                        <script>
+                                            function FilterLegalEntity() {
+                                                return {
+                                                    jobid: $("#JobID").val(),
+                                                    casedata: "LegalEntity"
+                                                    //DivisionFilter: $("#LegalEntity").data("kendoDropDownList").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Affiliation</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @(Html.Kendo().DropDownListFor(m => m.AffiliationID)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                read.Action("GetCascadeFromJob", "DropDown", new { area = "Media" })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Data("FilterAffiliation");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }).ServerFiltering(true); ;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Enable(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .AutoBind(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .CascadeFrom("JobID")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .OptionLabel("Select Affiliation...").Events(e =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            e.DataBound("onDataBoundDDlCascadeJob");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                        <script>
+                                            function FilterAffiliation() {
+                                                return {
+                                                    jobid: $("#JobID").val(),
+                                                    casedata: "Affiliation"
+                                                    //AffiliationFilter: $("#Affiliation").data("kendoDropDownList").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Client Name</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @(Html.Kendo().DropDownListFor(m => m.ClientID)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        read.Action("GetCascadeFromJob", "DropDown", new { area = "Media" })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Data("FilterClientName");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }).ServerFiltering(true); ;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Enable(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .AutoBind(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .CascadeFrom("JobID")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .OptionLabel("Select Client Name.").Events(e =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    e.DataBound("onDataBoundDDlCascadeJob");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                        <script>
+                                            function FilterClientName() {
+                                                return {
+                                                    jobid: $("#JobID").val(),
+                                                    casedata: "ClientName"
+                                                    //AffiliationFilter: $("#ClientName").data("kendoDropDownList").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Client Brand</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @(Html.Kendo().DropDownListFor(m => m.BrandID)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        read.Action("GetCascadeFromJob", "DropDown", new { area = "Media" })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Data("FilterClientBrand");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }).ServerFiltering(true); ;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .Enable(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .AutoBind(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .CascadeFrom("JobID")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .OptionLabel("Select Currency...").Events(e =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    e.DataBound("onDataBoundDDlCascadeJob");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                        <script>
+                                            function FilterClientBrand() {
+                                                return {
+                                                    jobid: $("#JobID").val(),
+                                                    casedata: "ClientBrand"
+                                                    //AffiliationFilter: $("#ClientBrand").data("kendoDropDownList").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Media Type</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        @*@(Html.Kendo().DropDownListFor(m => m.TypeID)*@
+                                        @(Html.Kendo().DropDownListFor(m => m.TypeID)
+                                                       .DataTextField("Text")
+                                                       .DataValueField("Value")
+                                                       .Filter(FilterType.Contains)
+                                                       .Events(e => e.Change("OnchangeDDlType"))
+                                                       .DataSource(source =>
+                                                       {
+                                                           source.Read(read =>
+                                                           {
+                                                               read.Action("GetDDLMediaType", "DropDown", new { area = "Media" });
+                                                           });
+                                                       })
+                                                       .OptionLabel("Select Media type...")
+                                                       .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                    </div>
+
+
+                                    @*<div class="input-group input-group-sm col-sm-3">
+                <label></label> :<br />
+                @(Html.Kendo().RadioButton().Name("Campaign1").Value("1").Checked(Model.Campaign == true).HtmlAttributes(new { @name = "Campaign" }).Label("Yes"))
+
+                @(Html.Kendo().RadioButton().Name("Campaign2").Value("0").Checked(Model.Campaign == false).HtmlAttributes(new { @name = "Campaign" }).Label("No"))
+            </div>*@
+
+
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Template File</label>
+                                    <div class="input-group input-group-sm col-sm-6">
+                                        <a href='javascript: void(0);' id="linkFileTemplate" onclick='downloadDocTemplate()'></a> &nbsp;
+                                        <input type="hidden" id="fileTemplateId" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-sm-3">Currency</label>
+                                    <div class="input-group input-group-sm col-sm-3">
+                                        @(Html.Kendo().DropDownListFor(m => m.CurrencyID)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataTextField("Text")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataValueField("Value")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Filter(FilterType.Contains)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataSource(source =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            source.Read(read =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                read.Action("GetDDLCurrency", "DropDown", new { area = "Finance" });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .OptionLabel("Select Currency ..")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Events(e =>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            e.Change("onChangeCurrency");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .HtmlAttributes(new { required = "required", style = "width:100%;" })
+                                        )
+                                    </div>
+
+                                    <label class="col-form-label col-sm-3">Exchange</label>
+                                    <div class="input-group input-group-sm col-sm-3">
+                                        @Html.Kendo().TextBoxFor(m => m.Exchange).HtmlAttributes(new { required = "required", @class = "form-control form-control-sm k-textbox", @readOnly = true })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalRemark" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remarks</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(m => m.RemarkRejected, new { style = "height:150px;width:100%" })
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="btnReject" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="m-portlet__body" id="m_blockui_list">
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Media.MediaPlanEstimates.MediaPlanDetail>()
+                                                                    .Name("grid-media-plan-detail")
+                                                                    .ToolBar(x =>
+                                                                    {
+
+                                                                        x.ClientTemplateId("grid-toolbar-template");
+
+                                                                    })
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        columns.Bound(p => p.IsChecked)
+                                                                        .ClientTemplateId("cbx-template")//("<input type='checkbox' class='chkbx' #= IsChecked ? checked='checked' :'' # />")
+                                                                        .Title(" ").Width(110);
+                                                                                    //columns.Select().ClientHeaderTemplate(" ").Width(100);
+                                                                                    columns.Bound(p => p.Id).Title("Task ID").Width(200).Hidden();
+
+                                                                        columns.Bound("").ClientTemplate("#= LinktoEditDetail(data) #").Title("Task ID").Width(200);
+                                                                                    //columns.Bound(p => p.StatusID).Title("Status").Width(100);
+                                                                                    columns.Bound(p => p.Revision).Title("Revision").Width(200);
+                                                                        columns.Bound("").ClientTemplate("#= LinktoDownload(data) #").Title("File Upload").Width(200);
+                                                                        columns.Bound(p => p.FileName).Title("File Upload").Width(150).Hidden();
+                                                                        columns.Bound(p => p.GrossAmount).Title("Sub Total Gross").Format("{0:N}").Width(150);
+                                                                        columns.Bound(p => p.NettPaid).Title("Net Paid").Format("{0:N}").Width(150);
+                                                                        columns.Bound(p => p.ASFValue).Title("ASF").Format("{0:N}").Width(150);
+                                                                        columns.Bound(p => p.NettAmount).Title("Total").Format("{0:N}");
+                                                                        columns.Bound(p => p.VatValue).Title("VAT").Format("{0:N}");
+                                                                        columns.Bound(p => p.TotalNettAmount).Title("Grand Total").Format("{0:N}");
+                                                                        columns.Bound(p => p.StartPeriode).Title("Start Date").Format("{0:MM dd, yyyy}");
+                                                                        columns.Bound(p => p.EndPeriode).Title("End Date").Format("{0:MM dd, yyyy}");
+                                                                        columns.Bound(p => p.ASFPercent).Title("").Hidden();
+                                                                        columns.Bound(p => p.FileMasterId).Title("file id").Hidden();
+
+                                                                    })
+                                                                   //.ToolBar(toolbar => toolbar.Create())
+                                                                   //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_MPDetailAdd"))
+                                                                   .DataSource(dataSource => dataSource
+                                                                   .Ajax()
+                                                                   .PageSize(10)
+                                                                   .Events(events => events.Error("errorHandler"))
+                                                                   .Model(model => { model.Id(p => p.Id); })
+                                                                   //.Create(update => update.Action("MediaPlanCreateRow", "MediaPlanEstimates"))
+                                                                   .Read(read => read.Action("ReadDetailMediaPlan", "MediaPlanEstimates", new { headerId = Model.Id }))
+                                                                   )
+                                                                   .NoRecords()
+                                )
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:25px">
+                            @if (Convert.ToInt32(Model.StatusID) >= 3)
+                            {
+                                <div class="col-lg-12">
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 form-label">Report Client/Approval : </label>
+                                        <div class="col-lg-6">
+                                            <div id="divreportDoc"></div>
+                                            <div style="width:100%">
+                                                <input type="hidden" asp-for="ReportFileId" />
+                                                <a href='javascript: void(0);' id="linkreportDocDownloadFile" onclick='downloadDoc()'></a> &nbsp;
+                                                @if (Model.ReportFileId != null)
+                                                {
+                                                    <a href='javascript: void(0);' id="linkRemoveFileReport" onclick='removeReportFile()' title='Delete'><span style='color:maroon'><i class='fa fa-times'></i></span></a>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" style="display:none" id="btn-upload-report-edit" class="btn btn-primary" onclick="UploadReportClick()">Upload</button>
+                                @if (Model.isReported == null)
+                                {
+                                    <button type="button" id="btn-upload-report" class="btn btn-primary" onclick="UploadReportClick()">Upload</button>
+                                }
+                                @*else
+            {
+                <div class="col-lg-6">
+                    <div class="form-group row">
+                        <label class="col-lg-3 form-label">Report Client/Approval : </label>
+                        <div class="col-lg-9">
+                            <div style="width:100%">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }*@
+                            }
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+
+                    @if (Model.isApprove == true)
+                    {
+                        @if (ViewBag.processApprove == true)
+                        {
+                            <button type="button" id="btn-revise" class="btn btn-danger">Revise</button>
+                            <button type="button" id="btn-approve" class="btn btn-primary">Approve</button>
+                        }
+                        else
+                        {
+                            @if (Model.isReported == true)
+                            {
+                                @if (Model.StatusID == "3")
+                                {
+                                    <button type="button" id="btn-finish" class="btn btn-primary">Finish</button>
+                                }
+                             }
+                        }
+                                    <a asp-action="index" asp-controller="mediaplanestimates" asp-area="media" class="fakelink btn btn-secondary">BACK</a>
+                    }
+                    else
+                    {
+                        @if (Model.StatusID == "" || Model.StatusID == "0" || Model.StatusID == null)
+                        {
+                            <button type="button" id="btn-save" class="btn btn-primary">Save</button>
+                            <button type="button" id="btn-submit" class="btn btn-primary">Submit</button>
+                        }
+                            <a asp-action="index" asp-controller="mediaplanestimates" asp-area="media" class="fakelink btn btn-secondary">BACK</a>
+                    }
+
+                </div>
+
+                @*@if (Model.isReported == true)
+                {
+                    <div class="m-accordion__item-body" id="reportlink_Detail_body" role="tabpanel" aria-labelledby="reportlink_Detail_head" data-parent="#reportlink_Detail" style="margin:30px">
+                        <div class="m-accordion__item-content">
+                            <div class="row">
+                                <div class="col-lg-12 m-form__group-sub">
+                                    <div class="form-group">
+                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Media.MediaPlanEstimates.MediaPlanDetail>()
+                                                      .Name("grid-media-report-file")
+                                                      .Columns(columns =>
+                                                      {
+                                                          columns.Bound("").ClientTemplate("#= LinktoDownload(data) #").Title("Report File").Width(200);
+                                                          columns.Bound(p => p.FileMasterId).Title("file id").Hidden();
+
+                                                      })
+                                                     .DataSource(dataSource => dataSource
+                                                     .Ajax()
+                                                     .PageSize(10)
+                                                     .Events(events => events.Error("errorHandler"))
+                                                     .Model(model => { model.Id(p => p.Id); })
+                                                     .Read(read => read.Action("ReadDetailMediaPlan", "MediaPlanEstimates", new { headerId = Model.Id }))
+                                                     )
+                                                     .NoRecords()
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }*@
+
+                <div class="m-accordion__item-body" id="approval_Detail_body" role="tabpanel" aria-labelledby="approval_Detail_head" data-parent="#approval_Detail" style="margin:30px">
+                    <div class="m-accordion__item-content">
+                        <div class="row">
+                            <div class="col-lg-12 m-form__group-sub">
+                                <div class="form-group">
+                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.TrUserApproval>()
+                                                                                        .Name("gridApprovalHistoryList")
+                                                                                        .Columns(columns =>
+                                                                                        {
+                                                                                                                //columns.Bound("").ClientTemplate("#= SetHistoryApprovalColumn(data) #").Title("Comment History").Width(500);
+                                                                                                                columns.Bound(p => p.EmployeeName).Width(200);
+                                                                                            columns.Bound(p => p.StatusApprovedDescription).Width(200);
+                                                                                            columns.Bound(p => p.RemarkRejected).Width(200);
+                                                                                        })
+                                                                                        .DataSource(dataSource => dataSource
+                                                                                            .Ajax()
+                                                                                            .PageSize(10)
+                                                                                            .Events(events => events.Error("errorHandler"))
+                                                                                            .Read(read => read.Action("ReadHistoryApproval", "ManageTrApproval", new { area = "Um" }).Data("gridHistory_params"))
+                                                                                        )
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<partial name="_MPDetailAdd" />
+
+<script id="cbx-template" type="text/x-kendo-template">
+    #if(statusIDHeader.value == '' || statusIDHeader.value == '1' || statusIDHeader.value == '0'){#
+    #if(IsChecked){#
+    <input type='checkbox' class='chkbx' checked='checked' />
+    #}else{#
+    <input type='checkbox' class='chkbx' />
+    #}#
+    #}else{#
+    #if(IsChecked){#
+    <input type='checkbox' disabled class='chkbx' checked='checked' />
+    #}else{#
+    <input type='checkbox' disabled class='chkbx' />
+    #}#
+    #}#
+</script>
+
+@*<partial name="~/Areas/Media/Views/MediaPlanEstimates/_MPDetailAdd.cshtml" />*@
+<script id="grid-toolbar-template" type="text/x-kendo-template">
+    <a class='k-button' href='javascript: void(0);' onclick='AddDetailPlan(this)'><span class='k-icon k-i-plus'></span>Add New Record</a>
+</script>
+<script>
+
+    (function ($, kendo) {
+        var _init = kendo.ui.Popup.fn.init;
+        var Popup = kendo.ui.Popup.extend({
+            init: function (element, options) {
+                // Only set appendTo if nothing was manually set in the options.
+                if (options.appendTo === undefined) {
+                    // Find the nearest parent bootstrap modal, if any.
+                    var parentModal = $(options.anchor).closest('.modal');
+
+                    // Found one!
+                    if (parentModal.length > 0) {
+                        options.appendTo = parentModal[0];
+                    }
+                }
+                // Call the base constructor.
+                _init.call(this, element, options);
+            }
+        });
+        kendo.ui.plugin(Popup);
+
+
+    }(window.kendo.jQuery, window.kendo));
+
+
+    function gridHistory_params() {
+        return {
+            id: '@Model.Id'
+        };
+    }
+
+    function UploadReportClick() {
+       callActionFile({ formId: "form-header-media-plan", title: "submit", type: "POST", url: '@Url.Action("UploadReport", "MediaPlanEstimates")'});
+    }
+    
+    
+    function onDataBoundDDlCascadeJob() {
+        if ($('#statusIDHeader').val() != 0) {
+            $("#MainServiceCategoryID").data("kendoDropDownList").enable(false);
+            $("#BusinessUnitId").data("kendoDropDownList").enable(false);
+            $("#LegalEntityID").data("kendoDropDownList").enable(false);
+            $("#AffiliationID").data("kendoDropDownList").enable(false);
+            $("#ClientID").data("kendoDropDownList").enable(false);
+            $("#BrandID").data("kendoDropDownList").enable(false);
+        }
+    }
+
+    function getUpload() {
+        return $("#files").data("kendoUpload");
+    }
+
+    //$(document).on("change", "input[type='radio']", function () {
+    //    //var campaign = $("#CampaignValue").data("kendoTextBox");
+    //    $("#CampaignValue").val(this.value);
+    //});
+
+
+    $(document).on("change", "input[type='checkbox']", function (e) {
+        $('.chkbx').not(this).prop('checked', false);
+        var checked = $(this).is(':checked');
+        if (checked)
+            $('#CheckedFlag').val($(this).closest('tr').find('td')[1].innerHTML);
+        else
+            $('#CheckedFlag').val('');
+
+    });
+
+    //$(function () {
+    //    $('#grid-media-plan-detail').on('click', '.chkbx', function () {
+    //        var checked = $(this).is(':checked');
+    //        var grid = $('#persons').data().kendoGrid;
+    //        var dataItem = grid.dataItem($(this).closest('tr'));
+    //        dataItem.set('IsChecked', checked);
+    //    })
+    //})
+
+
+    $(document).ready(function () {
+        
+        if ($('#statusIDHeader').val() != "") {
+            if ($('#statusIDHeader').val() != "0") {
+                if ($('#statusIDHeader').val() != "1") {
+                    $("[data-role]").each(function (index, el) {
+                        var widget = kendo.widgetInstance($(el));
+                        if (widget.enable) {
+                            widget.enable(false);
+                        }
+                    });
+                    getUpload().disable();
+                    $('.k-button').css('pointer-events', 'none');
+                    $("#ClientID").data("kendoDropDownList").readonly();
+                    $('#btn-save-detail').css('display', 'none');
+                    //var dropdownlist = $("#ClientID").data("kendoDropDownList");
+                    //$(".chkbx").attr("disabled", false);
+                    $('.k-radio').attr('disabled', 'disabled')
+                    //dropdownlist.enable(false);
+                    $(".chkbx").prop("disabled", true);
+                    $(".chkbx").attr("disabled", 'disabled');
+                }
+            }
+        } else {
+            
+        }
+
+        var detailMPDetailGrid = $("#grid-media-plan-detail").data("kendoGrid");
+        detailMPDetailGrid.dataSource.read();
+
+        $('#btn-submit').click(function () {
+            if ($('#CheckedFlag').val() != '') {
+                detailMPDetailGrid.saveRow();
+                var dataList = {
+                    MediaPlanDetails: detailMPDetailGrid.dataSource.data()
+                }
+                callAction({ formId: "form-header-media-plan", title: "submit", type: "POST", url: '@Url.Action("Submit", "MediaPlanEstimates")', objects: dataList });
+            } else {
+                swal('warning', 'Please Tick Media Order Detail', 'warning');
+            }
+        });
+
+        $('#btn-save').click(function () {
+            
+            var detailMPDetailGrid = $("#grid-media-plan-detail").data("kendoGrid");
+            detailMPDetailGrid.saveRow();
+
+            var dataList = {
+                MediaPlanDetails: detailMPDetailGrid.dataSource.data()
+            }
+            callAction({ formId: "form-header-media-plan", title: "submit", type: "POST", url: '@Url.Action("Save", "MediaPlanEstimates")', objects: dataList });
+        });
+
+        $('#btn-approve').click(function () {
+            detailMPDetailGrid.saveRow();
+
+            var dataList = {
+                MediaPlanDetails: detailMPDetailGrid.dataSource.data()
+            }
+            callActionFile({ formId: "form-header-media-plan", title: "Approve", type: "POST", url: '@Url.Action("Approve", "MediaPlanEstimates")', objects: dataList  });
+        });
+
+        $('#btn-revise').click(function () {
+
+            $("#RemarkRejected").attr("required", "required");
+            $('#modalRemark').modal('show');
+            
+        });
+
+        $('#btnReject').click(function () {
+            callActionFile({ formId: "form-header-media-plan", title: "Reject", type: "POST", url: '@Url.Action("Reject", "MediaPlanEstimates")' });
+        });
+
+
+
+        $('#btn-finish').click(function () {
+            callActionFile({ formId: "form-header-media-plan", title: "Finish", type: "POST", url: '@Url.Action("Finish", "MediaPlanEstimates")' });
+        });
+
+
+
+
+        $("#button").kendoButton({
+            click: function (e) {
+                var upload = $("#files").data("kendoUpload");
+                var filenames = upload.wrapper.find(".k-file-name");
+
+                for (var i = 0; i < filenames.length; i++) {
+                    $(filenames[i]).html("<a class='toClick'>" + $('#fileNameInfo').val() + "</a>");
+                }
+            }
+        });
+
+        var upload = $("#files").data("kendoUpload");
+        var filenames = upload.wrapper.find(".k-file-name");
+
+        upload.wrapper.on("click", ".toClick", function (e) {
+            downloadFileUpload();
+        });
+
+
+        var reportfilename = '@Model.ReportFileName';
+        if (reportfilename == '') {
+            SetReportDocUpload();
+        } else {
+            $("#linkreportDocDownloadFile").text(reportfilename);
+        }
+
+
+    });
+
+
+    function onChangeCurrency() {
+        if ($('#CurrencyID').val() != '46e4d57e-5ce2-4c31-82be-f81382dc243a') {
+            $('#Exchange').attr('readonly', false);
+        } else {
+            $('#Exchange').attr('readonly', 'readonly');
+        }
+    }
+
+    function removeFileUpload() {
+        $("#linkInterviewDownloadFile").empty();
+        $("#linkInterviewRemoveFile").empty();
+    }
+
+    function downloadFileUpload() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download", area = "hrisnew" })', data: { id: $('#fileMasterIDUpload').val() }});
+    }
+
+    function onComplete() {
+        if ($('#fileMasterIDUpload').val() != "") {
+            var valueRev = $("#revision_add_dtl").val();
+            var tbxRev = $("#revision_add_dtl").data("kendoNumericTextBox");
+            tbxRev.value(parseInt(valueRev) + 1);
+        }
+
+        callActionFileLocal({ formId: "formdetailplan", title: "process", type: "POST", url: "@Url.Action("UploadFile", "mediaplanestimates")" });
+        $("#button").click();
+
+    }
+
+
+    function onSelect(e) {
+        $(".k-upload-files > li").remove();
+        $('#fileNameInfo').val(getFileInfo(e));
+        removeFileUpload();
+    }
+
+    function getFileInfo(e) {
+        return $.map(e.files, function (file) {
+            var info = file.name;
+
+            // File size is not available in all browsers
+            if (file.size > 0) {
+                info += " (" + Math.ceil(file.size / 1024) + " KB)";
+            }
+            return info;
+        }).join(", ");
+    }
+
+    function LinktoEditDetail(data) {
+        return "<center><a href='javascript: void(0);' onclick='OpenPopupEditDetail(this)' title='Edit' class='edit'>" + data.Id + "</a></center>";
+    }
+
+
+    function SetHistoryApprovalColumn(dataHis) {
+        return dataHis.EmployeeName + " : " + dataHis.RemarkRejected == '' ? ' - ' : dataHis.RemarkRejected;
+    }
+
+    function LinktoDownload(data) {
+        return "<center><a href='javascript: void(0);' onclick='DownloadAction(this)' title='Edit' class='edit'>" + data.FileName + "</a></center>";
+
+    }
+
+    function DownloadAction(e) {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download",  area="hrisnew" })', data: { id: dataItem(e).FileMasterId }});
+    }
+
+    function refreshPopup() {
+        $("#revision_add_dtl").data("kendoNumericTextBox").value("0");
+        $("#StartDate").data("kendoDatePicker").value("");
+        $("#EndDate").data("kendoDatePicker").value("");
+        $("#subgross_add_dtl").data("kendoNumericTextBox").value("");
+        $("#asfamount_add_dtl").data("kendoNumericTextBox").value("");
+        $("#nettpaid_add_dtl").data("kendoNumericTextBox").value("");
+        $("#totalamount_add_dtl").data("kendoNumericTextBox").value("");
+        $("#vatamount_add_dtl").data("kendoNumericTextBox").value("");
+        $("#grandtotal_add_dtl").data("kendoNumericTextBox").value("");
+    }
+
+    function OpenPopupEditDetail(e) {
+        $('.requiredvalue').css('display', 'none');
+        if (parseInt($('#statusIDHeader').val()) > 1)
+            $("#linkInterviewRemoveFile").empty();
+
+        refreshPopup();
+        $(".k-upload-files > li").remove();
+        $('#modal-media-plan-detail').modal('show');
+        $('#title-mediaplandetail-popup').val("Edit Media Plan Detail");
+        var grid = $("#grid-media-plan-detail").data("kendoGrid");
+        var data = grid.dataSource.get(dataItem(e).Id);
+
+        var taskid = $("#taskid_add_detail").data("kendoTextBox");
+        var revision = $("#revision_add_dtl").data("kendoNumericTextBox");
+        var startDate = $("#StartDate").data("kendoDatePicker");
+        var endDate = $("#EndDate").data("kendoDatePicker");
+        var subGross = $("#subgross_add_dtl").data("kendoNumericTextBox");
+        var tbxamountasf = $("#asfamount_add_dtl").data("kendoNumericTextBox");
+        var netPaid = $("#nettpaid_add_dtl").data("kendoNumericTextBox");
+        var asfPercent = $("#asf_add_dtl").data("kendoNumericTextBox");
+        var tbxamounttotal = $("#totalamount_add_dtl").data("kendoNumericTextBox");
+        var tbxamountvat = $("#vatamount_add_dtl").data("kendoNumericTextBox");
+        var tbxamountgrandtotal = $("#grandtotal_add_dtl").data("kendoNumericTextBox");
+
+        $("#taskid_add_detail").val(data.Id);
+        revision.value(data.Revision);
+        startDate.value(data.StartPeriode);
+        endDate.value(data.EndPeriode);
+        subGross.value(data.GrossAmount);
+        tbxamountasf.value(data.ASFValue);
+        netPaid.value(data.NettPaid);
+        tbxamounttotal.value(data.NettAmount);
+        tbxamountvat.value(data.VatValue);
+        tbxamountgrandtotal.value(data.TotalNettAmount);
+        asfPercent.value(data.ASFPercent);
+
+        $("#linkInterviewDownloadFile").text(data.FileName);
+        $('#fileMasterIDUpload').val(data.FileMasterId);
+
+        var upload = $("#files").data("kendoUpload");
+        var filenames = upload.wrapper.find(".k-file-name");
+
+        for (var i = 0; i < filenames.length; i++) {
+            $(filenames[i]).html("<a class='toClick'>" + data.FileName + "</a>");
+        }
+
+    }
+
+    function AddDetailPlan(e) {
+        removeFileUpload();
+        refreshPopup();
+        $(".k-upload-files > li").remove();
+        $('.requiredvalue').css('display', 'none');
+        $('#modal-media-plan-detail').modal('show');
+        $('#title-mediaplandetail-popup').val("Add Media Plan Detail");
+
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetTransactionID", "mediaplanestimates")',
+            data: { caseOption: "detail", jobid: $('#JobID').val() },
+            success: function (data) {
+                if (data != null) {
+                    $("#taskid_add_detail").val(data.PlanNo);
+                    var asfPercent = $("#asf_add_dtl").data("kendoNumericTextBox");
+                    asfPercent.value(data.ASFPercent);
+                }
+            }
+        });
+    }
+    function grid_mediaplan_detail_params() {
+        var Id = "";
+        return { Id: Id };
+    }
+
+    function generateColumns() {
+            var columnNames = response["columns"];
+            return columnNames.map(function (name) {
+                return { field: name, format: (isDateField[name] ? "{0:D}" : "") };
+            })
+    }
+
+    function callActionFileLocal(parameter) {
+        if (parameter.formId !== undefined) {
+            if (parameter.formId.substring(0, 1) !== "#") parameter.formId = "#" + parameter.formId;
+            var valid = $(parameter.formId).validate().form();
+            if (valid) {
+                var formData = new FormData();
+                $.each($(parameter.formId).find("input[type='file']"), function (i, tag) {
+                    $.each($(tag)[0].files, function (i, file) {
+                        formData.append(tag.name, file);
+                    });
+                });
+
+                var params = $(parameter.formId).serializeArray();
+                $.each(params, function (i, val) {
+                    formData.append(val.name, val.value);
+                });
+
+                var object = {};
+                if (parameter.objects !== undefined) {
+                    $.each(parameter.objects, function (i, val) {
+                        var arry = [];
+                        for (var z = 0; z < val.length; z++) {
+                            var obj = JSON.parse(JSON.stringify(val[z]));
+                            arry.push(obj);
+                        }
+                        object[i] = arry;
+                    });
+                }
+                formData.appendRecursive(object, "");
+
+                var url = parameter.url;
+                if (url === undefined) url = $(parameter.formId).attr('action');
+
+                $.ajax({
+                    type: parameter.type,
+                    url: url,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (response) {
+                        //if (result.success) {
+                            //$("#taskid_add_detail").val(data.PlanNo);
+                        //$('#fileNameInfo').val(response.data["fileName"]);
+                        $('#fileMasterIDUpload').val(response.data["fileMasterId"]);
+                            //var newRow = {
+                            //    Id: $('#taskid_add_detail').val(),
+                            //    Revision: $('#revision_add_dtl').val(),
+                            //    FileName: response.data["fileName"],
+                            //    FileMasterId: response.data["fileMasterId"],
+                            //    GrossAmount: $('#subgross_add_dtl').val(),
+                            //    NettPaid: $('#nettpaid_add_dtl').val(),
+                            //    ASFValue: $('#asfamount_add_dtl').val(),
+                            //    NettAmount: $('#totalamount_add_dtl').val(),
+                            //    VatValue: $('#vatamount_add_dtl').val(),
+                            //    TotalNettAmount: $('#grandtotal_add_dtl').val(),
+                            //    StartPeriode: $('#StartDate').val(),
+                            //    EndPeriode: $('#EndDate').val(),
+                            //};
+
+                            //var grid = $("#grid-media-plan-detail").data("kendoGrid");
+                            //var data = grid.dataSource.get($('#taskid_add_detail').val());
+                            //if (data != undefined) {
+                            //    var dataRow = $('#grid-media-plan-detail').data("kendoGrid").dataSource.getByUid(data.uid);
+                            //    $('#grid-media-plan-detail').data("kendoGrid").dataSource.remove(dataRow);
+                            //}
+                            //grid.dataSource.add(newRow);
+
+                            //$('#modal-media-plan-detail').modal('toggle');
+                        //} else {
+                        //    swal('Warning', result.message, 'warning');
+                        //}
+                        mApp.unblock("#m_blockui_list");
+                    },
+                    error: function (e, t, s) {
+                        var errorMessage = e.responseJSON.errorMessage;
+                        if (errorMessage === "" || errorMessage === undefined) {
+                            errorMessage = "Ooops, something went wrong !";
+                        }
+                        //console.log(errorMessage);
+                        console.log(errorMessage);
+                        mApp.unblock("#m_blockui_list");
+                    }
+                }).then(setTimeout(function () {
+                    mApp.unblock("#m_blockui_list");
+                }, 2e3));
+            }
+        }
+    }
+
+    function SaveSelectedMediaDetail() {
+
+        //$("#taskid_add_detail").val(data.PlanNo);
+        var isSuccess = true;
+        if ($('#StartDate').val() == '' || $('#EndDate').val() == '' || $('#subgross_add_dtl').val() == '' || $('#totalamount_add_dtl').val() == '' || $('#fileNameInfo').val() == '')
+            isSuccess = false;
+
+        if (isSuccess) {
+
+            var newRow = {
+                Id: $('#taskid_add_detail').val(),
+                Revision: $('#revision_add_dtl').val(),
+                FileName: $('#fileNameInfo').val(),
+                FileMasterId: $('#fileMasterIDUpload').val(),
+                GrossAmount: $('#subgross_add_dtl').val(),
+                NettPaid: $('#nettpaid_add_dtl').val(),
+                ASFValue: $('#asfamount_add_dtl').val(),
+                NettAmount: $('#totalamount_add_dtl').val(),
+                VatValue: $('#vatamount_add_dtl').val(),
+                TotalNettAmount: $('#grandtotal_add_dtl').val(),
+                StartPeriode: $('#StartDate').val(),
+                EndPeriode: $('#EndDate').val(),
+                IsChecked : ''
+            };
+
+            var grid = $("#grid-media-plan-detail").data("kendoGrid");
+            var data = grid.dataSource.get($('#taskid_add_detail').val());
+            if (data != undefined) {
+                var dataRow = $('#grid-media-plan-detail').data("kendoGrid").dataSource.getByUid(data.uid);
+                $('#grid-media-plan-detail').data("kendoGrid").dataSource.remove(dataRow);
+            }
+            grid.dataSource.add(newRow);
+
+            $('#modal-media-plan-detail').modal('toggle');
+            $(".chkbx").attr("disabled", true);
+        } else {
+            $('.requiredvalue').css('display', 'block');
+        }
+    }
+
+    // Calculate asf and total
+    function CalculateASFAndTotalAmount() {
+        var grossValue = $('#subgross_add_dtl').val();
+        var asfValue = $('#asf_add_dtl').val();
+        if (asfValue == '')
+            asfValue = 0;
+        var asfAmount = (asfValue / 100) * grossValue;
+        var totalAmount = parseFloat(asfAmount) + parseFloat(grossValue);
+        var vatamount = (10 / 100) * parseFloat(totalAmount);
+
+        var tbxamountasf = $("#asfamount_add_dtl").data("kendoNumericTextBox");
+        var tbxamounttotal = $("#totalamount_add_dtl").data("kendoNumericTextBox");
+        var tbxamountvat = $("#vatamount_add_dtl").data("kendoNumericTextBox");
+        var tbxamountgrandtotal = $("#grandtotal_add_dtl").data("kendoNumericTextBox");
+        tbxamountasf.value(asfAmount);
+        tbxamounttotal.value(totalAmount);
+        tbxamountvat.value(vatamount);
+        tbxamountgrandtotal.value(parseFloat(totalAmount) + parseFloat(vatamount));
+    }
+
+    function onCompleteUpload() {
+        var upload = $("#file").data("kendoUpload");
+        var filenames = upload.wrapper.find(".k-file-name");
+
+        for (var i = 0; i < filenames.length; i++) {
+            $(filenames[i]).html("<a class='toClick'>" + "someName" + "</a>");
+        }
+    }
+
+    function downloadDoc() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download", area = "hrisnew" })', data: { id: $("#ReportFileId").val() }});
+    }
+
+    function removeReportFile() {
+        SetReportDocUpload();
+        
+        $("#btn-finish").css("display", "none");
+        $("#linkRemoveFileReport").css("display", "none");
+        $("#btn-upload-report-edit").css("display", "block");
+    }
+
+    function SetReportDocUpload() {
+        $("#linkreportDocDownloadFile").empty();
+        $("#divreportDoc").empty().append("<input name='reportfiles' id='reportfiles' type='file'/>");
+
+        $("#reportfiles").kendoUpload({
+            multiple: false,
+            validation: {
+                maxFileSize: 5000000,
+                allowedExtensions: [".jpg", ".png", ".gif", ".doc", ".pdf", ".docx", ".xlsx"]
+            }
+        });
+    }
+
+    var upload = $("#file").data("kendoUpload");
+    if (typeof upload !== 'undefined') {
+        var filenames = upload.wrapper.find(".k-file-name");
+
+        upload.wrapper.on("click", ".toClick", function (e) {
+            debugger;
+            alert(e.target);
+        });
+    }
+
+    function downloadDocTemplate() {
+        downloadAction({ url: '@Url.RouteUrl(new { action = "download", controller = "Download", area = "hrisnew" })', data: { id: $("#fileTemplateId").val() }});
+    }
+    
+    function OnchangeDDlType() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetFileTemplate", "MediaPlanEstimates")',
+            data: { typeid: $('#TypeID').val() },
+            success: function (data) {
+                if (data != null) {
+                    $("#linkFileTemplate").text(data.FileMasterName);
+                    $("#fileTemplateId").val(data.FileMasterId);
+                } else {
+                    $("#linkFileTemplate").text("");
+                    $("#fileTemplateId").val("");
+                }
+            }
+        });
+    }
+        
+</script>
+<style>
+    .fieldlist {
+        margin: 0 0 -1em;
+        padding: 0;
+    }
+
+        .fieldlist li {
+            list-style: none;
+            padding-bottom: 1em;
+        }
+</style>

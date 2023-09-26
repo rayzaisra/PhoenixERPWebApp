@@ -1,0 +1,98 @@
+@{
+    ViewBag.ModalTitle = "Employee Basic Family Modal";
+    ViewBag.ModalId = "EmployeeBasicfamilyModal";
+    Layout = "~/Views/Shared/metronic/_ModalLarge.cshtml";
+}
+<form id="EmployeeBasicFormfamilyModal" method="post">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label for="family_name">Name <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="family_name" id="family_name" required maxlength="50" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="family_birthday">Birthday :</label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control" id="family_birthday" name="family_birthday">
+                    <span class="input-group-btn">
+                        <button class="btn default" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="family_education_level_id">Education :</label>
+                <select data-role="combobox" class="form-control form-control-sm m-input m-input--square" name="family_education_level_id" id="family_education_level_id" maxlength="50" type="text"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="family_status_id">Family Status <span class="req">*</span>:</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="family_status_id" id="family_status_id"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="family_gender">Gender*</label><br>
+                <input type="radio" value="Male" name="family_gender" /> Male
+                <input type="radio" value="Female" name="family_gender" /> Female
+            </div>
+
+            <div class="form-group">
+                <label for="family_institution_id">Institution :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="family_institution_id" id="family_institution_id"></select>
+            </div>
+            <div class="form-group" id="family_institution_other">
+
+            </div>
+            <div class="form-group">
+                <label for="family_married_status_id">Married Status :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="family_married_status_id" id="family_married_status_id"></select>
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+
+            <div class="form-group">
+                <label for="family_phone_no">Phone No :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="family_phone_no" id="family_phone_no" maxlength="50" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="family_other_no">Other No :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="family_other_no" id="family_other_no" maxlength="50" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="family_place_birth">Place Birth :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="family_place_birth" id="family_place_birth" maxlength="50" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="family_religion_id">Religion :</label>
+                <select class="form-control form-control-sm m-input m-input--square" name="family_religion_id" id="family_religion_id"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="family_address">Address :</label>
+                <textarea rows="3" class="form-control form-control-sm m-input m-input--square" name="family_address" id="family_address" maxlength="100" type="text"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="family_description">Description :</label>
+                <textarea rows="3" class="form-control form-control-sm m-input m-input--square" name="family_description" id="family_description" maxlength="2147483647" type="text"></textarea>
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" id="btn-save" class="btn btn-primary" onclick="CheckAndAddRowFamilyInfo()">Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+        </div>
+
+    </div>
+</form>
+<script src="~/assets/js/Areas/Hris/Form/EmployeeBasic.familyinfo.js"></script>

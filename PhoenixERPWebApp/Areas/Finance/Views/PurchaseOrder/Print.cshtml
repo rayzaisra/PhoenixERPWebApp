@@ -1,0 +1,360 @@
+﻿@model PhoenixERPWebApp.Models.PrintPO
+@{
+    ViewData["Title"] = "Purchase Order - Print";
+    Layout = "";
+}
+
+<script src="~/Vendors/custom/KendoUI/js/jquery.min.js"></script>
+@*<link href="~/Vendors/custom/select2-4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="~/Vendors/custom/select2-4.0.13/js/select2.min.js"></script>*@
+<style>
+    .content {
+        margin: 50px 100px;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    hr {
+        border: solid 2px black;
+    }
+
+    h1 {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    img {
+        width: 150px;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .left {
+        padding-left: 20px;
+    }
+
+    .border-buttom {
+        border-bottom: solid 1px black;
+    }
+
+    .border-top {
+        border-top: solid 1px black;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .tdd {
+        height: 110px;
+        border-bottom: solid 1px black;
+        margin-right: 20px;
+        margin-bottom: 5px;
+    }
+
+    .border {
+        border-bottom: solid 2px black;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    tr {
+        height: 23px;
+    }
+
+    .padding-right {
+        padding-right: 50px;
+    }
+
+    input {
+        float: right;
+        clear: both;
+    }
+</style>
+
+<div class="content">
+    <div class="text-right">
+        <button type="button" id="btnPrint" class="btn btn-primary edit" onclick="printDiv('print')"><span class="fa fa-paper-plane"></span> Print</button>
+    </div>
+
+    <div id="print">
+        <hr />
+        <table>
+            <tr>
+                <td style="width:50%; vertical-align:bottom;"><h1>PURCHASE ORDER</h1></td>
+                <td><img src="~/images/iris.png" /></td>
+            </tr>
+            <tr>
+                <td width="60%">
+                    <table width="100%">
+                        <tr>
+                            <td class="bold" width="150px">To</td>
+                            <td width="10px">:</td>
+                            <td>
+                                <table>
+                                    <tr><td>@Model.Client</td></tr>
+                                    @if (!string.IsNullOrEmpty(Model.ClientAddress))
+                                    {
+                                        <tr><td>@Model.ClientAddress</td></tr>
+                                    }
+                                </table>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="bold">Bill & Delivery To</td>
+                            <td>:</td>
+                            <td>
+                                <table>
+                                    <tr><td>@Model.LegalEntity</td></tr>
+                                    @if (!string.IsNullOrEmpty(Model.LegalEntityAddress))
+                                    {
+                                        <tr><td>@Model.LegalEntityAddress</td></tr>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.LegalEntityTelp) || !string.IsNullOrEmpty(Model.LegalEntityFax))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(Model.LegalEntityTelp))
+                                                {<Label>Telp.@Model.LegalEntityTelp,</Label>} @if (!string.IsNullOrEmpty(Model.LegalEntityFax))
+                                                {<Label>Fax @Model.LegalEntityFax,</Label>}
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr><td class="bold">Email : @Model.LegalEntityEmail</td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bold">N.P.W.P </td>
+                            <td>:</td>
+                            <td>@Model.NPWP</td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="40%">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div style="padding-left:40px;">
+                                    <table>
+                                        <tr>
+                                            <td class="bold">PO Number</td>
+                                            <td>:</td>
+                                            <td class="text-right">@Model.PoNo</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bold">Date</td>
+                                            <td>:</td>
+                                            <td class="text-right"><input type="date" asp-for="Date" id="txtDate" /><label id="lblDate"></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bold">Job No.</td>
+                                            <td>:</td>
+                                            <td class="text-right">@Model.JobNo</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bold">Ref No.</td>
+                                            <td>:</td>
+                                            <td class="text-right">@Model.RefNo</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bold">Brand</td>
+                                            <td>:</td>
+                                            <td class="text-right">@Model.Brand</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <div class="border"></div>
+        <table>
+            <tr class="border">
+                <td class="bold text-center" width="50px;">NO.</td>
+                <td class="bold text-center">DESCRIPTION</td>
+                <td class="bold text-center" width="100px">QTY</td>
+                <td class="bold text-center" width="150px">UNIT PRICE</td>
+                <td class="bold text-center" width="150px">COST</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="border"></td>
+            </tr>
+            @{ int num = 0;}
+            @foreach (var item in Model.PrintPODetail.OrderBy(x => x.ParentTaskId ?? x.TaskId).ThenByDescending(x => x.ItemTypeId))
+            {
+                if (string.IsNullOrEmpty(item.ParentTaskId))
+                {
+                    num += 1;
+
+                    <tr>
+                        <td class="text-center">@num</td>
+                        <td><input type="text" id="txt_@item.Id" value="@item.Desription" style="width:100%" /><label id="lbl_@item.Id"></label></td>
+                        <td class="text-center">@item.Qty</td>
+                        <td class="text-right">@String.Format("{0:N0}", item.UnitPrice)</td>
+                        <td class="text-right">@String.Format("{0:N0}", item.Cost)</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td class="text-center"></td>
+                        <td style="padding-left:50px;"><input type="text" id="txt_@item.Id" value="@item.Desription" style="width:98%" /><label id="lbl_@item.Id"></label></td>
+                        <td class="text-center">@item.Qty</td>
+                        <td class="text-right">@String.Format("{0:N0}", item.UnitPrice)</td>
+                        <td class="text-right">@String.Format("{0:N0}", item.Cost)</td>
+                    </tr>
+                }
+            }
+        </table>
+        <div class="border"></div>
+        <table class="left" cellspacing="0" style="padding-top:5px;">
+            <tr style="padding-top:20px;">
+                <td class="text-right padding-right">Sub Total</td>
+                <td>@Model.CurrencySymbol</td>
+                <td class="text-right">@String.Format("{0:N0}", Model.Total)</td>
+            </tr>
+            <tr>
+                <td class="text-right padding-right">VAT @String.Format("{0:N0}", Model.VatPercent)%</td>
+                <td class="border-buttom">@Model.CurrencySymbol</td>
+                <td class="text-right border-buttom">@String.Format("{0:N0}", Model.Vat)</td>
+            </tr>
+            <tr>
+                <td class="text-right padding-right">Total Amount</td>
+                <td class="border-buttom">@Model.CurrencySymbol</td>
+                <td class="text-right border-buttom">@String.Format("{0:N0}", Model.Total)</td>
+            </tr>
+            <tr style="height:5px;">
+                <td></td>
+                <td class="border-buttom"></td>
+                <td class="border-buttom"></td>
+            </tr>
+        </table>
+        <div class="border"></div>
+        <br />
+        <table>
+            <tr>
+                <td class="bold" width="100px">Memo :</td>
+                <td><textarea id="txtRemarks" rows="5" style="width:100%"></textarea><label id="lblRemarks"></label></td>
+            </tr>
+        </table>
+        <br />
+        <table>
+            <tr>
+                <td style="text-align:center">Agreed by Vendor</td>
+                <td></td>
+                <td></td>
+                <td style="text-align:center">Authorized Signature :</td>
+            </tr>
+            <tr>
+                <td width="20%"><div class="tdd"></div></td>
+                <td width="20%"><div class="tdd"></div></td>
+                <td width="20%"><div class="tdd"></div></td>
+                <td width="20%"><div class="tdd"></div></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@Model.Client</td>
+                <td>Approved by :</td>
+                <td>Seen by :</td>
+                <td>Ordered by :</td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="border"></div>
+        <table>
+            <tr>
+                <td class="bold" colspan="2">Important :</td>
+            </tr>
+            <tr>
+                <td>1.</td>
+                <td>Upon acceptance of this PO, please sign and send the copy back to Navaplus Procurement. By acceptance of this PO the Supplier/Vendor commits to the requirement stipulated in the Supplier/Vendor Code of Business Conduct Ethics of Navaplus Group. </td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td>The invoices should be duplicated, duty stamped, supported with VAT eFactur, Proof of works/BAST, and copy of this PO. Please quote the PO Number in the invoice and all correspondence.</td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td>Please send all complete invoice to the FrontDesk of Navaplus Group at Generali Tower 8th Floor Gran Rubina Bussiness Park at Rasuna Epicentrum Jl. HR Rasuna Said - Jakarta 12940</td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td>Official working hours: 10 am - 3 pm Monday - Friday. Any Delivery of Invoice beyond that hours will not be accepted.</td>
+            </tr>
+            <tr>
+                <td>5.</td>
+                <td>Navaplus have the rights to reject the incomplete invoice.</td>
+            </tr>
+            <tr>
+                <td>6.</td>
+                <td>Our payment dates are only made at 15th and 30th. Cheques/Giro can be collected from 2 - 4 pm. Navaplus can only do the payment transfer to vendor whose resites outside of Jabodetabek area.</td>
+            </tr>
+            <tr>
+                <td>7.</td>
+                <td>Please send your questions or comments to our email address : AP@id.iris-worldwide.com</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+    });
+
+    function printDiv(divName) {
+        var remarks = $("#txtRemarks").val().replace(/\r\n|\r|\n/g, "<br />");
+        var date = $("#txtDate").val();
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let current_datetime = new Date(date);
+        let formatted_date = current_datetime.getDate() + "-" + months[current_datetime.getMonth()] + "-" + current_datetime.getFullYear()
+        var list = @Html.Raw(Json.Serialize(Model.PrintPODetail));
+
+        var originalContents = document.body.innerHTML;
+
+        $("#lblRemarks").html(remarks);
+        $("#lblDate").html(formatted_date);
+
+        $("#txtRemarks").css("display", "none");
+        $("#txtDate").css("display", "none");
+
+        $.each(list, function (key, data) {
+            var Desription = $("#txt_" + data.id).val();
+            data.Desription = Desription;
+
+            $("#lbl_" + data.id).html(Desription);
+            $("#txt_" + data.id).css("display", "none");
+        });
+
+        var printContents = document.getElementById(divName).innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+
+        $("#txtRemarks").val(remarks);
+        $("#txtDate").val(date);
+
+        $.each(list, function (key, data) {
+            $("#txt_" + data.id).val(data.desription);
+        });
+    }
+</script>

@@ -1,0 +1,47 @@
+@{
+    ViewBag.ModalTitle = "SharedRecord";
+    ViewBag.ModalId = "SharedRecordModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="SharedRecordFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="application_entity_id">application_entity_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_application_entity_id" id="search_application_entity_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="can_read">can_read</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_can_read" id="search_can_read"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="can_write">can_write</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_can_write" id="search_can_write"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="record_id">record_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_record_id" id="search_record_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="shared_to">shared_to</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_shared_to" id="search_shared_to"  maxlength="50" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnSharedRecord.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnSharedRecord.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

@@ -1,0 +1,178 @@
+@{
+    ViewData["Title"] = "Rate Card";
+    Layout = "~/Views/Shared/metronic/_formpanelloader.cshtml";
+}
+
+@section Panelhead{
+
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+    <link href="~/assets/plugins/treegrid/jquery.treegrid.css" rel="stylesheet" />
+    <style>
+        .xcount {
+            text-align: right;
+            direction: rtl;
+            width: 100%;
+        }
+
+        .xcounttask {
+            text-align: right;
+            direction: rtl;
+            width: 100%;
+        }
+
+        .xrght {
+            width: 20px;
+            margin-top: 6px !important;
+        }
+
+            .xrght i {
+                padding-top: 10px !important;
+            }
+
+        .xtext {
+            width: 100%;
+        }
+
+        .tblnopadding tbody tr td {
+            padding: 0px !important;
+        }
+
+        .tblnopadding tfoot tr td {
+            padding: 0px !important;
+        }
+
+        .tblnopadding .xcategory {
+            width: 160px;
+        }
+
+        .tblnopadding .select2-results__options li.select2-results__option {
+            font-size: 10px !important;
+        }
+
+        .bigselect {
+            width: 400px !important;
+            font-size: 10px !important;
+        }
+
+        .tblnopadding .select2-results__options {
+            font-size: 10px !important;
+        }
+
+        .tblnopadding .select2-selection__rendered {
+            font-size: 10px !important;
+            min-height: 28px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .tblnopadding .select2-selection__clear {
+            z-index: 1000;
+        }
+    </style>
+    <form action="#" method="post" id="PcaFormUpdate">
+
+        <div class="row m-row--col-separator-xl">
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job"></span> :</label>
+                    <select id="job_id" name="job_id" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Mother PCA"></span> :</label>
+                    <select id="mother_pca_id" name="mother_pca_id" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Rate Card"></span> :</label>
+                    <select id="rate_card_id" name="rate_card_id" style="width:100%"></select>
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="form-group">
+                    <label><span class="translate" data-args="Currency"></span> :</label>
+                    <select id="currency" name="currency" style="width:100%"></select>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="description"></span> :</label>
+                    <textarea class="form-control form-control-sm m-input m-input--square" required name="description" id="description"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Code"></span> :</label>
+                    <input readonly class="form-control form-control-sm m-input m-input--square" required name="code" id="code" value="-" maxlength="50" type="text">
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="rev"></span> :</label>
+                    <input readonly class="form-control form-control-sm m-input m-input--square" required name="revision" id="revision" value="0" maxlength="50" type="text">
+                </div>
+                <div class="m-form__group-sub m--margin-bottom-20" style="text-align:right">
+                    <h6 id="company_name">Total Amount</h6>
+                    <h3 class="m--font-info"><span id="totalAmount">0</span></h3>
+                </div>
+            </div>
+        </div><hr />
+        <div style="height: auto;" id="showdetil" class="datagrid-toolbar">
+
+        </div>
+        <table id="tablePca" class="tblnopadding table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+
+                    <th style="width:100px">Departement</th>
+
+                    <th>task <a class="pull-right" onclick="fnPca.showtaskbox()" href="javascript:void(0)"><i class="fa fa-plus-circle fa-sm"></i> </a></th>
+                    <th style="width:20px">Qty </th>
+                    <th style="width:20px">Unit </th>
+                    <th style="width:60px">Price </th>
+                    <th style="width:60px">Cost </th>
+                    <th style="width:10px">% </th>
+                    <th style="width:60px">Margin</th>
+                    <th style="width:100px">Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr><td colspan="8" align="right">Sub Total</td><td><div id="subtotal" class="xtotalpca"></div></td></tr>
+                <tr>
+                    <td colspan="5"></td>
+                    <td colspan="3" align="right">
+                        <select id="feetype" name="feetype" style="width:100%">
+                            <option value="Retainer Fee">Retainer Fee</option>
+                            <option value="Agency Service Fee">Agency Service Fee</option>
+                        </select>
+                    </td>
+                    <td><input id="feetotal" class="xcountpca form-control form-control-sm m-input m-input--square"></td>
+
+                </tr>
+                <tr><td colspan="8" align="right">VAT (10% x Sub Total)</td><td><div id="vat" class="xtotalpca"></div></td></tr>
+                <tr><td colspan="8" align="right">Grand Total</td><td><div id="grandtotal" class="xtotalpca"></div></td></tr>
+            </tfoot>
+        </table>
+
+        <hr />
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+        <a href="~/ProjectManagement/Pca" class="fakelink btn btn-secondary">Close</a>
+
+
+
+    </form>
+    @Html.Partial("Pca/_task")
+    @Html.Partial("Pca/_ratecard")
+}
+@section Panelscript{
+    <script>var RecordID = "@ViewBag.RecordID";</script>
+    <script src="~/assets/plugins/treegrid/jquery.treegrid.js"></script>
+    <script src="~/assets/plugins/treegrid/jquery.treegrid.bootstrap3.js"></script>
+    <script src="~/assets/plugins/jquery.mask/jquery.mask.js"></script>
+    <script src="~/assets/js/Areas/ProjectManagement/Form/Pca/update.js"></script>
+}
+

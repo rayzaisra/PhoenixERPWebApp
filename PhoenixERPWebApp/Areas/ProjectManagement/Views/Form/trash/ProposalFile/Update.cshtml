@@ -1,0 +1,24 @@
+@{
+    ViewBag.ModalTitle = "ProposalFile";
+    ViewBag.ModalId = "ProposalFileModalUpdate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="ProposalFileFormUpdate" method="POST">
+<input value="" type="hidden" name="id" />
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="client_brief_id">Client Brief Id</span> </label>
+                <input class="md-input" name="client_brief_id" id="client_brief_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="file_id">File Id</span> </label>
+                <input class="md-input" name="file_id" id="file_id"  maxlength="250" type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

@@ -1,0 +1,911 @@
+﻿@model PhoenixERPWebApp.Models.FixedAssetDepreciation
+@{
+    ViewData["Title"] = " Fixed Asset Depreciation"; 
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<style>
+    .k-numerictextbox .k-input {
+        text-align: right;
+        padding-right: 10px;
+    }
+</style>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator"> Master Fixed Asset</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/FixedAssetDepreciation")" class="m-nav__link">
+                        <span class="m-nav__link-text"> Fixed Asset Depreciation</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-wrapper">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-success">
+                                    <span>@ViewBag.Header  &nbsp;</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_qf2tcah4xx"><i class="la la-expand"></i></a>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <form id="formDepreciation" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                        <div class="m-accordion m-accordion--bordered m-accordion--solid" id="fadetail" role="tablist">
+                            <!--begin::Item-->
+                            <div class="m-accordion__item">
+                                <div class="m-accordion__item-head" role="tab" id="fadetail_head" data-toggle="collapse" href="#fadetail_body" aria-expanded="true">
+                                    <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                    <span class="m-accordion__item-title">Fixed Asset Information Detail</span>
+                                    <span class="m-accordion__item-mode"></span>
+                                </div>
+                                <div class="m-accordion__item-body show" id="fadetail_body" role="tabpanel" aria-labelledby="fadetail_head" data-parent="#fadetail" style="">
+                                    <div class="m-accordion__item-content">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group ">
+                                                    <input type="hidden" asp-for="Id" />
+                                                    <input type="hidden" asp-for="Status" />
+                                                    <input type="hidden" asp-for="OwnerId" />
+                                                    <input type="hidden" asp-for="CreatedBy" />
+                                                    <input type="hidden" asp-for="CreatedOn" />
+                                                    <input type="hidden" asp-for="ModifiedBy" />
+                                                    <input type="hidden" asp-for="ModifiedOn" />
+                                                    <input type="hidden" asp-for="ApprovedBy" />
+                                                    <input type="hidden" asp-for="ApprovedOn" /> 
+
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            @*<div class="form-group">
+                                                                <label asp-for="FixedAssetNumber"></label>
+                                                                @Html.Kendo().TextBoxFor(m => m.FixedAssetNumber).HtmlAttributes(new {  style = "width:100%;", @readonly = "readonly", Placeholder = "Auto Generated by System.." })
+                                                            </div>*@
+                                                            <div class="form-group">
+                                                                <label>Fixed Asset </label><span class="req">*</span> 
+                                                                 @if (string.IsNullOrEmpty(Model.Id))
+                                                                 {
+                                                                    @(Html.Kendo().DropDownListFor(m => m.FixedAssetID)
+                                                                            .DataTextField("Text")
+                                                                            .OptionLabel("Select Fixed Asset")
+                                                                            .DataValueField("Value")
+                                                                            .OptionLabel("--Select--")
+                                                                            .Filter(FilterType.Contains)
+                                                                            .Events(evt => evt.Select("FixedAsset_SelectEvent"))
+                                                                            .DataSource(source =>
+                                                                            {
+                                                                                source.Read(read =>
+                                                                                {
+                                                                                    read.Action("GetFixedAssetCombine", "DropDown", new { area = "Finance" });
+                                                                                });
+                                                                            })
+                                                                            .HtmlAttributes(new
+                                                                            {
+                                                                                style = "width:100%;",
+                                                                                
+                                                                                required = "required"
+                                                                            }
+                                                                        )) 
+                                                                 }
+                                                                 else
+                                                                 {
+                                                                     @(Html.Kendo().DropDownListFor(m => m.FixedAssetID)
+                                                                            .DataTextField("Text")
+                                                                            .OptionLabel("Select Fixed Asset")
+                                                                            .DataValueField("Value")
+                                                                            .OptionLabel("--Select--")
+                                                                            .Filter(FilterType.Contains)
+                                                                            .Events(evt => evt.Select("FixedAsset_SelectEvent"))
+                                                                            .DataSource(source =>
+                                                                            {
+                                                                                source.Read(read =>
+                                                                                {
+                                                                                    read.Action("GetFixedAssetCombineAll", "DropDown", new { area = "Finance" });
+                                                                                });
+                                                                            })
+                                                                            .HtmlAttributes(new
+                                                                            {
+                                                                                style = "width:100%;",
+                                                                                
+                                                                                required = "required",
+                                                                                @readonly="readonly"
+                                                                            }
+                                                                        )) 
+                                                                 }
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.FixedAssetNumberManual"></label>
+                                                                @Html.Kendo().TextBoxFor(m => m.FixedAsset.FixedAssetNumberManual).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly"})
+                                                            </div>
+                                                        </div>
+                                                        @*<div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAssetName"></label> <span class="req">*</span>
+                                                                @Html.Kendo().TextBoxFor(m => m.FixedAssetName).HtmlAttributes(new { style = "width:100%;", @required = "required" })
+                                                            </div>
+                                                        </div>*@
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group"> 
+                                                                <label asp-for="FixedAsset.ItemCategoryId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.ItemCategoryId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .OptionLabel(" ")
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetItemCategory", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%;",
+                                                                        @readonly = "readonly"
+                                                                    })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.EvidentNumber"></label>
+                                                                @Html.Kendo().TextBoxFor(m => m.FixedAsset.EvidentNumber).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.Description"></label> :
+                                                                @Html.TextAreaFor(m => m.FixedAsset.Description, new { style = "height:50px; width:100%;", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group"> 
+                                                                <label asp-for="FixedAsset.LegalEntityId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.LegalEntityId)
+                                                                    .DataTextField("Text")
+                                                                    .OptionLabel(" ")
+                                                                    .DataValueField("Value") 
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetLegalEntity", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group"> 
+                                                                <label asp-for="FixedAsset.AffiliationId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.AffiliationId)
+                                                                    .DataTextField("Text") 
+                                                                    .DataValueField("Value")
+                                                                    .OptionLabel(" ")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetAffiliation", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group"> 
+                                                                <label asp-for="FixedAsset.BusinessUnitId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.BusinessUnitId)
+                                                                    .DataTextField("Text")
+                                                                    .OptionLabel(" ")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetDivisionFinance", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    }) 
+                                                                    .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" }))
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group"> 
+                                                                <label asp-for="FixedAsset.GetFrom"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.GetFrom)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .OptionLabel(" ")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetFrom", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.LocationId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.LocationId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .OptionLabel(" ")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetMasterLocationProcurement", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group"> 
+                                                                <label asp-for="FixedAsset.Condition"></label>
+                                                                @if (Model.FixedAsset.Condition == 5)
+                                                                {
+                                                                    @(Html.Kendo().TextBoxFor(m => m.FixedAsset.ConditionName).HtmlAttributes(new {  @readonly = "readonly" }))
+                                                                }
+                                                                else
+                                                                {
+                                                                    @(Html.Kendo().DropDownListFor(m => m.FixedAsset.Condition)
+                                                                        .DataTextField("Text") 
+                                                                        .DataValueField("Value")
+                                                                        .OptionLabel(" ")
+                                                                        .Filter(FilterType.Contains)
+                                                                        .DataSource(source =>
+                                                                        {
+                                                                            source.Read(read =>
+                                                                            {
+                                                                                read.Action("InventoryDetailstatus", "Dropdown", new { area = "Finance" });
+                                                                            });
+                                                                        })
+                                                                        .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                    )
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.UnitCount"></label>
+                                                                @(Html.Kendo().NumericTextBoxFor(m => m.FixedAsset.UnitCount) 
+                                                                    .Spinners(false)
+                                                                    .Format("{0:N2}")
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%;", 
+                                                                        @readonly = "readonly"
+                                                                    }
+                                                                ))
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.ExchangeRate"></label>
+                                                                @Html.Kendo().NumericTextBoxFor(m => m.FixedAsset.ExchangeRate).Spinners(false).Format("{0:N2}").HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.CurrencyId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.CurrencyId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .OptionLabel(" ")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetDDLCurrency", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .HtmlAttributes(new
+                                                                    {
+                                                                        style = "width:100%;",
+                                                                        @readonly = "readonly"
+                                                                    })
+                                                                )
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.AcquisitionCost"></label>
+                                                                @Html.Kendo().NumericTextBoxFor(m => m.FixedAsset.AcquisitionCost).Spinners(false).Format("{0:N2}").HtmlAttributes(new { @style = "width:100%", @readonly = "readonly"})
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.CurrentEstimationPrice"></label>
+                                                                @Html.Kendo().NumericTextBoxFor(m => m.FixedAsset.CurrentEstimationPrice).Spinners(false).Format("{0:N2}").HtmlAttributes(new {@style = "width:100%", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Asset Registration Date </label>
+                                                                @Html.Kendo().DatePickerFor(m => m.FixedAsset.RegistrationDate).HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Commercial Depreciation </label>
+                                                                @Html.Kendo().TextBoxFor(m => m.FixedAsset.StatusDepreciation).HtmlAttributes(new { @style = "width:100%;", @readonly = "readonly" }).Value("Straight-Line")
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label>Book Valued </label>
+                                                                @Html.Kendo().NumericTextBoxFor(m => m.FixedAsset.AmortizationValue).Spinners(false).Format("{0:N2}").HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" }) 
+                                                            </div>
+                                                        </div>
+                                                         <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label>COA Asset</label>
+                                                                 @(Html.Kendo().DropDownListFor(m => m.FixedAsset.CoaId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .OptionLabel($" ")
+                                                                    .HtmlAttributes(new {
+                                                                        style = "width:100%;",
+                                                                        @readonly="readonly"
+                                                                    })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        @*<div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label asp-for="FileUpload"></label> <span class="req"></span>
+                                                                    <input name='file' id='file' type='file' onchange="loadFile(event)" /> 
+                                                            </div>
+                                                        </div>*@
+
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <div style="width:100%" class="displayimage">
+                                                                    <a class="thumbnail pull-left" href="#">
+                                                                        <img class="media-object" id="img-fixedasset-nava" width="225">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!--Area Hidden -->
+                                                        @*<div class="col-lg-3" style="display:none;">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.PurchaseOrderId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.PurchaseOrderId)
+                                                                    .DataTextField("Text") 
+                                                                    .DataValueField("Value")
+                                                                    .OptionLabel(" ")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetPOClient", "DropDown", new { area = "Finance" }).Data("getVendorId");
+                                                                        }).ServerFiltering(true); ;
+                                                                    })
+                                                                    .CascadeFrom("VendorId")
+                                                                    .Enable(false)
+                                                                    .AutoBind(false)
+                                                                    .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3" style="display:none;">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.VendorId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.VendorId)
+                                                                    .DataTextField("Text")
+                                                                    .DataValueField("Value")
+                                                                    .OptionLabel(" ")
+                                                                    .Filter(FilterType.Contains)
+                                                                    .DataSource(source =>
+                                                                    {
+                                                                        source.Read(read =>
+                                                                        {
+                                                                            read.Action("GetDDLVendorInv", "DropDown", new { area = "Finance" });
+                                                                        });
+                                                                    })
+                                                                    .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3" style="display:none;">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.DivisionId"></label>
+                                                                @(Html.Kendo().DropDownListFor(m => m.FixedAsset.DivisionId)
+                                                                .DataTextField("Text")
+                                                                .DataValueField("Value")
+                                                                .OptionLabel(" ")
+                                                                .Filter(FilterType.Contains)
+                                                                .DataSource(source =>
+                                                                {
+                                                                    source.Read(read =>
+                                                                    {
+                                                                        read.Action("GetDivisionHris", "Dropdown", new { area = "Finance" });
+                                                                    });
+                                                                })
+                                                               .HtmlAttributes(new { style = "width:100%;",  @readonly = "readonly" })
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3" style="display:none;">
+                                                            <div class="form-group">
+                                                                <label asp-for="FixedAsset.InvoiceId"></label>
+                                                                @Html.Kendo().TextBoxFor(m => m.FixedAsset.InvoiceId).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <br/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="status" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="status_head" data-toggle="collapse" href="#status_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                            <span class="m-accordion__item-title">
+                                                Depreciation Board
+                                            </span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="status_body" role="tabpanel" aria-labelledby="status_head" data-parent="#status" style="">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group ">
+                                                            <div class="row">
+                                                                <table class="table table-bordered">
+                                                                    <tr>
+                                                                        <th width="15%">Acquired Amount</th>
+                                                                        <th width="15%">Life Time (Month)</th>
+                                                                        <th width="15%">Residue</th>
+                                                                        <th width="15%">Deprecation Value</th>
+                                                                        <th width="20%">Set Depreciation</th>
+                                                                        <th width="30%">Set Accumulation Depreciation</th>
+                                                                    </tr>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="15%">
+                                                                                @Html.Kendo().NumericTextBoxFor(m => m.AcquisitionAmount).Spinners(false).Format("{0:N2}").HtmlAttributes(new { @style = "width:100%;", @readonly = "readonly" })                                                                                 
+                                                                            </td>
+                                                                            <td  width="15%">
+                                                                               @Html.Kendo().NumericTextBoxFor(m => m.LifeTime).Spinners(false).Format("{0:N0}").HtmlAttributes(new { @style = "width:100%;", @readonly = "readonly"})
+                                                                            </td>
+                                                                            <td width="15%">
+                                                                                @(Html.Kendo().NumericTextBoxFor(a => a.Residual)
+                                                                                    .Spinners(false)
+                                                                                    .Format("{0:N0}")
+                                                                                    .Events(evt=>evt.Change("onchangecalculatedepreciation"))
+                                                                                    .HtmlAttributes(new
+                                                                                    {
+                                                                                        maxlength = 10,
+                                                                                        @style = "width:100%;",
+                                                                                        required = "required",
+                                                                                        validationmessage = $"{Html.DisplayNameFor(m => m.Residual)} is required"
+                                                                                    }
+                                                                                )) 
+                                                                            </td>
+                                                                            <td width="15%">
+                                                                                @(Html.Kendo().NumericTextBoxFor(a => a.DepreciationValue)
+                                                                                    .Spinners(false)
+                                                                                    .Format("{0:N2}")
+                                                                                    .HtmlAttributes(new
+                                                                                    {
+                                                                                        maxlength = 10,
+                                                                                        @style = "width:100%;",
+                                                                                        @readonly ="readonly"
+                                                                                    }
+                                                                                ))  
+                                                                            </td>
+                                                                            <td width="20%">
+                                                                                 @(Html.Kendo().DropDownListFor(m => m.AccountSetDepreceationId)
+                                                                                    .DataTextField("Text")
+                                                                                    .DataValueField("Value")
+                                                                                    .Filter(FilterType.Contains)
+                                                                                    .OptionLabel("--Select--")
+                                                                                    .DataSource(source => source
+                                                                                        .Custom()
+                                                                                        .Transport(transport => transport
+                                                                                        .Read(read =>
+                                                                                        {
+                                                                                            read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                                                        }))
+                                                                                        .ServerFiltering(false)
+                                                                                    )
+                                                                                    .HtmlAttributes(new {
+                                                                                        style = "width:100%;",
+                                                                                        //required = "required",
+                                                                                        //validationmessage = $"{Html.DisplayNameFor(m => m.AccountSetDepreceationId)} is required",
+                                                                                        @readonly="readonly"
+                                                                                    })
+                                                                                ) 
+                                                                            </td>
+                                                                            <td width="30%">
+                                                                                 @(Html.Kendo().DropDownListFor(m => m.AccountSetAccumulationDepreceationId)
+                                                                                    .DataTextField("Text")
+                                                                                    .DataValueField("Value")
+                                                                                    .Filter(FilterType.Contains)
+                                                                                    .OptionLabel("--Select--")
+                                                                                    .DataSource(source => source
+                                                                                        .Custom()
+                                                                                        .Transport(transport => transport
+                                                                                        .Read(read =>
+                                                                                        {
+                                                                                            read.Action("GetCOAByNameLv5", "Dropdown", new { area = "Finance" });
+                                                                                        }))
+                                                                                        .ServerFiltering(false)
+                                                                                    )
+                                                                                    .HtmlAttributes(new {
+                                                                                        style = "width:100%;",
+                                                                                        //required = "required",
+                                                                                        //validationmessage = $"{Html.DisplayNameFor(m => m.AccountSetAccumulationDepreceationId)} is required",
+                                                                                        @readonly = "readonly"
+                                                                                    })
+                                                                                )  
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            @if (Model.Status != "POSTED")
+                                                            {
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <button type="button" id="btnCalculate" class="btn btn-primary" > Calculate</button>
+                                                                    </div>
+                                                                </div>
+                                                                <br/>
+                                                            }
+
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.FixedAssetDepreciationYears>()
+                                                                        .Name("gridYearList")
+                                                                        .Columns(columns =>
+                                                                        {
+                                                                            columns.Bound(p => p.YearTo).Width(110).HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+                                                                            columns.Bound(p => p.FirstPeriode).Width(150);
+                                                                            columns.Bound(p => p.EndPeriode).Width(150);
+                                                                            columns.Bound(p => p.TotalMonth).Width(150).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.InitialBookValue).Width(180).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.Rate).ClientTemplate("#=Rate#%").Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.DepreciationYear).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.DepreciationMonth).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.EndBookYear).Width(180).HtmlAttributes(new { style = "text-align:right;" });
+                                                                        })
+                                                                        //.Pageable(pageable => pageable
+                                                                        //    .Refresh(true)
+                                                                        //    .PageSizes(true)
+                                                                        //    .ButtonCount(5))
+                                                                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                            .Extra(false)
+                                                                            .Operators(operators => operators
+                                                                            .ForString(str => str.Clear()
+                                                                                .Contains("Contains")
+                                                                                .StartsWith("Start sWith")
+                                                                                .EndsWith("End sWith")
+                                                                            )))
+                                                                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                                        .Resizable(rsz => rsz.Columns(true))
+                                                                        .DataSource(dataSource => dataSource
+                                                                            .Ajax()
+                                                                            .Events(events => events.Error("errorHandler"))
+                                                                            .Model(model => { model.Id(p => p.YearTo); })
+                                                                            .Sort(sort => sort.Add(p => p.YearTo).Ascending())
+                                                                            .Read(read => read.Action("ReadYearDetail", "FixedAssetDepreciation").Data("grid_params"))
+                                                                        )
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            <br/>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    @(Html.Kendo().Grid<PhoenixERPWebApp.Models.FixedAssetDepreciationDetail>()
+                                                                        .Name("gridMonthList")
+                                                                        .Columns(columns =>
+                                                                        {
+                                                                            columns.Bound(p => p.FirstPeriode).Width(100);
+                                                                            columns.Bound(p => p.FixedAssetName).Width(180);
+                                                                            columns.Bound(p => p.ItemCategoryName).Width(180);
+                                                                            columns.Bound(p => p.LegalEntityName).Width(180);
+                                                                            columns.Bound(p => p.BusinessUnitName).Width(180);
+                                                                            columns.Bound(p => p.AcquisitionAmount).Width(180).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.DepreciationMonth).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.BookValue).Width(150).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.AccumulationDepreciation).Width(230).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            columns.Bound(p => p.Status).Width(100);
+                                                                        }) 
+                                                                        //.Pageable(pageable => pageable
+                                                                        //    .Refresh(true)
+                                                                        //    .PageSizes(true)
+                                                                        //    .ButtonCount(5))
+                                                                        .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                                                            .Extra(false)
+                                                                            .Operators(operators => operators
+                                                                            .ForString(str => str.Clear()
+                                                                                .Contains("Contains")
+                                                                                .StartsWith("Start sWith")
+                                                                                .EndsWith("End sWith")
+                                                                            )))
+                                                                        .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                                        .Resizable(rsz => rsz.Columns(true))
+                                                                        .DataSource(dataSource => dataSource
+                                                                            .Ajax()
+                                                                            .Events(events => events.Error("errorHandler"))
+                                                                            .Model(model => { model.Id(p => p.Id); })
+                                                                            .Sort(sort => sort.Add(p=>p.FirstPeriode).Ascending())
+                                                                            .Read(read => read.Action("ReadMonthDetail", "FixedAssetDepreciation").Data("grid_params"))
+                                                                        )
+                                                                    )
+                                                                </div>
+                                                            </div>
+                                                            @if (Model.FixedAsset.RegistrationDate != null)
+                                                            {
+                                                                @if (Model.FixedAsset.RegistrationDate.Value.Year < Model.CreatedOn.Value.Year)
+                                                                { 
+                                                                    <br /><h3>Opening Balance</h3>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12">
+                                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Journal>()
+                                                                              .Name("gridOpeningBalance")
+                                                                              .Columns(columns =>
+                                                                              {
+                                                                                  columns.Bound(p => p.CodeRec).Width(150);
+                                                                                  columns.Bound(p => p.AccountName).Width(200);
+                                                                                  //columns.Bound(p => p.Description).Width(200);
+                                                                                  columns.Bound(p => p.DivisiName).Width(200);
+                                                                                  columns.Bound(p => p.LegalEntityName).Width(200).ClientFooterTemplate("TOTAL").FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                                  columns.Bound(p => p.Debit).Width(150).ClientFooterTemplate("#=kendo.toString(sum, '\\#\\#,\\#')#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                                  columns.Bound(p => p.Credit).Width(150).ClientFooterTemplate("#=kendo.toString(sum, '\\#\\#,\\#')#").HtmlAttributes(new { style = "text-align:right;" }).FooterHtmlAttributes(new { style = "text-align:right;" });
+                                                                              })
+                                                                              .NoRecords()
+                                                                              //.Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                                              .DataSource(dataSource => dataSource
+                                                                                  .Ajax()
+                                                                                  .Aggregates(aggregates =>
+                                                                                  {
+                                                                                      aggregates.Add(p => p.Debit).Sum();
+                                                                                      aggregates.Add(p => p.Credit).Sum();
+                                                                                  })
+                                                                                  .PageSize(10)
+                                                                                  .Events(events => events.Error("errorHandler"))
+                                                                                  .Model(model => { model.Id(p => p.Id); })
+                                                                                  .Read(read => read.Action("ReadJournalOpeningBalance", "FixedAssetDepreciation").Data("grid_params"))
+                                                                              )
+                                                                            )
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pull-right">                                    
+                                    @if (Model.Status != "POSTED")
+                                    {
+                                        @*<button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>*@
+                                        <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                                        <button type="button" id="btnDelete" class="btn btn-primary delete"><span class="fa fa-trash-alt"></span> Cancel</button>
+                                    }
+                                    <a asp-action="Index" asp-controller="FixedAssetDepreciation" asp-area="Finance" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Back</a> 
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script> 
+    $(document).ready(function () {         
+    });
+
+    function grid_params() {
+        return {
+            Id: $("#Id").val()
+        };
+    }
+
+    //function getVendorId() {
+    //    return {
+    //        clientId: $("#VendorId").val()
+    //    };
+    //}
+     
+    //var loadFile = function (event) {
+    //    var output = document.getElementById('img-fixedasset-nava');
+    //    output.src = URL.createObjectURL(event.target.files[0]);
+    //    output.onload = function () {
+    //        URL.revokeObjectURL(output.src) // free memory
+    //    }
+    //};
+
+    //function readURL(input) {
+    //    if (input.files && input.files[0]) {
+    //        var reader = new FileReader();
+    //        reader.onload = function (e) {
+    //            $('#img-fixedasset-nava').attr('src', e.target.result);
+    //        }
+    //        reader.readAsDataURL(input.files[0]); // convert to base64 string
+    //    }
+    //}
+    
+    function FixedAsset_SelectEvent(e) { 
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded",
+                async: false,
+                data: { id: dataItem.Value },
+                url: "@Url.Action("GetFixedAssetById", "FixedAsset")",
+                success: function (result) { 
+                    if (result != null) {
+                        $('#FixedAsset_FixedAssetNumberManual').val(result.FixedAssetNumberManual);
+                        $('#FixedAsset_EvidentNumber').val(result.EvidentNumber);
+                        $('#FixedAsset_Description').val(result.Description);
+                        $('#FixedAsset_ConditionName').val(result.ConditionName);
+                        $('#FixedAsset_Depreciation').val(result.Depreciation);
+                        $('#FixedAsset_StatusDepreciation').val(result.StatusDepreciation);
+                        //$('#FixedAsset_InvoiceId').val(result.InvoiceId);
+
+
+                        $('#FixedAsset_ItemCategoryId').data("kendoDropDownList").value(result.ItemCategoryId);
+                        $('#FixedAsset_LegalEntityId').data("kendoDropDownList").value(result.LegalEntityId);
+                        $('#FixedAsset_AffiliationId').data("kendoDropDownList").value(result.AffiliationId);
+                        $('#FixedAsset_BusinessUnitId').data("kendoDropDownList").value(result.BusinessUnitId);
+                        $('#FixedAsset_GetFrom').data("kendoDropDownList").value(result.GetFrom);
+                        $('#FixedAsset_LocationId').data("kendoDropDownList").value(result.LocationId);
+                        $('#FixedAsset_Condition').data("kendoDropDownList").value(result.Condition);
+                        $('#FixedAsset_CurrencyId').data("kendoDropDownList").value(result.CurrencyId);
+                        $('#FixedAsset_CoaId').data("kendoDropDownList").value(result.CoaId);                        
+                        //$('#FixedAsset_PurchaseOrderId ').data("kendoDropDownList").value(result.PurchaseOrderId );
+                        //$('#FixedAsset_VendorId').data("kendoDropDownList").value(result.VendorId);
+                        //$('#FixedAsset_DivisionId').data("kendoDropDownList").value(result.DivisionId);
+                        
+                        $("#FixedAsset_UnitCount").data("kendoNumericTextBox").value(result.UnitCount);
+                        $("#FixedAsset_ExchangeRate").data("kendoNumericTextBox").value(result.ExchangeRate);
+                        $("#FixedAsset_AcquisitionCost").data("kendoNumericTextBox").value(result.AcquisitionCost);
+                        $("#FixedAsset_CurrentEstimationPrice").data("kendoNumericTextBox").value(result.CurrentEstimationPrice);
+                        $("#FixedAsset_RegistrationDate").data("kendoDatePicker").value(result.RegistrationDate);
+                        $("#FixedAsset_AmortizationValue").data("kendoNumericTextBox").value(result.AmortizationValue);
+
+                        
+                        $("#AcquisitionAmount").data("kendoNumericTextBox").value(result.AcquisitionCost);
+                        $("#LifeTime").data("kendoNumericTextBox").value(result.LifeTimeMonth);
+                        $('#AccountSetDepreceationId').data("kendoDropDownList").value(result.COADebit);
+                        $('#AccountSetAccumulationDepreceationId').data("kendoDropDownList").value(result.COACredit);
+                        $("#Residual").data("kendoNumericTextBox").value(0);    
+                        onchangecalculatedepreciation();
+                    } else {
+                        alert('Data Not Found!')
+                    }
+                }
+            });
+        }
+    }
+    
+    function onchangecalculatedepreciation() {
+        var AcquiredAmount = $("#AcquisitionAmount").data("kendoNumericTextBox").value();
+        var Residual = $("#Residual").data("kendoNumericTextBox").value();
+        var LifeTime = $("#LifeTime").data("kendoNumericTextBox").value();
+        var DepreciationValue = (AcquiredAmount - Residual) / LifeTime;
+
+        $("#DepreciationValue").data("kendoNumericTextBox").value(DepreciationValue);
+    }
+     
+    $('#btnSubmit').click(function () {
+        var valid = $("#formDepreciation").validate().form();
+        if (valid) { 
+            callAction({ formId: "formDepreciation", title: "Submit", type: "POST", url: '@Url.Action("Submit", "FixedAssetDepreciation")'});
+        }
+    });
+
+    
+    $('#btnDelete').click(function () { 
+        callAction({ formId: "formDepreciation", title: "Cancel", type: "POST", url: '@Url.Action("DeleteDetail", "FixedAssetDepreciation")'}); 
+    });    
+
+    $('#btnCalculate').click(function () {
+        var valid = $("#formDepreciation").validate().form();
+        if (valid) { 
+            callAction({ formId: "formDepreciation", title: "Calculate", type: "POST", url: '@Url.Action("Calculate", "FixedAssetDepreciation")'});
+        }
+    }); 
+</script>

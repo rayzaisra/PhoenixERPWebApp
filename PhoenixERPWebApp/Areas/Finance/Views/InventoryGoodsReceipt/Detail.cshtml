@@ -1,0 +1,822 @@
+﻿@model PhoenixERPWebApp.Models.InventoryGoodsReceipt
+@{
+    ViewData["Title"] = "Inventory Good Receipt Form";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml"; 
+}
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Procurement & Expenses</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="InventoryGoodsReceipt" asp-area="Finance" class="m-nav__link">
+                        <span class="m-nav__link-text">Goods and Bast Receipt</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">
+                                Goods and Bast Receipt &nbsp;
+                                <span id="status"></span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12"> 
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <form id="form-goodreceipt" class="form-horizontal form-bordered" role="form"> 
+                        <input type="hidden" asp-for="Id" /> 
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="CreatedOn" />
+                        <input type="hidden" asp-for="ModifiedBy" />
+                        <input type="hidden" asp-for="ModifiedOn" />
+                        <input type="hidden" asp-for="ApprovedBy" />
+                        <input type="hidden" asp-for="ApprovedOn" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <input type="hidden" asp-for="IsLocked" />
+                        <input type="hidden" asp-for="IsDefault" />
+                        <input type="hidden" asp-for="IsDeleted" />
+                        <input type="hidden" asp-for="OwnerId" />
+                        <input type="hidden" asp-for="DeletedBy" />
+                        <input type="hidden" asp-for="DeletedOn" />
+                        <input type="hidden" asp-for="CompanyId" />
+                        <input type="hidden" asp-for="CompanyBrandId" />
+                        <input type="hidden" asp-for="LegalEntityId" />
+                        <input type="hidden" asp-for="BusinessUnitId" />
+                        <input type="hidden" asp-for="AffiliationId" /> 
+                        <input type="hidden" asp-for="InvoicingTypeName" />
+                        <input type="hidden" asp-for="PurchaseOrderNumber" />
+                        <input type="hidden" asp-for="PicId" />
+                        <input type="hidden" asp-for="Status" />
+                        <input type="hidden" asp-for="VendorName" />
+                        <input type="hidden" asp-for="IsGenerated" />
+                        @*<input type="hidden" asp-for="ReceivedOn" />
+                        <input type="hidden" asp-for="DeliveryPlace" />
+                        <input type="hidden" asp-for="DeliveryOrderNumber" />
+                        <input type="hidden" asp-for="DeliveryTerm" />
+                        <input type="hidden" asp-for="DeliveryTypeId" />*@ 
+                        <input type="hidden" asp-for="InvoicingTypeId" /> 
+                        <input type="hidden" asp-for="ReferenceNumber" />
+                        <input type="hidden" asp-for="Term" />  
+                                                        
+                        <div class="row m-row--col-separator-xl">
+                            <div class="col-lg-4">
+                                <div class="form-group">  
+                                    <label asp-for="VendorId"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(m => m.VendorId)
+                                        .DataTextField("Text")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.VendorId)}")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLVendorInv", "DropDown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required"  })
+                                    )
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="PurchaseOrderNumber"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(m => m.PurchaseOrderId)
+                                        .DataTextField("Text")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.PurchaseOrderNumber)}")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetPOByVendorInGoodReceipt", "DropDown", new { area = "Finance" }).Data("filterPurchaseOrders");
+                                            }).ServerFiltering(true); ;
+                                        })
+                                        .Events(e => e.Select("po_selectEvent"))
+                                        .CascadeFrom("VendorId")
+                                        .Enable(false)
+                                        .AutoBind(false)
+                                        .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                    ) 
+                                </div> 
+                                <div class="form-group">
+                                    <label asp-for="LegalEntityName"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.LegalEntityName).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="BusinessUnitName"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.BusinessUnitName).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                </div> 
+                            </div> 
+
+                            <div class="col-lg-4"> 
+                                <div class="form-group"> 
+                                    <label asp-for="BrandName"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.BrandName).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="JobId"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.JobId).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="JobName"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.JobName).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="AffiliationName"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.AffiliationName).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                </div> 
+                            </div>
+                            <div class="col-lg-4"> 
+                                <div class="form-group"> 
+                                    <label asp-for="LocationId"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().DropDownListFor(m => m.LocationId)
+                                        .DataTextField("Text")
+                                        .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LocationId)}")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetMasterLocationProcurement", "DropDown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .HtmlAttributes(new { style = "width:100%;", @required = "required" })
+                                    )
+                                </div> 
+                                <div class="form-group">
+                                    <label asp-for="GoodsReceiptDatetime"></label> <span class="req">*</span> :
+                                    @(Html.Kendo().DatePickerFor(m => m.GoodsReceiptDatetime)
+                                        .HtmlAttributes(new
+                                        {
+                                            style = "width:100%",
+                                            @required = "required",
+                                            placeholder = $"Choose a {Html.DisplayNameFor(m => m.GoodsReceiptDatetime)}",
+                                            onkeydown = "javascript:return false;"
+                                        })
+                                        .Format("dd MMMM yyyy"))
+                                    <span class="k-invalid-msg" data-for="GoodsReceiptDatetime"></span>
+                                </div> 
+                                <div class="form-group"> 
+                                    <label asp-for="GoodsReceiptNumber"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.GoodsReceiptNumber).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly", placeholder = $"Auto generated by system" })
+                                </div> 
+                                <div class="form-group">
+                                    <label asp-for="PicName"></label> :
+                                    @Html.Kendo().TextBoxFor(m => m.PicName).HtmlAttributes(new { style = "width:100%;", @readonly = "readonly" })
+                                </div> 
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="po_detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="po_detail_head" data-toggle="collapse" href="#po_detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-suitcase"></i></span>
+                                            <span class="m-accordion__item-title">Purchase Order Detail</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="po_detail_body" role="tabpanel" aria-labelledby="po_detail_head" data-parent="#po_detail" style="">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group ">
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.PurchaseOrderDetail>()
+                                                                .Name("pod")
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Bound(p => p.Id).Width(200).Hidden();
+                                                                    columns.Bound(p => p.ItemTypeName).Title("Type").Width(100);
+                                                                    columns.Bound(p => p.ItemCode).ClientTemplate("#if(ItemCode!=null){##=ItemCode#" + "-" + "#=ItemName##}#").Width(100).Title("ID-Name");
+                                                                    columns.Bound(p => p.ItemName).Title("Name").Width(100);
+                                                                    columns.Bound(p => p.Task).Title("Name").Width(200).Hidden();
+                                                                    columns.Bound(p => p.Qty).Width(50).HtmlAttributes(new { style = "text-align:right;" });
+                                                                    columns.Bound(p => p.UomName).Width(50).HtmlAttributes(new { style = "text-align:right;" });
+                                                                    columns.Bound(p => p.UnitPrice).Width(100).HtmlAttributes(new { style = "text-align:right;"});
+                                                                    columns.Bound(p => p.Amount).Width(100).HtmlAttributes(new { style = "text-align:right;" });
+                                                                })
+                                                                .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                .Resizable(rsz => rsz.Columns(true))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model =>
+                                                                    {
+                                                                        model.Id(p => p.Id);
+                                                                    })
+                                                                    .Read(read => read.Action("ReadDetail", "PurchaseOrder").Data("GetPurchaseOrderId")))
+                                                                .NoRecords()
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12" id="m_blockui_list">
+                                <div class="m-accordion m-accordion--bordered m-accordion--solid" id="gr_detail" role="tablist">
+                                    <!--begin::Item-->
+                                    <div class="m-accordion__item">
+                                        <div class="m-accordion__item-head" role="tab" id="po_detail_head" data-toggle="collapse" href="#gr_detail_body" aria-expanded="true">
+                                            <span class="m-accordion__item-icon"><i class="fa flaticon-suitcase"></i></span>
+                                            <span class="m-accordion__item-title">Goods and Bast Receipt</span>
+                                            <span class="m-accordion__item-mode"></span>
+                                        </div>
+                                        <div class="m-accordion__item-body show" id="gr_detail_body" role="tabpanel" aria-labelledby="gr_detail_head" data-parent="#gr_detail" style="">
+                                            <div class="m-accordion__item-content">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <a href="javascript: void(0);" onclick="AddMasterInventory()">Add Master Inventory</a>
+                                                        <div class="form-group ">
+                                                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.InventoryGoodsReceiptDetail>()
+                                                                .Name("gridpod")
+                                                                .Columns(columns =>
+                                                                {
+                                                                    if (Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.Draft)
+                                                                    {
+                                                                        columns.Command(command =>
+                                                                        {
+                                                                            command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                        }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                    }
+                                                                    columns.Bound(p => p.Id).Width(200).Hidden();
+                                                                    columns.Bound(p => p.ItemTypeName).Title("Type").Width(100);
+                                                                    columns.Bound(p => p.InventoryId).EditorTemplateName("Finance/InventoryGoodsReceipt/ItemNameDropDown").ClientTemplate("#if(InventoryId!=null){# #=InventoryId#" + "-" + "#=InventoryName# #}# ").Title("Inventory ID-Name").Width(200);
+                                                                    columns.Bound(p => p.ItemCode).ClientTemplate("#=ItemCode#" + "-" + "#=ItemName#").Title("ID-Name").Width(200).Hidden();
+                                                                    columns.Bound(p => p.ItemName).Width(200).Hidden();
+                                                                    columns.Bound(p => p.Task).Title("Name").Width(200);
+                                                                    columns.Bound(p => p.PurchasedQty).EditorTemplateName("DecimalReadOnly").Width(100).HtmlAttributes(new { style = "text-align:right;"});
+                                                                    columns.Bound(p => p.ReceivedQty).EditorTemplateName("Finance/InventoryGoodsReceipt/ReceivedQty").Title("Received Qty").Width(100).Format("{0:n0}").HtmlAttributes(new { style = "text-align:right;"});
+                                                                    columns.Bound(p => p.RemainingQty).EditorTemplateName("DecimalReadOnly").Title("Remaining Qty").Width(100).HtmlAttributes(new { style = "text-align:right;"});
+                                                                    columns.Bound(p => p.LastRemainingQty).Hidden();
+                                                                })
+                                                                .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .Events(events => events.Error("errorHandler"))
+                                                                    .Model(model =>
+                                                                    {
+                                                                        model.Id(p => p.Id);
+                                                                        model.Field(p => p.Id).Editable(false);
+                                                                        model.Field(p => p.ItemTypeName).Editable(false);
+                                                                        //model.Field(p => p.InventoryId).Editable(false);
+                                                                        model.Field(p => p.ItemCode).Editable(false);
+                                                                        model.Field(p => p.ItemName).Editable(false);
+                                                                        model.Field(p => p.Task).Editable(false);
+                                                                        model.Field(p => p.PurchasedQty).Editable(true);
+                                                                        model.Field(p => p.ReceivedQty).Editable(true);
+                                                                        model.Field(p => p.RemainingQty).Editable(true);
+                                                                        //model.Field(p => p.LastRemainingQty).Editable(false);
+                                                                    })
+                                                                    .Read(read => read.Action("ReadDetail", "InventoryGoodsReceipt").Data("GetInventoryGoodReceiptDetail"))
+                                                                    .Update(update => update.Action("EditingPOD_Update", "InventoryGoodsReceipt"))
+                                                                )
+                                                                .Events(e => e.Save("GoodsReceiptDetail_SaveEvent").Edit("GoodsReceiptDetail_EditEvent"))
+                                                                .NoRecords()
+                                                            )
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />  
+                        <div id="inventorygoodreceiptgeneratemode">
+                            @if ((Model.Id != null && Model.IsNonInventory == false) || Model.Id == null)
+                            {
+                                <div id="divInventoryFixedAsset">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            @*@if (Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.Draft)*@
+                                            @if ((Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.Close) && (Model.IsGenerated == false))
+                                            {
+                                                <button type="button" id="btnGenerate" class="btn btn-sm m-btn--sm btn-info m-btn m-btn--icon m-btn--wide m--margin-right-10">
+                                                    <span>
+                                                        <span>Generate</span>
+                                                    </span>
+                                                </button>
+                                            }
+                                           
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="inventory" role="tablist">
+                                                <div class="m-accordion__item">
+                                                    <div class="m-accordion__item-head" role="tab" id="inventory_head" data-toggle="collapse" href="#inventory_body" aria-expanded="true">
+                                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                        <span class="m-accordion__item-title">Inventory</span>
+                                                        <span class="m-accordion__item-mode"></span>
+                                                    </div>
+                                                    <div class="m-accordion__item-body show" id="inventory_body" role="tabpanel" aria-labelledby="inventory_head" data-parent="#inventory" style="">
+                                                        <div class="m-accordion__item-content">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group ">
+                                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.Finance.Transaction.Inventory.InventoryDetail>()
+                                                                            .Name("gridinventory")
+                                                                            .Columns(columns =>
+                                                                            {
+                                                                                columns.Command(command =>
+                                                                                {
+                                                                                    command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                                }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                                                                                columns.Bound(p => p.InventoryInNumber).Width(200);
+
+                                                                                        columns.Bound(p => p.InventoryName).Width(200);
+                                                                                 columns.Bound(p => p.Id).Width(200);
+                                                                                //columns.Bound(p => p.Manufacturer).Width(200).Hidden(true);
+                                                                                //columns.Bound(p => p.Brand).Width(200).Hidden(true);
+                                                                                //columns.Bound(p => p.Model).Width(200);
+                                                                                //columns.Bound(p => p.ProductNumber).Width(200).Hidden(true);
+                                                                                //columns.Bound(p => p.SkuCode).Width(200).Hidden(true);
+                                                                                //columns.Bound(p => p.Color).Width(200).Hidden(true);
+                                                                                columns.Bound(p => p.Condition).Title("Condition").EditorTemplateName("Finance/InventoryGoodsReceipt/ConditionDropDown").
+                                                                                ClientTemplate("#if(ConditionName!=null){# #=ConditionName# #}# ").Width(200);
+                                                                                columns.Bound(p => p.Qty).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                                columns.Bound(p => p.UomId).Title("Unit Name").EditorTemplateName("Finance/InventoryGoodsReceipt/UomIdDropDown").ClientTemplate("#=UnitName#").Width(200).HtmlAttributes(new { style = "text-align:right;" }).Hidden(true);
+                                                                            })
+                                                                            .Editable(x => x.Mode(GridEditMode.InLine))
+                                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                                            .DataSource(dataSource => dataSource
+                                                                                .Ajax()
+                                                                                .Events(events => events.Error("errorHandler"))
+                                                                                .Model(model =>
+                                                                                {
+                                                                                    model.Id(p => p.Id);
+                                                                                    model.Field(p => p.Id).Editable(false);
+                                                                                    model.Field(p => p.Qty).Editable(false);
+                                                                                    model.Field(p => p.InventoryId).Editable(false);
+                                                                                    model.Field(p => p.ItemName).Editable(false);
+                                                                                })
+                                                                                .Read(read => read.Action("ReadInventoryDetail", "InventoryGoodsReceipt").Data("GetInventoryGoodReceiptId"))
+                                                                                .Update(update => update.Action("EditingInv_Update", "InventoryGoodsReceipt"))
+                                                                            )
+                                                                            .Events(e => e.Save("InventoryDetail_SaveEvent"))
+                                                                            .NoRecords()
+                                                                        )
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="m-accordion m-accordion--bordered m-accordion--solid" id="fixed_asset" role="tablist">
+                                                <div class="m-accordion__item">
+                                                    <div class="m-accordion__item-head" role="tab" id="fixed_asset_head" data-toggle="collapse" href="#fixed_asset_body" aria-expanded="true">
+                                                        <span class="m-accordion__item-icon"><i class="fa flaticon-interface-4"></i></span>
+                                                        <span class="m-accordion__item-title">Fixed Asset</span>
+                                                        <span class="m-accordion__item-mode"></span>
+                                                    </div>
+                                                    <div class="m-accordion__item-body show" id="fixed_asset_body" role="tabpanel" aria-labelledby="fixed_asset_head" data-parent="#fixed_asset" style="">
+                                                        <div class="m-accordion__item-content">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group ">
+                                                                        @(Html.Kendo().Grid<PhoenixERPWebApp.Models.FixedAsset>()
+                                                                            .Name("gridfixedasset")
+                                                                            .Columns(columns =>
+                                                                            {
+                                                                                columns.Command(command =>
+                                                                                {
+                                                                                    command.Edit().Text(" ").UpdateText(" ").CancelText(" ");
+                                                                                }).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Width(90);
+
+                                                                                columns.Bound(p => p.FixedAssetNumber).Width(200);
+                                                                                columns.Bound(p => p.FixedAssetName).Width(200);
+                                                                                //columns.Bound(p => p.Manufacture).Width(200);
+                                                                                //columns.Bound(p => p.Brand).Width(200);
+                                                                                //columns.Bound(p => p.ProductNumber).Width(200);
+                                                                                //columns.Bound(p => p.SkuCode).Width(200);
+                                                                                //columns.Bound(p => p.Color).Width(200);
+                                                                                //columns.Bound(p => p.Condition).Title("Condition").EditorTemplateName("Finance/InventoryGoodsReceipt/ConditionDropDown").ClientTemplate("#=ConditionName#").Width(200);
+                                                                                columns.Bound(p => p.UnitCount).Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                                //columns.Bound(p => p.UomId).EditorTemplateName("Finance/InventoryGoodsReceipt/UomIdDropDown").ClientTemplate("#=UnitName#").Width(200).HtmlAttributes(new { style = "text-align:right;" });
+                                                                            })
+                                                                            .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                                            .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                                                            .DataSource(dataSource => dataSource
+                                                                                .Ajax()
+                                                                                .Events(events => events.Error("errorHandler"))
+                                                                                .Model(model =>
+                                                                                {
+                                                                                    model.Id(p => p.Id);
+                                                                                    model.Field(p => p.Id).Editable(false);
+                                                                                    //model.Field(p => p.FixedAssetName).Editable(false);
+                                                                                    model.Field(p => p.UnitCount).Editable(false);
+                                                                                })
+                                                                                .Read(read => read.Action("ReadFixedAsset", "InventoryGoodsReceipt").Data("GetInventoryGoodReceiptId"))
+                                                                                .Update(update => update.Action("EditingFA_Update", "InventoryGoodsReceipt"))
+                                                                            )
+                                                                            .Events(x => x.Save("FixedAsset_SaveEvent"))
+                                                                            .NoRecords()
+                                                                        )
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            }
+                            <div class="row ">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label asp-for="Remark"></label> :
+                                        @Html.TextAreaFor(x => x.Remark, new { style = "height:100px;width:100%" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-12" id="m_blockui_list">
+                                    <div class="m-accordion m-accordion--bordered m-accordion--solid" id="grhistory_detail" role="tablist">
+                                        <!--begin::Item-->
+                                        <div class="m-accordion__item">
+                                            <div class="m-accordion__item-head collapsed" role="tab" id="po_detail_head" data-toggle="collapse" href="#grhistory_detail_body" aria-expanded="true">
+                                                <span class="m-accordion__item-icon"><i class="fa flaticon-suitcase"></i></span>
+                                                <span class="m-accordion__item-title">Goods and Bast Receipt History</span>
+                                                <span class="m-accordion__item-mode"></span>
+                                            </div>
+                                            <div class="m-accordion__item-body collapse" id="grhistory_detail_body" role="tabpanel" aria-labelledby="grhistory_detail_head" data-parent="#grhistory_detail" style="">
+                                                <div class="m-accordion__item-content">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group ">
+                                                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.InventoryGoodsReceiptDetail>()
+                                                                    .Name("gridhistory")
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        columns.Bound(p => p.Id).Width(200).Hidden();
+                                                                        columns.Bound(p => p.ModifiedOn).Title("Date Receipt").Width(100).Format("{0:dd MMMM yyyy}");
+                                                                        columns.Bound(p => p.InventoryGoodsReceiptId).Width(100).Title("Goods and Bast Receipt Number");
+                                                                        columns.Bound(p => p.ItemTypeName).Width(100).Title("Type");
+                                                                        columns.Bound(p => p.InventoryId).Title("ID-Name").Width(200).Hidden(true);
+                                                                        columns.Bound(p => p.Task).Width(200).Title("Name");
+                                                                        columns.Bound(p => p.ReceivedQty).Title("ReceivedQty").Width(100).Format("{0:n0}").HtmlAttributes(new { style = "text-align:right;" }); ;
+                                                                    })
+                                                                    .Pageable(pageable => pageable
+                                                                        .Refresh(true)
+                                                                        .PageSizes(true)
+                                                                        .ButtonCount(5)
+                                                                    )
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(5)
+                                                                        .Events(events => events.Error("errorHandler"))
+                                                                        .Model(model =>
+                                                                        {
+                                                                            model.Id(p => p.Id);
+                                                                        })
+                                                                        .Read(read => read.Action("ReadHistory", "InventoryGoodsReceipt").Data("GetPurchaseOrderId"))
+                                                                    )
+                                                                    .NoRecords()
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <partial name="_StatusLog" />
+                        </div>
+                                           
+                    </form> 
+                    <br><hr>
+                    <div style="text-align: right;">
+                        @if (Model.Status == PhoenixERPWebApp.Models.StatusTransactionName.Draft)
+                        {
+                            <button type="button" id="btnSave" class="btn btn-success edit"><span class="fa fa-save"></span> Save</button>
+                            <button type="button" id="btnSubmit" class="btn btn-primary edit"><span class="fa fa-paper-plane"></span> Submit</button>
+                        } 
+                        <a asp-action="Index" asp-controller="InventoryGoodsReceipt" asp-area="Finance" class="fakelink btn btn-secondary"><span class="fa fa-arrow-circle-left"></span> Cancel</a>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () { 
+        if ('@Model.Status' == '@PhoenixERPWebApp.Models.StatusTransactionName.Close') {
+            $("#VendorId").data("kendoDropDownList").readonly();
+            $("#PurchaseOrderId").data("kendoDropDownList").readonly();
+            $("#LocationId").data("kendoDropDownList").readonly();
+            $("#GoodsReceiptDatetime").data("kendoDatePicker").readonly();   
+        }     
+
+        $('#inventorygoodreceiptgeneratemode').hide();
+        $('#btnSubmit').hide();
+        if ('@Model.Id') {
+            $('#inventorygoodreceiptgeneratemode').show();
+            $('#btnSubmit').show();
+        }
+    });
+
+    function GoodsReceiptDetail_EditEvent(e) { 
+        if (e.model.ItemTypeName != "Inventory") {
+            var disableField = e.container.find("input[name=InventoryId]").data("kendoDropDownList");
+            disableField.enable(false);
+        } 
+        //if (e.model.LastRemainingQty == null || e.model.LastRemainingQty == 0) {
+        //    $('#ReceivedQty').data('kendoNumericTextBox').options.max = e.model.PurchasedQty;
+        //} else {
+        //    $('#ReceivedQty').data('kendoNumericTextBox').options.max = e.model.LastRemainingQty;
+        //}
+    } 
+
+    function GoodsReceiptDetail_SaveEvent(e) { 
+        var PurchasedQty = $("#PurchasedQty").data("kendoNumericTextBox").value();
+        var ReceivedQty = $("#ReceivedQty").data("kendoNumericTextBox").value(); 
+        var RemainingQty = $("#RemainingQty").data("kendoNumericTextBox").value();
+        var InventoryId = $("#InventoryId").data("kendoDropDownList").value();
+        var InventoryName = $("#InventoryId").data("kendoDropDownList").text(); 
+
+        e.model.set("PurchasedQty", PurchasedQty);
+        e.model.set("ReceivedQty", ReceivedQty); 
+        e.model.set("RemainingQty", RemainingQty);
+        e.model.set("InventoryId", InventoryId);
+        e.model.set("InventoryName", InventoryName); 
+    }
+
+    function FixedAsset_SaveEvent(e) {
+        var UomId = $("#UomId").data("kendoDropDownList").value();
+        var UomName = $("#UomId").data("kendoDropDownList").text();
+        var ConditionId = $("#Condition").data("kendoDropDownList").value();
+        var ConditionName = $("#Condition").data("kendoDropDownList").text();
+
+        e.model.set("UomId", UomId);
+        e.model.set("UnitName", UomName);
+        e.model.set("Condition", ConditionId);
+        e.model.set("ConditionName", ConditionName);
+    }
+
+    function InventoryDetail_SaveEvent(e) {
+        var UomId = $("#UomId").data("kendoDropDownList").value();
+        var UomName = $("#UomId").data("kendoDropDownList").text();
+        var ConditionId = $("#Condition").data("kendoDropDownList").value();
+        var ConditionName = $("#Condition").data("kendoDropDownList").text();
+
+        e.model.set("Condition", ConditionId);
+        e.model.set("ConditionName", ConditionName);
+        e.model.set("UomId", UomId);
+        e.model.set("UnitName", UomName);
+    }
+
+    function calculate_change(e) {
+        var PurchasedQty = $('#PurchasedQty').data("kendoNumericTextBox").value();
+        var ReceivedQty = $('#ReceivedQty').data("kendoNumericTextBox").value();
+        var _lastRemaining = '';
+
+        if ($('#LastRemainingQty').val() == '')
+            _lastRemaining = '0';
+        else
+            _lastRemaining = $('#LastRemainingQty').val();
+
+        var remainingQty = parseInt(_lastRemaining); 
+        //var RemainingQty = PurchasedQty - (PurchasedQty - remainingQty) - ReceivedQty;
+        //var RemainingQty = PurchasedQty - (remainingQty + ReceivedQty);
+        if (remainingQty == '0') { remainingQty = PurchasedQty; }
+        var RemainingQty = remainingQty - ReceivedQty + (PurchasedQty - remainingQty);
+        if (RemainingQty < 0) {
+            swal('Warning', 'Remaining qty must greather than 0 !', 'warning');
+            $('#ReceivedQty').data("kendoNumericTextBox").value('0')
+            $('#RemainingQty').data("kendoNumericTextBox").value(_lastRemaining);
+        }
+        else { $('#RemainingQty').data("kendoNumericTextBox").value(RemainingQty); }
+    }
+
+    function GetPurchaseOrderId() {
+        return {
+            poId: $("#PurchaseOrderId").val()
+        };
+    }
+
+    function GetInventoryGoodReceiptDetail() {
+        return {
+            poId: $("#PurchaseOrderId").val(),
+            grId: $("#Id").val()
+        }
+    }
+
+    function GetInventoryGoodReceiptId() {
+        return {
+            grId: $("#Id").val()
+        }
+    }
+
+    function filterPurchaseOrders() {
+        return {
+            clientId: $("#VendorId").val(),
+            grId: $("#Id").val()
+        };
+    }
+
+    function po_selectEvent(e) {
+        if (e.dataItem) {
+            var dataItem = e.dataItem;
+            $("#PurchaseOrderId").val(dataItem.Value);
+             $("#pod").data("kendoGrid").dataSource.data([]);
+            $("#gridpod").data("kendoGrid").dataSource.data([]);
+            $("#JobName").val("");
+            $("#BusinessUnitName").val("");
+            $("#CompanyName").val("");
+            $("#BrandName").val("");
+            $("#LegalEntityName").val("");
+            $("#BusinessUnitId").val("");
+            $("#BrandId").val("");
+            $("#CompanyId").val("");
+            $("#LegalEntityId").val("");
+            $("#JobId").val("");
+            $("#InvoicingTypeName").val("");
+            $("#PurchaseOrderNumber").val("");
+            $("#AffiliationId").val("");
+            $("#AffiliationName").val("");
+            $("#PicName").val("");
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetDataPO", "InventoryGoodsReceipt")',
+                data: { poId: dataItem.Value  },
+                success: function (data) { 
+                    $("#PurchaseOrderNumber").val(data.PurchaseOrderNumber);
+                    $("#JobName").val(data.JobName);
+                    $("#LegalEntityName").val(data.LegalEntityName);
+                    $("#BusinessUnitName").val(data.BusinessUnitName);
+
+                    $("#CompanyName").val(data.CompanyName);
+                    $("#BrandName").val(data.BrandName);
+                    //ID
+                    $("#BusinessUnitId").val(data.BusinessUnitId);
+                    $("#BrandId").val(data.BrandId);
+                    $("#CompanyId").val(data.CompanyId);
+                    $("#LegalEntityId").val(data.LegalEntityId);
+                    $("#JobId").val(data.JobId);
+                    $("#PicName").val(data.PicName);
+                    $("#PicId").val(data.PicId);
+                    $("#AffiliationId").val(data.AffiliationId);
+                    $("#AffiliationName").val(data.AffiliationName);
+
+                    if (data.IsNonInventory == true) {
+                        $("#divInventoryFixedAsset").css("display", "none");
+                    } else {
+                        $("#divInventoryFixedAsset").css("display", "block");
+                    }   
+                }
+            });
+            $("#VendorName").val($("#VendorId").data("kendoDropDownList").text());
+            $("#pod").data("kendoGrid").dataSource.read(); 
+            $("#gridpod").data("kendoGrid").dataSource.read(); 
+            $("#gridhistory").data("kendoGrid").dataSource.read(); 
+        } else {
+            $("#pod").data("kendoGrid").dataSource.data([]);
+            $("#gridpod").data("kendoGrid").dataSource.data([]);
+            $("#JobName").val("");
+            $("#BusinessUnitName").val("");
+            $("#CompanyName").val("");
+            $("#BrandName").val("");
+            $("#LegalEntityName").val("");
+            $("#BusinessUnitId").val("");
+            $("#BrandId").val("");
+            $("#CompanyId").val("");
+            $("#LegalEntityId").val("");
+            $("#JobId").val("");
+            $("#InvoicingTypeName").val("");
+            $("#PurchaseOrderNumber").val("");
+            $("#AffiliationId").val("");
+            $("#AffiliationName").val("");
+            $("#PicName").val("");
+        } 
+    }; 
+           
+    $('#btnSave').click(function () {
+        if (!isValid()) return; 
+
+        callAction({ formId: "form-goodreceipt", title: "save", type: "POST", url: '@Url.Action("save", "InventoryGoodsReceipt")', objects: result() });
+    });
+
+    $('#btnSubmit').click(function () {
+        if ($("#IsGenerated").val() === "False") {
+            if (!('@Model.Id')) {
+                swal('Warning', 'Please click generate button before submitted', 'warning');
+                return false;
+            }
+        }
+
+        if (!isValid()) return; 
+        callAction({ formId: "form-goodreceipt", title: "submit", type: "POST", url: '@Url.Action("submit", "InventoryGoodsReceipt")', objects: result() });
+
+    });
+
+    $('#btnGenerate').click(function () {
+        if (!isValid()) return;
+
+        callAction({ formId: "form-goodreceipt", title: "generate", type: "POST", url: '@Url.Action("generate", "InventoryGoodsReceipt")', objects: result() });
+        $('#btnGenerate').hide();
+    });
+
+    function isValid() {
+        var valid = $("#form-goodreceipt").validate().form();
+
+        if (valid) {
+            var _data = $("#gridpod").data("kendoGrid").dataSource.data(); 
+            var _totalQty = 0;
+            for (var i = 0; i < _data.length; i++) {
+                _totalQty = _totalQty + _data[i].ReceivedQty;
+            }
+            if (_totalQty == 0) {
+                swal('Warning', 'Recive QTY must grater than 0 !', 'warning');
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function result() {
+        var gridDetails = $("#gridpod").data("kendoGrid");
+        gridDetails.saveRow();
+
+        var dataList = {
+            InventoryGoodsReceiptDetails: gridDetails.dataSource.data()
+        }
+        return dataList;
+    }
+
+    function AddMasterInventory() {
+        var grNumber = $('#GoodsReceiptNumber').val();
+        if (grNumber !== "") {
+            window.open('@Url.Action("Detail", "Inventory")?remark='+grNumber);
+        } else {
+            swal('Warning', 'Please save first before add master inventory because Goods and Service Receipt number has been not generated !', 'warning');
+        }
+         
+    }
+</script>

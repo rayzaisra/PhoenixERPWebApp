@@ -1,0 +1,235 @@
+﻿@{
+    ViewData["Title"] = "Setup Approval";
+    Layout = "_LayoutEmpty";
+}
+<link href="~/vendors/custom/query-builder/css/query-builder.default.css?@DateTime.Now" rel="stylesheet" />
+
+
+<input hidden name="entity_id" value="@ViewBag.EntityID" />
+<input hidden name="record_id" value="@ViewBag.RecordID" />
+
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="col-lg-12 row">
+                        <fieldset class="col-md-12 row">
+                            <legend><h4>Setup Approval</h4></legend>
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <h6>Title : <span>@ViewBag.ReferenceFor</span> </h6>
+                                    <h6>Reference : <span>@ViewBag.Reference</span> </h6>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-12 row" style="padding-bottom:10px">
+                        <a id="back-url" href="@Url.Content(ViewBag.BackURL)" class="fakelink btn btn-sm btn-warning"><i class="la la-angle-left"></i> Back</a>
+
+                    </div>
+                    <div class="col-lg-12 row">
+                        <form id="form-search-dt_basic_eui">
+                            <div class="col-md-12 row" style="padding-bottom:10px">
+                                <div class="m-input-icon m-input-icon--left">
+                                    <input type="text" class="form-control form-control-sm m-input" placeholder="Search..." id="dt_basic_eui-search">
+                                    <span class="m-input-icon__icon m-input-icon__icon--left">
+                                        <span><i class="la la-search"></i></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-12 row">
+                        <table id="dt_basic_eui" style="height:auto"></table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript" src="~/vendors/custom/jeasyui/jquery.easyui.min.js"></script>
+    <script src="~/vendors/custom/formiojs/formio.full.js"></script>
+    @*    <script src="~/Areas/Core/Scripts/City.Index.js" asp-append-version="true"></script>*@
+    <script>
+        (function ($) {
+            'use strict';
+            var dg = $('#dt_basic_eui');
+
+            var pageFunction = function () {
+
+                var previewDetail = function (id) {
+                    dg.datagrid('loading');
+                    $('.modal-container').html('');
+                    $('.modal-container').load($.helper.resolve("~/Core/ApprovalTemplate/Preview?id=" + id), function (result) {
+                        var $modal = $('#m_modal_preview_approval_template');
+                        $modal.modal({ show: true });
+                        dg.datagrid('loaded');                    
+                    });
+                };
+
+                var setApprover = function (templateId) {
+                    var entity_id = $('input[name="entity_id"]').val();
+                    var record_id = $('input[name="record_id"]').val();
+                    var url = $.helper.resolveApi("~/core/Approval/setApprovalByTemplate/" + entity_id + "/?RecordID=" + record_id + "&ApprovalTemplateId=" + templateId);
+                    $.ajax({
+                        type: "POST",
+                        dataType: 'json',
+                        url: url,
+                        success: function (r) {
+                            if (r && r.status.success) {
+                                swal({
+                                    title: 'Information',
+                                    text: r.status.message,
+                                    type: "success"
+                                }).then(function () {
+                                    window.location.href = $('#back-url').attr('href');
+                                });
+                            }
+                            else {
+                                swal(
+                                    'Saving',
+                                    r.status.message,
+                                    'info'
+                                );
+                            }
+                        },
+                        error: function (r) {
+                            swal(
+                                '' + r.status,
+                                r.statusText,
+                                'error'
+                            );
+                            btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                        }
+                    });
+
+                }
+
+                var LoadDataTable = function () {
+                    // begin first table
+
+                    var url = $.helper.resolveApi('~/core/ApprovalTemplate/dgtable');
+                    var dg_options = {
+                        url: url,
+                        idField: 'id',
+                        rownumbers: true,
+                        generalFilterColumns: [
+                            {
+                                name: 'template_name',
+                                filterable: true
+                            }],
+                        generalSearch: $('#dt_basic_eui-search'),
+                        orders: [{ sortName: 'template_name', sortOrder: 'asc' }],
+                        columns: [[
+                            {
+                                field: 'template_name', title: 'Template', width: 100, sortable: true,
+                                formatter: function (value, row, index) {
+                                    var output = `<div class="m-widget5__content">
+                                                                                <div class="m-widget5__section">
+                                                                                    <h5 class="m-widget5__title">
+                                                                                        <a href="javascript:void(0);" class="m-link m-link--brand m--font-bolder use_template" row-id="`+ row.id + `">` + (value).toUpperCase() + `</a>
+                                                                                    </h5>
+                                                                                    <span class="m-widget5__desc" style="white-space:normal">
+                                                                                        fhasjdnasdnasldnasjkdnasjnd asdnas jdnasjdnasdnasjndasjknasjlndas dnasjlndasjndas ndas djasndjndasndasjndj askjdbasjkdbasjkbdjkasjkasasdajksdnjn
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>`;
+                                    return output;
+                                }
+                            },
+                            {
+                                field: 'id', align: 'center', width: 5,
+                                formatter: function (value, row, index) {
+                                    return '<a href="javascript:void(0);" class="m-link m-link--brand m--font-bolder view_detail" row-id="' + row.id + '"><i class="flaticon-menu-1"></i></a>';
+                                }
+                            }
+
+                        ]],
+                        onLoadSuccess: function () {
+                            $(this).datagrid('getPanel').find('.use_template').each(function () {
+                                $(this).on('click', function () {
+                                    var id = $(this).attr('row-id');
+                                    setApprover(id); 
+                                });
+                            });
+
+                            $(this).datagrid('getPanel').find('.view_detail').each(function () {
+                                $(this).on('click', function () {
+                                    var id = $(this).attr('row-id');
+                                    previewDetail(id);
+                                });
+                            });
+                        }
+                    };
+
+                    dg.cmDataGrid(dg_options);
+                    jQuery('.datagrid-header-inner').hide();
+                    $("#form-search-dt_basic_eui").submit(function (e) {
+                        e.preventDefault();
+                        dg.datagrid('reload');
+                    });
+                };
+
+
+
+                /*
+                Formio.createForm(document.getElementById('builder'), 'https://examples.form.io/example');
+                <div id="builder"></div>
+                Formio.createForm(document.getElementById('builder'), {
+                    components: [
+                        {
+                            type: 'textfield',
+                            key: 'firstName',
+                            label: 'First Name',
+                            //placeholder: 'Enter your first name.',
+                            input: false
+                        },
+                        {
+                            type: 'textfield',
+                            key: 'lastName',
+                            label: 'Last Name',
+                            placeholder: 'Enter your last name',
+                            input: true
+                        },
+                        {
+                            type: 'button',
+                            action: 'submit',
+                            label: 'Submit',
+                            theme: 'primary'
+                        }
+                    ]
+                });
+
+                */
+                return {
+                    init: function () {
+                        //initialize
+                        LoadDataTable();
+                    }
+                };
+            }();
+
+
+
+            $(document).ready(function () {
+                pageFunction.init();
+            });
+        }(jQuery));
+
+
+
+
+    </script>
+
+}
+
+

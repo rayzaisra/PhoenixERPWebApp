@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "MasterTax";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="create">Create</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="MasterTaxFormCreate" method="post">
+    <div class="row ">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="bpjs_tk">bpjs_tk</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bpjs_tk" id="bpjs_tk" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="bruto_calculate">bruto_calculate</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="bruto_calculate" id="bruto_calculate"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="calculatetax">calculatetax</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="calculatetax" id="calculatetax" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="code">code</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="code" id="code" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="percent_value">percent_value</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="percent_value" id="percent_value"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="tax_name">tax_name</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="tax_name" id="tax_name" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="tax_no">tax_no</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="tax_no" id="tax_no"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="type">type</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="type" id="type" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="value">value</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="value" id="value" required maxlength="50" type="text">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/MasterTax" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/MasterTax.create.js"></script>
+}

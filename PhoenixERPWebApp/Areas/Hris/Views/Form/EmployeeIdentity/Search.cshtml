@@ -1,0 +1,57 @@
+@{
+    ViewBag.ModalTitle = "EmployeeIdentity";
+    ViewBag.ModalId = "EmployeeIdentityModalSearch";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<form id="EmployeeIdentityFormSearch" method="post">
+ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_employee_basic_info_id" id="search_employee_basic_info_id"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="expired">expired</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_expired" id="search_expired"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="file_upload">file_upload</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_file_upload" id="search_file_upload"  maxlength="150" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="name_card">name_card</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_name_card" id="search_name_card"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="no_card">no_card</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_no_card" id="search_no_card"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="published">published</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_published" id="search_published"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="published_by">published_by</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="search_published_by" id="search_published_by"  maxlength="200" type="text">
+            </div>
+                    
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" onclick="fnEmployeeIdentity.initsearch()" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> <span class="translate" data-args="app-search">search</span></button>
+            <button type="button" onclick="fnEmployeeIdentity.initsearch('reset')" class="btn btn-success btn-sm"><i class="fa fa-backspace"></i> <span class="translate" data-args="app-reset">reset</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning btn-sm"><i class="fa fa-times-circle"></i>  Close</button>
+        </div>
+
+    </div>
+</form>

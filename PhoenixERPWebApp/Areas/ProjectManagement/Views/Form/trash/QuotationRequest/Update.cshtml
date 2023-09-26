@@ -1,0 +1,54 @@
+@{
+    ViewBag.ModalTitle = "QuotationRequest";
+    ViewBag.ModalId = "QuotationRequestModalUpdate";
+    Layout = "~/Views/Shared/altair/_ModalNormal.cshtml";
+}
+<form id="QuotationRequestFormUpdate" method="POST">
+<input value="" type="hidden" name="id" />
+    <div class="uk-grid">
+        <div class="uk-width-1-1">
+            <div class="uk-form-row">
+                                        <label for="closing_date"><span class="translate"  data-args="closing_date">Closing Date</span></label>
+                                        <input class="md-input" type="text" name="closing_date" id="closing_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="company_id">Company Id</span> </label>
+                <input class="md-input" name="company_id" id="company_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="days">Days</span> </label>
+                <input class="md-input" name="days" id="days"   type="text">
+            </div>            <div class="uk-form-row">
+                                        <label for="delivery_date"><span class="translate"  data-args="delivery_date">Delivery Date</span></label>
+                                        <input class="md-input" type="text" name="delivery_date" id="delivery_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="delivery_place">Delivery Place</span> </label>
+                <input class="md-input" name="delivery_place" id="delivery_place"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                                        <label for="fq_date"><span class="translate"  data-args="fq_date">Fq Date</span></label>
+                                        <input class="md-input" type="text" name="fq_date" id="fq_date" data-uk-datepicker="{format:'YYYY-MM-DD'}">
+                                    </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="payment_id">Payment Id</span> </label>
+                <input class="md-input" name="payment_id" id="payment_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="remarks">Remarks</span> </label>
+                <input class="md-input" name="remarks" id="remarks"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="shift">Shift</span> </label>
+                <input class="md-input" name="shift" id="shift"   type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="task_id">Task Id</span> </label>
+                <input class="md-input" name="task_id" id="task_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="transaction_type_id">Transaction Type Id</span> </label>
+                <input class="md-input" name="transaction_type_id" id="transaction_type_id"  maxlength="50" type="text">
+            </div>            <div class="uk-form-row">
+                <label class="label-block"><span class="translate"  data-args="weeks">Weeks</span> </label>
+                <input class="md-input" name="weeks" id="weeks"   type="text">
+            </div>        
+        </div>
+    </div>
+
+    <div class="uk-modal-footer uk-text-right">
+        <button type="submit" class="md-btn md-btn-primary"><i class="uk-icon-save"></i> Save</button>
+        <button type="button" class="md-btn md-btn-warning uk-modal-close"><i class="uk-icon-arrow-circle-o-left"></i>  Close</button>
+    </div>
+</form>

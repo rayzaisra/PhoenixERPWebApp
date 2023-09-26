@@ -1,0 +1,86 @@
+@{
+    ViewBag.ModalTitle = "Create MppDetail";
+    ViewBag.ModalId = "MppDetailFormCreateModal";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+    <form id="MppDetailFormCreateModalInner" method="post">
+
+        <div class="row m-row--col-separator-xl">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="TTF">TTF</span> :</label>
+                    <select id="time_to_fullfill" class="md-input form-control form-control-sm m-input m-input--square">
+                        <option value="Q1">Q1 (January,February, Maret)</option>
+                        <option value="Q2">Q2 (April, Mei, June)</option>
+                        <option value="Q3">Q3 (July,Agt, Sep)</option>
+                        <option value="Q4">Q4 (Oct,Nov, Dec)</option>
+                    </select>
+                    <span class="md-input-bar "></span>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Grade">Grade</span> :</label>
+                    <select id="JobGrade" name="JobGrade" class="form-control form-control-sm m-input m-input--square"></select>
+
+                    <span class="md-input-bar "></span>
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Budget Source">Budget Source</span> :</label>
+                    <select id="budget_source" name="budget_source" class="form-control form-control-sm m-input m-input--square" onchange="budget_souce_change(this.value)">
+                        <option value="CORPORATE">CORPORATE</option>
+                        <option value="PROJECT">PROJECT</option>
+                        <option value="IRIS">IRIS</option>
+                        <option value="SKOR">SKOR</option>
+                        <option value="OPTIMA">OPTIMA</option>
+                        <option value="INTERFACE">INTERFACE</option>
+                        <option value="PATHFINDRS">PATHFINDRS</option>
+                    </select>
+
+                    <span class="md-input-bar "></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Job Title">Job Title</span> :</label>
+                    <select id="job_title" name="job_title" class="form-control form-control-sm m-input m-input--square"></select>
+                    <span class="md-input-bar"></span>
+
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Mpp Budget">Mpp Budget</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square allownumericwithdecimal" name="mppBudget" id="mppBudget" maxlength="255" type="text" >
+                </div>
+                <div class="form-group">
+                    <label><span class="translate" data-args="Project Name">Project Name</span> :</label>
+                    <input class="form-control form-control-sm m-input m-input--square" name="project_name" id="project_name" maxlength="255" type="text">
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Employment Status">Employment Status</span> :</label>
+                    <select id="employment_status" name="employment_status" class="form-control form-control-sm m-input m-input--square">
+                        <option value="PERMANENT">PERMANENT</option>
+                        <option value="CONTRACT">CONTRACT</option>
+                    </select>
+                    <span class="md-input-bar "></span>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label><span class="translate" data-args="Detail Spesification">Detail Spesification</span> :</label>
+                    <textarea class="form-control form-control-sm m-input m-input--square" name="detail_spesification" id="detail_spesification"></textarea>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" id="btn-save" class="btn btn-primary" onclick="CheckAndAddRow($('#job_title option:selected').text(),$('#time_to_fullfill').val(),$('#employment_status').val(), $('#mppBudget').val(),$('#JobGrade').val(),$('#project_name').val(),$('#detail_spesification').val(),$('#job_title').val(),$('#budget_source').val())">Save</button>
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+            </div>
+
+        </div>
+    </form>

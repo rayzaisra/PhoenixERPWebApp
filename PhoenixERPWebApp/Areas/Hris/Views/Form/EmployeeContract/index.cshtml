@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "EmployeeContract";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    <a href="@Url.Content("~/Hris/EmployeeContract/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>
+}
+
+@section Paneltools{
+    <a  data-target="#EmployeeContractModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>
+}
+@section Panelbody{
+    <table class="table table-striped table-bordered table-hover table-checkable" id="EmployeeContractList"></table>
+    @Html.Partial("EmployeeContract/Search")
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/EmployeeContract.js"></script>
+}

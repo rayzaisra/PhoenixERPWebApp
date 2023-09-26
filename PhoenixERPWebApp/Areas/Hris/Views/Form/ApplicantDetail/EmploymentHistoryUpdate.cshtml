@@ -1,0 +1,185 @@
+@{
+    ViewData["Title"] = "Applicant Detail Info";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+    @*<a href="@Url.Content("~/Hris/Activity/create")" class="fakelink m-btn btn btn-primary btn-sm m-btn--sm"><i class="la la-plus"></i></a>*@
+}
+
+@section Paneltools{
+    @*<a  data-target="#ActivityModalSearch" data-toggle="modal" class="btn btn-circle btn-outline btn-sm"><i class="la la-search"></i> <span class="translate" data-args="app-search">Search</span></a>*@
+}
+@section Panelbody{
+    <script>
+        $('#xbreadcrumb').hide();
+    </script>
+    <legend>Applicant Detail Info</legend> 
+    <input value="@ViewBag.RecordID" type="hidden" name="id" id="id" />
+    <input value="@ViewBag.RecordIDSec" type="hidden" name="job_vacancy_id" id="job_vacancy_id" />
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                &nbsp;
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                &nbsp;
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <a href="#" class="btn btn-secondary" onclick="ApprovedData()">Approved</a>
+                <a href="#" class="btn btn-secondary">Interview</a>
+                <a href="#" class="btn btn-secondary">Comment</a>
+                <a href="#" class="btn btn-secondary">Training</a>
+                <a href="#" class="btn btn-secondary">Reject</a>
+                <a href="#" class="btn btn-secondary">Move Stage</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Applicant ID">Applicant ID</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="applicant_code" id="applicant_code" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Posting Code">Posting Code</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="posting_code" id="posting_code" readonly />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Status">Status</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="posting_status" id="posting_status" readonly />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Recruitment Status">Recruitment Status</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="recruitment_status" id="recruitment_status" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label><span class="translate" data-args="Vacancy">Vacancy</span> :</label>
+                <input type="text" class="form-control form-control-sm m-input m-input--square" name="vacancy_name" id="vacancy_name" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">&nbsp;</div>
+        </div>
+    </div>
+    <hr />
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="fakelink nav-link" href="@Url.Content("~/Hris/ApplicantDetail/PersonalInfo/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" role="tab" data-toggle="tab">Personal Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="fakelink nav-link active" href="@Url.Content("~/Hris/ApplicantDetail/EducationInfo/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" role="tab" data-toggle="tab">Education Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="fakelink nav-link" href="@Url.Content("~/Hris/ApplicantDetail/EmploymentHistory/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" role="tab" data-toggle="tab">Employment History</a>
+        </li>
+        <li class="nav-item">
+            <a class="fakelink nav-link" href="@Url.Content("~/Hris/ApplicantDetail/CourseSeminar/"+@ViewBag.RecordID+"/"+@ViewBag.RecordIDSec)" role="tab" data-toggle="tab">Course/Seminar</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="PersonalInfo">
+            <form id="EmploymentHistoryFormUpdate" name="EmploymentHistoryFormUpdate" method="post">
+                <legend>Employement History Info</legend>
+                <hr />
+                <input value="@ViewBag.RecordID" type="hidden" name="id" id="id" />
+                <input value="@ViewBag.RecordIDSec" type="hidden" name="job_vacancy_id" id="job_vacancy_id" />
+                <input value="@ViewBag.RecordIDThd" type="hidden" name="candidate_recruitment_id" id="candidate_recruitment_id" />
+
+            
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Company Name">Company Name</span> :</label>
+                            <input class="form-control form-control-sm m-input m-input--square" name="company_name" id="company_name" />
+
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Year">Year</span> :</label>
+                            <input class="form-control form-control-sm m-input m-input--square" name="year" id="year" type="hidden">
+                            <input class="form-control form-control-sm m-input m-input--square" name="year_from" id="year_from" type="number" placeholder="From">
+                            <input class="form-control form-control-sm m-input m-input--square" name="year_to" id="year_to" type="number" placeholder="To">
+
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Company Address">Company Address</span> :</label>
+                            <textarea class="form-control form-control-sm m-input m-input--square" name="company_address" id="company_address" cols="30"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Main Responsibilities">Main Responsibilities</span> :</label>
+                            <textarea class="form-control form-control-sm m-input m-input--square" name="main_responsibilities" id="main_responsibilities" cols="30"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Company Phone">Company Phone</span> :</label>
+                            <input class="form-control form-control-sm m-input m-input--square" name="company_phone" id="company_phone" type="text">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Position">Position</span> :</label>
+                            <input class="form-control form-control-sm m-input m-input--square" name="position" id="position" type="text">
+                        </div>
+
+                        <div class="form-group">
+                            &nbsp;
+                        </div>
+                        <div class="form-group">
+                            &nbsp;
+                        </div>
+                        <div class="form-group">
+                            &nbsp;
+                        </div>
+                        <div class="form-group">
+                            &nbsp;
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="translate" data-args="Achievements">Achievements</span> :</label>
+                            <textarea class="form-control form-control-sm m-input m-input--square" name="achievements" id="achievements" cols="30"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" id="btn-save" class="btn btn-primary" onclick="SubmitEditDataEducation()">Save</button>
+                            <a href="~/hris/ApplicantDetail/EmploymentHistory/@ViewBag.RecordIDThd/@ViewBag.RecordIDSec" class="fakelink btn btn-secondary">Closed</a>
+                        </div>
+
+                    </div>  
+            </form>
+        </div>
+    </div>
+
+
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/ApplicantDetail.employmenthistory.update.js"></script>
+}

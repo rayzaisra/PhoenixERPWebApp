@@ -1,0 +1,179 @@
+﻿@model PhoenixERPWebApp.Models.Finance.Transaction.F19DiageoPCE.F19DiageoPCEDetail
+@{
+    ViewData["Title"] = "F19 Diageo PCE";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">F19 Diageo PCE</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">F19 Diageo PCE</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="@Url.Content("~/Finance/F19DiageoPCE")" class="m-nav__link">
+                        <span class="m-nav__link-text">F19 Diageo PCE</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                @ViewBag.Header
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-form__group">
+                        <form id="form" class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="row">
+                                <!-- Begin: Year -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <label class="form-control-label">Year :</label>
+                                    @Html.Kendo().DatePickerFor(m => m.Year).HtmlAttributes(new { @class = "m-input marvel-datepicker", style = "width:100%" })
+                                </div>
+                                <!-- End: Year -->
+                            </div>
+                            <div class="row">
+                                <!-- Begin: Month -->
+                                <div class="col-lg-3 m-form__group-sub">
+                                    <div class="form-group">
+                                        <label class="">Month :</label>
+                                        @Html.Kendo().DatePickerFor(m => m.Month).HtmlAttributes(new { @class = "m-input marvel-datepicker", style = "width:100%" })
+                                    </div>
+                                </div>
+                                <!-- End: Month -->
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 m-form__group-sub">
+                                    <table border="1">
+                                        <tr>
+                                            <td rowspan="2">Nature Of Expense</td>
+                                            <td colspan="2" align="center">Jul-18</td>
+                                            <td colspan="2" align="center">YTD July-17</td>
+                                            <td rowspan="2">Total Actual + Accrual</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Actual</td>
+                                            <td>Accrual</td>
+                                            <td>Actual</td>
+                                            <td>Accrual</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Outlet Contract</td>
+                                            <td>-</td>
+                                            <td>2.734.000</td>
+                                            <td>-</td>
+                                            <td>5.120.000</td>
+                                            <td>IDR 7.854.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Activation</td>
+                                            <td>-</td>
+                                            <td>2.000.000</td>
+                                            <td>-</td>
+                                            <td>1.000.000</td>
+                                            <td>IDR 3.000.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Course Of Work</td>
+                                            <td>-</td>
+                                            <td>100.000</td>
+                                            <td>-</td>
+                                            <td>20.000</td>
+                                            <td>IDR 120.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Training</td>
+                                            <td>-</td>
+                                            <td>0</td>
+                                            <td>-</td>
+                                            <td>0</td>
+                                            <td>IDR 0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Retainer Fee</td>
+                                            <td>-</td>
+                                            <td>30.000</td>
+                                            <td>-</td>
+                                            <td>20.000</td>
+                                            <td>IDR 50.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td>-</td>
+                                            <td>2.734.000</td>
+                                            <td>-</td>
+                                            <td>5.120.000</td>
+                                            <td>IDR 10.924.000</td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="button" id="btn-save" class="btn btn-sm btn-success" disabled="disabled">Save</button>
+                                    <button type="button" id="btn-submit" class="btn btn-sm btn-primary" disabled="disabled">Submit</button>
+                                    <a asp-action="Index" asp-controller="TemporaryAccountPayable" asp-area="Finance" class="fakelink btn btn-sm btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div class="modal-container"></div>
+
+<script src="~/Areas/Finance/Scripts/F19DiageoPCE/F19DiageoPCE.Detail.js" asp-append-version="true"></script>

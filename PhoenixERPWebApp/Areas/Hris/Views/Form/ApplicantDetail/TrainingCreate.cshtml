@@ -1,0 +1,41 @@
+@{
+    ViewBag.ModalTitle = "Training Create";
+    ViewBag.ModalId = "TrainingModalCreate";
+    Layout = "~/Views/Shared/metronic/_ModalNormal.cshtml";
+}
+<script>
+        $('#xbreadcrumb').hide();
+</script>
+<form id="TrainingFormCreate" method="post">
+    <input value="@ViewBag.RecordID" type="hidden" name="candidate_recruitment_id" id="candidate_recruitment_id" />
+    <input value="@ViewBag.RecordIDSec" type="hidden" name="job_vacancy_id" id="job_vacancy_id" />
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label><span class="translate" data-args="Training Name">Training Name</span> :</label>
+                <input name="training_name" id="training_name" class="form-control form-control-sm m-input m-input--square" type="text">
+            </div>
+            <div class="form-group">
+                <label><span class="translate" data-args="Subject">Subject</span> :</label>
+                <select name="status" id="status" class="form-control form-control-sm m-input m-input--square">
+                    <option value="PASS">PASS</option>
+                    <option value="NOT PASS">NOT PASS</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label><span class="translate" data-args="Score">Score</span> :</label>
+                <input name="score" id="score" class="form-control form-control-sm m-input m-input--square" type="text">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-primary"><span class="translate" data-args="Save">Save</span></button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+        </div>
+
+    </div>
+</form>

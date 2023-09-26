@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Overtime";
+    Layout = "~/Views/Shared/metronic/_formpanel.cshtml";
+}
+@section Panelhead{
+<span class="translate" data-args="update">Update</span>
+}
+
+@section Paneltools{
+
+}
+@section Panelbody{
+<form id="OvertimeFormUpdate" method="post">
+    <div class="row ">
+        <div class="col-lg-12"><input value="@ViewBag.RecordID" type="hidden" name="id" />
+
+            <div class="form-group">
+                <label><span class="translate" data-args="amount">amount</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="amount" id="amount"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approval">approval</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval" id="approval"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approval_by">approval_by</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval_by" id="approval_by"  maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="approval_date">approval_date</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="approval_date" id="approval_date"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="employee_basic_info_id">employee_basic_info_id</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="employee_basic_info_id" id="employee_basic_info_id" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="hour_overtime">hour_overtime</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="hour_overtime" id="hour_overtime" required maxlength="50" type="text">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="last_update">last_update</span> :</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="last_update" id="last_update"   type="number">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="translate" data-args="overtime_date">overtime_date</span> <span class="req">*</span>:</label>
+                <input class="form-control form-control-sm m-input m-input--square" name="overtime_date" id="overtime_date" required  type="number">
+            </div>
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" id="btn-save" class="btn btn-primary">Save</button>
+            <a href="~/Hris/Overtime" class="fakelink btn btn-secondary">Close</a>
+        </div>
+
+    </div>
+</form>
+}
+@section Panelscript{
+    <script src="~/assets/js/Areas/Hris/Form/Overtime.update.js"></script>
+}

@@ -1,0 +1,366 @@
+﻿@model PhoenixERPWebApp.Models.FilterInvoiceReceivable
+@{
+    ViewData["Title"] = "Account Payable";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Account Payable List</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-suitcase"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="Index" asp-controller="AccountPayable" asp-area="Finance" class="m-nav__link"><span class="m-nav__link-text">Account Payable List</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div class="input-group input-group-sm">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                @(Html.Kendo().DropDownListFor(x => x.Status)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Events(e => e.Change("onFilterMode"))
+                                    .OptionLabel("All Status")
+                                    .DataSource(source => source
+                                        .Custom()
+                                        .Transport(transport => transport
+                                        .Read(read =>
+                                        {
+                                            read.Action("GetStatusAP", "Dropdown", new { area = "Finance" });
+                                        }))
+                                        .ServerFiltering(false)
+                                    )
+                                )
+                            </li>
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="InvoiceReceivableId"></label>
+                                @Html.Kendo().TextBoxFor(x => x.InvoiceReceivableId).HtmlAttributes(new { style = "width:100%;" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="AccountPayableNumber"></label>
+                                @Html.Kendo().TextBoxFor(x => x.AccountPayableNumber).HtmlAttributes(new { style = "width:100%;" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="LegalEntityId"></label>
+                                @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="BusinessUnitId"></label>
+                                @(Html.Kendo().DropDownListFor(m => m.BusinessUnitId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetDivisionFinance", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.BusinessUnitId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="VendorId"></label>
+                                @(Html.Kendo().DropDownListFor(m => m.VendorId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetDDLVendorInv", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.VendorId)}")
+                                    .HtmlAttributes(new { style = "width:100%;" })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Date</label> :
+                                <div class="row" style="padding:0px">
+                                    <div class="col-lg-6">
+                                        @(Html.Kendo().DropDownList()
+                                             .Name("DateType")
+                                             .DataTextField("Text")
+                                             .DataValueField("Value")
+                                             //.Events(e => e.Change("type_change"))
+                                             .BindTo(new List<SelectListItem>() {
+                                                 new SelectListItem() { Text = "Day", Value = "Day"},
+                                                 new SelectListItem() { Text = "Month", Value = "Month"},
+                                                 new SelectListItem() { Text = "Year", Value = "Year"},
+                                                 new SelectListItem() { Text = "Custom Range", Value = "Custom Range"}
+                                             })
+                                             .HtmlAttributes(new { style = "width: 100%" })
+                                        )
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div id="divDate"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row" style="padding:0px">
+                                    <div class="col-lg-6">
+                                        <div id="divDateStart"></div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div id="divDateEnd"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <br />
+                                <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="alert m-alert--default" role="alert">
+                                    <span style="font-weight:500">List Data</span>
+                                </div>
+
+                                @(Html.Kendo().Grid<PhoenixERPWebApp.Models.AccountPayable>()
+                                    .Name("grid")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.TransactionDate).Title("Date").Width(100);
+                                        columns.Bound(p => p.LegalEntityName).Width(200);
+                                        columns.Bound(p => p.BusinessUnitName).Width(200);
+                                        columns.Bound(p => p.ClientName).Width(200);
+                                        columns.Bound(p => p.MainServiceCategoryName).Title("MSC").Width(120);
+                                        columns.Bound(p => p.InvoiceReceivableId).ClientTemplateId("code-template").Width(130);
+                                        columns.Bound(p => p.AccountPayableNumber).Width(130);
+                                        columns.Bound(p => p.PurchaseOrderId).Title("PO NUmber").Width(130);
+                                        columns.Bound(p => p.InvoiceVendorNumber).Title("Reff INV No").Width(180);
+                                        columns.Bound(p => p.AmountOriginal).ClientTemplate("#if(CurrencySymbol!=null && AmountOriginal!=null){# #=CurrencySymbol# #}# #if(AmountOriginal!=null){# #=kendo.format('{0:n2}', AmountOriginal)# #}#").Title("Amount Original").HtmlAttributes(new { style = "text-align:right;" }).Width(140);
+                                        columns.Bound(p => p.ExchangeRate).HtmlAttributes(new { style = "text-align:right;" }).Width(140);
+                                        columns.Bound(p => p.Amount).ClientTemplate("#if(CurrencySymbolDefault!=null && Amount!=null){# #=CurrencySymbolDefault# #}# #if(Amount!=null){# #=kendo.format('{0:n2}', Amount)# #}#").Title("Amount Exchange").HtmlAttributes(new { style = "text-align:right;" }).Width(140);
+                                        columns.Bound(p => p.StatusDesc).ClientTemplate("#= GetStatusButton(data) #").Width(150);
+                                        columns.Bound(p => p.PaymentRequestNumber).Width(150);
+                                        columns.Bound(p => p.PaymentRequestAmount).ClientTemplate("#if(CurrencySymbolDefault!=null && PaymentRequestAmount!=null){# #=CurrencySymbolDefault# #}# #if(PaymentRequestAmount!=null){# #=kendo.format('{0:n2}', PaymentRequestAmount)# #}#").HtmlAttributes(new { style = "text-align:right;" }).Width(140); 
+                                        columns.Bound(p => p.PaymentRequestStatus).ClientTemplate("#= GetStatusButtonPaymentRequest(data) #").Width(140); 
+                                    })
+                                    .Pageable(pageable => pageable
+                                        .Refresh(true)
+                                        .PageSizes(true)
+                                        .ButtonCount(5))
+                                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                    .Resizable(rsz => rsz.Columns(true))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(10)
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(model => { model.Id(p => p.Id); })
+                                        .Read(read => read.Action("Read", "AccountPayable").Data("grid_params"))
+                                    )
+                                )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="code-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='View(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'> #=InvoiceReceivableId# </span></a>
+</script>
+<script>
+     $(document).ready(function () {
+        //type_change();
+        //$('#grid').data('kendoGrid').dataSource.read();
+     });
+
+    function type_change() {
+        var type = $("#DateType").data("kendoDropDownList").value();
+        $("#divDate").empty();
+        $("#divDateStart").empty();
+        $("#divDateEnd").empty();
+
+        if (type == "Month") {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder='Choose a Month' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "MMM yyyy",
+                start: "year",
+                depth: "year",
+                //value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else if (type == "Year") {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder='Choose a Year' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "yyyy",
+                start: "decade",
+                depth: "decade",
+                //value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else if (type == "Custom Range") {
+             $("#divDateStart").empty().append("<input name='StartingDate' id='StartingDate' type='text' style='width: 100%;' placeholder='Start' required/>");
+             $("#divDateEnd").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder='End' required/>");
+
+             $("#StartingDate").kendoDatePicker({
+                format: "dd MMM yyyy",
+                start: "month",
+                depth: "month",
+                //value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+             });
+
+            $("#EndingDate").kendoDatePicker({
+                format: "dd MMM yyyy",
+                start: "month",
+                depth: "month",
+                //value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder='Choose a Day' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "dd MMM yyyy",
+                start: "month",
+                depth: "month",
+                //value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        }
+    }
+
+    function View(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "InvoiceReceivable")?name=ap&id=' + item.InvoiceReceivableId;
+    }
+
+    function grid_params() {
+        return {
+            Filter :{
+                Status: $("#Status").val(),
+                BusinessUnitId: $("#BusinessUnitId").val(),
+                LegalEntityId: $("#LegalEntityId").val(),
+                InvoiceReceivableId: $("#InvoiceReceivableId").val(),
+                AccountPayableNumber: $("#AccountPayableNumber").val(),
+                VendorId: $("#VendorId").val(),
+                StartingDate: $("#StartingDate").data("kendoDatePicker") == undefined ? undefined : kendo.format('{0:yyyy/MM/dd}', $("#StartingDate").data("kendoDatePicker").value()),
+                EndingDate: $("#EndingDate").data("kendoDatePicker") == undefined ? undefined : kendo.format('{0:yyyy/MM/dd}', $("#EndingDate").data("kendoDatePicker").value()),
+                DateType: $("#DateType").data("kendoDropDownList").value()
+            }
+        }
+    }
+
+    function onFilterMode() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        var grid = $("#grid").data("kendoGrid");
+        grid.dataSource.read();
+        grid.refresh();
+        mApp.unblock("#m_blockui_list");
+    };
+
+    function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Open") buttonType = "m-badge--info";
+        else if (data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAP") buttonType = " m-badge--warning";
+        else if (data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.TAXTAP") buttonType = " m-badge--danger";
+        else if (data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.OpenAP") buttonType = " m-badge--dark";
+        else if (data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Posted") buttonType = " m-badge--success";
+        else if (data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Cancelled") buttonType = " m-badge--success";
+        else if (data.Status == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Revised") buttonType = " m-badge--warning";
+        else if (data.StatStatusus == "@PhoenixERPWebApp.Models.Enum.InvoiceReceivedStatus.Rejected") buttonType = " m-badge--danger";
+        return "<center><a href='javascript: void(0);' onclick='View(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.StatusDesc+"</a></center>";
+    }
+
+    
+    function GetStatusButtonPaymentRequest(data) {
+        var buttonType = "";
+        if (data.PaymentRequestStatus == null) { return ""; }
+        if (data.PaymentRequestStatus == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Open") buttonType = "m-badge--info"; 
+        if (data.PaymentRequestStatus == "@PhoenixERPWebApp.Models.PaymentRequestStatus.PayBalance") buttonType = "m-badge--focus"; 
+        else if (data.PaymentRequestStatus == "@PhoenixERPWebApp.Models.PaymentRequestStatus.WaitingApproval") buttonType = " m-badge--warning";
+        else if (data.PaymentRequestStatus == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Reject") buttonType = " m-badge--danger"; 
+        else if (data.PaymentRequestStatus == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Complete") buttonType = " m-badge--success";
+        else if (data.PaymentRequestStatus == "@PhoenixERPWebApp.Models.PaymentRequestStatus.Reconsiliation") buttonType = " m-badge--dark";
+        return "<center><a href='javascript: void(0);' class='m-badge " + buttonType + " m-badge--wide'>" + data.PaymentRequestStatusDesc+"</a></center>";
+    }
+
+    $('#btnSearch').click(function () {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        $('#grid').data('kendoGrid').dataSource.read();
+        $('#grid').data('kendoGrid').refresh();
+
+        mApp.unblock("#m_blockui_list");
+    });
+</script>

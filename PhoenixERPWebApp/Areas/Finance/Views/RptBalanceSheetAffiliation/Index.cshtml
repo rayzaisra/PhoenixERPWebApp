@@ -1,0 +1,544 @@
+﻿@model PhoenixERPWebApp.Models.RptBalanceSheetAffiliationFilter
+@{ 
+    ViewData["Title"] = "Balance Sheet Affiliation";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            @*<h3 class="m-subheader__title m-subheader__title--separator">Balance Sheet Affiliation</h3>*@
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Report</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="RptBalanceSheetAffiliation" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Balance Sheet Affiliation</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text m--font-success">
+                                Balance Sheet Affiliation
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">             
+                    <form id="formSearch" >
+                        <div class="row"> 
+                            <div class="col-lg-6"> 
+                                <div class="form-group">
+                                    <label asp-for="AffiliationId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.AffiliationId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetAffiliation", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            //required = "required",
+                                            //validationmessage = $"{Html.DisplayNameFor(m => m.AffiliationId)} is required"
+                                        })
+                                    )
+                                </div>  
+                                <div class="form-group"> 
+                                    <label asp-for="CurrencyId"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CurrencyId)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLCurrency", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            @readonly= "readonly",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.CurrencyId)} is required"
+                                        })
+                                    )
+                                </div>
+                                <div class="form-group">   
+                                   @(Html.Kendo().CheckBoxFor(x=>x.DisplayZeroBalance) 
+                                    .Label("Display Zero Balance") 
+                                    )
+                                </div> 
+                            </div> 
+                            <div class="col-lg-6"> 
+                                <div class="form-group">
+                                    <label asp-for="EndingDate"></label> :
+                                    <div class="row" style="padding:0px">
+                                        <div class="col-lg-6">
+                                             @(Html.Kendo().DropDownListFor(m => m.Type)
+                                                  .DataTextField("Text")
+                                                  .DataValueField("Value")
+                                                  .Events(e => e.Change("type_change"))
+                                                  .BindTo(new List<SelectListItem>() {
+                                                      new SelectListItem() { Text = "Day", Value = "Day"},
+                                                      //new SelectListItem() { Text = "Month", Value = "Month"},
+                                                      //new SelectListItem() { Text = "Year", Value = "Year"},
+                                                  })
+                                                  .HtmlAttributes(new { style = "width: 100%" })
+                                            )
+                                        </div>
+                                        <div class="col-lg-6">  
+                                            <div id="divDate"></div>
+                                        </div>
+                                    </div>                                   
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CoaLevel"></label> :
+                                    @(Html.Kendo().DropDownListFor(m => m.CoaLevel)
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .Filter(FilterType.Contains)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetDDLCOALevel", "Dropdown", new { area = "Finance" });
+                                            });
+                                        })
+                                        .OptionLabel($" ")
+                                        .HtmlAttributes(new {
+                                            style = "width:100%;",
+                                            required = "required",
+                                            validationmessage = $"{Html.DisplayNameFor(m => m.CoaLevel)} is required"
+                                        })
+                                    )
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="divGrid">No records available.</div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+<style>
+    .k-grid-footer td{
+        vertical-align:top;
+    } 
+</style> 
+ 
+<script type="x/kendo-template" id="page-template">
+    <div class="page-template">
+        <div class="header">
+            <div class="page">Page #: pageNum # of #: totalPages #</div> 
+            @*#if(pageNum==1){#*@
+                #=LoadPDF()#            
+            @*#}#*@
+        </div>
+        @*<div class="watermark">KENDO UI</div>
+        <div class="footer">
+            Page #: pageNum # of #: totalPages #
+        </div>*@
+    </div>
+</script>
+
+<script>    
+    $(document).ready(function () {
+        type_change();
+        LoadData();
+    });
+
+    $('#btnSearch').click(function () {
+        var valid = $("#formSearch").validate().form();
+        if (valid) {
+            LoadData();           
+        }
+    }); 
+
+    function LoadData() {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+         $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetGenerateList", "RptBalanceSheetAffiliation")',
+            data: { 
+                AffiliationId: $("#AffiliationId").data("kendoDropDownList").value(),
+                Type: $("#Type").data("kendoDropDownList").value(),
+                EndingDate: kendo.format('{0:yyyy/MM/dd}',$("#EndingDate").data("kendoDatePicker").value()),
+                CurrencyId: $("#CurrencyId").data("kendoDropDownList").value(),
+                DisplayZeroBalance: $("#DisplayZeroBalance").is(':checked'),
+                CoaLevel: $("#CoaLevel").data("kendoDropDownList").value()
+            },
+            dataType: 'json',
+            aync: false,
+            success: function (result) {
+                if (result.success) {
+                    generateGrid(result); 
+                } else {
+                    swal('Error', result.message, 'error');
+                }
+                mApp.unblock("#m_blockui_list");
+            },
+            error: function (e, t, s) {
+                var errorMessage = e.responseJSON.errorMessage;
+                if (errorMessage === "" || errorMessage === undefined) {
+                    errorMessage = "Ooops, something went wrong !";
+                }
+                console.log(errorMessage);
+                mApp.unblock("#m_blockui_list");
+            }
+        });
+    }
+
+    function type_change() {
+        var type = $("#Type").data("kendoDropDownList").value();
+        if (type == "Month") {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder=' ' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "MMM yyyy",
+                start: "year",
+                depth: "year",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else if (type == "Year") {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder=' ' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "yyyy",
+                start: "decade",
+                depth: "decade",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        } else {
+            $("#divDate").empty().append("<input name='EndingDate' id='EndingDate' type='text' style='width: 100%;' placeholder=' ' required/>");
+            $("#EndingDate").kendoDatePicker({
+                format: "dd MMM yyyy",
+                start: "month",
+                depth: "month",
+                value: new Date(@Model.EndingDate.Value.Year, @Model.EndingDate.Value.Month-1, @Model.EndingDate.Value.Day)
+            });
+        }
+    }
+     
+    function generateGrid(result) {
+        if (result.Data != null) {
+            var amoutColumn = 0;
+            for (var property in result.Data[0]) {
+                amoutColumn++;
+            }
+
+            var paperSize = "A0";
+            if (amoutColumn < 8)
+                paperSize = "A4";
+            else if (amoutColumn < 10)
+                paperSize = "A3";
+            else if (amoutColumn < 11)
+                paperSize = "A2";
+            else if (amoutColumn < 12)
+                paperSize = "A1";
+
+            var model = generateModel(result.Data[0]);
+            $("#divGrid").empty().kendoGrid({
+                dataSource: {
+                    data: result.Data,
+                    model: model,
+                    //pageSize: 10,
+                    group: {
+                        field: "name1",
+                        aggregates: AggregatesGeneration(result.Data) 
+                    },
+                    aggregate: AggregatesGeneration(result.Data),
+                }, 
+                //height: 350,
+                //groupable: true,
+                //sortable: true,
+                //pageable: {
+                //    refresh: true,
+                //    pageSizes: true,
+                //    buttonCount: 5
+                //},
+                resizable: true,
+                columns: ColumnGeneration(result.Data),
+                toolbar: ["excel", "pdf"],
+                excel: {
+                    fileName: "Balance Sheet Affiliation.xlsx", 
+                    filterable: true
+                },
+                pdf: {
+                    allPages: true,
+                    avoidLinks: true,
+                    paperSize: paperSize,
+                    margin: { top: "4cm", left: "1cm", right: "1cm", bottom: "1cm" },
+                    landscape: true,
+                    repeatHeaders: true,
+                    template: $("#page-template").html(),
+                    scale: 0.8,
+                    fileName: "Balance Sheet Affiliation.pdf"
+                },
+                excelExport: function (e) { customeExcelExportEvent(e) },
+            }).data('kendoGrid');
+        } else {
+            $("#divGrid").empty().append("<div>No records available.</div>");
+        }
+    }
+
+    function generateModel(result) {
+        var model = {};
+        model.id = "account_id";
+        var fields = {};
+        for (var property in result) {
+            var propType = typeof result[property];
+            if (propType == "number") {
+                fields[property] = {
+                    type: "number",
+                    nullable: true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            } else if (propType == "boolean") {
+                fields[property] = {
+                    type: "boolean",
+                    nullable :true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            } else if (propType == "string") {
+                var parsedDate = kendo.parseDate(result[property]);
+                if (parsedDate) {
+                    fields[property] = {
+                        type: "date",
+                        nullable: true
+                        //validation: {
+                        //    required: true
+                        //}
+                    };
+                    //dateFields.push(property);
+                } else {
+                    fields[property] = {
+                        type: "string",
+                        nullable :true
+                        //validation: {
+                        //    required: true
+                        //}
+                    };
+                }
+            } else {
+                fields[property] = {
+                    type: "string",
+                    nullable: true
+                    //validation: {
+                    //    required: true
+                    //}
+                };
+            }
+
+        }
+        model.fields = fields;
+
+        return model;
+    }
+
+    function ColumnGeneration(result) {
+        var GridColumnGeneration = [];
+        var resultVal = [];
+        $.each(result, function (index, value) {
+            $.each(result[index], function (gridTitle, element) {
+                var propType = typeof element;
+                if (propType == "number") {
+                    resultVal.push({ text: gridTitle, value: element, name1 : value.name1  })
+                }
+            });
+        });
+
+        $.each(result[0], function (gridTitle, element) {
+            if (gridTitle != "account_id") {
+                var propType = typeof element;
+                var title = gridTitle.replaceAll("rpt_", "").replaceAll("_", " ");
+                var width = 150; 
+                if (propType == "number") {
+
+                    var asset = 0;
+                    var liabilities = 0;
+                    var capital = 0;
+
+                    var x = resultVal.filter(x => x.text == gridTitle);
+                    $.each(x, function (index, data) { 
+                        if (data.name1 == "1. ASSETS") {
+                            asset += data.value; 
+                        } else if (data.name1 == "2. LIABILITIES") {
+                            liabilities += data.value;
+                        } else if (data.name1 == "3. CAPITAL") {
+                            capital += data.value; 
+                        }
+                    });
+
+                    var result =  kendo.format('{0:n2}', asset) + "<br/>" + kendo.format('{0:n2}', (liabilities + capital)) + "<br/>";
+                    var balance = asset - (liabilities + capital);
+                    if (balance != 0) result += "UNBALANCE";
+                    else result+= "BALANCE";     
+
+                    GridColumnGeneration.push({
+                        title: title,
+                        field: gridTitle,
+                        width: width,
+                        format: "{0:n2}",
+                        aggregates: ["sum"],
+                        groupFooterTemplate: "#=kendo.format('{0:n2}',sum)#",
+                        footerTemplate: result,
+                        //footerTemplate: "<label id='lbl_" + gridTitle+"'></label>",
+                        attributes: { style: "text-align: right;" },
+                        footerAttributes: { style: "text-align: right;" }
+                    });
+                } else if (gridTitle == "rpt_Account_Name") {
+                    GridColumnGeneration.push({
+                        title: title,
+                        field: gridTitle,
+                        width: 250,
+                        groupFooterTemplate: "TOTAL :",
+                        footerTemplate: "TOTAL ASSET : <br/>TOTAL LIABILITIES AND CAPITAL :",
+                        footerAttributes: { style: "text-align: right;" }
+                    });
+                } else if (gridTitle == "name1") {
+                    GridColumnGeneration.push({ 
+                        field: gridTitle,
+                        width: 250,
+                        hidden: true,
+                        groupHeaderTemplate: "#=value#"
+                    });
+                }else {
+                    GridColumnGeneration.push({
+                        title: title,
+                        field: gridTitle,
+                        width: width
+                    });
+                }
+            }
+        });
+        return GridColumnGeneration;
+    }
+
+
+    function AggregatesGeneration(result) {
+        var generate = [];
+        $.each(result[0], function (gridTitle, element) {
+            if (gridTitle != "account_id" && gridTitle != "name1" && gridTitle != "rpt_Account_Name") { 
+                generate.push({ field: gridTitle, aggregate: "sum" }); 
+            }
+        });
+        return generate;
+    }
+
+    String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+    };
+     
+    function customeExcelExportEvent(e) {
+        var sheet = GetBodyExportExcel(e)
+        sheet.frozenRows = 5;
+        sheet.mergedCells = ["A1:B1", "A2:B2", "A3:B3", "A4:B4"];
+        //sheet.name = "Header"; 
+
+        var date = $("#EndingDate").val();
+        var currency = $("#CurrencyId").data("kendoDropDownList").text();
+        var coaLevel = $("#CoaLevel").data("kendoDropDownList").text(); 
+        var affiliation = $("#AffiliationId").data("kendoDropDownList").text();
+
+        sheet.rows.splice(0, 0, { cells: [{ value: "COA Level", bold: true }, { value: coaLevel, bold: true }], type: "header", height: 20 }); 
+        sheet.rows.splice(0, 0, { cells: [{ value: "Date", bold: true }, { value: date, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Currency", bold: true }, { value: currency, bold: true }], type: "header", height: 20 });
+        sheet.rows.splice(0, 0, { cells: [{ value: "Affiliation", bold: true }, { value: affiliation, bold: true }], type: "header", height: 20 });
+    }
+
+    function LoadPDF() {
+        var coaLevel = $("#CoaLevel").data("kendoDropDownList").text();
+        var date = $("#EndingDate").val();
+        var currency = $("#CurrencyId").data("kendoDropDownList").text();
+        var affiliation = $("#AffiliationId").data("kendoDropDownList").text();
+
+        return "<table>"+
+                "<tr>"+
+                    "<td style='width:200px;'>Affiliation</td>"+
+                    "<td>:</td>"+
+                    "<td>" + affiliation+"</td>"+
+                "</tr>"+ 
+                "<tr>"+ 
+                    "<td>Currency</td>"+
+                    "<td>:</td>"+
+                    "<td>"+currency+"</td>"+
+                "</tr>"+
+                "<tr>"+
+                    "<td>Date</td>"+
+                    "<td>:</td>"+
+                    "<td>"+date+"</td>"+
+                "</tr>"+ 
+                "<tr>"+
+                    "<td>COA Level</td>"+
+                    "<td>:</td>"+
+                    "<td>"+coaLevel+"</td>"+
+                "</tr>"+
+            "</table>";
+    }
+</script>

@@ -1,0 +1,301 @@
+@model PhoenixERPWebApp.Models.SalaryAllocation
+@{
+    ViewData["Title"] = "Salary Allocation";
+    Layout = "~/Views/Shared/_LayoutKendo.cshtml";
+}
+
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">Salary Allocation</h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="javascript:return;" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon flaticon-cart"></i>
+                    </a>
+                </li>
+                <li class="m-nav__item">
+                    <a href="javascript:return;" class="m-nav__link">
+                        <span class="m-nav__link-text">Finance</span>
+                    </a>
+                </li>
+                <li class="m-nav__separator"><i class="fa fa-angle-double-right"></i></li>
+                <li class="m-nav__item">
+                    <a asp-action="index" asp-controller="SalaryAllocation" asp-area="finance" class="m-nav__link"><span class="m-nav__link-text">Salary Allocation</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<!-- MODAL REMOTE -->
+<div class="modal-container"></div>
+<div class="m-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-portlet m-portlet--head-sm" m-portlet="true">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <div>
+                                <a asp-action="Detail" asp-controller="SalaryAllocation" asp-area="finance" class="m-btn btn btn-primary btn-sm m-btn--sm" title="Add New Record"><i class="la la-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <div class="btn-group" role="group">
+                            <div class="col-lg-12">
+                                <form id="form-search-dt_basic_eui">
+                                    <div class="input-group input-group-sm">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon" aria-describedby="tooltip_d4ny9s36oh"><i class="la la-expand"></i></a>
+                                <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip" id="tooltip_d4ny9s36oh" aria-hidden="true" x-placement="top" style="position: absolute; will-change: transform; visibility: hidden; top: 0px; left: 0px; transform: translate3d(372px, -33px, 0px);">                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>                            <div class="tooltip-inner">Fullscreen</div>                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body" id="m_blockui_list">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="width:25%" asp-for="LegalEntityId"></label>
+                                @(Html.Kendo().DropDownListFor(m => m.LegalEntityId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetLegalEntity", "Dropdown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.LegalEntityId)}")
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:73%;"
+                                    })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="width:25%" asp-for="Code"></label>
+                                @(Html.Kendo().TextBoxFor(m => m.Code)
+                                    .HtmlAttributes(new
+                                    {
+                                        @placeholder = $"Input type a {Html.DisplayNameFor(m => m.Code)}",
+                                        style = "width:73%"
+                                    }))
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="width:25%">Start Date</label>
+                                @(Html.Kendo().DatePickerFor(m => m.TransactionDate)
+                                    .Format("dd MMMM yyyy")
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width: 73%",
+                                        //onkeydown = "javascript:return false;",
+                                        placeholder = $"Input type a start date"
+
+                                    })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="width:25%">End Date</label>
+                                @(Html.Kendo().DatePickerFor(m => m.TransactionDateEnd)
+                                    .Format("dd MMMM yyyy")
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width: 73%",
+                                        //onkeydown = "javascript:return false;",
+                                        placeholder = $"Input type a end date"
+
+                                    })
+                                )
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">                        
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="width:25%" asp-for="CurrencyId"></label>
+                                @(Html.Kendo().DropDownListFor(m => m.CurrencyId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Filter(FilterType.Contains)
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.CurrencyId)}")
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetDDLCurrency", "DropDown", new { area = "Finance" });
+                                        });
+                                    })
+                                    .HtmlAttributes(new
+                                    {
+                                        style = "width:73%;"
+                                    })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="width:25%" asp-for="ExchangeRate"></label>
+                                @(Html.Kendo().NumericTextBoxFor(m => m.ExchangeRate).Spinners(false)
+                                    .HtmlAttributes(new
+                                    {
+                                        @placeholder = $"Input type a {Html.DisplayNameFor(m => m.ExchangeRate)}",
+                                        @style = "width:73%"
+                                    }))
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="width:25%" asp-for="JobId"></label>
+                                @(Html.Kendo().DropDownListFor(x => x.JobId)
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .OptionLabel($"Choose a {Html.DisplayNameFor(m => m.JobId)}")
+                                    .HtmlAttributes(new { style = "width:73%;" })
+                                    .Filter(FilterType.Contains)
+                                    .DataSource(source => source
+                                        .Custom()
+                                        .Transport(transport => transport
+                                        .Read(read =>
+                                        {
+                                            read.Action("GetJobByPCEApproved", "Dropdown", new { area = "Finance" });
+                                        }))
+                                        .ServerFiltering(false)
+                                    ))
+                            </div>
+                        </div>
+                        <div class="col-lg-6 m-form__group-sub">
+                            <div class="form-group">
+                                <label style="width:25%" asp-for="Description"></label>
+                                @(Html.Kendo().TextBoxFor(m => m.Description)
+                                    .HtmlAttributes(new
+                                    {
+                                        @placeholder = $"Input type a {Html.DisplayNameFor(m => m.Description)}",
+                                        style = "width:73%"
+                                    }))                                
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <button type="button" id="btnSearch" class="btn btn-primary" style="padding:7px;"><span class="fa fa-filter"></span> Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @(Html.Kendo().Grid<PhoenixERPWebApp.Models.SalaryAllocation>()
+                                    .Name("grid")
+                                    .Columns(columns =>
+                                    {
+                                       columns.Bound("").Title("#").Width(35).Filterable(false).HtmlAttributes(new { style = "text-align:center;", @class = "row-number" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+
+                                        columns.Bound(p => p.Code).ClientTemplateId("code-template").Width(140);
+                                        columns.Bound(p => p.TransactionDate).Width(100);
+                                        //columns.Bound(p => p.JvReferenceNo).Width(150).Width(200);
+                                        columns.Bound(p => p.LegalEntityName).Width(200);
+                                        columns.Bound(p => p.BusinessUnitName).Width(200);
+                                        columns.Bound(p => p.AffiliationName).Width(200);
+                                        columns.Bound(p => p.Status).ClientTemplate("#= GetStatusButton(data) #").Width(150);
+                                        columns.Bound(p => p.JobId).Width(200);
+                                        columns.Bound(p => p.Description).Width(200);
+                                    })
+                                    .Pageable(pageable => pageable
+                                    .Refresh(true)
+                                    .PageSizes(true)
+                                    .ButtonCount(5))
+                                    .Sortable(srt => srt.SortMode(GridSortMode.MultipleColumn))
+                                    //.Filterable(ftb => ftb.Mode(GridFilterMode.Menu)
+                                    //    .Extra(false)
+                                    //    .Operators(operators => operators
+                                    //    .ForString(str => str.Clear()
+                                    //    .Contains("Contains")
+                                    //    .StartsWith("Start sWith")
+                                    //    .EndsWith("End sWith")
+                                    //)))
+                                    .NoRecords()
+                                    .Scrollable(s => s.Enabled(true).Height("auto")).NoRecords()
+                                    .Resizable(rsz => rsz.Columns(true))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(10)
+                                        .Events(events => events.Error("errorHandler"))
+                                        .Model(model => { model.Id(p => p.Id); })
+                                        .Read(read => read.Action("Read", "SalaryAllocation").Data("grid_params"))
+                                    )
+                                    .Events(e => e.DataBound("dataBoundEvent"))
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="code-template" type="text/x-kendo-template">
+    <a href='javascript: void(0);' onclick='View(this)' title='Edit' class='edit'><span style='color:blue; text-decoration:underline;'>#=Code#</span></a>
+</script>
+<script>
+    function View(e) {
+        var item = dataItem(e);
+        window.location.href = '@Url.Action("Detail", "SalaryAllocation")?Id=' + item.Id;
+    }
+
+    function grid_params(){
+        return {
+            LegalEntityId: $("#LegalEntityId").val(),
+            TransactionDate: $("#TransactionDate").val(),
+            TransactionDateEnd: $("#TransactionDateEnd").val(),
+            Code: $("#Code").val(),
+            CurrencyId: $("#CurrencyId").val(),
+            ExchangeRate: $("#ExchangeRate").val(),
+            Description: $("#Description").val(),
+            JobId: $("#JobId").val()
+        }
+    }
+
+    $('#btnSearch').click(function () {
+        mApp.block("#m_blockui_list", {
+            overlayColor: "#000000",
+            type: "loader",
+            state: "primary",
+            message: "Processing..."
+        });
+
+        $('#grid').data('kendoGrid').dataSource.read();
+        $('#grid').data('kendoGrid').refresh();
+
+        mApp.unblock("#m_blockui_list");
+    });
+
+    function GetStatusButton(data) {
+        var buttonType = "";
+        if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Draft") buttonType = "m-badge--info";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.WaitingApproval") buttonType = " m-badge--warning";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Rejected") buttonType = " m-badge--danger";
+        else if (data.Status == "@PhoenixERPWebApp.Models.StatusTransactionName.Approved") buttonType = " m-badge--success";
+        return "<center><a href='javascript: void(0);' onclick='View(this)' class='m-badge " + buttonType + " m-badge--wide'>" + data.Status+"</a></center>";
+    }
+</script>
